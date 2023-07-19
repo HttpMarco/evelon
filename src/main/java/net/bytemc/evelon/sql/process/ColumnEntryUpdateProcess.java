@@ -1,5 +1,6 @@
 package net.bytemc.evelon.sql.process;
 
+import net.bytemc.evelon.exception.StageNotFoundException;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.RepositoryQuery;
 import net.bytemc.evelon.sql.*;
@@ -18,8 +19,7 @@ public final class ColumnEntryUpdateProcess {
         var stage = StageHandler.getInstance().getElementStage(value.getClass());
 
         if (stage == null) {
-            System.err.println("Stage not found for " + value.getClass().getName());
-            return;
+            throw new StageNotFoundException(value.getClass());
         }
 
         if (stage instanceof ElementStage<?> elementStage) {

@@ -1,5 +1,6 @@
 package net.bytemc.evelon.sql.substages;
 
+import net.bytemc.evelon.exception.StageNotFoundException;
 import net.bytemc.evelon.repository.RepositoryClass;
 import net.bytemc.evelon.sql.*;
 import net.bytemc.evelon.sql.process.TableCreationProcess;
@@ -31,8 +32,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             var stage = StageHandler.getInstance().getElementStage(foreignKey.foreignKey().getType());
 
             if (stage == null) {
-                System.err.println("The stage for the entity " + foreignKey.foreignKey().getType().getSimpleName() + " was not found!");
-                return new ArrayList<>();
+                throw new StageNotFoundException(foreignKey.foreignKey().getType());
             }
 
             if (stage instanceof ElementStage<?> elementStage) {

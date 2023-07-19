@@ -1,5 +1,6 @@
 package net.bytemc.evelon.sql.process;
 
+import net.bytemc.evelon.exception.StageNotFoundException;
 import net.bytemc.evelon.repository.RepositoryQuery;
 import net.bytemc.evelon.sql.DatabaseConnection;
 import net.bytemc.evelon.sql.ElementStage;
@@ -15,8 +16,7 @@ public final class ColumnEntryCreationProcess {
         var stage = StageHandler.getInstance().getElementStage(value.getClass());
 
         if (stage == null) {
-            System.err.println("The stage of the class " + value.getClass().getSimpleName() + " is null.");
-            return;
+            throw new StageNotFoundException(value.getClass());
         }
 
         var mapEntryData = new HashMap<String, String>();
