@@ -15,6 +15,13 @@ Todo types:
 - array (transformer -> list)
 - Files
 
+Features todo:
+
+- better database connection configuration
+- map functions for convert results to a fine object
+- listeners (onCreate, onDelete, onUpdate)
+- time value cache
+
 Interface support? Superclass support?
 
 ### Table exists analysis

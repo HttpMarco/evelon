@@ -16,4 +16,8 @@ public interface SubElementStage<T> extends Stage<T> {
      */
     List<String> onParentTableCollectData(String table, RepositoryClass<?> current, Field field, ForeignKey... keys);
 
+    // insert statement
+
+   // onParentElement(String table)
+
 }

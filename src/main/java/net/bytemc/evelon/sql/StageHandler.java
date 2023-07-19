@@ -3,7 +3,6 @@ package net.bytemc.evelon.sql;
 import lombok.Getter;
 import net.bytemc.evelon.sql.stages.DefaultParameterStage;
 import net.bytemc.evelon.sql.stages.EnumerationStage;
-import net.bytemc.evelon.sql.substages.CollectionElementStage;
 import net.bytemc.evelon.sql.substages.VirtualObjectStage;
 import net.bytemc.evelon.sql.transformers.RecordTransformer;
 
@@ -26,9 +25,6 @@ public final class StageHandler {
 
         // only for enumeration types -> mariadb extra type
         this.stages.add(new EnumerationStage());
-
-        // for all collections (arraylist, copyonwritearraylist, hashset, linked hashset, treeset, vector, stack, linked-list...)
-        this.stages.add(new CollectionElementStage());
 
         // transform record to object -> deny duplicated code
         this.stages.add(new RecordTransformer());

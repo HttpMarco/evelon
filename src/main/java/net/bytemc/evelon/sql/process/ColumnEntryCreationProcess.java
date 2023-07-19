@@ -25,7 +25,7 @@ public final class ColumnEntryCreationProcess {
         if (stage instanceof ElementStage<?> elementStage) {
             mapEntryData.putAll(elementStage.anonymousElementEntryData(query.getRepository().repositoryClass(), null, value));
         } else if (stage instanceof ElementStageTransformer transformer) {
-            //transformer class can be use to link to other tables
+            //transformer class can be used to link to other tables
             if (transformer.transformTo() instanceof ElementStage<?> elementStage) {
                 mapEntryData.putAll(elementStage.anonymousElementEntryData(query.getRepository().repositoryClass(), null, value));
             } else {
