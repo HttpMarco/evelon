@@ -30,8 +30,9 @@ public final class RepositoryQuery<T> {
         return new RepositoryQueryActions<>(this, RepositoryDepartureOrder.CHRONOLOGICAL);
     }
 
-    public RepositoryFilterQuery filter() {
-        return new RepositoryFilterQuery(this);
+    public RepositoryQuery<T> filter(Filter filter) {
+        this.filters.add(filter);
+        return this;
     }
 
     public void delete() {
@@ -48,7 +49,7 @@ public final class RepositoryQuery<T> {
         var localStorage = StorageHandler.getStorage(LocalStorage.class);
 
         for (var primary : getRepository().repositoryClass().getPrimaries()) {
-            filter().match(DatabaseHelper.getRowName(primary), Reflections.readField(value, primary)).complete();
+            filter(Filters.match(DatabaseHelper.getRowName(primary), Reflections.readField(value, primary)));
         }
 
         if(!localStorage.exists(this)) {
