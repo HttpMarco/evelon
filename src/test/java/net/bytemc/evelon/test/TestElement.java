@@ -1,8 +1,11 @@
 package net.bytemc.evelon.test;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class TestElement {
 
-    private String address;
-    private int coolness;
+    private final String address;
+    private final int coolness;
 
 }

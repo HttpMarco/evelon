@@ -1,11 +1,8 @@
 package net.bytemc.evelon.test;
 
-import net.bytemc.evelon.repository.Filters;
 import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.sql.DatabaseDebugger;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 public class DefaultTestBootstrap {
 
@@ -17,8 +14,6 @@ public class DefaultTestBootstrap {
 
         var repository = Repository.create(TestRepository.class);
 
-        for (TestRepository testRepository : repository.query().filter(Filters.match("coins", 10)).database().findAll()) {
-            repository.getName();
-        }
+        repository.query().create(new TestRepository("polo", 99, new TestElement("polo", 20)));
     }
 }

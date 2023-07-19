@@ -52,6 +52,15 @@ public record Repository<T>(RepositoryClass<T> repositoryClass) {
     }
 
     /**
+     * @param name the name of the child
+     * @return the name of the child with the name of the repository
+     */
+    public String appendChildrenName(String name) {
+        // static separator for the table name '_'
+        return getName() + "_" + name;
+    }
+
+    /**
      * @return a new instance of {@link RepositoryQuery}
      * Use this method to apply action on any storage
      */

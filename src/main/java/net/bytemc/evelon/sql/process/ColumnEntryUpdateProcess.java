@@ -2,6 +2,7 @@ package net.bytemc.evelon.sql.process;
 
 import net.bytemc.evelon.exception.StageNotFoundException;
 import net.bytemc.evelon.misc.Reflections;
+import net.bytemc.evelon.repository.Filters;
 import net.bytemc.evelon.repository.RepositoryQuery;
 import net.bytemc.evelon.sql.*;
 import java.util.HashMap;
@@ -11,7 +12,7 @@ public final class ColumnEntryUpdateProcess {
     public static <T> void update(RepositoryQuery<T> query, T value) {
 
         for (var primary : query.getRepository().repositoryClass().getPrimaries()) {
-            query.filter().match(DatabaseHelper.getRowName(primary), Reflections.readField(value, primary)).complete();
+            query.filter(Filters.match(DatabaseHelper.getRowName(primary), Reflections.readField(value, primary)));
         }
 
         var sqlQuery = new StringBuilder("UPDATE %s SET %s" + DatabaseHelper.getDatabaseFilterQuery(query.getFilters())).append(";");

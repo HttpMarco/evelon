@@ -7,8 +7,6 @@ import net.bytemc.evelon.sql.substages.VirtualObjectStage;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.List;
 
 public final class TableCreationProcess {
 
@@ -26,13 +24,10 @@ public final class TableCreationProcess {
             return;
         }
 
-        List<String> sortedTableCreationQueryList = virtualObjectStage.onParentTableCollectData(repository.getName(), repository.repositoryClass(), null);
+        var sortedTableCreationQueryList = virtualObjectStage.onParentTableCollectData(repository.getName(), repository.repositoryClass(), null);
 
-        // turn the order of list around
-        Collections.reverse(sortedTableCreationQueryList);
-
-        for (var tableQueries : sortedTableCreationQueryList) {
-            DatabaseConnection.executeUpdate(tableQueries);
+        for(int i = sortedTableCreationQueryList.size() - 1; i >= 0; i--) {
+            DatabaseConnection.executeUpdate(sortedTableCreationQueryList.get(i));
         }
     }
 

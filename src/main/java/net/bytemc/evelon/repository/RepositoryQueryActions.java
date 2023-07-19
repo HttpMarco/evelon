@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 @AllArgsConstructor
 public final class RepositoryQueryActions<T> {
 
-    private final RepositoryQuery query;
+    private final RepositoryQuery<T> query;
     private final RepositoryDepartureOrder order;
 
     private void handleStorage(Consumer<Storage> handler) {

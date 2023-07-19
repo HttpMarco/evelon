@@ -14,6 +14,6 @@ public enum RepositoryDepartureOrder {
     LOCAL(LocalStorage.class),
     DATABASE(DatabaseStorage.class);
 
-    Class<? extends Storage> storage;
+    final Class<? extends Storage> storage;
 
 }

@@ -21,6 +21,8 @@ Features todo:
 - map functions for convert results to a fine object
 - listeners (onCreate, onDelete, onUpdate)
 - time value cache
+- changetracking list
+- changetracking map
 
 Interface support? Superclass support?
 

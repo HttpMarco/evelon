@@ -2,12 +2,9 @@ package net.bytemc.evelon.sql.process;
 
 import net.bytemc.evelon.exception.StageNotFoundException;
 import net.bytemc.evelon.repository.RepositoryQuery;
-import net.bytemc.evelon.sql.DatabaseConnection;
-import net.bytemc.evelon.sql.ElementStage;
-import net.bytemc.evelon.sql.ElementStageTransformer;
-import net.bytemc.evelon.sql.StageHandler;
+import net.bytemc.evelon.sql.*;
 
-import java.util.HashMap;
+import java.util.Collections;
 
 public final class ColumnEntryCreationProcess {
 
@@ -19,22 +16,15 @@ public final class ColumnEntryCreationProcess {
             throw new StageNotFoundException(value.getClass());
         }
 
-        var mapEntryData = new HashMap<String, String>();
+        if (stage instanceof SubElementStage<?> subElementStage) {
+            var queries = subElementStage.onAnonymousParentElement(query.getRepository().getName(), query.getRepository(), query.getRepository().repositoryClass(), value);
+            Collections.reverse(queries);
 
-        // collect all stages that are needed to create the entry
-        if (stage instanceof ElementStage<?> elementStage) {
-            mapEntryData.putAll(elementStage.anonymousElementEntryData(query.getRepository().repositoryClass(), null, value));
-        } else if (stage instanceof ElementStageTransformer transformer) {
-            //transformer class can be used to link to other tables
-            if (transformer.transformTo() instanceof ElementStage<?> elementStage) {
-                mapEntryData.putAll(elementStage.anonymousElementEntryData(query.getRepository().repositoryClass(), null, value));
-            } else {
-                //todo
+            for (var creationQuery : queries) {
+                DatabaseConnection.executeUpdate(creationQuery);
             }
         } else {
-            //todo
+            System.err.println("The stage of the repository class " + value.getClass().getName() + " is not a sub element stage. This is not supported.");
         }
-
-        DatabaseConnection.executeUpdate("INSERT INTO %s(%s) VALUES (%s);".formatted(query.getRepository().getName(), String.join(", ", mapEntryData.keySet()), String.join(", ", mapEntryData.values())));
     }
 }
