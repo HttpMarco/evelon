@@ -15,10 +15,8 @@ public final class ColumnEntryFindProcess {
         if (amount != -1) {
             query.append(" LIMIT ").append(amount);
         }
-        query.append(";");
-
         // add all query filters, but only if there are any
-        query.append(DatabaseHelper.getDatabaseFilterQuery(repositoryQuery.getFilters()));
+        query.append(DatabaseHelper.getDatabaseFilterQuery(repositoryQuery.getFilters())).append(";");
 
         return DatabaseConnection.executeQuery(query.toString(), it -> {
             var results = new ArrayList<T>();
