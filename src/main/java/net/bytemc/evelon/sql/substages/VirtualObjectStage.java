@@ -102,4 +102,12 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
         queries.add(query.formatted(table, String.join(", ", values.keySet()), String.join(", ", values.values())));
         return queries;
     }
+
+    @Override
+    public Object createInstance(RepositoryClass<Object> clazz) {
+        var object = Reflections.allocate(clazz.clazz());
+
+        //todo
+        return object;
+    }
 }

@@ -23,5 +23,7 @@ public interface SubElementStage<T> extends Stage<T> {
         return this.onParentElement(table, parent, (RepositoryClass<T>) clazz, (T) value, keys);
     }
 
+    T createInstance(RepositoryClass<T> clazz);
+
 
 }
