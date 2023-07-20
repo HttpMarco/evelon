@@ -3,8 +3,8 @@ package net.bytemc.evelon.sql.stages;
 import net.bytemc.evelon.misc.Pair;
 import net.bytemc.evelon.repository.RepositoryClass;
 import net.bytemc.evelon.sql.DatabaseHelper;
+import net.bytemc.evelon.sql.DatabaseResultSet;
 import net.bytemc.evelon.sql.ElementStage;
-import net.bytemc.evelon.sql.result.StageResultSet;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
@@ -25,8 +25,8 @@ public final class EnumerationStage implements ElementStage<Enum<?>> {
     }
 
     @Override
-    public Enum<?> createObject(RepositoryClass clazz, @Nullable Field field, StageResultSet result) {
-        return Enum.valueOf((Class<? extends Enum>) field.getType(), result.getData(DatabaseHelper.getRowName(field), String.class));
+    public Enum<?> createObject(RepositoryClass clazz, @Nullable Field field, DatabaseResultSet.Table table) {
+        return Enum.valueOf((Class<? extends Enum>) field.getType(), table.get(DatabaseHelper.getRowName(field), String.class));
     }
 
     @Override

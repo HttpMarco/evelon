@@ -116,8 +116,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             if (stage instanceof SubElementStage<?> subElementStage) {
                 Reflections.writeField(object, row, subElementStage.createInstance(table + "_" + DatabaseHelper.getRowName(row), new RepositoryClass(row.getType()), databaseResultSet));
             } else if (stage instanceof ElementStage<?> elementStage) {
-                //todo: check if this is correct
-                Reflections.writeField(object, row, databaseResultSet.getTable(table).get(DatabaseHelper.getRowName(row)));
+                Reflections.writeField(object, row, elementStage.createObject(new RepositoryClass<>(row.getType()), row, databaseResultSet.getTable(table)));
             }
         }
         return object;

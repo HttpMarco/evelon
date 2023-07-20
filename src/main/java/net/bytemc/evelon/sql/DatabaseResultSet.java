@@ -8,7 +8,7 @@ import java.util.Map;
 
 public final class DatabaseResultSet {
 
-    private Map<String, Table> tables = new HashMap<>();
+    private final Map<String, Table> tables = new HashMap<>();
 
     public Table addTable(String id) {
         var table = new Table(id);
@@ -29,6 +29,10 @@ public final class DatabaseResultSet {
 
         public Object get(String key) {
             return this.properties.get(key);
+        }
+
+        public <T> T get(String key, Class<T> clazz) {
+            return (T) this.properties.get(key);
         }
 
         public void setProperty(String id, Object o) {

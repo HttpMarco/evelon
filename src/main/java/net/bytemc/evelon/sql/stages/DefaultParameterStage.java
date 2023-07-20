@@ -5,9 +5,9 @@ import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.RepositoryClass;
 import net.bytemc.evelon.repository.annotations.PrimaryKey;
 import net.bytemc.evelon.sql.DatabaseHelper;
+import net.bytemc.evelon.sql.DatabaseResultSet;
 import net.bytemc.evelon.sql.DatabaseType;
 import net.bytemc.evelon.sql.ElementStage;
-import net.bytemc.evelon.sql.result.StageResultSet;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
@@ -45,8 +45,8 @@ public final class DefaultParameterStage implements ElementStage<Object> {
     }
 
     @Override
-    public <T> T createObject(RepositoryClass<T> clazz, @Nullable Field field, StageResultSet result) {
-        return (T) result.getData(DatabaseHelper.getRowName(field), field.getType());
+    public <T> T createObject(RepositoryClass<T> clazz, @Nullable Field field, DatabaseResultSet.Table table) {
+        return (T) table.get(DatabaseHelper.getRowName(field), field.getType());
     }
 
     @Override

@@ -2,7 +2,6 @@ package net.bytemc.evelon.sql;
 
 import net.bytemc.evelon.misc.Pair;
 import net.bytemc.evelon.repository.RepositoryClass;
-import net.bytemc.evelon.sql.result.StageResultSet;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
@@ -50,6 +49,6 @@ public interface ElementStage<T> extends Stage<T> {
      * @param <T> the type of the object
      * @return a new object of the type
      */
-    <T> T createObject(RepositoryClass<T> clazz, @Nullable Field field, StageResultSet result);
+    <T> T createObject(RepositoryClass<T> clazz, @Nullable Field field, DatabaseResultSet.Table table);
 
 }
