@@ -16,36 +16,36 @@ public final class DatabaseStorage implements Storage {
 
     @Override
     public <T> void delete(RepositoryQuery<T> query) {
-        ColumnEntryDeletionProcess.delete(query);
+        //todo
     }
 
     @Override
     public <T> List<T> findAll(RepositoryQuery<T> query) {
-        return ColumnEntryFindProcess.find(query, -1);
+        //todo
+        return null;
     }
 
     @Override
     public <T> @Nullable T findFirst(RepositoryQuery<T> query) {
-        var list = ColumnEntryFindProcess.find(query, 1);
-        if(list.isEmpty()) {
-            return null;
-        }
-        return list.get(0);
+        //todo
+        return null;
     }
 
 
     @Override
     public <T> void update(RepositoryQuery<T> query, T value) {
-        ColumnEntryUpdateProcess.update(query, value);
+        //todo
     }
 
     @Override
     public <T> boolean exists(RepositoryQuery<T> query) {
-        return ColumExistsProcess.exists(query);
+        //todo
+        return false;
     }
 
     @Override
     public <T> int count(RepositoryQuery<T> query) {
-        return TableEntryCountProcess.countEntries(query);
+        //todo
+        return -1;
     }
 }

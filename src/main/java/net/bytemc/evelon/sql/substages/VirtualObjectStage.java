@@ -104,9 +104,24 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
     }
 
     @Override
-    public Object createInstance(RepositoryClass<Object> clazz) {
+    public Object createInstance(String table, RepositoryClass<Object> clazz) {
         var object = Reflections.allocate(clazz.clazz());
 
+        for (var row : clazz.getRows()) {
+
+            var stage = StageHandler.getInstance().getElementStage(row.getType());
+
+            if (stage == null) {
+                throw new StageNotFoundException(row.getType());
+            }
+
+            if (stage instanceof SubElementStage<?> subElementStage) {
+                Reflections.writeField(object, row, subElementStage.createInstance(table + "_" + DatabaseHelper.getRowName(row), new RepositoryClass(row.getType())));
+            } else if (stage instanceof ElementStage<?> elementStage) {
+                //todo
+            }
+
+        }
         //todo
         return object;
     }
