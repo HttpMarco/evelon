@@ -1,48 +1,64 @@
 package net.bytemc.evelon.sql.process;
 
-import net.bytemc.evelon.misc.Pair;
+import net.bytemc.evelon.exception.StageNotFoundException;
 import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.repository.RepositoryClass;
 import net.bytemc.evelon.sql.*;
-
-import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class ColumEntryInstanceProcess {
 
-    public static void collect(Repository<?> repository) {
+    public static <T> List<T> collect(Repository<T> repository) {
 
-        List<String> neededTables = getNeededTables(repository.getName(), repository.repositoryClass());
-
-        StringBuilder query = new StringBuilder("SELECT * FROM " + neededTables.remove(0) + " %S;");
-
-
+        var neededTables = getNeededTables(repository.getName(), repository.repositoryClass());
+        var query = new StringBuilder("SELECT * FROM " + neededTables.keySet().stream().findFirst().get() + " %s;");
         var primaryNames = String.join(", ", repository.repositoryClass().getPrimaries().stream().map(DatabaseHelper::getRowName).toList());
-        var innerJoins = String.join(" ", neededTables.stream().map(it -> "INNER JOIN polus_element USING (" + primaryNames + ")").toList());
+        var innerJoins = String.join(" ", neededTables.keySet().stream().skip(1).map(it -> "INNER JOIN polus_element USING (" + primaryNames + ")").toList());
 
-        DatabaseConnection.executeQuery(query.toString().formatted(innerJoins), resultSet -> {
-
+        var databaseResults = DatabaseConnection.executeQuery(query.toString().formatted(innerJoins), resultSet -> {
+            var elements = new ArrayList<DatabaseResultSet>();
             while (resultSet.next()) {
-                System.out.println("polo");
-            }
-            return null;
-        }, null);
+                var result = new DatabaseResultSet();
+                for (var tables : neededTables.keySet()) {
+                    var table = result.addTable(tables);
 
+                    for (String column : neededTables.get(tables)) {
+                        table.setProperty(column, resultSet.getObject(tables + "." + column));
+                    }
+                }
+                elements.add(result);
+            }
+            return elements;
+        }, new ArrayList<DatabaseResultSet>());
+
+        var repositoryType = repository.repositoryClass().clazz();
+        var stage = StageHandler.getInstance().getElementStage(repositoryType);
+
+        if(stage == null) {
+            throw new StageNotFoundException(repositoryType);
+        }
+        return databaseResults.stream().map(it -> ((SubElementStage<T>) stage).createInstance(repository.getName(), repository.repositoryClass(), it)).toList();
     }
 
-    private static List<String> getNeededTables(String children, RepositoryClass<?> clazz) {
-        var tables = new ArrayList<String>();
-        tables.add(children);
 
-        clazz.getRows()
-                .stream()
-                .map(field -> new Pair<Stage<?>, Field>(StageHandler.getInstance().getElementStage(field.getType()), field))
-                .filter(it -> it.left() instanceof SubElementStage<?>).forEach(it -> {
-                    tables.addAll(getNeededTables(children + "_" + DatabaseHelper.getRowName(it.right()),
-                            new RepositoryClass<>(it.right().getType())));
-                });
+    private static Map<String, List<String>> getNeededTables(String children, RepositoryClass<?> clazz) {
+        // table name & there columns
+        var tables = new HashMap<String, List<String>>();
+        var columns = new ArrayList<String>();
 
+        for (var row : clazz.getRows()) {
+            var stage = StageHandler.getInstance().getElementStage(row.getType());
+
+            if (stage instanceof SubElementStage<?>) {
+                tables.putAll(getNeededTables(children + "_" + DatabaseHelper.getRowName(row), new RepositoryClass<>(row.getType())));
+            } else if (stage instanceof ElementStage<?>) {
+                 columns.add(DatabaseHelper.getRowName(row));
+            }
+        }
+        tables.put(children, columns);
         return tables;
     }
 }

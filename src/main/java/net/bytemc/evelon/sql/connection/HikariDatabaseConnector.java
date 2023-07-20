@@ -20,7 +20,7 @@ public final class HikariDatabaseConnector {
 
     private static final DatabaseCradinates databaseCradinates = new DatabaseCradinates(
             "127.0.0.1",
-            "",
+            "test123",
             "root",
             "tnw",
             3306);

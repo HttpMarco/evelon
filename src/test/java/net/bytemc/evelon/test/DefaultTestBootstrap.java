@@ -11,11 +11,13 @@ public class DefaultTestBootstrap {
     public void bootTest() {
 
 
-        DatabaseDebugger.setEnable(true);
+        DatabaseDebugger.setEnable(false);
 
         var repository = Repository.create(TestRepository.class);
 
-        ColumEntryInstanceProcess.collect(repository);
+        for (TestRepository testRepository : ColumEntryInstanceProcess.collect(repository)) {
+            System.out.println(testRepository.getElement().getCoolness());
+        }
 
         //repository.query().create(new TestRepository("polo", 99, new TestElement("polo", 20)));
     }

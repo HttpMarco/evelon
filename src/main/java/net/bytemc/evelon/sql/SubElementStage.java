@@ -28,6 +28,5 @@ public interface SubElementStage<T> extends Stage<T> {
      * @param clazz
      * @return
      */
-    T createInstance(String table, RepositoryClass<T> clazz);
-
+    T createInstance(String table, RepositoryClass<T> clazz, DatabaseResultSet resultSet);
 }
