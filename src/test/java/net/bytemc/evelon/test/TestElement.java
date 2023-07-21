@@ -9,5 +9,6 @@ public class TestElement {
 
     private final String address;
     private final int coolness;
+    private final BanReason reason;
 
 }
