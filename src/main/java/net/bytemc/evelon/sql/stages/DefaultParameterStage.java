@@ -48,7 +48,7 @@ public final class DefaultParameterStage implements ElementStage<Object> {
 
     @Override
     public <T> T createObject(RepositoryClass<T> clazz, String id, DatabaseResultSet.Table table) {
-        return (T) table.get(id, clazz.clazz());
+        return table.get(id, clazz.clazz());
     }
 
     @Override

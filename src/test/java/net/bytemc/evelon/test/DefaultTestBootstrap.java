@@ -12,23 +12,14 @@ public class DefaultTestBootstrap {
     public void bootTest() {
 
 
-        DatabaseDebugger.setEnable(false);
+        DatabaseDebugger.setEnable(true);
 
         var repository = Repository.create(TestRepository.class);
 
-        var names = new ArrayList<String>();
-        names.add("ibimsBuilder");
-        names.add("Golgolex");
-        names.add("SpigotPlugins");
+        var names = new ArrayList<NameEntry>();
+        names.add(new NameEntry("Polo", 921309120000003L));
 
-      //  repository.query().create(new TestRepository("polo", 99, names));
-
-        for (TestRepository testRepository : repository.query().database().findAll()) {
-            for (String username : testRepository.getUsernames()) {
-                System.out.println(username);
-            }
-        }
-
+        repository.query().create(new TestRepository("polo", 99, names));
 
 
     }

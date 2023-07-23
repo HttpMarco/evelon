@@ -17,6 +17,6 @@ public class TestRepository {
     @PrimaryKey
     private String name;
     private int coins;
-    private List<String> usernames;
+    private List<NameEntry> usernames;
 
 }

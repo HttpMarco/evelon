@@ -1,6 +1,7 @@
 package net.bytemc.evelon.sql.substages;
 
 import net.bytemc.evelon.exception.StageNotFoundException;
+import net.bytemc.evelon.exception.StageNotSupportedException;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.repository.RepositoryClass;
@@ -36,15 +37,28 @@ public final class CollectionObjectState implements SubElementStage<Collection<?
                 throw new StageNotFoundException(key.foreignKey().getType());
             }
 
-            if (stage instanceof ElementStage<?> elementStage) {
+
+            if (keyStage instanceof ElementStage<?> elementStage) {
                 columnValues.add(DatabaseHelper.getRowName(key.foreignKey()) + " " + elementStage.anonymousElementRowData(key.foreignKey(), new RepositoryClass<>(key.foreignKey().getType())).right() + " NOT NULL");
             }
         }
 
+        var rowName = DatabaseHelper.getRowName(field);
         if (stage instanceof ElementStage<?> elementStage) {
-            columnValues.add(DatabaseHelper.getRowName(field) + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(clazz)).right());
-        } else if (stage instanceof SubElementStage<?> subElementStage) {
-            //todo: add support for custom stages
+            columnValues.add(rowName + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(clazz)).right());
+        } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
+            var rowClazz = new RepositoryClass<>(clazz);
+
+            for (var row : rowClazz.getRows()) {
+                var rowStage = StageHandler.getInstance().getElementStage(row.getType());
+                if (rowStage instanceof ElementStage<?> elementStage) {
+                    columnValues.add(DatabaseHelper.getRowName(row) + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(row.getType())).right());
+                } else {
+                    throw new StageNotSupportedException(row.getType());
+                }
+            }
+        } else {
+            throw new StageNotSupportedException(clazz);
         }
 
         if (keys.length != 0) {
@@ -65,9 +79,10 @@ public final class CollectionObjectState implements SubElementStage<Collection<?
             throw new StageNotFoundException(listType);
         }
 
+        //todo remove duplicated code
         if (stage instanceof ElementStage<?> elementStage) {
             for (var element : value) {
-                var query = "INSERT INTO %s(%s) VALUES(%s);";
+                var query = "INSERT INTO %s(%s) VALUES (%s);";
                 var columns = new HashMap<String, String>();
 
                 for (var foreignKey : keys) {
@@ -80,8 +95,32 @@ public final class CollectionObjectState implements SubElementStage<Collection<?
                 }
                 queries.add(query.formatted(table, String.join(", ", columns.keySet()), String.join(", ", columns.values())));
             }
+        } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
+
+            for (var element : value) {
+                var query = "INSERT INTO %s(%s) VALUES (%s);";
+                var columns = new HashMap<String, String>();
+
+                for (var foreignKey : keys) {
+                    columns.put(foreignKey.id(), foreignKey.value());
+                }
+
+                var rowClazz = new RepositoryClass<>(listType);
+
+                for (var row : rowClazz.getRows()) {
+                    var rowStage = StageHandler.getInstance().getElementStage(row.getType());
+                    if (rowStage instanceof ElementStage<?> elementStage) {
+                        var object = Reflections.readField(element, row);
+                        columns.put(DatabaseHelper.getRowName(row) + "_value",  elementStage.anonymousElementEntryData(new RepositoryClass<>(row.getType()), row, object).get(DatabaseHelper.getRowName(row)));
+                    } else {
+                        throw new StageNotSupportedException(row.getType());
+                    }
+                }
+                queries.add(query.formatted(table, String.join(", ", columns.keySet()), String.join(", ", columns.values())));
+            }
+
         } else {
-            //todo
+            throw new StageNotSupportedException(listType);
         }
         return queries;
     }
