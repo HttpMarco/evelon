@@ -11,7 +11,6 @@ Todo types:
 - vector
 - date
 - maps
-- collections
 - array (transformer -> list)
 - Files
 
