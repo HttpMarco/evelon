@@ -73,7 +73,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
     }
 
     @Override
-    public List<String> onParentElement(String table, Repository<?> parent, RepositoryClass<Object> clazz, Object value, ForeignKeyObject... keys) {
+    public List<String> onParentElement(String table, Field field, Repository<?> parent, RepositoryClass<Object> clazz, Object value, ForeignKeyObject... keys) {
         var queries = new ArrayList<String>();
 
         var query = "INSERT INTO %s(%s) VALUES(%s);";
@@ -94,7 +94,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             var objectClass = new RepositoryClass<>(row.getType());
 
             if (stage instanceof SubElementStage<?> subElementStage) {
-                queries.addAll(subElementStage.onAnonymousParentElement(parent.appendChildrenName(DatabaseHelper.getRowName(row)), parent, objectClass, object, clazz.collectForeignKeyValues(value)));
+                queries.addAll(subElementStage.onAnonymousParentElement(parent.appendChildrenName(DatabaseHelper.getRowName(row)), row, parent, objectClass, object, clazz.collectForeignKeyValues(value)));
             } else if (stage instanceof ElementStage<?> elementStage) {
                 values.putAll(elementStage.anonymousElementEntryData(objectClass, row, object));
             }
@@ -104,7 +104,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
     }
 
     @Override
-    public Object createInstance(String table, RepositoryClass<Object> clazz, DatabaseResultSet databaseResultSet) {
+    public Object createInstance(String table, Field parentField, RepositoryClass<Object> clazz, DatabaseResultSet databaseResultSet) {
         var object = Reflections.allocate(clazz.clazz());
 
         for (var row : clazz.getRows()) {
@@ -114,9 +114,9 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             }
 
             if (stage instanceof SubElementStage<?> subElementStage) {
-                Reflections.writeField(object, row, subElementStage.createInstance(table + "_" + DatabaseHelper.getRowName(row), new RepositoryClass(row.getType()), databaseResultSet));
+                Reflections.writeField(object, row, subElementStage.createInstance(table + "_" + DatabaseHelper.getRowName(row), row, new RepositoryClass(row.getType()), databaseResultSet));
             } else if (stage instanceof ElementStage<?> elementStage) {
-                Reflections.writeField(object, row, elementStage.createObject(new RepositoryClass<>(row.getType()), row, databaseResultSet.getTable(table)));
+                Reflections.writeField(object, row, elementStage.createObject(new RepositoryClass<>(row.getType()), DatabaseHelper.getRowName(row), databaseResultSet.getTable(table)));
             }
         }
         return object;

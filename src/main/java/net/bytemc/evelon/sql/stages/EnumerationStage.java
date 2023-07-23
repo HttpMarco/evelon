@@ -25,8 +25,8 @@ public final class EnumerationStage implements ElementStage<Enum<?>> {
     }
 
     @Override
-    public Enum<?> createObject(RepositoryClass clazz, @Nullable Field field, DatabaseResultSet.Table table) {
-        return Enum.valueOf((Class<? extends Enum>) field.getType(), table.get(DatabaseHelper.getRowName(field), String.class));
+    public Enum<?> createObject(RepositoryClass clazz, String id, DatabaseResultSet.Table table) {
+        return Enum.valueOf((Class<? extends Enum>) clazz.clazz(), table.get(id, String.class));
     }
 
     @Override

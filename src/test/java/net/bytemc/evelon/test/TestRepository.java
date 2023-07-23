@@ -6,6 +6,8 @@ import lombok.Setter;
 import net.bytemc.evelon.repository.annotations.Entity;
 import net.bytemc.evelon.repository.annotations.PrimaryKey;
 
+import java.util.List;
+
 @Setter
 @Getter
 @AllArgsConstructor
@@ -15,6 +17,6 @@ public class TestRepository {
     @PrimaryKey
     private String name;
     private int coins;
-    private TestElement element;
+    private List<String> usernames;
 
 }

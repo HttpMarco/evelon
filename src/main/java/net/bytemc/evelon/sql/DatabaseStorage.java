@@ -21,8 +21,7 @@ public final class DatabaseStorage implements Storage {
 
     @Override
     public <T> List<T> findAll(RepositoryQuery<T> query) {
-        //todo
-        return null;
+        return ColumEntryInstanceProcess.collect(query);
     }
 
     @Override

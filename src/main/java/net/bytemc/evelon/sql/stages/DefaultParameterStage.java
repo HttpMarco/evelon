@@ -36,17 +36,19 @@ public final class DefaultParameterStage implements ElementStage<Object> {
     }
 
     @Override
-    public @NotNull @Unmodifiable Map<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Object object) {
+    public @NotNull @Unmodifiable Map<@Nullable String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Object object) {
         // mariadb disallow "'" in a boolean value
+        var fieldName = field == null ? "value" : DatabaseHelper.getRowName(field);
+
         if (object instanceof Boolean || object.getClass().equals(boolean.class)) {
-            return Map.of(DatabaseHelper.getRowName(field), object.toString());
+            return Map.of(fieldName, object.toString());
         }
-        return Map.of(DatabaseHelper.getRowName(field), "'" + object + "'");
+        return Map.of(fieldName, "'" + object + "'");
     }
 
     @Override
-    public <T> T createObject(RepositoryClass<T> clazz, @Nullable Field field, DatabaseResultSet.Table table) {
-        return (T) table.get(DatabaseHelper.getRowName(field), field.getType());
+    public <T> T createObject(RepositoryClass<T> clazz, String id, DatabaseResultSet.Table table) {
+        return (T) table.get(id, clazz.clazz());
     }
 
     @Override

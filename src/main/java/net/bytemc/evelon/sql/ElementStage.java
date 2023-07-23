@@ -45,10 +45,9 @@ public interface ElementStage<T> extends Stage<T> {
 
     /**
      * @param clazz is the repository class of the object
-     * @param field is the field of repository property
      * @param <T> the type of the object
      * @return a new object of the type
      */
-    <T> T createObject(RepositoryClass<T> clazz, @Nullable Field field, DatabaseResultSet.Table table);
+    <T> T createObject(RepositoryClass<T> clazz, String id, DatabaseResultSet.Table table);
 
 }

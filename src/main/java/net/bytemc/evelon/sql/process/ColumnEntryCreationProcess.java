@@ -17,7 +17,7 @@ public final class ColumnEntryCreationProcess {
         }
 
         if (stage instanceof SubElementStage<?> subElementStage) {
-            var queries = subElementStage.onAnonymousParentElement(query.getRepository().getName(), query.getRepository(), query.getRepository().repositoryClass(), value);
+            var queries = subElementStage.onAnonymousParentElement(query.getRepository().getName(), null, query.getRepository(), query.getRepository().repositoryClass(), value);
             Collections.reverse(queries);
 
             for (var creationQuery : queries) {
