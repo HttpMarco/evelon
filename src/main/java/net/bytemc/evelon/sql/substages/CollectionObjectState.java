@@ -111,7 +111,7 @@ public final class CollectionObjectState implements SubElementStage<Collection<?
                     var rowStage = StageHandler.getInstance().getElementStage(row.getType());
                     if (rowStage instanceof ElementStage<?> elementStage) {
                         var object = Reflections.readField(element, row);
-                        columns.put(DatabaseHelper.getRowName(row) + "_value",  elementStage.anonymousElementEntryData(new RepositoryClass<>(row.getType()), row, object).get(DatabaseHelper.getRowName(row)));
+                        columns.put(DatabaseHelper.getRowName(row) + "_value", elementStage.anonymousElementEntryData(new RepositoryClass<>(row.getType()), row, object).get(DatabaseHelper.getRowName(row)));
                     } else {
                         throw new StageNotSupportedException(row.getType());
                     }
@@ -140,14 +140,29 @@ public final class CollectionObjectState implements SubElementStage<Collection<?
 
             while (result.next()) {
                 var databaseResultSet = new DatabaseResultSet();
+                var repositoryClass = new RepositoryClass<>(listType);
                 var table = databaseResultSet.addTable("default");
 
-                var columnName = DatabaseHelper.getRowName(parentField) + "_value";
-                table.setProperty(columnName, result.getObject(columnName));
                 if (stage instanceof ElementStage<?> elementStage) {
-                    list.add(elementStage.createObject(new RepositoryClass<>(listType), columnName, table));
+                    var rowName = DatabaseHelper.getRowName(parentField) + "_value";
+                    table.setProperty(rowName, result.getObject(rowName));
+                    list.add(elementStage.createObject(repositoryClass, rowName, table));
+                } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
+                    var object = Reflections.allocate(listType);
+
+                    for (var row : repositoryClass.getRows()) {
+                        var rowStage = StageHandler.getInstance().getElementStage(row.getType());
+                        if (rowStage instanceof ElementStage<?> elementStage) {
+                            var rowName = DatabaseHelper.getRowName(row) + "_value";
+                            table.setProperty(DatabaseHelper.getRowName(row), result.getObject(rowName));
+                            Reflections.writeField(object, row, elementStage.createObject(new RepositoryClass<>(row.getType()), DatabaseHelper.getRowName(row), table));
+                        } else {
+                            throw new StageNotSupportedException(row.getType());
+                        }
+                    }
+                    list.add(object);
                 } else {
-                    //todo
+                    throw new StageNotSupportedException(listType);
                 }
             }
             return list;

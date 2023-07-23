@@ -28,7 +28,6 @@ public final class ColumEntryInstanceProcess {
                 var result = new DatabaseResultSet();
                 for (var tables : neededTables.keySet()) {
                     var table = result.addTable(tables);
-
                     for (String column : neededTables.get(tables)) {
                         table.setProperty(column, resultSet.getObject(tables + "." + column));
                     }
