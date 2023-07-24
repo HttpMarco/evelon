@@ -14,8 +14,8 @@ import java.nio.file.Path;
 public final class PathStage implements ElementStage<Path> {
 
     @Override
-    public Pair<Field, String> elementRowData(@Nullable Field field, RepositoryClass<Path> repository) {
-        return new Pair<>(field, DatabaseType.TEXT.type());
+    public String elementRowData(@Nullable Field field, RepositoryClass<Path> repository) {
+        return DatabaseType.TEXT.type();
     }
 
     @Override

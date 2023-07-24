@@ -14,8 +14,8 @@ import java.util.UUID;
 public final class UuidStage implements ElementStage<UUID> {
 
     @Override
-    public Pair<Field, String> elementRowData(@Nullable Field field, RepositoryClass<UUID> repository) {
-        return new Pair<>(field, DatabaseType.UUID.type());
+    public String elementRowData(@Nullable Field field, RepositoryClass<UUID> repository) {
+        return DatabaseType.UUID.type();
     }
 
     @Override

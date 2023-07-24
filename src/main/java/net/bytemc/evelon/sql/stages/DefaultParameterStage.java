@@ -16,7 +16,7 @@ import java.lang.reflect.Field;
 public final class DefaultParameterStage implements ElementStage<Object> {
 
     @Override
-    public @Unmodifiable Pair<Field, String> elementRowData(@Nullable Field field, @NotNull RepositoryClass<Object> clazz) {
+    public @Unmodifiable String elementRowData(@Nullable Field field, @NotNull RepositoryClass<Object> clazz) {
         var type = DatabaseType.getType(clazz.clazz(), DatabaseType.TEXT, DatabaseType.INT, DatabaseType.BIGINT, DatabaseType.BOOL, DatabaseType.TINYINT, DatabaseType.DOUBLE, DatabaseType.FLOAT);
 
         // type can be only null if a parameter is not allowed in sql.
@@ -27,10 +27,9 @@ public final class DefaultParameterStage implements ElementStage<Object> {
 
         if (type == DatabaseType.TEXT && field != null && field.isAnnotationPresent(PrimaryKey.class)) {
             // mariaDb need a specific length for the primary key. The Default value is 255.
-            return new Pair<>(field, "VARCHAR(255)");
+            return DatabaseType.VARBINARY.type().formatted("255");
         }
-
-        return new Pair<>(field, type.type());
+        return type.type();
     }
 
     @Override

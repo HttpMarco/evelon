@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.bytemc.evelon.repository.annotations.Entity;
 import net.bytemc.evelon.repository.annotations.PrimaryKey;
-
-import java.nio.file.Path;
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Setter
@@ -19,7 +17,6 @@ public class TestRepository {
     @PrimaryKey
     private String name;
     private UUID uniqueId;
-
-    private Path path;
+    private Map<String, Long> connectedStates;
 
 }

@@ -6,16 +6,13 @@ Last update: 14.07.2023
 - sum
 - clear
 - sorted
-
-Todo types:
 - vector
-- date
 - maps
-- array (transformer -> list)
 - Files
 
-Features todo:
+- array (transformer -> list)
 
+Features todo:
 - better database connection configuration
 - map functions for convert results to a fine object
 - listeners (onCreate, onDelete, onUpdate)

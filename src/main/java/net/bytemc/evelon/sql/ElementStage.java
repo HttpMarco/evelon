@@ -14,15 +14,14 @@ public interface ElementStage<T> extends Stage<T> {
      * @param repository the class which need rows in a database, can be a repository or a sub entity
      * @return a map with all columns and there sql type
      */
-    // todo: maybe field is not use in the future
-    Pair<Field, String> elementRowData(@Nullable Field field, RepositoryClass<T> repository);
+    String elementRowData(@Nullable Field field, RepositoryClass<T> repository);
 
     /**
      * @param field is the field of repository property
      * @param repository an anonymous class which not know the type
      * @return a map with all columns and there sql type
      */
-    default Pair<Field, String> anonymousElementRowData(@Nullable Field field, RepositoryClass<?> repository){
+    default String anonymousElementRowData(@Nullable Field field, RepositoryClass<?> repository){
         return elementRowData(field, (RepositoryClass<T>) repository);
     }
 

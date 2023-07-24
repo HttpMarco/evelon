@@ -2,7 +2,8 @@ package net.bytemc.evelon.sql;
 
 import lombok.Getter;
 import net.bytemc.evelon.sql.stages.*;
-import net.bytemc.evelon.sql.substages.CollectionObjectState;
+import net.bytemc.evelon.sql.substages.CollectionObjectStage;
+import net.bytemc.evelon.sql.substages.MapObjectStage;
 import net.bytemc.evelon.sql.substages.VirtualObjectStage;
 import net.bytemc.evelon.sql.transformers.RecordTransformer;
 
@@ -30,8 +31,11 @@ public final class StageHandler {
         this.stages.add(new UuidStage());
         this.stages.add(new DateStage());
 
+        // this for: hashmaps, treemap, concurentHashMap...
+        this.stages.add(new MapObjectStage());
+
         // this is for: lists, collections, sets...
-        this.stages.add(new CollectionObjectState());
+        this.stages.add(new CollectionObjectStage());
 
         // transform record to object -> deny duplicated code
         this.stages.add(new RecordTransformer());

@@ -3,10 +3,7 @@ package net.bytemc.evelon.test;
 import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.sql.DatabaseDebugger;
 import org.junit.jupiter.api.Test;
-
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class DefaultTestBootstrap {
@@ -19,8 +16,11 @@ public class DefaultTestBootstrap {
 
         var repository = Repository.create(TestRepository.class);
 
-        repository.query().create(new TestRepository("polo", UUID.randomUUID(), Path.of("home/coins/maps")));
+        var map = new HashMap<String, Long>();
 
+        map.put("lobby-1", System.currentTimeMillis());
+        map.put("lobby-2", System.currentTimeMillis());
 
+        repository.query().create(new TestRepository("polo", UUID.randomUUID(), map));
     }
 }

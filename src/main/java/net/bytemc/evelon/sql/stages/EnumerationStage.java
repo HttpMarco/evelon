@@ -15,9 +15,9 @@ import java.util.Map;
 public final class EnumerationStage implements ElementStage<Enum<?>> {
 
     @Override
-    public Pair<Field, String> elementRowData(@Nullable Field field, RepositoryClass<Enum<?>> repository) {
+    public String elementRowData(@Nullable Field field, RepositoryClass<Enum<?>> repository) {
         var type = (Class<Enum<?>>) field.getType();
-        return new Pair<>(field, DatabaseType.ENUM.type().formatted(String.join(",", Arrays.stream(type.getEnumConstants()).map(it -> "'" + it.name() + "'").toList())));
+        return DatabaseType.ENUM.type().formatted(String.join(",", Arrays.stream(type.getEnumConstants()).map(it -> "'" + it.name() + "'").toList()));
     }
 
     @Override

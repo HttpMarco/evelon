@@ -14,8 +14,8 @@ import java.util.Date;
 public final class DateStage implements ElementStage<Date> {
 
     @Override
-    public Pair<Field, String> elementRowData(@Nullable Field field, RepositoryClass<Date> repository) {
-        return new Pair<>(field, DatabaseType.DATE.type());
+    public String elementRowData(@Nullable Field field, RepositoryClass<Date> repository) {
+        return DatabaseType.DATE.type();
     }
 
     @Override

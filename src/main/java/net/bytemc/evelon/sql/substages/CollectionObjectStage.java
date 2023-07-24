@@ -10,7 +10,7 @@ import net.bytemc.evelon.sql.*;
 import java.lang.reflect.Field;
 import java.util.*;
 
-public final class CollectionObjectState implements SubElementStage<Collection<?>> {
+public final class CollectionObjectStage implements SubElementStage<Collection<?>> {
 
     @Override
     public boolean isElement(Class<?> type) {
@@ -38,20 +38,20 @@ public final class CollectionObjectState implements SubElementStage<Collection<?
             }
 
             if (keyStage instanceof ElementStage<?> elementStage) {
-                columnValues.add(DatabaseHelper.getRowName(key.foreignKey()) + " " + elementStage.anonymousElementRowData(key.foreignKey(), new RepositoryClass<>(key.foreignKey().getType())).right() + " NOT NULL");
+                columnValues.add(DatabaseHelper.getRowName(key.foreignKey()) + " " + elementStage.anonymousElementRowData(key.foreignKey(), new RepositoryClass<>(key.foreignKey().getType())) + " NOT NULL");
             }
         }
 
         var rowName = DatabaseHelper.getRowName(field);
         if (stage instanceof ElementStage<?> elementStage) {
-            columnValues.add(rowName + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(clazz)).right());
+            columnValues.add(rowName + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(clazz)));
         } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
             var rowClazz = new RepositoryClass<>(clazz);
 
             for (var row : rowClazz.getRows()) {
                 var rowStage = StageHandler.getInstance().getElementStage(row.getType());
                 if (rowStage instanceof ElementStage<?> elementStage) {
-                    columnValues.add(DatabaseHelper.getRowName(row) + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(row.getType())).right());
+                    columnValues.add(DatabaseHelper.getRowName(row) + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(row.getType())));
                 } else {
                     throw new StageNotSupportedException(row.getType());
                 }

@@ -1,11 +1,10 @@
 package net.bytemc.evelon.sql.process;
 
 import net.bytemc.evelon.exception.StageNotFoundException;
-import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.repository.RepositoryClass;
 import net.bytemc.evelon.repository.RepositoryQuery;
 import net.bytemc.evelon.sql.*;
-import net.bytemc.evelon.sql.substages.CollectionObjectState;
+import net.bytemc.evelon.sql.substages.CollectionObjectStage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +54,7 @@ public final class ColumEntryInstanceProcess {
         for (var row : clazz.getRows()) {
             var stage = StageHandler.getInstance().getElementStage(row.getType());
 
-            if(stage instanceof CollectionObjectState) {
+            if(stage instanceof CollectionObjectStage) {
                 continue;
             }
 
