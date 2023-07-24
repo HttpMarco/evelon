@@ -1,10 +1,7 @@
 package net.bytemc.evelon.sql;
 
 import lombok.Getter;
-import net.bytemc.evelon.sql.stages.DateStage;
-import net.bytemc.evelon.sql.stages.DefaultParameterStage;
-import net.bytemc.evelon.sql.stages.EnumerationStage;
-import net.bytemc.evelon.sql.stages.UuidStage;
+import net.bytemc.evelon.sql.stages.*;
 import net.bytemc.evelon.sql.substages.CollectionObjectState;
 import net.bytemc.evelon.sql.substages.VirtualObjectStage;
 import net.bytemc.evelon.sql.transformers.RecordTransformer;
@@ -29,6 +26,7 @@ public final class StageHandler {
         // only for enumeration types -> mariadb extra type
         this.stages.add(new EnumerationStage());
 
+        this.stages.add(new PathStage());
         this.stages.add(new UuidStage());
         this.stages.add(new DateStage());
 
