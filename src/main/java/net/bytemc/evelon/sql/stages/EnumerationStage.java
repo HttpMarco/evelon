@@ -20,8 +20,8 @@ public final class EnumerationStage implements ElementStage<Enum<?>> {
     }
 
     @Override
-    public Map<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Enum<?> object) {
-        return Map.of(DatabaseHelper.getRowName(field), "'" + object.name() + "'");
+    public Pair<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Enum<?> object) {
+        return new Pair<>(DatabaseHelper.getRowName(field), "'" + object.name() + "'");
     }
 
     @Override

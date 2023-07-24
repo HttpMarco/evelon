@@ -96,7 +96,8 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             if (stage instanceof SubElementStage<?> subElementStage) {
                 queries.addAll(subElementStage.onAnonymousParentElement(parent.appendChildrenName(DatabaseHelper.getRowName(row)), row, parent, objectClass, object, clazz.collectForeignKeyValues(value)));
             } else if (stage instanceof ElementStage<?> elementStage) {
-                values.putAll(elementStage.anonymousElementEntryData(objectClass, row, object));
+                var result =  elementStage.anonymousElementEntryData(objectClass, row, object);
+                values.put(result.left(), result.right());
             }
         }
         queries.add(query.formatted(table, String.join(", ", values.keySet()), String.join(", ", values.values())));
@@ -116,7 +117,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             if (stage instanceof SubElementStage<?> subElementStage) {
                 Reflections.writeField(object, row, subElementStage.createInstance(table + "_" + DatabaseHelper.getRowName(row), row, new RepositoryClass(row.getType()), databaseResultSet));
             } else if (stage instanceof ElementStage<?> elementStage) {
-                Reflections.writeField(object, row, elementStage.createObject(new RepositoryClass<>(row.getType()), DatabaseHelper.getRowName(row), databaseResultSet.getTable(table)));
+                Reflections.writeField(object, row, elementStage.anonymousCreateObject(new RepositoryClass<>(row.getType()), DatabaseHelper.getRowName(row), databaseResultSet.getTable(table)));
             }
         }
         return object;

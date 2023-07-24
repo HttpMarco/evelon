@@ -31,7 +31,7 @@ public interface ElementStage<T> extends Stage<T> {
      * @param object the class which type is the stage element type
      * @return a map with the name of database row and the value of the property
      */
-    Map<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, T object);
+    Pair<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, T object);
 
     /**
      * @param repositoryClass is the repository class of the object
@@ -39,7 +39,8 @@ public interface ElementStage<T> extends Stage<T> {
      * @param object the class which type is the stage element type
      * @return a map with the name of database row and the value of the property
      */
-    default Map<String, String> anonymousElementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Object object) {
+    // left name, right value
+    default Pair<String, String> anonymousElementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Object object) {
         return elementEntryData(repositoryClass, field, (T) object);
     }
 
@@ -48,6 +49,11 @@ public interface ElementStage<T> extends Stage<T> {
      * @param <T> the type of the object
      * @return a new object of the type
      */
-    <T> T createObject(RepositoryClass<T> clazz, String id, DatabaseResultSet.Table table);
+    T createObject(RepositoryClass<T> clazz, String id, DatabaseResultSet.Table table);
+
+    default T anonymousCreateObject(RepositoryClass<?> clazz, String id, DatabaseResultSet.Table table) {
+        return createObject((RepositoryClass<T>) clazz, id, table);
+    }
+
 
 }

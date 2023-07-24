@@ -11,9 +11,7 @@ import net.bytemc.evelon.sql.ElementStage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
-
 import java.lang.reflect.Field;
-import java.util.Map;
 
 public final class DefaultParameterStage implements ElementStage<Object> {
 
@@ -36,18 +34,18 @@ public final class DefaultParameterStage implements ElementStage<Object> {
     }
 
     @Override
-    public @NotNull @Unmodifiable Map<@Nullable String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Object object) {
+    public @NotNull @Unmodifiable Pair<@Nullable String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Object object) {
         // mariadb disallow "'" in a boolean value
         var fieldName = field == null ? "value" : DatabaseHelper.getRowName(field);
 
         if (object instanceof Boolean || object.getClass().equals(boolean.class)) {
-            return Map.of(fieldName, object.toString());
+            return new Pair<>(fieldName, object.toString());
         }
-        return Map.of(fieldName, "'" + object + "'");
+        return new Pair<>(fieldName, "'" + object + "'");
     }
 
     @Override
-    public <T> T createObject(RepositoryClass<T> clazz, String id, DatabaseResultSet.Table table) {
+    public Object createObject(RepositoryClass<Object> clazz, String id, DatabaseResultSet.Table table) {
         return table.get(id, clazz.clazz());
     }
 

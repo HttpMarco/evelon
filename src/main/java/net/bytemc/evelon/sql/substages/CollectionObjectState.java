@@ -37,7 +37,6 @@ public final class CollectionObjectState implements SubElementStage<Collection<?
                 throw new StageNotFoundException(key.foreignKey().getType());
             }
 
-
             if (keyStage instanceof ElementStage<?> elementStage) {
                 columnValues.add(DatabaseHelper.getRowName(key.foreignKey()) + " " + elementStage.anonymousElementRowData(key.foreignKey(), new RepositoryClass<>(key.foreignKey().getType())).right() + " NOT NULL");
             }
@@ -81,7 +80,7 @@ public final class CollectionObjectState implements SubElementStage<Collection<?
 
         //todo remove duplicated code
         if (stage instanceof ElementStage<?> elementStage) {
-            for (var element : value) {
+            for (var item : value) {
                 var query = "INSERT INTO %s(%s) VALUES (%s);";
                 var columns = new HashMap<String, String>();
 
@@ -89,10 +88,9 @@ public final class CollectionObjectState implements SubElementStage<Collection<?
                     columns.put(foreignKey.id(), foreignKey.value());
                 }
 
-                var elements = elementStage.anonymousElementEntryData(new RepositoryClass<>(listType), null, element);
-                for (var name : elements.keySet()) {
-                    columns.put(DatabaseHelper.getRowName(field) + "_" + name, elements.get(name));
-                }
+                var element = elementStage.anonymousElementEntryData(new RepositoryClass<>(listType), null, item);
+
+                columns.put(DatabaseHelper.getRowName(field) + "_" + element.left(), element.right());
                 queries.add(query.formatted(table, String.join(", ", columns.keySet()), String.join(", ", columns.values())));
             }
         } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
@@ -111,7 +109,7 @@ public final class CollectionObjectState implements SubElementStage<Collection<?
                     var rowStage = StageHandler.getInstance().getElementStage(row.getType());
                     if (rowStage instanceof ElementStage<?> elementStage) {
                         var object = Reflections.readField(element, row);
-                        columns.put(DatabaseHelper.getRowName(row) + "_value", elementStage.anonymousElementEntryData(new RepositoryClass<>(row.getType()), row, object).get(DatabaseHelper.getRowName(row)));
+                        columns.put(DatabaseHelper.getRowName(row) + "_value", elementStage.anonymousElementEntryData(new RepositoryClass<>(row.getType()), row, object).right());
                     } else {
                         throw new StageNotSupportedException(row.getType());
                     }
@@ -146,7 +144,7 @@ public final class CollectionObjectState implements SubElementStage<Collection<?
                 if (stage instanceof ElementStage<?> elementStage) {
                     var rowName = DatabaseHelper.getRowName(parentField) + "_value";
                     table.setProperty(rowName, result.getObject(rowName));
-                    list.add(elementStage.createObject(repositoryClass, rowName, table));
+                    list.add(elementStage.anonymousCreateObject(repositoryClass, rowName, table));
                 } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
                     var object = Reflections.allocate(listType);
 
@@ -155,7 +153,7 @@ public final class CollectionObjectState implements SubElementStage<Collection<?
                         if (rowStage instanceof ElementStage<?> elementStage) {
                             var rowName = DatabaseHelper.getRowName(row) + "_value";
                             table.setProperty(DatabaseHelper.getRowName(row), result.getObject(rowName));
-                            Reflections.writeField(object, row, elementStage.createObject(new RepositoryClass<>(row.getType()), DatabaseHelper.getRowName(row), table));
+                            Reflections.writeField(object, row, elementStage.anonymousCreateObject(new RepositoryClass<>(row.getType()), DatabaseHelper.getRowName(row), table));
                         } else {
                             throw new StageNotSupportedException(row.getType());
                         }
