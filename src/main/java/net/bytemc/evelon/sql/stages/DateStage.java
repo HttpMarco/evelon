@@ -4,6 +4,7 @@ import net.bytemc.evelon.misc.Pair;
 import net.bytemc.evelon.repository.RepositoryClass;
 import net.bytemc.evelon.sql.DatabaseHelper;
 import net.bytemc.evelon.sql.DatabaseResultSet;
+import net.bytemc.evelon.sql.DatabaseType;
 import net.bytemc.evelon.sql.ElementStage;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,7 +15,7 @@ public final class DateStage implements ElementStage<Date> {
 
     @Override
     public Pair<Field, String> elementRowData(@Nullable Field field, RepositoryClass<Date> repository) {
-        return new Pair<>(field, "DATE");
+        return new Pair<>(field, DatabaseType.DATE.type());
     }
 
     @Override

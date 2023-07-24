@@ -4,6 +4,7 @@ import net.bytemc.evelon.misc.Pair;
 import net.bytemc.evelon.repository.RepositoryClass;
 import net.bytemc.evelon.sql.DatabaseHelper;
 import net.bytemc.evelon.sql.DatabaseResultSet;
+import net.bytemc.evelon.sql.DatabaseType;
 import net.bytemc.evelon.sql.ElementStage;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,7 +17,7 @@ public final class EnumerationStage implements ElementStage<Enum<?>> {
     @Override
     public Pair<Field, String> elementRowData(@Nullable Field field, RepositoryClass<Enum<?>> repository) {
         var type = (Class<Enum<?>>) field.getType();
-        return new Pair<>(field, "ENUM(%s)".formatted(String.join(",", Arrays.stream(type.getEnumConstants()).map(it -> "'" + it.name() + "'").toList())));
+        return new Pair<>(field, DatabaseType.ENUM.type().formatted(String.join(",", Arrays.stream(type.getEnumConstants()).map(it -> "'" + it.name() + "'").toList())));
     }
 
     @Override

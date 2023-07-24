@@ -5,8 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.bytemc.evelon.repository.annotations.Entity;
 import net.bytemc.evelon.repository.annotations.PrimaryKey;
-
-import java.util.Date;
+import java.util.UUID;
 
 @Setter
 @Getter
@@ -16,6 +15,6 @@ public class TestRepository {
 
     @PrimaryKey
     private String name;
-    private Date date;
+    private UUID uniqueId;
 
 }
