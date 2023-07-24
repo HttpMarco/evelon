@@ -1,6 +1,7 @@
 package net.bytemc.evelon.sql;
 
 import lombok.Getter;
+import net.bytemc.evelon.sql.stages.DateStage;
 import net.bytemc.evelon.sql.stages.DefaultParameterStage;
 import net.bytemc.evelon.sql.stages.EnumerationStage;
 import net.bytemc.evelon.sql.substages.CollectionObjectState;
@@ -26,6 +27,8 @@ public final class StageHandler {
 
         // only for enumeration types -> mariadb extra type
         this.stages.add(new EnumerationStage());
+
+        this.stages.add(new DateStage());
 
         // this is for: lists, collections, sets...
         this.stages.add(new CollectionObjectState());
