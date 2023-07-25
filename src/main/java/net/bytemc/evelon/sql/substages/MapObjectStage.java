@@ -49,10 +49,8 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
             //todo
             throw new StageNotSupportedException(valueType);
         }
-
-        if (keys.length != 0) {
-            rowValues.addAll(Arrays.stream(keys).map(it -> "FOREIGN KEY (" + it.parentField() + ") REFERENCES " + it.parentTable() + "(" + it.parentField() + ") ON DELETE CASCADE").toList());
-        }
+        // add database schema link
+        DatabaseForeignKeyHelper.convertToDatabaseForeignLink(rowValues, keys);
         queries.add(query.toString().formatted(table, String.join(", ", rowValues)));
     }
 

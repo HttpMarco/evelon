@@ -2,7 +2,6 @@ package net.bytemc.evelon.sql;
 
 import net.bytemc.evelon.exception.StageNotFoundException;
 import net.bytemc.evelon.repository.RepositoryClass;
-
 import java.util.List;
 
 public final class DatabaseForeignKeyHelper {
@@ -16,6 +15,12 @@ public final class DatabaseForeignKeyHelper {
             if (keyStage instanceof ElementStage<?> elementStage) {
                 elements.add(DatabaseHelper.getRowName(key.foreignKey()) + " " + elementStage.anonymousElementRowData(key.foreignKey(), new RepositoryClass<>(key.foreignKey().getType())) + " NOT NULL");
             }
+        }
+    }
+
+    public static void convertToDatabaseForeignLink(List<String> elements, ForeignKey... keys) {
+        for (var key : keys) {
+            elements.add("FOREIGN KEY (" + key.parentField() + ") REFERENCES " + key.parentTable() + "(" + key.parentField() + ") ON DELETE CASCADE");
         }
     }
 }

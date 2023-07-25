@@ -47,9 +47,8 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
         } else {
             throw new StageNotSupportedException(clazz);
         }
-        if (keys.length != 0) {
-            rowValues.addAll(Arrays.stream(keys).map(it -> "FOREIGN KEY (" + it.parentField() + ") REFERENCES " + it.parentTable() + "(" + it.parentField() + ") ON DELETE CASCADE").toList());
-        }
+        // add database schema link
+        DatabaseForeignKeyHelper.convertToDatabaseForeignLink(rowValues, keys);
         queries.add(query.toString().formatted(table, String.join(", ", rowValues)));
     }
 

@@ -27,11 +27,8 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
         var query = "CREATE TABLE IF NOT EXISTS %s(%s);";
         // the collected object statements;
         var rowValues = new ArrayList<String>();
-
         // collect all needed foreign keys
         DatabaseForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
-
-
         for (var row : current.getRows()) {
             var stage = StageHandler.getInstance().getElementStage(row.getType());
 
@@ -46,13 +43,9 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             }
 
         }
-
-        var queryInternal = new StringBuilder(String.join(", ", rowValues));
-        if (keys.length > 0) {
-            var foreignKeyQuery = Arrays.stream(keys).map(it -> "FOREIGN KEY (" + it.parentField() + ") REFERENCES " + it.parentTable() + "(" + it.parentField() + ") ON DELETE CASCADE").toList();
-            queryInternal.append(", ").append(String.join(", ", foreignKeyQuery));
-        }
-        queries.add(query.formatted(table, queryInternal));
+        // add database schema link
+        DatabaseForeignKeyHelper.convertToDatabaseForeignLink(rowValues, keys);
+        queries.add(query.formatted(table, new StringBuilder(String.join(", ", rowValues))));
     }
 
     @Override
