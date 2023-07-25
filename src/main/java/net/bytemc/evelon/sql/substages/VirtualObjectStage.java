@@ -26,22 +26,11 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
     public void onParentTableCollectData(List<String> queries, String table, RepositoryClass<?> current, @Nullable Field field, ForeignKey... keys) {
         var query = "CREATE TABLE IF NOT EXISTS %s(%s);";
         // the collected object statements;
-        var queryValues = new ArrayList<String>();
+        var rowValues = new ArrayList<String>();
 
-        for (var foreignKey : keys) {
-            var stage = StageHandler.getInstance().getElementStage(foreignKey.foreignKey().getType());
+        // collect all needed foreign keys
+        DatabaseForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
 
-            if (stage == null) {
-                throw new StageNotFoundException(foreignKey.foreignKey().getType());
-            }
-
-            if (stage instanceof ElementStage<?> elementStage) {
-                queryValues.add(foreignKey.parentField() + " " + elementStage.anonymousElementRowData(foreignKey.foreignKey(), new RepositoryClass<>(foreignKey.foreignKey().getType())) + " NOT NULL");
-            } else {
-                // primaries can only be elements
-                return;
-            }
-        }
 
         for (var row : current.getRows()) {
             var stage = StageHandler.getInstance().getElementStage(row.getType());
@@ -51,16 +40,14 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
                 var elementClass = new RepositoryClass<>(row.getType());
                 // collect all current rows
                 var result = elementStage.anonymousElementRowData(row, elementClass);
-
-                queryValues.add(TableCreationProcess.appendPrimaryKey(row, DatabaseHelper.getRowName(row) + " " + result));
+                rowValues.add(TableCreationProcess.appendPrimaryKey(row, DatabaseHelper.getRowName(row) + " " + result));
             } else if (stage instanceof SubElementStage<?> subElementStage) {
                 subElementStage.onParentTableCollectData(queries, table + "_" + DatabaseHelper.getRowName(row), new RepositoryClass<>(row.getType()), row, current.getPrimaries().stream().map(it -> new ForeignKey(table, it)).toArray(ForeignKey[]::new));
             }
 
         }
 
-        var queryInternal = new StringBuilder(String.join(", ", queryValues));
-
+        var queryInternal = new StringBuilder(String.join(", ", rowValues));
         if (keys.length > 0) {
             var foreignKeyQuery = Arrays.stream(keys).map(it -> "FOREIGN KEY (" + it.parentField() + ") REFERENCES " + it.parentTable() + "(" + it.parentField() + ") ON DELETE CASCADE").toList();
             queryInternal.append(", ").append(String.join(", ", foreignKeyQuery));

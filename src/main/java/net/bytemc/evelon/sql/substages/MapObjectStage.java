@@ -31,39 +31,29 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
         }
 
         var query = new StringBuilder("CREATE TABLE IF NOT EXISTS %s(%s)");
-        var elements = new ArrayList<String>();
+        var rowValues = new ArrayList<String>();
 
-        for (ForeignKey key : keys) {
-
-            var foreignKeyStage = StageHandler.getInstance().getElementStage(key.foreignKey().getType());
-
-            if (foreignKeyStage == null) {
-                throw new StageNotFoundException(key.foreignKey().getType());
-            }
-
-            if (foreignKeyStage instanceof ElementStage<?> elementStage) {
-                elements.add(DatabaseHelper.getRowName(key.foreignKey()) + " " + elementStage.anonymousElementRowData(key.foreignKey(), new RepositoryClass<>(key.foreignKey().getType())) + " NOT NULL");
-            }
-        }
+        // collect all needed foreign keys
+        DatabaseForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
 
         // add map key value -> unique -> primary key
         var keyDatabaseType = keyElementStage.anonymousElementRowData(field, new RepositoryClass<>(keyType));
         if (keyDatabaseType.equals(DatabaseType.TEXT.type())) {
             keyDatabaseType = DatabaseType.VARCHAR.type().formatted("255");
         }
-        elements.add(DatabaseHelper.getRowName(field) + "_key " + keyDatabaseType + " PRIMARY KEY");
+        rowValues.add(DatabaseHelper.getRowName(field) + "_key " + keyDatabaseType + " PRIMARY KEY");
 
         if (valueStage instanceof ElementStage<?> elementStage) {
-            elements.add(DatabaseHelper.getRowName(field) + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(keyType)));
+            rowValues.add(DatabaseHelper.getRowName(field) + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(keyType)));
         } else {
             //todo
             throw new StageNotSupportedException(valueType);
         }
 
         if (keys.length != 0) {
-            elements.addAll(Arrays.stream(keys).map(it -> "FOREIGN KEY (" + it.parentField() + ") REFERENCES " + it.parentTable() + "(" + it.parentField() + ") ON DELETE CASCADE").toList());
+            rowValues.addAll(Arrays.stream(keys).map(it -> "FOREIGN KEY (" + it.parentField() + ") REFERENCES " + it.parentTable() + "(" + it.parentField() + ") ON DELETE CASCADE").toList());
         }
-        queries.add(query.toString().formatted(table, String.join(", ", elements)));
+        queries.add(query.toString().formatted(table, String.join(", ", rowValues)));
     }
 
     @Override

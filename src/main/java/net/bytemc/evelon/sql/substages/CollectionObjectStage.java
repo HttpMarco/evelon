@@ -25,32 +25,21 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
             throw new StageNotFoundException(clazz);
         }
         var query = new StringBuilder("CREATE TABLE IF NOT EXISTS %s(%s)");
-        var columnValues = new ArrayList<String>();
+        var rowValues = new ArrayList<String>();
 
-        // todo merge with @see VirtualObjectStage
-        for (ForeignKey key : keys) {
-
-            var keyStage = StageHandler.getInstance().getElementStage(key.foreignKey().getType());
-
-            if (keyStage == null) {
-                throw new StageNotFoundException(key.foreignKey().getType());
-            }
-
-            if (keyStage instanceof ElementStage<?> elementStage) {
-                columnValues.add(DatabaseHelper.getRowName(key.foreignKey()) + " " + elementStage.anonymousElementRowData(key.foreignKey(), new RepositoryClass<>(key.foreignKey().getType())) + " NOT NULL");
-            }
-        }
+        // collect all needed foreign keys
+        DatabaseForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
 
         var rowName = DatabaseHelper.getRowName(field);
         if (stage instanceof ElementStage<?> elementStage) {
-            columnValues.add(rowName + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(clazz)));
+            rowValues.add(rowName + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(clazz)));
         } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
             var rowClazz = new RepositoryClass<>(clazz);
 
             for (var row : rowClazz.getRows()) {
                 var rowStage = StageHandler.getInstance().getElementStage(row.getType());
                 if (rowStage instanceof ElementStage<?> elementStage) {
-                    columnValues.add(DatabaseHelper.getRowName(row) + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(row.getType())));
+                    rowValues.add(DatabaseHelper.getRowName(row) + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(row.getType())));
                 } else {
                     throw new StageNotSupportedException(row.getType());
                 }
@@ -58,11 +47,10 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
         } else {
             throw new StageNotSupportedException(clazz);
         }
-
         if (keys.length != 0) {
-            columnValues.addAll(Arrays.stream(keys).map(it -> "FOREIGN KEY (" + it.parentField() + ") REFERENCES " + it.parentTable() + "(" + it.parentField() + ") ON DELETE CASCADE").toList());
+            rowValues.addAll(Arrays.stream(keys).map(it -> "FOREIGN KEY (" + it.parentField() + ") REFERENCES " + it.parentTable() + "(" + it.parentField() + ") ON DELETE CASCADE").toList());
         }
-        queries.add(query.toString().formatted(table, String.join(", ", columnValues)));
+        queries.add(query.toString().formatted(table, String.join(", ", rowValues)));
     }
 
     @Override
