@@ -2,10 +2,7 @@ package net.bytemc.evelon.sql.stages;
 
 import net.bytemc.evelon.misc.Pair;
 import net.bytemc.evelon.repository.RepositoryClass;
-import net.bytemc.evelon.sql.DatabaseHelper;
-import net.bytemc.evelon.sql.DatabaseResultSet;
-import net.bytemc.evelon.sql.DatabaseType;
-import net.bytemc.evelon.sql.ElementStage;
+import net.bytemc.evelon.sql.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
@@ -21,7 +18,7 @@ public final class PathStage implements ElementStage<Path> {
     @Override
     public Pair<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Path object) {
         // change path symbol, because mariadb ignore this symbol
-        return new Pair<>(DatabaseHelper.getRowName(field), "'" + object.toString().replaceAll("\\\\", "/") + "'");
+        return new Pair<>(DatabaseHelper.getRowName(field), Schema.encloseSchema(object.toString().replaceAll("\\\\", "/")));
     }
 
     @Override

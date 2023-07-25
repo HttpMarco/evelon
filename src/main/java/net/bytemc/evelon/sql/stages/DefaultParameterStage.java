@@ -4,10 +4,7 @@ import net.bytemc.evelon.misc.Pair;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.RepositoryClass;
 import net.bytemc.evelon.repository.annotations.PrimaryKey;
-import net.bytemc.evelon.sql.DatabaseHelper;
-import net.bytemc.evelon.sql.DatabaseResultSet;
-import net.bytemc.evelon.sql.DatabaseType;
-import net.bytemc.evelon.sql.ElementStage;
+import net.bytemc.evelon.sql.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
@@ -40,7 +37,7 @@ public final class DefaultParameterStage implements ElementStage<Object> {
         if (object instanceof Boolean || object.getClass().equals(boolean.class)) {
             return new Pair<>(fieldName, object.toString());
         }
-        return new Pair<>(fieldName, "'" + object + "'");
+        return new Pair<>(fieldName, Schema.encloseSchema(object.toString()));
     }
 
     @Override

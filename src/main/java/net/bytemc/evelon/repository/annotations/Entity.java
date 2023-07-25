@@ -1,5 +1,7 @@
 package net.bytemc.evelon.repository.annotations;
 
+import net.bytemc.evelon.misc.Reflections;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -9,6 +11,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Entity {
 
-    String name() default "";
+    String name() default Reflections.EMPTY_STRING;
 
 }

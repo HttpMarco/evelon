@@ -2,10 +2,7 @@ package net.bytemc.evelon.sql.stages;
 
 import net.bytemc.evelon.misc.Pair;
 import net.bytemc.evelon.repository.RepositoryClass;
-import net.bytemc.evelon.sql.DatabaseHelper;
-import net.bytemc.evelon.sql.DatabaseResultSet;
-import net.bytemc.evelon.sql.DatabaseType;
-import net.bytemc.evelon.sql.ElementStage;
+import net.bytemc.evelon.sql.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
@@ -20,13 +17,11 @@ public final class DateStage implements ElementStage<Date> {
 
     @Override
     public Pair<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Date object) {
-        java.sql.Date date = new java.sql.Date(object.getTime());
-        return new Pair<>(DatabaseHelper.getRowName(field), "'" + date + "'");
+        return new Pair<>(DatabaseHelper.getRowName(field), Schema.encloseSchema(new java.sql.Date(object.getTime())));
     }
 
     @Override
     public Date createObject(RepositoryClass<Date> clazz, String id, DatabaseResultSet.Table table) {
-        // this methode is soooo lost hahah
         return new Date(table.get(id, java.sql.Date.class).getTime());
     }
 

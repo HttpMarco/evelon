@@ -1,5 +1,6 @@
 package net.bytemc.evelon.sql;
 
+import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.AbstractIdFilter;
 import net.bytemc.evelon.repository.Filter;
 import net.bytemc.evelon.repository.annotations.Row;
@@ -12,7 +13,7 @@ import java.util.List;
 public final class DatabaseHelper {
 
     public static boolean isTableExists(String tableName) {
-        return DatabaseConnection.executeQuery("SHOW TABLES LIKE '%s';".formatted(tableName), ResultSet::next, false);
+        return DatabaseConnection.executeQuery(("SHOW TABLES LIKE " + Schema.encloseSchema("%s") + ";").formatted(tableName), ResultSet::next, false);
     }
 
     public static String getRowName(Field field) {
@@ -32,7 +33,7 @@ public final class DatabaseHelper {
     public static String getDatabaseFilterQuery(List<Filter> filters) {
         // if no filter is present lol -> ignore
         if (filters.isEmpty()) {
-            return "";
+            return Reflections.EMPTY_STRING;
         }
 
         return new StringBuilder(" WHERE ").append(String.join(" AND ",

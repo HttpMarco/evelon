@@ -2,6 +2,7 @@ package net.bytemc.evelon.repository.filters;
 
 import net.bytemc.evelon.local.LocalStorageHelper;
 import net.bytemc.evelon.repository.AbstractIdFilter;
+import net.bytemc.evelon.sql.Schema;
 
 import java.util.stream.Stream;
 
@@ -16,7 +17,7 @@ public final class MatchFilter extends AbstractIdFilter {
 
     @Override
     public String sqlFilter(String id) {
-        return "%s = '%s'".formatted(getId(), value.toString());
+        return ("%s = " + Schema.encloseSchema("%s")).formatted(getId(), value.toString());
     }
 
     @Override
