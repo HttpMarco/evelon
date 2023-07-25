@@ -7,6 +7,7 @@ import net.bytemc.evelon.sql.substages.VirtualObjectStage;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 public final class TableCreationProcess {
 
@@ -24,10 +25,11 @@ public final class TableCreationProcess {
             return;
         }
 
-        var sortedTableCreationQueryList = virtualObjectStage.onParentTableCollectData(repository.getName(), repository.repositoryClass(), null);
+        var queries = new ArrayList<String>();
+        virtualObjectStage.onParentTableCollectData(queries, repository.getName(), repository.repositoryClass(), null);
 
-        for(int i = sortedTableCreationQueryList.size() - 1; i >= 0; i--) {
-            DatabaseConnection.executeUpdate(sortedTableCreationQueryList.get(i));
+        for(int i = queries.size() - 1; i >= 0; i--) {
+            DatabaseConnection.executeUpdate(queries.get(i));
         }
     }
 

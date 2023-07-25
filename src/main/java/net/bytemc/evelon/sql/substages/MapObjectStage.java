@@ -19,8 +19,7 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
     }
 
     @Override
-    public List<String> onParentTableCollectData(String table, RepositoryClass<?> current, Field field, ForeignKey... keys) {
-        var queries = new ArrayList<String>();
+    public void onParentTableCollectData(List<String> queries, String table, RepositoryClass<?> current, Field field, ForeignKey... keys) {
         var generic = Reflections.readGenericFromClass(field);
         var keyType = generic[0];
         var valueType = generic[1];
@@ -64,9 +63,7 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
         if (keys.length != 0) {
             elements.addAll(Arrays.stream(keys).map(it -> "FOREIGN KEY (" + it.parentField() + ") REFERENCES " + it.parentTable() + "(" + it.parentField() + ") ON DELETE CASCADE").toList());
         }
-
         queries.add(query.toString().formatted(table, String.join(", ", elements)));
-        return queries;
     }
 
     @Override

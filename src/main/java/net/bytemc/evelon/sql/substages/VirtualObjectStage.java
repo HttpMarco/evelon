@@ -23,10 +23,9 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
     }
 
     @Override
-    public List<String> onParentTableCollectData(String table, RepositoryClass<?> current, @Nullable Field field, ForeignKey... keys) {
+    public void onParentTableCollectData(List<String> queries, String table, RepositoryClass<?> current, @Nullable Field field, ForeignKey... keys) {
         var query = "CREATE TABLE IF NOT EXISTS %s(%s);";
-        // the collected object statements
-        var queries = new ArrayList<String>();
+        // the collected object statements;
         var queryValues = new ArrayList<String>();
 
         for (var foreignKey : keys) {
@@ -40,7 +39,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
                 queryValues.add(foreignKey.parentField() + " " + elementStage.anonymousElementRowData(foreignKey.foreignKey(), new RepositoryClass<>(foreignKey.foreignKey().getType())) + " NOT NULL");
             } else {
                 // primaries can only be elements
-                return new ArrayList<>();
+                return;
             }
         }
 
@@ -55,8 +54,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
 
                 queryValues.add(TableCreationProcess.appendPrimaryKey(row, DatabaseHelper.getRowName(row) + " " + result));
             } else if (stage instanceof SubElementStage<?> subElementStage) {
-                queries.addAll(subElementStage.onParentTableCollectData(table + "_" + DatabaseHelper.getRowName(row), new RepositoryClass<>(row.getType()), row, current.getPrimaries().
-                        stream().map(it -> new ForeignKey(table, it)).toArray(ForeignKey[]::new)));
+                subElementStage.onParentTableCollectData(queries, table + "_" + DatabaseHelper.getRowName(row), new RepositoryClass<>(row.getType()), row, current.getPrimaries().stream().map(it -> new ForeignKey(table, it)).toArray(ForeignKey[]::new));
             }
 
         }
@@ -67,9 +65,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             var foreignKeyQuery = Arrays.stream(keys).map(it -> "FOREIGN KEY (" + it.parentField() + ") REFERENCES " + it.parentTable() + "(" + it.parentField() + ") ON DELETE CASCADE").toList();
             queryInternal.append(", ").append(String.join(", ", foreignKeyQuery));
         }
-
         queries.add(query.formatted(table, queryInternal));
-        return queries;
     }
 
     @Override

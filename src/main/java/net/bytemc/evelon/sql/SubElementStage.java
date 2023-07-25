@@ -16,7 +16,7 @@ public interface SubElementStage<T> extends Stage<T> {
      * @param keys    possible foreign keys
      * @return the current sql query for create statements
      */
-    List<String> onParentTableCollectData(String table, RepositoryClass<?> current, Field field, ForeignKey... keys);
+    void onParentTableCollectData(List<String> queries, String table, RepositoryClass<?> current, Field field, ForeignKey... keys);
 
     List<String> onParentElement(String table, Field field, Repository<?> parent, RepositoryClass<T> clazz, T value, ForeignKeyObject... keys);
 
