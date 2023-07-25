@@ -21,6 +21,6 @@ public final class NoneMatchFilter extends AbstractIdFilter {
 
     @Override
     public <T> Stream<T> localFilter(Stream<T> stream) {
-        return stream.filter(it -> !LocalStorageHelper.getObjectFilter(it.getClass(), getId(), it).equals(value));
+        return stream.filter(it -> !LocalStorageHelper.getObjectFilter(getId(), it).equals(value));
     }
 }

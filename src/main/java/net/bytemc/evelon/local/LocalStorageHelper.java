@@ -19,13 +19,12 @@ public final class LocalStorageHelper {
     }
 
     /**
-     * @param clazz
-     * @param id
-     * @param parent
+     * @param id field name
+     * @param parent object with the field
      * @return
      */
-    public static @Nullable Number getNumberFilter(Class<?> clazz, String id, Object parent) {
-        var element = getObjectFilter(clazz, id, parent);
+    public static @Nullable Number getNumberFilter(String id, Object parent) {
+        var element = getObjectFilter(id, parent);
         if (!Reflections.isNumber(element.getClass())) {
             System.err.println("Error while filtering: The field " + id + " is not a number.");
             return null;
@@ -35,14 +34,13 @@ public final class LocalStorageHelper {
     }
 
     /**
-     * @param clazz
      * @param id
      * @param parent
      * @return
      */
-    public static @Nullable Object getObjectFilter(Class<?> clazz, String id, Object parent) {
+    public static @Nullable Object getObjectFilter(String id, Object parent) {
         try {
-            var fitlerField = clazz.getDeclaredField(id);
+            var fitlerField = parent.getClass().getDeclaredField(id);
             var object = Reflections.readField(parent, fitlerField);
             return object;
         } catch (NoSuchFieldException e) {

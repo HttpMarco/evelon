@@ -22,7 +22,7 @@ public final class MaximumFilter extends AbstractIdFilter {
     public <T> Stream<T> localFilter(Stream<T> stream) {
         return stream.filter(it -> {
             // read field from an object
-            var numberFilter = LocalStorageHelper.getNumberFilter(it.getClass(), getId(), it);
+            var numberFilter = LocalStorageHelper.getNumberFilter(getId(), it);
 
             return numberFilter == null ? false : numberFilter.doubleValue() <= value.doubleValue();
         });

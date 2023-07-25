@@ -31,7 +31,7 @@ public final class BetweenFilter extends AbstractIdFilter {
         // maybe we must check every fall of number types and not only the doubles.
         return stream.filter(it -> {
             // read field from an object
-            var numberFilter = LocalStorageHelper.getNumberFilter(it.getClass(), getId(), it);
+            var numberFilter = LocalStorageHelper.getNumberFilter(getId(), it);
 
             return numberFilter == null ? false : numberFilter.doubleValue() >= ((Number) minimumBounce).doubleValue() && numberFilter.doubleValue() <= ((Number) maximumBounce).doubleValue();
         });
