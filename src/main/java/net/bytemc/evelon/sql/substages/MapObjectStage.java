@@ -61,10 +61,7 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
         var valueStage = StageHandler.getInstance().getElementStage(valueType);
 
         for (var keyObject : value.keySet()) {
-            var elements = new HashMap<String, String>();
-            for (var foreignKey : keys) {
-                elements.put(foreignKey.id(), foreignKey.value());
-            }
+            var elements = DatabaseForeignKeyHelper.convertKeyObjectsToElements(keys);
             if (keyStage instanceof ElementStage<?> elementStage) {
                 elements.put(DatabaseHelper.getRowName(field) + "_key", elementStage.anonymousElementEntryData(new RepositoryClass<>(keyType), null, keyObject).right());
             }

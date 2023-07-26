@@ -49,11 +49,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
     @Override
     public List<String> onParentElement(String table, Field field, Repository<?> parent, RepositoryClass<Object> clazz, Object value, ForeignKeyObject... keys) {
         var queries = new ArrayList<String>();
-        var values = new HashMap<String, String>();
-        //todo duplicated code
-        for (var foreignKey : keys) {
-            values.put(foreignKey.id(), foreignKey.value());
-        }
+        var values = DatabaseForeignKeyHelper.convertKeyObjectsToElements(keys);;
         for (var row : clazz.getRows()) {
             var stage = StageHandler.getInstance().getElementStage(row.getType());
             if (stage == null) {

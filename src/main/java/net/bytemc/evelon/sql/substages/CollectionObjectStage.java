@@ -62,21 +62,14 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
         //todo remove duplicated code
         if (stage instanceof ElementStage<?> elementStage) {
             for (var item : value) {
-                var columns = new HashMap<String, String>();
-                for (var foreignKey : keys) {
-                    columns.put(foreignKey.id(), foreignKey.value());
-                }
+                var columns = DatabaseForeignKeyHelper.convertKeyObjectsToElements(keys);
                 var element = elementStage.anonymousElementEntryData(new RepositoryClass<>(listType), null, item);
                 columns.put(DatabaseHelper.getRowName(field) + "_" + element.left(), element.right());
                 queries.add(DatabaseHelper.insertDefault(table, String.join(", ", columns.keySet()), String.join(", ", columns.values())));
             }
         } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
             for (var element : value) {
-                var columns = new HashMap<String, String>();
-                //todo duplicated code
-                for (var foreignKey : keys) {
-                    columns.put(foreignKey.id(), foreignKey.value());
-                }
+                var columns = DatabaseForeignKeyHelper.convertKeyObjectsToElements(keys);
                 var rowClazz = new RepositoryClass<>(listType);
                 for (var row : rowClazz.getRows()) {
                     var rowStage = StageHandler.getInstance().getElementStage(row.getType());
