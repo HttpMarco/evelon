@@ -29,13 +29,9 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
         if (!(keyStage instanceof ElementStage<?> keyElementStage)) {
             throw new StageNotSupportedException(keyType);
         }
-
-        var query = new StringBuilder("CREATE TABLE IF NOT EXISTS %s(%s)");
         var rowValues = new ArrayList<String>();
-
         // collect all needed foreign keys
         DatabaseForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
-
         // add map key value -> unique -> primary key
         var keyDatabaseType = keyElementStage.anonymousElementRowData(field, new RepositoryClass<>(keyType));
         if (keyDatabaseType.equals(DatabaseType.TEXT.type())) {
@@ -51,7 +47,7 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
         }
         // add database schema link
         DatabaseForeignKeyHelper.convertToDatabaseForeignLink(rowValues, keys);
-        queries.add(query.toString().formatted(table, String.join(", ", rowValues)));
+        queries.add(DatabaseHelper.create(table, String.join(", ", rowValues)));
     }
 
     @Override
@@ -66,21 +62,16 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
 
         for (var keyObject : value.keySet()) {
             var elements = new HashMap<String, String>();
-            var query = "INSERT INTO %s(%s) VALUES(%s)";
-
             for (var foreignKey : keys) {
                 elements.put(foreignKey.id(), foreignKey.value());
             }
-
             if (keyStage instanceof ElementStage<?> elementStage) {
                 elements.put(DatabaseHelper.getRowName(field) + "_key", elementStage.anonymousElementEntryData(new RepositoryClass<>(keyType), null, keyObject).right());
             }
-
             if (valueStage instanceof ElementStage<?> elementStage) {
                 elements.put(DatabaseHelper.getRowName(field) + "_value", elementStage.anonymousElementEntryData(new RepositoryClass<>(valueType), null, value.get(keyObject)).right());
             }
-
-            queries.add(query.formatted(table, String.join(", ", elements.keySet()), String.join(", ", elements.values())));
+            queries.add(DatabaseHelper.insertDefault(table, String.join(", ", elements.keySet()), String.join(", ", elements.values())));
         }
         return queries;
     }

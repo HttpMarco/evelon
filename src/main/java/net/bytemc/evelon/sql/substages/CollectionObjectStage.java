@@ -24,9 +24,7 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
         if (stage == null) {
             throw new StageNotFoundException(clazz);
         }
-        var query = new StringBuilder("CREATE TABLE IF NOT EXISTS %s(%s)");
         var rowValues = new ArrayList<String>();
-
         // collect all needed foreign keys
         DatabaseForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
 
@@ -35,7 +33,6 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
             rowValues.add(rowName + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(clazz)));
         } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
             var rowClazz = new RepositoryClass<>(clazz);
-
             for (var row : rowClazz.getRows()) {
                 var rowStage = StageHandler.getInstance().getElementStage(row.getType());
                 if (rowStage instanceof ElementStage<?> elementStage) {
@@ -49,7 +46,7 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
         }
         // add database schema link
         DatabaseForeignKeyHelper.convertToDatabaseForeignLink(rowValues, keys);
-        queries.add(query.toString().formatted(table, String.join(", ", rowValues)));
+        queries.add(DatabaseHelper.create(table, String.join(", ", rowValues)));
     }
 
     @Override
@@ -65,30 +62,22 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
         //todo remove duplicated code
         if (stage instanceof ElementStage<?> elementStage) {
             for (var item : value) {
-                var query = "INSERT INTO %s(%s) VALUES (%s);";
                 var columns = new HashMap<String, String>();
-
                 for (var foreignKey : keys) {
                     columns.put(foreignKey.id(), foreignKey.value());
                 }
-
                 var element = elementStage.anonymousElementEntryData(new RepositoryClass<>(listType), null, item);
-
                 columns.put(DatabaseHelper.getRowName(field) + "_" + element.left(), element.right());
-                queries.add(query.formatted(table, String.join(", ", columns.keySet()), String.join(", ", columns.values())));
+                queries.add(DatabaseHelper.insertDefault(table, String.join(", ", columns.keySet()), String.join(", ", columns.values())));
             }
         } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
-
             for (var element : value) {
-                var query = "INSERT INTO %s(%s) VALUES (%s);";
                 var columns = new HashMap<String, String>();
-
+                //todo duplicated code
                 for (var foreignKey : keys) {
                     columns.put(foreignKey.id(), foreignKey.value());
                 }
-
                 var rowClazz = new RepositoryClass<>(listType);
-
                 for (var row : rowClazz.getRows()) {
                     var rowStage = StageHandler.getInstance().getElementStage(row.getType());
                     if (rowStage instanceof ElementStage<?> elementStage) {
@@ -98,7 +87,7 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
                         throw new StageNotSupportedException(row.getType());
                     }
                 }
-                queries.add(query.formatted(table, String.join(", ", columns.keySet()), String.join(", ", columns.values())));
+                queries.add(DatabaseHelper.insertDefault(table, String.join(", ", columns.keySet()), String.join(", ", columns.values())));
             }
 
         } else {

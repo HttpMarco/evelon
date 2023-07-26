@@ -24,14 +24,12 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
 
     @Override
     public void onParentTableCollectData(List<String> queries, String table, RepositoryClass<?> current, @Nullable Field field, ForeignKey... keys) {
-        var query = "CREATE TABLE IF NOT EXISTS %s(%s);";
         // the collected object statements;
         var rowValues = new ArrayList<String>();
         // collect all needed foreign keys
         DatabaseForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
         for (var row : current.getRows()) {
             var stage = StageHandler.getInstance().getElementStage(row.getType());
-
             if (stage instanceof ElementStage<?> elementStage) {
                 // create net repository class, because there can be multiple rows of the same type
                 var elementClass = new RepositoryClass<>(row.getType());
@@ -45,30 +43,24 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
         }
         // add database schema link
         DatabaseForeignKeyHelper.convertToDatabaseForeignLink(rowValues, keys);
-        queries.add(query.formatted(table, new StringBuilder(String.join(", ", rowValues))));
+        queries.add(DatabaseHelper.create(table, String.join(", ", rowValues)));
     }
 
     @Override
     public List<String> onParentElement(String table, Field field, Repository<?> parent, RepositoryClass<Object> clazz, Object value, ForeignKeyObject... keys) {
         var queries = new ArrayList<String>();
-
-        var query = "INSERT INTO %s(%s) VALUES(%s);";
         var values = new HashMap<String, String>();
-
+        //todo duplicated code
         for (var foreignKey : keys) {
             values.put(foreignKey.id(), foreignKey.value());
         }
-
         for (var row : clazz.getRows()) {
             var stage = StageHandler.getInstance().getElementStage(row.getType());
-
             if (stage == null) {
                 throw new StageNotFoundException(row.getType());
             }
-
             var object = Reflections.readField(value, row);
             var objectClass = new RepositoryClass<>(row.getType());
-
             if (stage instanceof SubElementStage<?> subElementStage) {
                 queries.addAll(subElementStage.onAnonymousParentElement(parent.appendChildrenName(DatabaseHelper.getRowName(row)), row, parent, objectClass, object, clazz.collectForeignKeyValues(value)));
             } else if (stage instanceof ElementStage<?> elementStage) {
@@ -78,7 +70,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
                 //todo
             }
         }
-        queries.add(query.formatted(table, String.join(", ", values.keySet()), String.join(", ", values.values())));
+        queries.add(DatabaseHelper.insertDefault(table, String.join(", ", values.keySet()), String.join(", ", values.values())));
         return queries;
     }
 

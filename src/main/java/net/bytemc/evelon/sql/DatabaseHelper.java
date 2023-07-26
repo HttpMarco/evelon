@@ -42,4 +42,13 @@ public final class DatabaseHelper {
                         .map(it -> ((AbstractIdFilter) it))
                         .map(it -> it.sqlFilter(it.getId())).toList())).toString();
     }
+
+    public static String insertDefault(String... values) {
+        return "INSERT INTO %s(%s) VALUES(%s);".formatted(values);
+    }
+
+    public static String create(String... value) {
+        return "CREATE TABLE IF NOT EXISTS %s(%s);".formatted(value);
+    }
+
 }
