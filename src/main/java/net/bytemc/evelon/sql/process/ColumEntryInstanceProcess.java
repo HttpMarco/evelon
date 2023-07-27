@@ -6,6 +6,7 @@ import net.bytemc.evelon.repository.RepositoryQuery;
 import net.bytemc.evelon.sql.*;
 import net.bytemc.evelon.sql.substages.CollectionObjectStage;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,7 @@ public final class ColumEntryInstanceProcess {
 
         var repository = repositoryQuery.getRepository();
         var neededTables = getNeededTables(repository.getName(), repository.repositoryClass());
-        var query = new StringBuilder("SELECT * FROM " + repository.getName() + " %s;");
+        var query = new StringBuilder("SELECT * FROM " + repository.getName() + " %s" + DatabaseHelper.getDatabaseFilterQuery(repositoryQuery.getFilters()) + ";");
         var primaryNames = String.join(", ", repository.repositoryClass().getPrimaries().stream().map(DatabaseHelper::getRowName).toList());
         var innerJoins = String.join(" ", neededTables.keySet().stream().skip(1).map(it -> "INNER JOIN polus_element USING (" + primaryNames + ")").toList());
 
