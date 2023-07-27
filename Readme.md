@@ -13,7 +13,7 @@ Add following two thinkgs to your pom.xml:
     </repository>
 </repositories>
 ```
-Dependency:
+Maven-Dependency:
 ```xml
 <dependency>
     <groupId>net.bytemc</groupId>
@@ -21,3 +21,19 @@ Dependency:
     <version>[VERSION]</version>
 </dependency>
 ```
+Gradle-Dependency:
+```groovy
+compile(group: 'net.bytemc', name: 'evelon', version: '1.0.0')
+```
+
+Ivy-Dependency:
+````xml
+<dependency org="net.bytemc" name="evelon" rev="1.0.0">
+    <artifact name="evelon" ext="jar"/>
+</dependency>
+````
+
+Sbt-Dependency:
+```groovy
+libraryDependencies += "net.bytemc" % "evelon" % "1.0.0"
+````
