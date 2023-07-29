@@ -21,6 +21,8 @@ import net.bytemc.evelon.repository.RepositoryClass;
 import net.bytemc.evelon.repository.RepositoryQuery;
 import net.bytemc.evelon.sql.*;
 import net.bytemc.evelon.sql.substages.CollectionObjectStage;
+import net.bytemc.evelon.sql.substages.MapObjectStage;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +36,7 @@ public final class ColumEntryInstanceProcess {
         var neededTables = getNeededTables(repository.getName(), repository.repositoryClass());
         var query = new StringBuilder("SELECT * FROM " + repository.getName() + " %s" + DatabaseHelper.getDatabaseFilterQuery(repositoryQuery.getFilters()) + ";");
         var primaryNames = String.join(", ", repository.repositoryClass().getPrimaries().stream().map(DatabaseHelper::getRowName).toList());
-        var innerJoins = String.join(" ", neededTables.keySet().stream().skip(1).map(it -> "INNER JOIN polus_element USING (" + primaryNames + ")").toList());
+        var innerJoins = String.join(" ", neededTables.keySet().stream().filter(it -> !it.equalsIgnoreCase(repositoryQuery.getRepository().getName())).map(it -> "INNER JOIN " + it + " USING (" + primaryNames + ")").toList());
 
         var databaseResults = DatabaseConnection.executeQuery(query.toString().formatted(innerJoins), resultSet -> {
             var elements = new ArrayList<DatabaseResultSet>();
@@ -69,7 +71,7 @@ public final class ColumEntryInstanceProcess {
         for (var row : clazz.getRows()) {
             var stage = StageHandler.getInstance().getElementStage(row.getType());
 
-            if(stage instanceof CollectionObjectStage) {
+            if(stage instanceof CollectionObjectStage || stage instanceof MapObjectStage) {
                 continue;
             }
 

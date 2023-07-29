@@ -90,15 +90,33 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
     }
 
     @Override
-    public Map<?, ?> createInstance(String table, @Nullable Field parentField, RepositoryClass<Map<?, ?>> clazz, DatabaseResultSet resultSet) {
-        return DatabaseConnection.executeQuery("SELECT * FROM " + table, result -> {
-            var instance = Reflections.allocate(clazz.clazz());
+    public Map<?, ?> createInstance(String tableName, @Nullable Field parentField, RepositoryClass<Map<?, ?>> clazz, DatabaseResultSet resultSet) {
+
+        var map = new HashMap<>();
+        var generic = Reflections.readGenericFromClass(parentField);
+
+        var keyType = generic[0];
+        var valueType = generic[1];
+        var keyStage = StageHandler.getInstance().getElementStage(keyType);
+        var valueStage = StageHandler.getInstance().getElementStage(valueType);
+
+        return DatabaseConnection.executeQuery("SELECT * FROM " + tableName, result -> {
             while (result.next()) {
-
-
-
+                if (keyStage instanceof ElementStage<?> keyElementStage) {
+                    if (valueStage instanceof ElementStage<?> valueElementStage) {
+                        var databaseResultSet = new DatabaseResultSet();
+                        var table = databaseResultSet.addTable("default");
+                        var keyName = DatabaseHelper.getRowName(parentField) + "_key";
+                        var rowName = DatabaseHelper.getRowName(parentField) + "_value";
+                        table.setProperty(rowName, result.getObject(rowName));
+                        table.setProperty(keyName, result.getObject(keyName));
+                        map.put(keyElementStage.anonymousCreateObject(new RepositoryClass<>(keyType), keyName, table), valueElementStage.anonymousCreateObject(new RepositoryClass<>(valueType), rowName, table));
+                    }
+                } else {
+                    throw new StageNotSupportedException(keyType);
+                }
             }
-            return instance;
-        }, Reflections.allocate(clazz.clazz()));
+            return map;
+        }, map);
     }
 }

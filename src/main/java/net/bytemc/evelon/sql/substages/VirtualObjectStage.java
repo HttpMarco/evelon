@@ -55,7 +55,6 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             } else if (stage instanceof SubElementStage<?> subElementStage) {
                 subElementStage.onParentTableCollectData(queries, table + "_" + DatabaseHelper.getRowName(row), new RepositoryClass<>(row.getType()), row, current.getPrimaries().stream().map(it -> new ForeignKey(table, it)).toArray(ForeignKey[]::new));
             }
-
         }
         // add database schema link
         DatabaseForeignKeyHelper.convertToDatabaseForeignLink(rowValues, keys);
