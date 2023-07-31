@@ -30,11 +30,11 @@ import java.util.Map;
 
 public final class ColumEntryInstanceProcess {
 
-    public static <T> List<T> collect(RepositoryQuery<T> repositoryQuery) {
+    public static <T> List<T> collect(RepositoryQuery<T> repositoryQuery, int limit) {
 
         var repository = repositoryQuery.getRepository();
         var neededTables = getNeededTables(repository.getName(), repository.repositoryClass());
-        var query = new StringBuilder("SELECT * FROM " + repository.getName() + " %s" + DatabaseHelper.getDatabaseFilterQuery(repositoryQuery.getFilters()) + ";");
+        var query = new StringBuilder("SELECT * FROM " + repository.getName() + " %s" + DatabaseHelper.getDatabaseFilterQuery(repositoryQuery.getFilters()) + (limit != -1 ? "" : " LIMIT " + limit) + ";");
         var primaryNames = String.join(", ", repository.repositoryClass().getPrimaries().stream().map(DatabaseHelper::getRowName).toList());
         var innerJoins = String.join(" ", neededTables.keySet().stream().filter(it -> !it.equalsIgnoreCase(repositoryQuery.getRepository().getName())).map(it -> "INNER JOIN " + it + " USING (" + primaryNames + ")").toList());
 

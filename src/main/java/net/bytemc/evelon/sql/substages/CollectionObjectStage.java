@@ -75,7 +75,6 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
             throw new StageNotFoundException(listType);
         }
 
-        //todo remove duplicated code
         if (stage instanceof ElementStage<?> elementStage) {
             for (var item : value) {
                 var columns = DatabaseForeignKeyHelper.convertKeyObjectsToElements(keys);
