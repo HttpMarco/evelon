@@ -20,6 +20,7 @@ import net.bytemc.evelon.exception.StageNotFoundException;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.repository.RepositoryClass;
+import net.bytemc.evelon.repository.RepositoryQuery;
 import net.bytemc.evelon.sql.*;
 import net.bytemc.evelon.sql.process.TableCreationProcess;
 import org.jetbrains.annotations.Nullable;
@@ -64,7 +65,8 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
     @Override
     public List<String> onParentElement(String table, Field field, Repository<?> parent, RepositoryClass<Object> clazz, Object value, ForeignKeyObject... keys) {
         var queries = new ArrayList<String>();
-        var values = DatabaseForeignKeyHelper.convertKeyObjectsToElements(keys);;
+        var values = DatabaseForeignKeyHelper.convertKeyObjectsToElements(keys);
+
         for (var row : clazz.getRows()) {
             var stage = StageHandler.getInstance().getElementStage(row.getType());
             if (stage == null) {
@@ -77,11 +79,33 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             } else if (stage instanceof ElementStage<?> elementStage) {
                 var result = elementStage.anonymousElementEntryData(objectClass, row, object);
                 values.put(result.left(), result.right());
-            } else if(stage instanceof ElementStageTransformer transformer) {
+            } else if (stage instanceof ElementStageTransformer transformer) {
                 //todo
             }
         }
         queries.add(DatabaseHelper.insertDefault(table, String.join(", ", values.keySet()), String.join(", ", values.values())));
+        return queries;
+    }
+
+    @Override
+    public List<String> onUpdateParentElement(String table, Field field, Repository<?> parent, RepositoryQuery<Object> query, Object value, ForeignKeyObject... keys) {
+        var queries = new ArrayList<String>();
+        var values = DatabaseForeignKeyHelper.convertKeyObjectsToElements(keys);
+
+        for (var row : query.getRepository().repositoryClass().getRows()) {
+            var stage = StageHandler.getInstance().getElementStage(row.getType());
+            if (stage == null) {
+                throw new StageNotFoundException(row.getType());
+            }
+            var object = Reflections.readField(value, row);
+            var objectClass = new RepositoryClass<>(row.getType());
+
+            if (stage instanceof ElementStage<?> elementStage) {
+                var result = elementStage.anonymousElementEntryData(objectClass, row, object);
+                values.put(result.left(), result.right());
+            }
+        }
+        queries.add(DatabaseHelper.update(table, (String.join(", ", values.keySet().stream().map(it -> it + "=" + values.get(it)).toList()) + DatabaseHelper.getDatabaseFilterQuery(query.getFilters()))));
         return queries;
     }
 

@@ -21,6 +21,7 @@ import net.bytemc.evelon.exception.StageNotSupportedException;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.repository.RepositoryClass;
+import net.bytemc.evelon.repository.RepositoryQuery;
 import net.bytemc.evelon.sql.*;
 
 import java.lang.reflect.Field;
@@ -102,6 +103,12 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
             throw new StageNotSupportedException(listType);
         }
         return queries;
+    }
+
+    @Override
+    public List<String> onUpdateParentElement(String table, Field field, Repository<?> parent, RepositoryQuery<Collection<?>> clazz, Collection<?> value, ForeignKeyObject... keys) {
+        //todo
+        return null;
     }
 
     @Override

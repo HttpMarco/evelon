@@ -70,6 +70,4 @@ public interface ElementStage<T> extends Stage<T> {
     default T anonymousCreateObject(RepositoryClass<?> clazz, String id, DatabaseResultSet.Table table) {
         return createObject((RepositoryClass<T>) clazz, id, table);
     }
-
-
 }

@@ -21,6 +21,7 @@ import net.bytemc.evelon.exception.StageNotSupportedException;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.repository.RepositoryClass;
+import net.bytemc.evelon.repository.RepositoryQuery;
 import net.bytemc.evelon.sql.*;
 import org.jetbrains.annotations.Nullable;
 
@@ -87,6 +88,12 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
             queries.add(DatabaseHelper.insertDefault(table, String.join(", ", elements.keySet()), String.join(", ", elements.values())));
         }
         return queries;
+    }
+
+    @Override
+    public List<String> onUpdateParentElement(String table, Field field, Repository<?> parent, RepositoryQuery<Map<?, ?>> clazz, Map<?, ?> value, ForeignKeyObject... keys) {
+        //todo
+        return null;
     }
 
     @Override

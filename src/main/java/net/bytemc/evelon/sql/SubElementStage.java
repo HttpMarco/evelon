@@ -18,6 +18,7 @@ package net.bytemc.evelon.sql;
 
 import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.repository.RepositoryClass;
+import net.bytemc.evelon.repository.RepositoryQuery;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
@@ -40,10 +41,17 @@ public interface SubElementStage<T> extends Stage<T> {
         return this.onParentElement(table, field, parent, (RepositoryClass<T>) clazz, (T) value, keys);
     }
 
+    List<String> onUpdateParentElement(String table, Field field, Repository<?> parent, RepositoryQuery<T> clazz, T value, ForeignKeyObject... keys);
+
+    default List<String> onAnonymousUpdateParentElement(String table, Field field, Repository<?> parent, RepositoryQuery<?> clazz, Object value, ForeignKeyObject... keys) {
+        return this.onUpdateParentElement(table, field, parent, (RepositoryQuery<T>) clazz, (T) value, keys);
+    }
+
     /**
      * @param table
      * @param clazz
      * @return
      */
     T createInstance(String table, @Nullable Field parentField, RepositoryClass<T> clazz, DatabaseResultSet resultSet);
+
 }

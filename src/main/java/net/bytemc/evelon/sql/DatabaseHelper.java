@@ -67,4 +67,8 @@ public final class DatabaseHelper {
         return "CREATE TABLE IF NOT EXISTS %s(%s);".formatted(value);
     }
 
+    public static String update(String... value) {
+        return "UPDATE %s SET %s;".formatted(value);
+    }
+
 }
