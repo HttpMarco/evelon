@@ -4,7 +4,7 @@ Last update: 27.07.2023 Copyright by ByteMC-Network
 
 ### Setup
 
-Add following two thinkgs to your pom.xml:
+Add following two things to your pom.xml:
 ```xml
 <repositories>
     <repository>
@@ -23,17 +23,17 @@ Maven-Dependency:
 ```
 Gradle-Dependency:
 ```groovy
-compile(group: 'net.bytemc', name: 'evelon', version: '1.0.0')
+compile(group: 'net.bytemc', name: 'evelon', version: '[VERSION]')
 ```
 
 Ivy-Dependency:
 ````xml
-<dependency org="net.bytemc" name="evelon" rev="1.0.0">
+<dependency org="net.bytemc" name="evelon" rev="[VERSION]">
     <artifact name="evelon" ext="jar"/>
 </dependency>
 ````
 
 Sbt-Dependency:
 ```groovy
-libraryDependencies += "net.bytemc" % "evelon" % "1.0.0"
+libraryDependencies += "net.bytemc" % "evelon" % "[VERSION]"
 ````
