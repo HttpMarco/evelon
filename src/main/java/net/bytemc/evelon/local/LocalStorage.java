@@ -81,6 +81,12 @@ public final class LocalStorage implements Storage {
         return -1;
     }
 
+    @Override
+    public <T> double avg(RepositoryQuery<T> query, String id) {
+        //todo
+        return 0;
+    }
+
     public void initializeRepository(Repository<?> repository) {
         this.cache.put(repository, new CopyOnWriteArrayList<>());
     }

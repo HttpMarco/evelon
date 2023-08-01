@@ -79,4 +79,7 @@ public final class DatabaseHelper {
         return "SELECT SUM(%s) AS %s FROM %s".formatted(value);
     }
 
+    public static String avg(String... value) {
+        return "SELECT AVG(%s) AS %s FROM %s".formatted(value);
+    }
 }

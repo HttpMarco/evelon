@@ -66,4 +66,9 @@ public final class DatabaseStorage implements Storage {
     public <T> int sum(RepositoryQuery<T> query, String id) {
         return MathCalculationProcess.sum(query, id);
     }
+
+    @Override
+    public <T> double avg(RepositoryQuery<T> query, String id) {
+        return MathCalculationProcess.avg(query, id);
+    }
 }

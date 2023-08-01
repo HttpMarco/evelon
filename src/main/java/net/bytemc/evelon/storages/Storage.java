@@ -63,6 +63,8 @@ public interface Storage {
 
     <T> int sum(RepositoryQuery<T> query, String id);
 
+    <T> double avg(RepositoryQuery<T> query, String id);
+
     default <T> void createIfNotExists(RepositoryQuery<T> query, T value) {
         if(!exists(query)) {
             create(query, value);
