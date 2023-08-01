@@ -35,7 +35,7 @@ public final class Reflections {
         try {
             Field field = Unsafe.class.getDeclaredField("theUnsafe");
             field.setAccessible(true);
-            unsafe = (Unsafe)field.get((Object)null);
+            unsafe = (Unsafe) field.get(null);
         } catch (IllegalAccessException | NoSuchFieldException var1) {
             throw new RuntimeException(var1);
         }
@@ -43,7 +43,7 @@ public final class Reflections {
 
     /**
      * @param parent object which contains the field
-     * @param field which should be read
+     * @param field  which should be read
      * @return the value of the field
      */
     public static Object readField(Object parent, Field field) {
@@ -54,6 +54,10 @@ public final class Reflections {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static Object readFieldFromId(Object parent, String fieldId) {
+        return readField(parent, getField(parent.getClass(), fieldId));
     }
 
     public static void writeField(Object parent, Field field, Object value) {
@@ -73,10 +77,21 @@ public final class Reflections {
         return clazz.isAssignableFrom(Number.class) || clazz.equals(int.class);
     }
 
+    public static boolean isNumberFromField(Class<?> clazz, String fieldId) {
+        return isNumber(getField(clazz, fieldId).getType());
+    }
+
+    public static Field getField(Class<?> parent, String fieldId) {
+        try {
+            return parent.getDeclaredField(fieldId);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * @param tClass which should be allocated
-     * @param <T> type of the class
+     * @param <T>    type of the class
      * @return a new instance of the class
      */
     public static <T> T allocate(Class<T> tClass) {
