@@ -2,6 +2,11 @@
 ## Evelon (Not released)
 Last update: 27.07.2023 Copyright by ByteMC-Network
 
+**Find version:** 
+<a href="https://artifactory.bytemc.de/ui/repos/tree/General/bytemc-public/net/bytemc/evelon">Here </a>
+
+<a href="https://github.com/bytemc/Aeon"><img src="https://img.shields.io/github/issues/bytemcnetzwerk/evelon?color=10c298" alt="Issues Badge"/></a>
+<a href="https://github.com/ByteMCNetzwerk/evelon"><img src="https://img.shields.io/github/stars/bytemcNetzwerk/Evelon?color=10c298" alt="Stars Badge"/></a>
 ### Setup
 
 Add following two things to your pom.xml:
