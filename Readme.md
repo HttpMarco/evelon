@@ -42,3 +42,7 @@ Sbt-Dependency:
 ```groovy
 libraryDependencies += "net.bytemc" % "evelon" % "[VERSION]"
 ````
+
+
+Release-Notes:
+- Implement count query function

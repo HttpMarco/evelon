@@ -71,4 +71,8 @@ public final class DatabaseHelper {
         return "UPDATE %s SET %s;".formatted(value);
     }
 
+    public static String count(String... value) {
+        return "SELECT COUNT(*) AS %s FROM %s".formatted(value);
+    }
+
 }

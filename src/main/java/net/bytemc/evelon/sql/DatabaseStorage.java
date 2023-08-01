@@ -59,7 +59,6 @@ public final class DatabaseStorage implements Storage {
 
     @Override
     public <T> int count(RepositoryQuery<T> query) {
-        //todo
-        return -1;
+        return MatheCalculationProcess.count(query);
     }
 }
