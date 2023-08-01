@@ -75,4 +75,8 @@ public final class DatabaseHelper {
         return "SELECT COUNT(*) AS %s FROM %s".formatted(value);
     }
 
+    public static String sum(String... value) {
+        return "SELECT SUM(%s) AS %s FROM %s".formatted(value);
+    }
+
 }

@@ -75,6 +75,12 @@ public final class LocalStorage implements Storage {
         return findAll(query).size();
     }
 
+    @Override
+    public <T> int sum(RepositoryQuery<T> query, String id) {
+        //todo
+        return -1;
+    }
+
     public void initializeRepository(Repository<?> repository) {
         this.cache.put(repository, new CopyOnWriteArrayList<>());
     }

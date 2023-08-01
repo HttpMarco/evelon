@@ -61,6 +61,8 @@ public interface Storage {
 
     <T> int count(RepositoryQuery<T> query);
 
+    <T> int sum(RepositoryQuery<T> query, String id);
+
     default <T> void createIfNotExists(RepositoryQuery<T> query, T value) {
         if(!exists(query)) {
             create(query, value);
