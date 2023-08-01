@@ -58,12 +58,12 @@ public final class DatabaseStorage implements Storage {
     }
 
     @Override
-    public <T> int count(RepositoryQuery<T> query) {
+    public <T> long count(RepositoryQuery<T> query) {
         return MathCalculationProcess.count(query);
     }
 
     @Override
-    public <T> int sum(RepositoryQuery<T> query, String id) {
+    public <T> long sum(RepositoryQuery<T> query, String id) {
         return MathCalculationProcess.sum(query, id);
     }
 

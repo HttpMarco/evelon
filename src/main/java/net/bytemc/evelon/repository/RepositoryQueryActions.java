@@ -26,6 +26,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
@@ -69,10 +71,21 @@ public final class RepositoryQueryActions<T> {
         }
     }
 
+    public double avg(String id) {
+        var result = new AtomicReference<>(-1.0);
+        handleStorage(storage -> result.set(storage.avg(query, id)));
+        return result.get();
+    }
 
-    public int count() {
-        var result = new AtomicInteger(-1);
+    public long count() {
+        var result = new AtomicLong(-1);
         handleStorage(storage -> result.set(storage.count(query)));
+        return result.get();
+    }
+
+    public long sum(String id) {
+        var result = new AtomicLong(-1);
+        handleStorage(storage -> result.set(storage.sum(query, id)));
         return result.get();
     }
 

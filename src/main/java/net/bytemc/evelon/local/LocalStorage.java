@@ -71,12 +71,12 @@ public final class LocalStorage implements Storage {
     }
 
     @Override
-    public <T> int count(RepositoryQuery<T> query) {
+    public <T> long count(RepositoryQuery<T> query) {
         return findAll(query).size();
     }
 
     @Override
-    public <T> int sum(RepositoryQuery<T> query, String id) {
+    public <T> long sum(RepositoryQuery<T> query, String id) {
         //todo
         return -1;
     }
