@@ -21,7 +21,7 @@ import net.bytemc.evelon.repository.annotations.Entity;
 import net.bytemc.evelon.sql.DatabaseHelper;
 import net.bytemc.evelon.sql.analyze.TableAnalyseProcess;
 import net.bytemc.evelon.sql.process.TableCreationProcess;
-import net.bytemc.evelon.storages.StorageHandler;
+import net.bytemc.evelon.StorageHandler;
 import org.jetbrains.annotations.NotNull;
 
 public record Repository<T>(RepositoryClass<T> repositoryClass) {

@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.bytemc.evelon.local.LocalStorage;
 import net.bytemc.evelon.sql.DatabaseStorage;
-import net.bytemc.evelon.storages.Storage;
+import net.bytemc.evelon.Storage;
 
 @Getter
 @AllArgsConstructor

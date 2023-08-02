@@ -19,13 +19,12 @@ package net.bytemc.evelon.repository;
 import lombok.AllArgsConstructor;
 import net.bytemc.evelon.local.LocalStorage;
 import net.bytemc.evelon.sql.DatabaseStorage;
-import net.bytemc.evelon.storages.Storage;
-import net.bytemc.evelon.storages.StorageHandler;
+import net.bytemc.evelon.Storage;
+import net.bytemc.evelon.StorageHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.bytemc.evelon.storages;
+package net.bytemc.evelon;
 
 import net.bytemc.evelon.repository.RepositoryQuery;
 import org.jetbrains.annotations.Nullable;

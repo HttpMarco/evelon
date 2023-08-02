@@ -22,7 +22,7 @@ import net.bytemc.evelon.local.LocalStorage;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.sql.DatabaseHelper;
 import net.bytemc.evelon.sql.DatabaseStorage;
-import net.bytemc.evelon.storages.StorageHandler;
+import net.bytemc.evelon.StorageHandler;
 
 import java.util.ArrayList;
 import java.util.List;

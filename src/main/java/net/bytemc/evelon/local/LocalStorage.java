@@ -20,7 +20,7 @@ import net.bytemc.evelon.exception.NumberNotPresentException;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.repository.RepositoryQuery;
-import net.bytemc.evelon.storages.Storage;
+import net.bytemc.evelon.Storage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;

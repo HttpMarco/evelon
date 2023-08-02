@@ -18,7 +18,7 @@ package net.bytemc.evelon.sql;
 
 import net.bytemc.evelon.repository.RepositoryQuery;
 import net.bytemc.evelon.sql.process.*;
-import net.bytemc.evelon.storages.Storage;
+import net.bytemc.evelon.Storage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
