@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
-public class RepositoryQueryActionsAsync<T> {
+public final class RepositoryQueryActionsAsync<T> {
 
     private final RepositoryQueryActions<T> syncActions;
 

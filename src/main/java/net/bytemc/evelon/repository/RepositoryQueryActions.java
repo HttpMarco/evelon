@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
-public class RepositoryQueryActions<T> {
+public final class RepositoryQueryActions<T> {
 
     private final RepositoryQuery<T> query;
     private final RepositoryDepartureOrder order;
