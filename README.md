@@ -18,3 +18,7 @@ To learn how to use Evelon to easily interact with your sql-database check our <
 ## Release-notes
 ### v1.0.1
 - Implemented count query function
+
+### v1.0.2
+- Implemented findFirst query function
+- Implemented async query functions
