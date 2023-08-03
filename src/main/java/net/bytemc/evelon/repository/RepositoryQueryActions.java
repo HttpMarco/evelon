@@ -30,11 +30,12 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
-public final class RepositoryQueryActions<T> {
+public class RepositoryQueryActions<T> {
 
     private final RepositoryQuery<T> query;
     private final RepositoryDepartureOrder order;
 
+    //TODO duplicate code
     private void handleStorage(Consumer<Storage> handler) {
 
         if (order == null) {

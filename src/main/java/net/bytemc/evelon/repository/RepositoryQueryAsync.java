@@ -16,8 +16,55 @@
 
 package net.bytemc.evelon.repository;
 
-public final class RepositoryQueryAsync {
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+import java.util.concurrent.CompletableFuture;
 
-    //todo
+@RequiredArgsConstructor
+public final class RepositoryQueryAsync<T> {
+
+    @Getter(AccessLevel.PRIVATE)
+    private final RepositoryQuery<T> query;
+
+    public RepositoryQueryActionsAsync<T> local() {
+        return new RepositoryQueryActionsAsync<>(this.query, RepositoryDepartureOrder.LOCAL);
+    }
+
+    public RepositoryQueryActionsAsync<T> database() {
+        return new RepositoryQueryActionsAsync<>(this.query, RepositoryDepartureOrder.DATABASE);
+    }
+
+    public RepositoryQueryActionsAsync<T> chronological() {
+        return new RepositoryQueryActionsAsync<>(this.query, RepositoryDepartureOrder.CHRONOLOGICAL);
+    }
+
+    public RepositoryQueryAsync<T> filter(Filter filter) {
+        this.query.getFilters().add(filter);
+        return this;
+    }
+
+    public void delete() {
+        this.runAsync(this.query::delete);
+    }
+
+    public void create(T value) {
+        this.runAsync(() -> this.query.create(value));
+    }
+
+    public void createIfNotExists(T value) {
+        this.runAsync(() -> this.query.createIfNotExists(value));
+    }
+
+    public void clear() {
+        this.runAsync(this.query::clear);
+    }
+
+    private void runAsync(Runnable runnable) {
+        CompletableFuture.runAsync(runnable).exceptionally(throwable -> {
+            throwable.printStackTrace();
+            return null;
+        });
+    }
 }

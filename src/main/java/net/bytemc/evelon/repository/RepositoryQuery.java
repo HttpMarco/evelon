@@ -46,6 +46,10 @@ public final class RepositoryQuery<T> {
         return new RepositoryQueryActions<>(this, RepositoryDepartureOrder.CHRONOLOGICAL);
     }
 
+    public RepositoryQueryAsync<T> async() {
+        return new RepositoryQueryAsync<>(this);
+    }
+
     public RepositoryQuery<T> filter(Filter filter) {
         this.filters.add(filter);
         return this;
@@ -59,12 +63,6 @@ public final class RepositoryQuery<T> {
     public void create(T value) {
         StorageHandler.getStorage(LocalStorage.class).create(this, value);
         StorageHandler.getStorage(DatabaseStorage.class).create(this, value);
-    }
-
-    public void clear() {
-        //reset all filters
-        this.filters.clear();
-        this.delete();
     }
 
     public void createIfNotExists(T value) {
@@ -81,5 +79,11 @@ public final class RepositoryQuery<T> {
         if(!databaseStorage.exists(this)) {
             databaseStorage.create(this, value);
         }
+    }
+
+    public void clear() {
+        //reset all filters
+        this.filters.clear();
+        this.delete();
     }
 }
