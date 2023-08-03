@@ -56,6 +56,12 @@ public final class RepositoryQueryActions<T> {
         return elements;
     }
 
+    public T findFirst() {
+        var element = new AtomicReference<T>();
+        handleStorage(storage -> element.set(storage.findFirst(query)));
+        return element.get();
+    }
+
     public void update(T value) {
         handleStorage(storage -> storage.update(query, value));
     }
