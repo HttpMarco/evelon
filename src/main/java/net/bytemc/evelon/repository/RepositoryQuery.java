@@ -61,6 +61,12 @@ public final class RepositoryQuery<T> {
         StorageHandler.getStorage(DatabaseStorage.class).create(this, value);
     }
 
+    public void clear() {
+        //reset all filters
+        this.filters.clear();
+        this.delete();
+    }
+
     public void createIfNotExists(T value) {
         var localStorage = StorageHandler.getStorage(LocalStorage.class);
 
