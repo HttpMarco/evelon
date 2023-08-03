@@ -53,8 +53,7 @@ public final class DatabaseStorage implements Storage {
 
     @Override
     public <T> boolean exists(RepositoryQuery<T> query) {
-        //todo
-        return false;
+        return findFirst(query) != null;
     }
 
     @Override
