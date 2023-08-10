@@ -1,13 +1,15 @@
 package net.bytemc.evelon;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public enum DatabaseProtocol {
 
     MARIADB("mariadb");
 
-    String driver;
+    private final String driver;
 
     //TODO
     // MySQL
