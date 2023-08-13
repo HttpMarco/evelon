@@ -20,7 +20,6 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.bytemc.evelon.DatabaseCradinates;
 import net.bytemc.evelon.Evelon;
 
 import java.sql.Connection;
