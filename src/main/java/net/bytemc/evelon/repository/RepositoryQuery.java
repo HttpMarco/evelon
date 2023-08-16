@@ -69,7 +69,7 @@ public final class RepositoryQuery<T> {
         var localStorage = StorageHandler.getStorage(LocalStorage.class);
 
         for (var primary : getRepository().repositoryClass().getPrimaries()) {
-            filter(Filters.match(DatabaseHelper.getRowName(primary), Reflections.readField(value, primary)));
+            filter(Filter.match(DatabaseHelper.getRowName(primary), Reflections.readField(value, primary)));
         }
 
         if(!localStorage.exists(this)) {
