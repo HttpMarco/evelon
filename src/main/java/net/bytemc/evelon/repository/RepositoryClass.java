@@ -22,6 +22,7 @@ import net.bytemc.evelon.sql.ForeignKeyObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -46,7 +47,15 @@ public record RepositoryClass<T>(Class<T> clazz) {
      * @return all fields that are not ignored. Thies' method returns all primaries and rows.
      */
     public List<Field> getRows() {
-        return getDeclaredFields().filter(it -> !it.isAnnotationPresent(Ignore.class)).toList();
+        List<Field> fields = new ArrayList<>();
+        Class<?> tClass = clazz;
+
+        while (tClass != null) {
+            fields.addAll(Arrays.stream(tClass.getDeclaredFields()).filter(it -> !it.isAnnotationPresent(Ignore.class)).toList());
+            tClass = tClass.getSuperclass();
+        }
+
+        return fields;
     }
 
     private Stream<Field> getDeclaredFields() {
