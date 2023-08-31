@@ -20,7 +20,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.bytemc.evelon.sql.DatabaseCradinates;
+import net.bytemc.evelon.Evelon;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -34,19 +34,14 @@ public final class HikariDatabaseConnector {
     @Getter
     private HikariDataSource hikariDataSource;
 
-    private static final DatabaseCradinates databaseCradinates = new DatabaseCradinates(
-            "127.0.0.1",
-            "test123",
-            "root",
-            "tnw",
-            3306);
-
     public HikariDatabaseConnector createConnection() {
         var hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl(String.format(CONNECT_URL_FORMAT, databaseCradinates.hostname(), databaseCradinates.port(), databaseCradinates.database()));
+        var cradinates = Evelon.getDatabaseCradinates();
+
+        hikariConfig.setJdbcUrl(String.format(CONNECT_URL_FORMAT, cradinates.hostname(), cradinates.port(), cradinates.database()));
         hikariConfig.setDriverClassName(JDBC_DRIVER_CLASS_NAME);
-        hikariConfig.setUsername(databaseCradinates.user());
-        hikariConfig.setPassword(databaseCradinates.password());
+        hikariConfig.setUsername(cradinates.user());
+        hikariConfig.setPassword(cradinates.password());
 
         hikariConfig.addDataSourceProperty("cachePrepStmts", "true");
         hikariConfig.addDataSourceProperty("prepStmtCacheSize", "250");

@@ -14,22 +14,15 @@
  * limitations under the License.
  */
 
-package net.bytemc.evelon.repository;
+package net.bytemc.evelon.cradinates;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import net.bytemc.evelon.local.LocalStorage;
-import net.bytemc.evelon.sql.DatabaseStorage;
-import net.bytemc.evelon.Storage;
+/**
+ * Created: 10.08.2023
+ *
+ * @author HabsGleich
+ */
+public interface PasswordDecoder {
 
-@Getter
-@AllArgsConstructor
-public enum RepositoryDepartureOrder {
-
-    CHRONOLOGICAL(null),
-    LOCAL(LocalStorage.class),
-    DATABASE(DatabaseStorage.class);
-
-    final Class<? extends Storage> storage;
+    String decode(String configEntry);
 
 }

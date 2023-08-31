@@ -19,13 +19,14 @@ package net.bytemc.evelon.repository;
 import lombok.AllArgsConstructor;
 import net.bytemc.evelon.local.LocalStorage;
 import net.bytemc.evelon.sql.DatabaseStorage;
-import net.bytemc.evelon.storages.Storage;
-import net.bytemc.evelon.storages.StorageHandler;
+import net.bytemc.evelon.Storage;
+import net.bytemc.evelon.StorageHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
@@ -34,6 +35,7 @@ public final class RepositoryQueryActions<T> {
     private final RepositoryQuery<T> query;
     private final RepositoryDepartureOrder order;
 
+    //TODO duplicate code
     private void handleStorage(Consumer<Storage> handler) {
 
         if (order == null) {
@@ -55,6 +57,12 @@ public final class RepositoryQueryActions<T> {
         return elements;
     }
 
+    public T findFirst() {
+        var element = new AtomicReference<T>();
+        handleStorage(storage -> element.set(storage.findFirst(query)));
+        return element.get();
+    }
+
     public void update(T value) {
         handleStorage(storage -> storage.update(query, value));
     }
@@ -69,10 +77,21 @@ public final class RepositoryQueryActions<T> {
         }
     }
 
+    public double avg(String id) {
+        var result = new AtomicReference<>(-1.0);
+        handleStorage(storage -> result.set(storage.avg(query, id)));
+        return result.get();
+    }
 
-    public int count() {
-        var result = new AtomicInteger(-1);
+    public long count() {
+        var result = new AtomicLong(-1);
         handleStorage(storage -> result.set(storage.count(query)));
+        return result.get();
+    }
+
+    public long sum(String id) {
+        var result = new AtomicLong(-1);
+        handleStorage(storage -> result.set(storage.sum(query, id)));
         return result.get();
     }
 

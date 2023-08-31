@@ -16,10 +16,11 @@
 
 package net.bytemc.evelon.local;
 
+import net.bytemc.evelon.exception.NumberNotPresentException;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.repository.RepositoryQuery;
-import net.bytemc.evelon.storages.Storage;
+import net.bytemc.evelon.Storage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -71,8 +72,26 @@ public final class LocalStorage implements Storage {
     }
 
     @Override
-    public <T> int count(RepositoryQuery<T> query) {
+    public <T> long count(RepositoryQuery<T> query) {
         return findAll(query).size();
+    }
+
+    @Override
+    public <T> long sum(RepositoryQuery<T> query, String id) {
+        if (Reflections.isNumberFromField(query.getRepository().repositoryClass().clazz(), id)) {
+            return findAll(query).stream().mapToInt(value -> (int) Reflections.readFieldFromId(value, id)).sum();
+        } else {
+            throw new NumberNotPresentException(query.getRepository().repositoryClass().clazz(), id);
+        }
+    }
+
+    @Override
+    public <T> double avg(RepositoryQuery<T> query, String id) {
+        if (Reflections.isNumberFromField(query.getRepository().repositoryClass().clazz(), id)) {
+            return findAll(query).stream().mapToInt(value -> (int) Reflections.readFieldFromId(value, id)).average().getAsDouble();
+        } else {
+            throw new NumberNotPresentException(query.getRepository().repositoryClass().clazz(), id);
+        }
     }
 
     public void initializeRepository(Repository<?> repository) {

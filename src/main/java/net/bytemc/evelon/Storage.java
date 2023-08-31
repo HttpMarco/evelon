@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.bytemc.evelon.storages;
+package net.bytemc.evelon;
 
 import net.bytemc.evelon.repository.RepositoryQuery;
 import org.jetbrains.annotations.Nullable;
@@ -59,7 +59,11 @@ public interface Storage {
 
     <T> boolean exists(RepositoryQuery<T> query);
 
-    <T> int count(RepositoryQuery<T> query);
+    <T> long count(RepositoryQuery<T> query);
+
+    <T> long sum(RepositoryQuery<T> query, String id);
+
+    <T> double avg(RepositoryQuery<T> query, String id);
 
     default <T> void createIfNotExists(RepositoryQuery<T> query, T value) {
         if(!exists(query)) {

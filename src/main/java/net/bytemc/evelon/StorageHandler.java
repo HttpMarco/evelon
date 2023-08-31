@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package net.bytemc.evelon.storages;
+package net.bytemc.evelon;
 
 import lombok.Getter;
+import net.bytemc.evelon.Storage;
 import net.bytemc.evelon.local.LocalStorage;
 import net.bytemc.evelon.sql.DatabaseStorage;
 import org.jetbrains.annotations.Nullable;

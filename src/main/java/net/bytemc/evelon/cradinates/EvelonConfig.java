@@ -14,14 +14,26 @@
  * limitations under the License.
  */
 
-package net.bytemc.evelon.sql;
+package net.bytemc.evelon.cradinates;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
-public record DatabaseCradinates(String hostname, String password, String user, String database, int port) {
+import java.nio.file.Path;
 
-    public @NotNull String toUrl() {
-        return "jdbc:mariadb://" + hostname + ":" + port + "/" + database + "?useUnicode=true&autoReconnect=true&user=" + user + "&password=" + password;
-    }
+/**
+ * Created: 10.08.2023
+ *
+ * @author HabsGleich
+ */
+@Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public final class EvelonConfig {
+
+    private Path configPath;
+    private PasswordDecoder passwordDecoder;
+
 }
-

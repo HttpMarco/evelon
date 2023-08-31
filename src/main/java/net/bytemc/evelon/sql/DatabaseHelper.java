@@ -71,4 +71,15 @@ public final class DatabaseHelper {
         return "UPDATE %s SET %s;".formatted(value);
     }
 
+    public static String count(String... value) {
+        return "SELECT COUNT(*) AS %s FROM %s".formatted(value);
+    }
+
+    public static String sum(String... value) {
+        return "SELECT SUM(%s) AS %s FROM %s".formatted(value);
+    }
+
+    public static String avg(String... value) {
+        return "SELECT AVG(%s) AS %s FROM %s".formatted(value);
+    }
 }

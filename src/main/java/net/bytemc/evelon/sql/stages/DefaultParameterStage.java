@@ -40,7 +40,7 @@ public final class DefaultParameterStage implements ElementStage<Object> {
 
         if (type == DatabaseType.TEXT && field != null && field.isAnnotationPresent(PrimaryKey.class)) {
             // mariaDb need a specific length for the primary key. The Default value is 255.
-            return DatabaseType.VARBINARY.type().formatted("255");
+            return DatabaseType.VARCHAR.type().formatted("255");
         }
         return type.type();
     }

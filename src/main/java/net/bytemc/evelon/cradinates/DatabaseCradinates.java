@@ -14,22 +14,20 @@
  * limitations under the License.
  */
 
-package net.bytemc.evelon.repository;
+package net.bytemc.evelon.cradinates;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import net.bytemc.evelon.local.LocalStorage;
-import net.bytemc.evelon.sql.DatabaseStorage;
-import net.bytemc.evelon.Storage;
+import net.bytemc.evelon.DatabaseProtocol;
+import org.jetbrains.annotations.NotNull;
 
-@Getter
-@AllArgsConstructor
-public enum RepositoryDepartureOrder {
+public record DatabaseCradinates(DatabaseProtocol databaseProtocol, String hostname, String password, String user, String database, int port) {
 
-    CHRONOLOGICAL(null),
-    LOCAL(LocalStorage.class),
-    DATABASE(DatabaseStorage.class);
+    public @NotNull String toUrl() {
+        return this.defaultUrl().formatted(databaseProtocol.getDriver(), hostname, port, database, user, password);
+    }
 
-    final Class<? extends Storage> storage;
+    private String defaultUrl() {
+        return "jdbc:%s://%s:%d/%s?useUnicode=true&autoReconnect=true&user=%s&password=%s";
+    }
 
 }
+

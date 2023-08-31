@@ -18,7 +18,7 @@ package net.bytemc.evelon.sql;
 
 import net.bytemc.evelon.repository.RepositoryQuery;
 import net.bytemc.evelon.sql.process.*;
-import net.bytemc.evelon.storages.Storage;
+import net.bytemc.evelon.Storage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -53,13 +53,21 @@ public final class DatabaseStorage implements Storage {
 
     @Override
     public <T> boolean exists(RepositoryQuery<T> query) {
-        //todo
-        return false;
+        return findFirst(query) != null;
     }
 
     @Override
-    public <T> int count(RepositoryQuery<T> query) {
-        //todo
-        return -1;
+    public <T> long count(RepositoryQuery<T> query) {
+        return MathCalculationProcess.count(query);
+    }
+
+    @Override
+    public <T> long sum(RepositoryQuery<T> query, String id) {
+        return MathCalculationProcess.sum(query, id);
+    }
+
+    @Override
+    public <T> double avg(RepositoryQuery<T> query, String id) {
+        return MathCalculationProcess.avg(query, id);
     }
 }

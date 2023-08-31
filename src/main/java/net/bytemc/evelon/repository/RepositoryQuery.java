@@ -22,7 +22,7 @@ import net.bytemc.evelon.local.LocalStorage;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.sql.DatabaseHelper;
 import net.bytemc.evelon.sql.DatabaseStorage;
-import net.bytemc.evelon.storages.StorageHandler;
+import net.bytemc.evelon.StorageHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +46,10 @@ public final class RepositoryQuery<T> {
         return new RepositoryQueryActions<>(this, RepositoryDepartureOrder.CHRONOLOGICAL);
     }
 
+    public RepositoryQueryAsync<T> async() {
+        return new RepositoryQueryAsync<>(this);
+    }
+
     public RepositoryQuery<T> filter(Filter filter) {
         this.filters.add(filter);
         return this;
@@ -61,11 +65,15 @@ public final class RepositoryQuery<T> {
         StorageHandler.getStorage(DatabaseStorage.class).create(this, value);
     }
 
+    public void cache(T value) {
+        StorageHandler.getStorage(LocalStorage.class).create(this, value);
+    }
+
     public void createIfNotExists(T value) {
         var localStorage = StorageHandler.getStorage(LocalStorage.class);
 
         for (var primary : getRepository().repositoryClass().getPrimaries()) {
-            filter(Filters.match(DatabaseHelper.getRowName(primary), Reflections.readField(value, primary)));
+            filter(Filter.match(DatabaseHelper.getRowName(primary), Reflections.readField(value, primary)));
         }
 
         if(!localStorage.exists(this)) {
@@ -75,5 +83,11 @@ public final class RepositoryQuery<T> {
         if(!databaseStorage.exists(this)) {
             databaseStorage.create(this, value);
         }
+    }
+
+    public void clear() {
+        //reset all filters
+        this.filters.clear();
+        this.delete();
     }
 }
