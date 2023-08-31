@@ -18,13 +18,18 @@ package net.bytemc.evelon.repository;
 
 import net.bytemc.evelon.local.LocalStorage;
 import net.bytemc.evelon.repository.annotations.Entity;
+import net.bytemc.evelon.repository.properties.StartupProperties;
 import net.bytemc.evelon.sql.DatabaseHelper;
 import net.bytemc.evelon.sql.analyze.TableAnalyseProcess;
 import net.bytemc.evelon.sql.process.TableCreationProcess;
 import net.bytemc.evelon.StorageHandler;
 import org.jetbrains.annotations.NotNull;
 
-public record Repository<T>(RepositoryClass<T> repositoryClass) {
+public record Repository<T>(RepositoryClass<T> repositoryClass, StartupProperties<T> startupProperty) {
+
+    public static <T> @NotNull Repository<T> create(Class<T> clazz) {
+        return create(clazz, StartupProperties.empty());
+    }
 
     /**
      * @param clazz the class of the repository
@@ -32,9 +37,9 @@ public record Repository<T>(RepositoryClass<T> repositoryClass) {
      * @return a new instance of {@link Repository}
      * Check the state of the current repository in the database and create a new table if it does not exist.
      */
-    public static <T> @NotNull Repository<T> create(Class<T> clazz) {
+    public static <T> @NotNull Repository<T> create(Class<T> clazz, StartupProperties<T> startupProperty) {
         // create a local list
-        var repository = new Repository<>(new RepositoryClass<>(clazz));
+        var repository = new Repository<>(new RepositoryClass<>(clazz), startupProperty);
 
         StorageHandler.getStorage(LocalStorage.class).initializeRepository(repository);
 
@@ -46,6 +51,9 @@ public record Repository<T>(RepositoryClass<T> repositoryClass) {
             // analyze the current table and check if the table has all columns and more
             TableAnalyseProcess.run(repository);
         }
+
+        startupProperty.initialize(repository);
+
         return repository;
     }
 

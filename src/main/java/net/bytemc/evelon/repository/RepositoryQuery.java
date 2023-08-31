@@ -65,6 +65,10 @@ public final class RepositoryQuery<T> {
         StorageHandler.getStorage(DatabaseStorage.class).create(this, value);
     }
 
+    public void cache(T value) {
+        StorageHandler.getStorage(LocalStorage.class).create(this, value);
+    }
+
     public void createIfNotExists(T value) {
         var localStorage = StorageHandler.getStorage(LocalStorage.class);
 

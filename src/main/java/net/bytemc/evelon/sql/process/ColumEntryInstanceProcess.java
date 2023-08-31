@@ -34,7 +34,7 @@ public final class ColumEntryInstanceProcess {
 
         var repository = repositoryQuery.getRepository();
         var neededTables = getNeededTables(repository.getName(), repository.repositoryClass());
-        var query = new StringBuilder("SELECT * FROM " + repository.getName() + " %s" + DatabaseHelper.getDatabaseFilterQuery(repositoryQuery.getFilters()) + (limit != -1 ? "" : " LIMIT " + limit) + ";");
+        var query = new StringBuilder("SELECT * FROM " + repository.getName() + " %s" + DatabaseHelper.getDatabaseFilterQuery(repositoryQuery.getFilters()) + (limit == -1 ? "" : " LIMIT " + limit) + ";");
         var primaryNames = String.join(", ", repository.repositoryClass().getPrimaries().stream().map(DatabaseHelper::getRowName).toList());
         var innerJoins = String.join(" ", neededTables.keySet().stream().filter(it -> !it.equalsIgnoreCase(repositoryQuery.getRepository().getName())).map(it -> "INNER JOIN " + it + " USING (" + primaryNames + ")").toList());
 
