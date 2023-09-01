@@ -5,7 +5,7 @@ Copyright by ByteMC-Network
 <hr>
 
 **Latest stable-version:** 1.1.0<br>
-**Latest snapshot-version:** 1.0.5-SNAPSHOT<br>
+**Latest snapshot-version:** 1.1.1-SNAPSHOT<br>
 **All available versions:** 
 <a href="https://artifactory.bytemc.de/ui/native/bytemc-public/net/bytemc/evelon/">Click </a>
 
@@ -28,3 +28,6 @@ To learn how to use Evelon to easily interact with your sql-database check our <
 - Implemented database cradinates
 - Added support for maps and superclasses
 - Fixed multiple errors
+
+### v1.1.1
+- Implemented mongodb support
