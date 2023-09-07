@@ -17,12 +17,12 @@ public final class MongoStorage implements Storage {
 
     @Override
     public <T> void create(RepositoryQuery<T> query, T value) {
-        getCollection(null, query.getRepository()).insertOne(value);
+        getCollection(query.getRepository()).insertOne(value);
     }
 
     @Override
     public <T> void delete(RepositoryQuery<T> query) {
-        getCollection(null, query.getRepository())
+        getCollection(query.getRepository())
             .findOneAndDelete(linkFilters(query.getFilters()));
     }
 
@@ -38,7 +38,7 @@ public final class MongoStorage implements Storage {
 
     @Override
     public <T> void update(RepositoryQuery<T> query, T value) {
-        getCollection(null, query.getRepository())
+        getCollection(query.getRepository())
             .findOneAndReplace(linkFilters(query.getFilters()), value);
     }
 
@@ -49,7 +49,7 @@ public final class MongoStorage implements Storage {
 
     @Override
     public <T> long count(RepositoryQuery<T> query) {
-        return getCollection(null, query.getRepository())
+        return getCollection(query.getRepository())
             .countDocuments(linkFilters(query.getFilters()));
     }
 

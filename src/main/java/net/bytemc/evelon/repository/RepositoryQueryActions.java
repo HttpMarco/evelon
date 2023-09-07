@@ -17,6 +17,7 @@
 package net.bytemc.evelon.repository;
 
 import lombok.AllArgsConstructor;
+import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.local.LocalStorage;
 import net.bytemc.evelon.sql.SQLStorage;
 import net.bytemc.evelon.Storage;
@@ -45,10 +46,10 @@ public final class RepositoryQueryActions<T> {
 
         if (order == RepositoryDepartureOrder.CHRONOLOGICAL) {
             handler.accept(StorageHandler.getStorage(LocalStorage.class));
-            handler.accept(StorageHandler.getStorage(SQLStorage.class));
+            handler.accept(StorageHandler.getStorage(Evelon.getDatabaseCradinates().databaseProtocol().getStorageClass()));
             return;
         }
-        handler.accept(StorageHandler.getStorage(order.getStorage()));
+        handler.accept(StorageHandler.getStorage(order.getStorage().get()));
     }
 
     public @NotNull List<T> findAll() {

@@ -17,9 +17,11 @@
 package net.bytemc.evelon.repository;
 
 import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.internal.MongoClientImpl;
 import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.local.LocalStorage;
+import net.bytemc.evelon.mongo.MongoConnection;
 import net.bytemc.evelon.repository.annotations.Entity;
 import net.bytemc.evelon.repository.properties.StartupProperties;
 import net.bytemc.evelon.sql.SQLHelper;
@@ -58,7 +60,8 @@ public record Repository<T>(RepositoryClass<T> repositoryClass, StartupPropertie
                 }
             }
             case MONGODB -> {
-
+                final MongoDatabase database = MongoConnection.getDatabase();
+                database.createCollection(repository.getName());
             }
         }
 
