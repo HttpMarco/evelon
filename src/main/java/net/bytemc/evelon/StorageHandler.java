@@ -17,8 +17,8 @@
 package net.bytemc.evelon;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import net.bytemc.evelon.local.LocalStorage;
-import net.bytemc.evelon.sql.SQLStorage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -30,11 +30,12 @@ public final class StorageHandler {
     private static final List<Storage> storages = new ArrayList<>();
 
     static {
-        //disable logging
-        System.setProperty("mariadb.logging.disable", "false");
-
-        storages.add(new SQLStorage());
         storages.add(new LocalStorage());
+    }
+
+    @SneakyThrows
+    static void initStorage(DatabaseProtocol protocol) {
+        storages.add(protocol.getStorageClass().getConstructor().newInstance());
     }
 
     /**

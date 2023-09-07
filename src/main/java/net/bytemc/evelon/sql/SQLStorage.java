@@ -25,6 +25,13 @@ import java.util.List;
 
 public final class SQLStorage implements Storage {
 
+    public SQLStorage() {
+        //disable logging
+        System.setProperty("mariadb.logging.disable", "false");
+
+        SQLConnection.init();
+    }
+
     @Override
     public <T> void create(RepositoryQuery<T> query, T value) {
         ColumnEntryCreationProcess.create(query, value);

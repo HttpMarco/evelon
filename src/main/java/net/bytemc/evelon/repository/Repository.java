@@ -16,6 +16,9 @@
 
 package net.bytemc.evelon.repository;
 
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.internal.MongoClientImpl;
+import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.local.LocalStorage;
 import net.bytemc.evelon.repository.annotations.Entity;
 import net.bytemc.evelon.repository.properties.StartupProperties;
@@ -43,13 +46,20 @@ public record Repository<T>(RepositoryClass<T> repositoryClass, StartupPropertie
 
         StorageHandler.getStorage(LocalStorage.class).initializeRepository(repository);
 
-        // check if table exists in sql, else create table
-        // check also old table names, because the table can be renamed and not lose the data.
-        if (!SQLHelper.isTableExists(repository.getName()) && !SQLHelper.isTableExists(repository.repositoryClass.clazz().getSimpleName().toLowerCase())) {
-            TableCreationProcess.createTable(repository);
-        } else {
-            // analyze the current table and check if the table has all columns and more
-            TableAnalyseProcess.run(repository);
+        switch (Evelon.getDatabaseCradinates().databaseProtocol()) {
+            case MARIADB -> {
+                // check if table exists in sql, else create table
+                // check also old table names, because the table can be renamed and not lose the data.
+                if (!SQLHelper.isTableExists(repository.getName()) && !SQLHelper.isTableExists(repository.repositoryClass.clazz().getSimpleName().toLowerCase())) {
+                    TableCreationProcess.createTable(repository);
+                } else {
+                    // analyze the current table and check if the table has all columns and more
+                    TableAnalyseProcess.run(repository);
+                }
+            }
+            case MONGODB -> {
+
+            }
         }
 
         startupProperty.initialize(repository);

@@ -25,4 +25,11 @@ public class Debugger {
     @Getter
     private static boolean enable = false;
 
+    public static void log(String message) {
+        if (!enable) {
+            return;
+        }
+        System.out.println(message);
+    }
+
 }
