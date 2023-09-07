@@ -3,8 +3,8 @@ package net.bytemc.evelon.sql.process;
 import net.bytemc.evelon.exception.NumberNotPresentException;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.RepositoryQuery;
-import net.bytemc.evelon.sql.DatabaseConnection;
-import net.bytemc.evelon.sql.DatabaseHelper;
+import net.bytemc.evelon.sql.SQLConnection;
+import net.bytemc.evelon.sql.SQLHelper;
 
 import java.math.BigDecimal;
 import java.util.function.Function;
@@ -12,15 +12,15 @@ import java.util.function.Function;
 public final class MathCalculationProcess {
 
     public static <T> long count(RepositoryQuery<T> query) {
-        return calculationDatabaseFields("count", options -> DatabaseHelper.count(options), -1L, query, null, false);
+        return calculationDatabaseFields("count", options -> SQLHelper.count(options), -1L, query, null, false);
     }
 
     public static <T> long sum(RepositoryQuery<T> query, String id) {
-        return calculationDatabaseFields("sum", options -> DatabaseHelper.sum(options), BigDecimal.valueOf(-1), query, id, true).longValue();
+        return calculationDatabaseFields("sum", options -> SQLHelper.sum(options), BigDecimal.valueOf(-1), query, id, true).longValue();
     }
 
     public static <T> double avg(RepositoryQuery<T> query, String id) {
-        return calculationDatabaseFields("avg", options -> DatabaseHelper.avg(options), BigDecimal.valueOf(-1), query, id, true).doubleValue();
+        return calculationDatabaseFields("avg", options -> SQLHelper.avg(options), BigDecimal.valueOf(-1), query, id, true).doubleValue();
     }
 
     private static <T> T calculationDatabaseFields(String key, Function<String[], String> query, T defaultValue, RepositoryQuery<?> repositoryQuery, String id, boolean checkNumber) {
@@ -29,10 +29,10 @@ public final class MathCalculationProcess {
         }
 
         var keyName = key + "_value";
-        var querySignature = repositoryQuery.getRepository().getName() + DatabaseHelper.getDatabaseFilterQuery(repositoryQuery.getFilters());
+        var querySignature = repositoryQuery.getRepository().getName() + SQLHelper.getDatabaseFilterQuery(repositoryQuery.getFilters());
         var options = (key.equalsIgnoreCase("count") ? new String[]{keyName, querySignature} : new String[]{id, keyName, querySignature});
 
-        return (T) DatabaseConnection.executeQuery(query.apply(options), resultSet -> {
+        return (T) SQLConnection.executeQuery(query.apply(options), resultSet -> {
             if (resultSet.next()) {
                 return resultSet.getObject(keyName);
             }

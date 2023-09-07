@@ -16,7 +16,6 @@
 
 package net.bytemc.evelon.sql.substages;
 
-import net.bytemc.evelon.exception.StageNotFoundException;
 import net.bytemc.evelon.exception.StageNotSupportedException;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.Repository;
@@ -43,28 +42,28 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
         var keyStage = StageHandler.getInstance().getElementStage(keyType);
         var valueStage = StageHandler.getInstance().getElementStage(valueType);
 
-        if (!(keyStage instanceof ElementStage<?> keyElementStage)) {
+        if (!(keyStage instanceof SQLElementStage<?> keyElementStage)) {
             throw new StageNotSupportedException(keyType);
         }
         var rowValues = new ArrayList<String>();
         // collect all needed foreign keys
-        DatabaseForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
+        SQLForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
         // add map key value -> unique -> primary key
         var keyDatabaseType = keyElementStage.anonymousElementRowData(field, new RepositoryClass<>(keyType));
-        if (keyDatabaseType.equals(DatabaseType.TEXT.type())) {
-            keyDatabaseType = DatabaseType.VARCHAR.type().formatted("255");
+        if (keyDatabaseType.equals(SQLType.TEXT.type())) {
+            keyDatabaseType = SQLType.VARCHAR.type().formatted("255");
         }
-        rowValues.add(DatabaseHelper.getRowName(field) + "_key " + keyDatabaseType + " PRIMARY KEY");
+        rowValues.add(SQLHelper.getRowName(field) + "_key " + keyDatabaseType + " PRIMARY KEY");
 
-        if (valueStage instanceof ElementStage<?> elementStage) {
-            rowValues.add(DatabaseHelper.getRowName(field) + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(keyType)));
+        if (valueStage instanceof SQLElementStage<?> elementStage) {
+            rowValues.add(SQLHelper.getRowName(field) + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(keyType)));
         } else {
             //todo
             throw new StageNotSupportedException(valueType);
         }
         // add database schema link
-        DatabaseForeignKeyHelper.convertToDatabaseForeignLink(rowValues, keys);
-        queries.add(DatabaseHelper.create(table, String.join(", ", rowValues)));
+        SQLForeignKeyHelper.convertToDatabaseForeignLink(rowValues, keys);
+        queries.add(SQLHelper.create(table, String.join(", ", rowValues)));
     }
 
     @Override
@@ -78,14 +77,14 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
         var valueStage = StageHandler.getInstance().getElementStage(valueType);
 
         for (var keyObject : value.keySet()) {
-            var elements = DatabaseForeignKeyHelper.convertKeyObjectsToElements(keys);
-            if (keyStage instanceof ElementStage<?> elementStage) {
-                elements.put(DatabaseHelper.getRowName(field) + "_key", elementStage.anonymousElementEntryData(new RepositoryClass<>(keyType), null, keyObject).right());
+            var elements = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
+            if (keyStage instanceof SQLElementStage<?> elementStage) {
+                elements.put(SQLHelper.getRowName(field) + "_key", elementStage.anonymousElementEntryData(new RepositoryClass<>(keyType), null, keyObject).right());
             }
-            if (valueStage instanceof ElementStage<?> elementStage) {
-                elements.put(DatabaseHelper.getRowName(field) + "_value", elementStage.anonymousElementEntryData(new RepositoryClass<>(valueType), null, value.get(keyObject)).right());
+            if (valueStage instanceof SQLElementStage<?> elementStage) {
+                elements.put(SQLHelper.getRowName(field) + "_value", elementStage.anonymousElementEntryData(new RepositoryClass<>(valueType), null, value.get(keyObject)).right());
             }
-            queries.add(DatabaseHelper.insertDefault(table, String.join(", ", elements.keySet()), String.join(", ", elements.values())));
+            queries.add(SQLHelper.insertDefault(table, String.join(", ", elements.keySet()), String.join(", ", elements.values())));
         }
         return queries;
     }
@@ -97,7 +96,7 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
     }
 
     @Override
-    public Map<?, ?> createInstance(String tableName, @Nullable Field parentField, RepositoryClass<Map<?, ?>> clazz, DatabaseResultSet resultSet) {
+    public Map<?, ?> createInstance(String tableName, @Nullable Field parentField, RepositoryClass<Map<?, ?>> clazz, SQLResultSet resultSet) {
 
         var map = new HashMap<>();
         var generic = Reflections.readGenericFromClass(parentField);
@@ -107,14 +106,14 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
         var keyStage = StageHandler.getInstance().getElementStage(keyType);
         var valueStage = StageHandler.getInstance().getElementStage(valueType);
 
-        return DatabaseConnection.executeQuery("SELECT * FROM " + tableName, result -> {
+        return SQLConnection.executeQuery("SELECT * FROM " + tableName, result -> {
             while (result.next()) {
-                if (keyStage instanceof ElementStage<?> keyElementStage) {
-                    if (valueStage instanceof ElementStage<?> valueElementStage) {
-                        var databaseResultSet = new DatabaseResultSet();
+                if (keyStage instanceof SQLElementStage<?> keyElementStage) {
+                    if (valueStage instanceof SQLElementStage<?> valueElementStage) {
+                        var databaseResultSet = new SQLResultSet();
                         var table = databaseResultSet.addTable("default");
-                        var keyName = DatabaseHelper.getRowName(parentField) + "_key";
-                        var rowName = DatabaseHelper.getRowName(parentField) + "_value";
+                        var keyName = SQLHelper.getRowName(parentField) + "_key";
+                        var rowName = SQLHelper.getRowName(parentField) + "_value";
                         table.setProperty(rowName, result.getObject(rowName));
                         table.setProperty(keyName, result.getObject(keyName));
                         map.put(keyElementStage.anonymousCreateObject(new RepositoryClass<>(keyType), keyName, table), valueElementStage.anonymousCreateObject(new RepositoryClass<>(valueType), rowName, table));

@@ -18,7 +18,7 @@ package net.bytemc.evelon.repository;
 
 import lombok.AllArgsConstructor;
 import net.bytemc.evelon.local.LocalStorage;
-import net.bytemc.evelon.sql.DatabaseStorage;
+import net.bytemc.evelon.sql.SQLStorage;
 import net.bytemc.evelon.Storage;
 import net.bytemc.evelon.StorageHandler;
 import org.jetbrains.annotations.NotNull;
@@ -45,7 +45,7 @@ public final class RepositoryQueryActions<T> {
 
         if (order == RepositoryDepartureOrder.CHRONOLOGICAL) {
             handler.accept(StorageHandler.getStorage(LocalStorage.class));
-            handler.accept(StorageHandler.getStorage(DatabaseStorage.class));
+            handler.accept(StorageHandler.getStorage(SQLStorage.class));
             return;
         }
         handler.accept(StorageHandler.getStorage(order.getStorage()));
@@ -69,11 +69,11 @@ public final class RepositoryQueryActions<T> {
 
     public boolean exists() {
         if (order == RepositoryDepartureOrder.DATABASE) {
-            return StorageHandler.getStorage(DatabaseStorage.class).exists(query);
+            return StorageHandler.getStorage(SQLStorage.class).exists(query);
         } else if (order == RepositoryDepartureOrder.LOCAL) {
             return StorageHandler.getStorage(LocalStorage.class).exists(query);
         } else {
-            return StorageHandler.getStorage(LocalStorage.class).exists(query) || StorageHandler.getStorage(DatabaseStorage.class).exists(query);
+            return StorageHandler.getStorage(LocalStorage.class).exists(query) || StorageHandler.getStorage(SQLStorage.class).exists(query);
         }
     }
 

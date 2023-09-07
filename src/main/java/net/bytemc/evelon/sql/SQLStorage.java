@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public final class DatabaseStorage implements Storage {
+public final class SQLStorage implements Storage {
 
     @Override
     public <T> void create(RepositoryQuery<T> query, T value) {

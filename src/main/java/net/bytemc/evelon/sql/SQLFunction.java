@@ -14,23 +14,13 @@
  * limitations under the License.
  */
 
-package net.bytemc.evelon.sql.transformers;
+package net.bytemc.evelon.sql;
 
-import net.bytemc.evelon.sql.ElementStageTransformer;
-import net.bytemc.evelon.sql.Stage;
-import net.bytemc.evelon.sql.StageHandler;
-import net.bytemc.evelon.sql.substages.VirtualObjectStage;
+import java.sql.SQLException;
 
-public final class RecordTransformer implements ElementStageTransformer {
+@FunctionalInterface
+public interface SQLFunction<I, O> {
 
-    @Override
-    public Stage<?> transformTo() {
-        return StageHandler.getInstance().getStage(VirtualObjectStage.class);
-    }
-
-    @Override
-    public boolean isElement(Class<?> type) {
-        return type.isRecord();
-    }
+    O apply(I i) throws SQLException;
 
 }

@@ -17,9 +17,8 @@
 package net.bytemc.evelon;
 
 import lombok.Getter;
-import net.bytemc.evelon.Storage;
 import net.bytemc.evelon.local.LocalStorage;
-import net.bytemc.evelon.sql.DatabaseStorage;
+import net.bytemc.evelon.sql.SQLStorage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public final class StorageHandler {
         //disable logging
         System.setProperty("mariadb.logging.disable", "false");
 
-        storages.add(new DatabaseStorage());
+        storages.add(new SQLStorage());
         storages.add(new LocalStorage());
     }
 

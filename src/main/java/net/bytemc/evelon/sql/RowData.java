@@ -21,7 +21,7 @@ package net.bytemc.evelon.sql;
  * @param type The type of the row
  * @param key The key of the row, primary or foreign
  */
-public record DatabaseRowData(String name, DatabaseType type, DatabaseRowData.KEY key) {
+public record RowData(String name, SQLType type, RowData.KEY key) {
 
     public enum KEY {
         PRIMARY,

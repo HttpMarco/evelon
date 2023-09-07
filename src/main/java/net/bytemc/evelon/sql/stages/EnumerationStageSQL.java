@@ -22,28 +22,28 @@ import net.bytemc.evelon.sql.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
-import java.nio.file.Path;
+import java.util.Arrays;
 
-public final class PathStage implements ElementStage<Path> {
+public final class EnumerationStageSQL implements SQLElementStage<Enum<?>> {
 
     @Override
-    public String elementRowData(@Nullable Field field, RepositoryClass<Path> repository) {
-        return DatabaseType.TEXT.type();
+    public String elementRowData(@Nullable Field field, RepositoryClass<Enum<?>> repository) {
+        var type = (Class<Enum<?>>) field.getType();
+        return SQLType.ENUM.type().formatted(String.join(",", Arrays.stream(type.getEnumConstants()).map(it -> Schema.encloseSchema(it.name())).toList()));
     }
 
     @Override
-    public Pair<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Path object) {
-        // change path symbol, because mariadb ignore this symbol
-        return new Pair<>(DatabaseHelper.getRowName(field), Schema.encloseSchema(object.toString().replaceAll("\\\\", "/")));
+    public Pair<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Enum<?> object) {
+        return new Pair<>(SQLHelper.getRowName(field), Schema.encloseSchema(object.name()));
     }
 
     @Override
-    public Path createObject(RepositoryClass<Path> clazz, String id, DatabaseResultSet.Table table) {
-        return Path.of(table.get(id, String.class));
+    public Enum<?> createObject(RepositoryClass clazz, String id, SQLResultSet.Table table) {
+        return Enum.valueOf((Class<? extends Enum>) clazz.clazz(), table.get(id, String.class));
     }
 
     @Override
     public boolean isElement(Class<?> type) {
-        return type.equals(Path.class);
+        return type.isEnum();
     }
 }

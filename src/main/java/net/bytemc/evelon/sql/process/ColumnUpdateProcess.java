@@ -1,7 +1,7 @@
 package net.bytemc.evelon.sql.process;
 
 import net.bytemc.evelon.repository.RepositoryQuery;
-import net.bytemc.evelon.sql.DatabaseConnection;
+import net.bytemc.evelon.sql.SQLConnection;
 import net.bytemc.evelon.sql.StageHandler;
 import net.bytemc.evelon.sql.substages.VirtualObjectStage;
 
@@ -19,7 +19,7 @@ public final class ColumnUpdateProcess {
         }
         var queries = virtualObjectStage.onAnonymousUpdateParentElement(query.getRepository().getName(), null, query.getRepository(), query, value);
         for(int i = queries.size() - 1; i >= 0; i--) {
-            DatabaseConnection.executeUpdate(queries.get(i));
+            SQLConnection.executeUpdate(queries.get(i));
         }
     }
 }

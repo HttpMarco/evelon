@@ -16,17 +16,18 @@
 
 package net.bytemc.evelon.sql;
 
+import net.bytemc.evelon.Debugger;
 import net.bytemc.evelon.sql.connection.HikariDatabaseConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class DatabaseConnection {
+public final class SQLConnection {
 
     private static final HikariDatabaseConnector pool = new HikariDatabaseConnector().createConnection();
 
-    public static <T> T executeQuery(String query, DatabaseFunction<ResultSet, T> function, T defaultValue) {
+    public static <T> T executeQuery(String query, SQLFunction<ResultSet, T> function, T defaultValue) {
         try (var connection = pool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             try (var resultSet = preparedStatement.executeQuery()) {
                 return function.apply(resultSet);
@@ -36,7 +37,7 @@ public final class DatabaseConnection {
         } catch (SQLException exception) {
             exception.printStackTrace();
         } finally {
-            if (DatabaseDebugger.isEnable()) {
+            if (Debugger.isEnable()) {
                 System.out.println(query);
             }
         }
@@ -50,7 +51,7 @@ public final class DatabaseConnection {
             System.err.println("Error while executing update: " + query);
             return -1;
         } finally {
-            if (DatabaseDebugger.isEnable()) {
+            if (Debugger.isEnable()) {
                 System.out.println(query);
             }
         }

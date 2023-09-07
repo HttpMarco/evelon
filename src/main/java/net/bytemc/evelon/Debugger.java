@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package net.bytemc.evelon.sql;
+package net.bytemc.evelon;
 
 import lombok.Getter;
 import lombok.Setter;
 
-public class DatabaseDebugger {
+public class Debugger {
 
     @Setter
     @Getter

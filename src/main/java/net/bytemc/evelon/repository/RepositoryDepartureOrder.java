@@ -19,7 +19,7 @@ package net.bytemc.evelon.repository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.bytemc.evelon.local.LocalStorage;
-import net.bytemc.evelon.sql.DatabaseStorage;
+import net.bytemc.evelon.sql.SQLStorage;
 import net.bytemc.evelon.Storage;
 
 @Getter
@@ -28,7 +28,7 @@ public enum RepositoryDepartureOrder {
 
     CHRONOLOGICAL(null),
     LOCAL(LocalStorage.class),
-    DATABASE(DatabaseStorage.class);
+    DATABASE(SQLStorage.class);
 
     final Class<? extends Storage> storage;
 
