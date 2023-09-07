@@ -16,9 +16,11 @@
 
 package net.bytemc.evelon.repository.filters;
 
+import com.mongodb.client.model.Filters;
 import net.bytemc.evelon.local.LocalStorageHelper;
 import net.bytemc.evelon.repository.AbstractIdFilter;
 import net.bytemc.evelon.sql.Schema;
+import org.bson.conversions.Bson;
 
 import java.util.stream.Stream;
 
@@ -32,8 +34,13 @@ public final class MatchFilter extends AbstractIdFilter {
     }
 
     @Override
-    public String sqlFilter(String id) {
+    public String sqlFilter() {
         return ("%s = " + Schema.encloseSchema("%s")).formatted(getId(), value.toString());
+    }
+
+    @Override
+    public Bson mongoFilter() {
+        return Filters.eq(getId(), value);
     }
 
     @Override

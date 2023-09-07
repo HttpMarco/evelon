@@ -16,9 +16,12 @@
 
 package net.bytemc.evelon.repository.filters;
 
+import com.mongodb.client.model.Filters;
 import net.bytemc.evelon.local.LocalStorageHelper;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.AbstractIdFilter;
+import org.bson.conversions.Bson;
+
 import java.util.stream.Stream;
 
 public final class BetweenFilter extends AbstractIdFilter {
@@ -38,8 +41,13 @@ public final class BetweenFilter extends AbstractIdFilter {
     }
 
     @Override
-    public String sqlFilter(String id) {
-        return id + " BETWEEN " + minimumBounce + " AND " + maximumBounce;
+    public String sqlFilter() {
+        return getId() + " BETWEEN " + minimumBounce + " AND " + maximumBounce;
+    }
+
+    @Override
+    public Bson mongoFilter() {
+        return Filters.and(Filters.gte(getId(), minimumBounce), Filters.lte(getId(), maximumBounce));
     }
 
     @Override
@@ -49,7 +57,7 @@ public final class BetweenFilter extends AbstractIdFilter {
             // read field from an object
             var numberFilter = LocalStorageHelper.getNumberFilter(getId(), it);
 
-            return numberFilter == null ? false : numberFilter.doubleValue() >= ((Number) minimumBounce).doubleValue() && numberFilter.doubleValue() <= ((Number) maximumBounce).doubleValue();
+            return numberFilter != null && numberFilter.doubleValue() >= ((Number) minimumBounce).doubleValue() && numberFilter.doubleValue() <= ((Number) maximumBounce).doubleValue();
         });
     }
 }

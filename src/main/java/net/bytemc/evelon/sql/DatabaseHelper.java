@@ -52,11 +52,10 @@ public final class DatabaseHelper {
             return Reflections.EMPTY_STRING;
         }
 
-        return new StringBuilder(" WHERE ").append(String.join(" AND ",
-                filters.stream()
-                        .filter(filter -> filter instanceof AbstractIdFilter)
-                        .map(it -> ((AbstractIdFilter) it))
-                        .map(it -> it.sqlFilter(it.getId())).toList())).toString();
+        return " WHERE " + String.join(" AND ",
+            filters.stream()
+                .map(Filter::sqlFilter)
+                .toList());
     }
 
     public static String insertDefault(String... values) {

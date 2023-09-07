@@ -17,12 +17,17 @@
 package net.bytemc.evelon.repository;
 
 import net.bytemc.evelon.repository.filters.*;
+import org.bson.conversions.Bson;
 
 import java.util.stream.Stream;
 
 public interface Filter {
 
-    String sqlFilter(String id);
+    String getId();
+
+    String sqlFilter();
+
+    Bson mongoFilter();
 
     <T> Stream<T> localFilter(Stream<T> stream);
 
