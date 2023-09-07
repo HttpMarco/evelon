@@ -42,7 +42,11 @@ public final class DatabaseStorage implements Storage {
 
     @Override
     public <T> @Nullable T findFirst(RepositoryQuery<T> query) {
-        return ColumEntryInstanceProcess.collect(query, 1).get(0);
+        final List<T> entries = ColumEntryInstanceProcess.collect(query, 1);
+        if (entries.isEmpty()) {
+            return null;
+        }
+        return entries.get(0);
     }
 
 
