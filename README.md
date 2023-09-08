@@ -29,7 +29,7 @@ To learn how to use Evelon to easily interact with your sql-database check our <
 - Added support for maps and superclasses
 - Fixed multiple errors
 
-### v1.1.1
+### v1.2.0
 - Implemented mongodb support
 - better abstract sql schema
 - support h2 database
