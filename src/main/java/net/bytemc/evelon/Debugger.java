@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package net.bytemc.evelon.sql.transformers;
+package net.bytemc.evelon;
 
-import net.bytemc.evelon.sql.ElementStageTransformer;
-import net.bytemc.evelon.sql.Stage;
-import net.bytemc.evelon.sql.StageHandler;
-import net.bytemc.evelon.sql.substages.VirtualObjectStage;
+import lombok.Getter;
+import lombok.Setter;
 
-public final class RecordTransformer implements ElementStageTransformer {
+public class Debugger {
 
-    @Override
-    public Stage<?> transformTo() {
-        return StageHandler.getInstance().getStage(VirtualObjectStage.class);
-    }
+    @Setter
+    @Getter
+    private static boolean enable = false;
 
-    @Override
-    public boolean isElement(Class<?> type) {
-        return type.isRecord();
+    public static void log(String message) {
+        if (!enable) {
+            return;
+        }
+        System.out.println(message);
     }
 
 }

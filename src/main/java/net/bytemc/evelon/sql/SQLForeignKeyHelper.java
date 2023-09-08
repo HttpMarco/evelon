@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class DatabaseForeignKeyHelper {
+public final class SQLForeignKeyHelper {
 
     public static void convertToDatabaseElementsWithType(List<String> elements, ForeignKey... keys) {
         for (var key : keys) {
@@ -31,8 +31,8 @@ public final class DatabaseForeignKeyHelper {
             if (keyStage == null) {
                 throw new StageNotFoundException(key.foreignKey().getType());
             }
-            if (keyStage instanceof ElementStage<?> elementStage) {
-                elements.add(DatabaseHelper.getRowName(key.foreignKey()) + " " + elementStage.anonymousElementRowData(key.foreignKey(), new RepositoryClass<>(key.foreignKey().getType())) + " NOT NULL");
+            if (keyStage instanceof SQLElementStage<?> elementStage) {
+                elements.add(SQLHelper.getRowName(key.foreignKey()) + " " + elementStage.anonymousElementRowData(key.foreignKey(), new RepositoryClass<>(key.foreignKey().getType())) + " NOT NULL");
             }
         }
     }

@@ -52,6 +52,6 @@ public interface SubElementStage<T> extends Stage<T> {
      * @param clazz
      * @return
      */
-    T createInstance(String table, @Nullable Field parentField, RepositoryClass<T> clazz, DatabaseResultSet resultSet);
+    T createInstance(String table, @Nullable Field parentField, RepositoryClass<T> clazz, SQLResultSet resultSet);
 
 }

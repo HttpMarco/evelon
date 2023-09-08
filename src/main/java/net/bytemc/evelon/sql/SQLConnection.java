@@ -16,18 +16,24 @@
 
 package net.bytemc.evelon.sql;
 
+import net.bytemc.evelon.Debugger;
 import net.bytemc.evelon.sql.connection.HikariDatabaseConnector;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class DatabaseConnection {
+public final class SQLConnection {
 
-    private static final HikariDatabaseConnector pool = new HikariDatabaseConnector().createConnection();
+    private static HikariDatabaseConnector POOL;
 
-    public static <T> T executeQuery(String query, DatabaseFunction<ResultSet, T> function, T defaultValue) {
-        try (var connection = pool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+    public static void init() {
+        POOL = new HikariDatabaseConnector().createConnection();
+        Debugger.log("Established connection to mariadb server");
+    }
+
+    public static <T> T executeQuery(String query, SQLFunction<ResultSet, T> function, T defaultValue) {
+        try (var connection = POOL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             try (var resultSet = preparedStatement.executeQuery()) {
                 return function.apply(resultSet);
             } catch (Exception throwable) {
@@ -36,7 +42,7 @@ public final class DatabaseConnection {
         } catch (SQLException exception) {
             exception.printStackTrace();
         } finally {
-            if (DatabaseDebugger.isEnable()) {
+            if (Debugger.isEnable()) {
                 System.out.println(query);
             }
         }
@@ -44,13 +50,13 @@ public final class DatabaseConnection {
     }
 
     public static int executeUpdate(String query) {
-        try (var connection = pool.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (var connection = POOL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             return preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             System.err.println("Error while executing update: " + query);
             return -1;
         } finally {
-            if (DatabaseDebugger.isEnable()) {
+            if (Debugger.isEnable()) {
                 System.out.println(query);
             }
         }

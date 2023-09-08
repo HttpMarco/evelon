@@ -23,7 +23,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public final class DatabaseStorage implements Storage {
+public final class SQLStorage implements Storage {
+
+    public SQLStorage() {
+        //disable logging
+        System.setProperty("mariadb.logging.disable", "false");
+
+        SQLConnection.init();
+    }
 
     @Override
     public <T> void create(RepositoryQuery<T> query, T value) {
@@ -42,7 +49,11 @@ public final class DatabaseStorage implements Storage {
 
     @Override
     public <T> @Nullable T findFirst(RepositoryQuery<T> query) {
-        return ColumEntryInstanceProcess.collect(query, 1).get(0);
+        final List<T> entries = ColumEntryInstanceProcess.collect(query, 1);
+        if (entries.isEmpty()) {
+            return null;
+        }
+        return entries.get(0);
     }
 
 

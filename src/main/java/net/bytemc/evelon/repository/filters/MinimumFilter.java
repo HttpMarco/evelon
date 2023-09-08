@@ -16,8 +16,10 @@
 
 package net.bytemc.evelon.repository.filters;
 
+import com.mongodb.client.model.Filters;
 import net.bytemc.evelon.local.LocalStorageHelper;
 import net.bytemc.evelon.repository.AbstractIdFilter;
+import org.bson.conversions.Bson;
 
 import java.util.stream.Stream;
 
@@ -31,8 +33,13 @@ public final class MinimumFilter extends AbstractIdFilter {
     }
 
     @Override
-    public String sqlFilter(String id) {
-        return id + " >= %s".formatted(value);
+    public String sqlFilter() {
+        return getId() + " >= %s".formatted(value);
+    }
+
+    @Override
+    public Bson mongoFilter() {
+        return Filters.gte(getId(), value);
     }
 
     @Override

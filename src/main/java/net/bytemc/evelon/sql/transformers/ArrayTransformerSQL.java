@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
-package net.bytemc.evelon.sql;
+package net.bytemc.evelon.sql.transformers;
 
-import java.sql.SQLException;
+import net.bytemc.evelon.sql.SQLElementStageTransformer;
+import net.bytemc.evelon.sql.Stage;
+import net.bytemc.evelon.sql.StageHandler;
+import net.bytemc.evelon.sql.substages.CollectionObjectStage;
 
-@FunctionalInterface
-public interface DatabaseFunction<I, O> {
+public final class ArrayTransformerSQL implements SQLElementStageTransformer {
 
-    O apply(I i) throws SQLException;
+    @Override
+    public Stage<?> transformTo() {
+        return  StageHandler.getInstance().getStage(CollectionObjectStage.class);
+    }
 
+    @Override
+    public boolean isElement(Class<?> type) {
+        return type.isArray();
+    }
 }

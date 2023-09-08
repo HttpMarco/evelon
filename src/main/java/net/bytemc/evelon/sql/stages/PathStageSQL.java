@@ -22,27 +22,28 @@ import net.bytemc.evelon.sql.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
-import java.util.UUID;
+import java.nio.file.Path;
 
-public final class UuidStage implements ElementStage<UUID> {
+public final class PathStageSQL implements SQLElementStage<Path> {
 
     @Override
-    public String elementRowData(@Nullable Field field, RepositoryClass<UUID> repository) {
-        return DatabaseType.UUID.type();
+    public String elementRowData(@Nullable Field field, RepositoryClass<Path> repository) {
+        return SQLType.TEXT.type();
     }
 
     @Override
-    public Pair<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, UUID object) {
-        return new Pair<>(DatabaseHelper.getRowName(field), Schema.encloseSchema(object.toString()));
+    public Pair<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Path object) {
+        // change path symbol, because mariadb ignore this symbol
+        return new Pair<>(SQLHelper.getRowName(field), Schema.encloseSchema(object.toString().replaceAll("\\\\", "/")));
     }
 
     @Override
-    public UUID createObject(RepositoryClass<UUID> clazz, String id, DatabaseResultSet.Table table) {
-        return table.get(id, UUID.class);
+    public Path createObject(RepositoryClass<Path> clazz, String id, SQLResultSet.Table table) {
+        return Path.of(table.get(id, String.class));
     }
 
     @Override
     public boolean isElement(Class<?> type) {
-        return type.equals(UUID.class);
+        return type.equals(Path.class);
     }
 }

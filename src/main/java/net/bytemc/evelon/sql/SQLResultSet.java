@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class DatabaseResultSet {
+public final class SQLResultSet {
 
     private final Map<String, Table> tables = new HashMap<>();
 

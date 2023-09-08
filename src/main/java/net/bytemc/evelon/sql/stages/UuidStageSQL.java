@@ -22,27 +22,27 @@ import net.bytemc.evelon.sql.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
-import java.util.Date;
+import java.util.UUID;
 
-public final class DateStage implements ElementStage<Date> {
+public final class UuidStageSQL implements SQLElementStage<UUID> {
 
     @Override
-    public String elementRowData(@Nullable Field field, RepositoryClass<Date> repository) {
-        return DatabaseType.DATE.type();
+    public String elementRowData(@Nullable Field field, RepositoryClass<UUID> repository) {
+        return SQLType.UUID.type();
     }
 
     @Override
-    public Pair<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Date object) {
-        return new Pair<>(DatabaseHelper.getRowName(field), Schema.encloseSchema(new java.sql.Date(object.getTime())));
+    public Pair<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, UUID object) {
+        return new Pair<>(SQLHelper.getRowName(field), Schema.encloseSchema(object.toString()));
     }
 
     @Override
-    public Date createObject(RepositoryClass<Date> clazz, String id, DatabaseResultSet.Table table) {
-        return new Date(table.get(id, java.sql.Date.class).getTime());
+    public UUID createObject(RepositoryClass<UUID> clazz, String id, SQLResultSet.Table table) {
+        return table.get(id, UUID.class);
     }
 
     @Override
     public boolean isElement(Class<?> type) {
-        return type.equals(Date.class);
+        return type.equals(UUID.class);
     }
 }

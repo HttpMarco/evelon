@@ -16,13 +16,15 @@
 
 package net.bytemc.evelon.sql;
 
-import lombok.Getter;
-import lombok.Setter;
+/**
+ * @param name The name of the row
+ * @param type The type of the row
+ * @param key The key of the row, primary or foreign
+ */
+public record RowData(String name, SQLType type, RowData.KEY key) {
 
-public class DatabaseDebugger {
-
-    @Setter
-    @Getter
-    private static boolean enable = false;
-
+    public enum KEY {
+        PRIMARY,
+        FOREIGN
+    }
 }

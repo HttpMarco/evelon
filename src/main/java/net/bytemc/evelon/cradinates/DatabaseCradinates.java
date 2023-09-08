@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 public record DatabaseCradinates(DatabaseProtocol databaseProtocol, String hostname, String password, String user, String database, int port) {
 
     public @NotNull String toUrl() {
-        return this.defaultUrl().formatted(databaseProtocol.getDriver(), hostname, port, database, user, password);
+        return this.defaultUrl().formatted(databaseProtocol.name().toLowerCase(), hostname, port, database, user, password);
     }
 
     private String defaultUrl() {

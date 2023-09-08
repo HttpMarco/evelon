@@ -21,9 +21,8 @@ import net.bytemc.evelon.repository.RepositoryClass;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
-import java.util.Map;
 
-public interface ElementStage<T> extends Stage<T> {
+public interface SQLElementStage<T> extends Stage<T> {
 
     /**
      * @param field is the field of repository property
@@ -65,9 +64,9 @@ public interface ElementStage<T> extends Stage<T> {
      * @param <T> the type of the object
      * @return a new object of the type
      */
-    T createObject(RepositoryClass<T> clazz, String id, DatabaseResultSet.Table table);
+    T createObject(RepositoryClass<T> clazz, String id, SQLResultSet.Table table);
 
-    default T anonymousCreateObject(RepositoryClass<?> clazz, String id, DatabaseResultSet.Table table) {
+    default T anonymousCreateObject(RepositoryClass<?> clazz, String id, SQLResultSet.Table table) {
         return createObject((RepositoryClass<T>) clazz, id, table);
     }
 }
