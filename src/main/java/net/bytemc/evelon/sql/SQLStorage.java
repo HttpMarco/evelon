@@ -16,20 +16,20 @@
 
 package net.bytemc.evelon.sql;
 
+import net.bytemc.evelon.DatabaseProtocol;
 import net.bytemc.evelon.repository.RepositoryQuery;
 import net.bytemc.evelon.sql.process.*;
 import net.bytemc.evelon.Storage;
 import org.jetbrains.annotations.Nullable;
 
+import java.sql.Connection;
+import java.util.Arrays;
 import java.util.List;
 
-public final class SQLStorage implements Storage {
+public abstract class SQLStorage implements Storage {
 
     public SQLStorage() {
-        //disable logging
-        System.setProperty("mariadb.logging.disable", "false");
-
-        SQLConnection.init();
+        SQLConnection.init(Arrays.stream(DatabaseProtocol.values()).filter(it -> it.getStorageClass().equals(this.getClass())).findFirst().orElse(DatabaseProtocol.MARIADB));
     }
 
     @Override

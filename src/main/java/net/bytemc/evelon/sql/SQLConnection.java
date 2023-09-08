@@ -16,6 +16,7 @@
 
 package net.bytemc.evelon.sql;
 
+import net.bytemc.evelon.DatabaseProtocol;
 import net.bytemc.evelon.Debugger;
 import net.bytemc.evelon.sql.connection.HikariDatabaseConnector;
 
@@ -27,9 +28,9 @@ public final class SQLConnection {
 
     private static HikariDatabaseConnector POOL;
 
-    public static void init() {
-        POOL = new HikariDatabaseConnector().createConnection();
-        Debugger.log("Established connection to mariadb server");
+    public static void init(DatabaseProtocol databaseProtocol) {
+        POOL = new HikariDatabaseConnector().createConnection(databaseProtocol);
+        Debugger.log("Established connection to " + databaseProtocol + " server");
     }
 
     public static <T> T executeQuery(String query, SQLFunction<ResultSet, T> function, T defaultValue) {

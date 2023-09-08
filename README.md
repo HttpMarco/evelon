@@ -31,3 +31,5 @@ To learn how to use Evelon to easily interact with your sql-database check our <
 
 ### v1.1.1
 - Implemented mongodb support
+- better abstract sql schema
+- support h2 database

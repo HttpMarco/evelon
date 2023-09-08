@@ -49,7 +49,7 @@ public record Repository<T>(RepositoryClass<T> repositoryClass, StartupPropertie
         StorageHandler.getStorage(LocalStorage.class).initializeRepository(repository);
 
         switch (Evelon.getDatabaseCradinates().databaseProtocol()) {
-            case MARIADB -> {
+            case MARIADB, H2 -> {
                 // check if table exists in sql, else create table
                 // check also old table names, because the table can be renamed and not lose the data.
                 if (!SQLHelper.isTableExists(repository.getName()) && !SQLHelper.isTableExists(repository.repositoryClass.clazz().getSimpleName().toLowerCase())) {
