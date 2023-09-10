@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.bytemc.evelon.DatabaseProtocol;
 import net.bytemc.evelon.Evelon;
+import net.bytemc.evelon.h2.H2Connection;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -43,8 +44,7 @@ public final class HikariDatabaseConnector {
         hikariConfig.setJdbcUrl(String.format(CONNECT_URL_FORMAT, databaseProtocol.toString(), cradinates.hostname(), cradinates.port(), cradinates.database()));
 
         if(databaseProtocol == DatabaseProtocol.H2) {
-            var databasePath = Path.of("h2_database");
-            hikariConfig.setJdbcUrl("jdbc:h2:" + databasePath.toAbsolutePath());
+            hikariConfig.setJdbcUrl("jdbc:h2:" + H2Connection.getPath().toAbsolutePath());
         }
 
         hikariConfig.setDriverClassName(databaseProtocol.getDriver());
