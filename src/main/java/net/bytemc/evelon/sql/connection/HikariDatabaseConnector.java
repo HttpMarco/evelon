@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import net.bytemc.evelon.DatabaseProtocol;
 import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.h2.H2Connection;
+import org.h2.Driver;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -32,7 +33,7 @@ import java.sql.SQLException;
 @RequiredArgsConstructor
 public final class HikariDatabaseConnector {
 
-   private static final String CONNECT_URL_FORMAT = "jdbc:%s://%s:%d/%s?serverTimezone=UTC";
+    private static final String CONNECT_URL_FORMAT = "jdbc:%s://%s:%d/%s?serverTimezone=UTC";
 
     @Getter
     private HikariDataSource hikariDataSource;
@@ -43,11 +44,13 @@ public final class HikariDatabaseConnector {
 
         hikariConfig.setJdbcUrl(String.format(CONNECT_URL_FORMAT, databaseProtocol.toString(), cradinates.hostname(), cradinates.port(), cradinates.database()));
 
-        if(databaseProtocol == DatabaseProtocol.H2) {
+        if (databaseProtocol == DatabaseProtocol.H2) {
+            Driver.load();
             hikariConfig.setJdbcUrl("jdbc:h2:" + H2Connection.getPath().toAbsolutePath());
+        } else {
+            hikariConfig.setDriverClassName(databaseProtocol.getDriver());
         }
 
-        hikariConfig.setDriverClassName(databaseProtocol.getDriver());
         hikariConfig.setUsername(cradinates.user());
         hikariConfig.setPassword(cradinates.password());
 
