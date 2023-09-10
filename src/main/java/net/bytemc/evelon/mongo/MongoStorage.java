@@ -1,9 +1,13 @@
 package net.bytemc.evelon.mongo;
 
 import net.bytemc.evelon.Storage;
+import net.bytemc.evelon.misc.Reflections;
+import net.bytemc.evelon.repository.Filter;
+import net.bytemc.evelon.repository.RepositoryHelper;
 import net.bytemc.evelon.repository.RepositoryQuery;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +42,20 @@ public final class MongoStorage implements Storage {
 
     @Override
     public <T> void update(RepositoryQuery<T> query, T value) {
+        final List<Filter> filters = query.getFilters();
+        if (filters.isEmpty()) {
+            if (!query.getRepository().repositoryClass().hasPrimary()) {
+                throw new UnsupportedOperationException("You have to define a primary key, or use filters to do a mongo update");
+            }
+            for (Field primary : query.getRepository().repositoryClass().getPrimaries()) {
+                filters.add(Filter.match(
+                        RepositoryHelper.getFieldName(primary),
+                        Reflections.readField(value, primary))
+                );
+            }
+        }
         getCollection(query.getRepository())
-            .findOneAndReplace(linkFilters(query.getFilters()), value);
+            .findOneAndReplace(linkFilters(filters), value);
     }
 
     @Override

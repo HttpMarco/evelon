@@ -8,6 +8,7 @@ import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.test.TestRepository;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class H2DBTest {
     private static final TestRepository TEST_MONGO_REPOSITORY = new TestRepository(
         "HabsGleich",
         UUID.fromString("013eddfc-e9f7-46b3-a52c-a8cfac27d64e"),
-        Map.of()
+        new HashMap<>(Map.of())
     );
 
     @Test

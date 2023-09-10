@@ -18,6 +18,7 @@ package net.bytemc.evelon.repository;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.local.LocalStorage;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.sql.SQLHelper;
@@ -62,7 +63,7 @@ public final class RepositoryQuery<T> {
 
     public void create(T value) {
         StorageHandler.getStorage(LocalStorage.class).create(this, value);
-        StorageHandler.getStorage(SQLStorage.class).create(this, value);
+        StorageHandler.getStorage(Evelon.getDatabaseCradinates().databaseProtocol().getStorageClass()).create(this, value);
     }
 
     public void cache(T value) {
@@ -79,7 +80,7 @@ public final class RepositoryQuery<T> {
         if(!localStorage.exists(this)) {
             localStorage.create(this, value);
         }
-        var databaseStorage = StorageHandler.getStorage(SQLStorage.class);
+        var databaseStorage = StorageHandler.getStorage(Evelon.getDatabaseCradinates().databaseProtocol().getStorageClass());
         if(!databaseStorage.exists(this)) {
             databaseStorage.create(this, value);
         }
