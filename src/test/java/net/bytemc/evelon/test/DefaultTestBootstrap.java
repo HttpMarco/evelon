@@ -21,6 +21,6 @@ public class DefaultTestBootstrap {
         map.put("lobby-1", System.currentTimeMillis());
         map.put("lobby-2", System.currentTimeMillis());
 
-        repository.query().create(new TestRepository("polo", UUID.randomUUID(), map));
+        repository.query().create(new TestRepository("polo", UUID.randomUUID(), map, 10));
     }
 }

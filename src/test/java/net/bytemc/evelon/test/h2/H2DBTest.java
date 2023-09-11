@@ -22,7 +22,8 @@ public class H2DBTest {
     private static final TestRepository TEST_MONGO_REPOSITORY = new TestRepository(
         "HabsGleich",
         UUID.fromString("013eddfc-e9f7-46b3-a52c-a8cfac27d64e"),
-        new HashMap<>(Map.of())
+        new HashMap<>(Map.of()),
+        64
     );
 
     @Test

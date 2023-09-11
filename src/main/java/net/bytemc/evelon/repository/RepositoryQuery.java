@@ -58,7 +58,7 @@ public final class RepositoryQuery<T> {
 
     public void delete() {
         StorageHandler.getStorage(LocalStorage.class).delete(this);
-        StorageHandler.getStorage(SQLStorage.class).delete(this);
+        StorageHandler.getStorage(Evelon.getDatabaseCradinates().databaseProtocol().getStorageClass()).delete(this);
     }
 
     public void create(T value) {

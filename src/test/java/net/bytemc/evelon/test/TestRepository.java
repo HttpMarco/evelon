@@ -20,5 +20,6 @@ public class TestRepository {
     private String name;
     private UUID uniqueId;
     private HashMap<String, Long> connectedStates;
+    private int personalNumber;
 
 }

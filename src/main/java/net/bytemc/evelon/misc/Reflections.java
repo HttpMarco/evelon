@@ -74,7 +74,9 @@ public final class Reflections {
      * @return true if the clazz is assignable from number of equals int. Class
      */
     public static boolean isNumber(Class<?> clazz) {
-        return clazz.isAssignableFrom(Number.class) || clazz.equals(int.class);
+        return Number.class.isAssignableFrom(clazz) ||
+            (clazz.isPrimitive() && clazz == int.class || clazz == long.class || clazz == double.class
+                || clazz == float.class || clazz == short.class || clazz == byte.class);
     }
 
     public static boolean isNumberFromField(Class<?> clazz, String fieldId) {
