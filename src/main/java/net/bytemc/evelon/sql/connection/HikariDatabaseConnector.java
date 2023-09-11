@@ -36,7 +36,7 @@ public final class HikariDatabaseConnector {
     private static final String CONNECT_URL_FORMAT = "jdbc:%s://%s:%d/%s?serverTimezone=UTC";
 
     @Getter
-    private HikariDataSource hikariDataSource;
+    private static HikariDataSource hikariDataSource;
 
     public HikariDatabaseConnector createConnection(DatabaseProtocol databaseProtocol) {
         var hikariConfig = new HikariConfig();
@@ -79,6 +79,12 @@ public final class HikariDatabaseConnector {
             return this.hikariDataSource.getConnection();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void close() {
+        if (hikariDataSource != null && !hikariDataSource.isClosed()) {
+            hikariDataSource.close();
         }
     }
 }
