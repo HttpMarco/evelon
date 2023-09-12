@@ -32,7 +32,7 @@ public final class BetweenFilter extends AbstractIdFilter {
     public BetweenFilter(String id, Object minimumBounce, Object maximumBounce) {
         super(id);
 
-        if(!Reflections.isNumber(minimumBounce.getClass()) || !Reflections.isNumber(maximumBounce.getClass())) {
+        if (!Reflections.isNumber(minimumBounce.getClass()) || !Reflections.isNumber(maximumBounce.getClass())) {
             throw new IllegalArgumentException("The minimumBounce and maximumBounce must be a number.");
         }
 
