@@ -44,28 +44,28 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
         // the collected object statements;
         var rowValues = new ArrayList<String>();
         // collect all needed foreign keys
-        DatabaseForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
+        SQLForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
         for (var row : current.getRows()) {
             var stage = StageHandler.getInstance().getElementStage(row.getType());
-            if (stage instanceof ElementStage<?> elementStage) {
+            if (stage instanceof SQLElementStage<?> elementStage) {
                 // create net repository class, because there can be multiple rows of the same type
                 var elementClass = new RepositoryClass<>(row.getType());
                 // collect all current rows
                 var result = elementStage.anonymousElementRowData(row, elementClass);
-                rowValues.add(TableCreationProcess.appendPrimaryKey(row, DatabaseHelper.getRowName(row) + " " + result));
+                rowValues.add(TableCreationProcess.appendPrimaryKey(row, SQLHelper.getRowName(row) + " " + result));
             } else if (stage instanceof SubElementStage<?> subElementStage) {
-                subElementStage.onParentTableCollectData(queries, table + "_" + DatabaseHelper.getRowName(row), new RepositoryClass<>(row.getType()), row, current.getPrimaries().stream().map(it -> new ForeignKey(table, it)).toArray(ForeignKey[]::new));
+                subElementStage.onParentTableCollectData(queries, table + "_" + SQLHelper.getRowName(row), new RepositoryClass<>(row.getType()), row, current.getPrimaries().stream().map(it -> new ForeignKey(table, it)).toArray(ForeignKey[]::new));
             }
         }
         // add database schema link
-        DatabaseForeignKeyHelper.convertToDatabaseForeignLink(rowValues, keys);
-        queries.add(DatabaseHelper.create(table, String.join(", ", rowValues)));
+        SQLForeignKeyHelper.convertToDatabaseForeignLink(rowValues, keys);
+        queries.add(SQLHelper.create(table, String.join(", ", rowValues)));
     }
 
     @Override
     public List<String> onParentElement(String table, Field field, Repository<?> parent, RepositoryClass<Object> clazz, Object value, ForeignKeyObject... keys) {
         var queries = new ArrayList<String>();
-        var values = DatabaseForeignKeyHelper.convertKeyObjectsToElements(keys);
+        var values = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
 
         for (var row : clazz.getRows()) {
             var stage = StageHandler.getInstance().getElementStage(row.getType());
@@ -75,22 +75,22 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             var object = Reflections.readField(value, row);
             var objectClass = new RepositoryClass<>(row.getType());
             if (stage instanceof SubElementStage<?> subElementStage) {
-                queries.addAll(subElementStage.onAnonymousParentElement(parent.appendChildrenName(DatabaseHelper.getRowName(row)), row, parent, objectClass, object, clazz.collectForeignKeyValues(value)));
-            } else if (stage instanceof ElementStage<?> elementStage) {
+                queries.addAll(subElementStage.onAnonymousParentElement(parent.appendChildrenName(SQLHelper.getRowName(row)), row, parent, objectClass, object, clazz.collectForeignKeyValues(value)));
+            } else if (stage instanceof SQLElementStage<?> elementStage) {
                 var result = elementStage.anonymousElementEntryData(objectClass, row, object);
                 values.put(result.left(), result.right());
-            } else if (stage instanceof ElementStageTransformer transformer) {
+            } else if (stage instanceof SQLElementStageTransformer transformer) {
                 //todo
             }
         }
-        queries.add(DatabaseHelper.insertDefault(table, String.join(", ", values.keySet()), String.join(", ", values.values())));
+        queries.add(SQLHelper.insertDefault(table, String.join(", ", values.keySet()), String.join(", ", values.values())));
         return queries;
     }
 
     @Override
     public List<String> onUpdateParentElement(String table, Field field, Repository<?> parent, RepositoryQuery<Object> query, Object value, ForeignKeyObject... keys) {
         var queries = new ArrayList<String>();
-        var values = DatabaseForeignKeyHelper.convertKeyObjectsToElements(keys);
+        var values = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
 
         for (var row : query.getRepository().repositoryClass().getRows()) {
             var stage = StageHandler.getInstance().getElementStage(row.getType());
@@ -100,17 +100,17 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             var object = Reflections.readField(value, row);
             var objectClass = new RepositoryClass<>(row.getType());
 
-            if (stage instanceof ElementStage<?> elementStage) {
+            if (stage instanceof SQLElementStage<?> elementStage) {
                 var result = elementStage.anonymousElementEntryData(objectClass, row, object);
                 values.put(result.left(), result.right());
             }
         }
-        queries.add(DatabaseHelper.update(table, (String.join(", ", values.keySet().stream().map(it -> it + "=" + values.get(it)).toList()) + DatabaseHelper.getDatabaseFilterQuery(query.getFilters()))));
+        queries.add(SQLHelper.update(table, (String.join(", ", values.keySet().stream().map(it -> it + "=" + values.get(it)).toList()) + SQLHelper.getDatabaseFilterQuery(query.getFilters()))));
         return queries;
     }
 
     @Override
-    public Object createInstance(String table, Field parentField, RepositoryClass<Object> clazz, DatabaseResultSet databaseResultSet) {
+    public Object createInstance(String table, Field parentField, RepositoryClass<Object> clazz, SQLResultSet SQLResultSet) {
         var object = Reflections.allocate(clazz.clazz());
         for (var row : clazz.getRows()) {
             var stage = StageHandler.getInstance().getElementStage(row.getType());
@@ -118,10 +118,10 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
                 throw new StageNotFoundException(row.getType());
             }
             if (stage instanceof SubElementStage<?> subElementStage) {
-                Reflections.writeField(object, row, subElementStage.createInstance(table + "_" + DatabaseHelper.getRowName(row), row, new RepositoryClass(row.getType()), databaseResultSet));
-            } else if (stage instanceof ElementStage<?> elementStage) {
-                Reflections.writeField(object, row, elementStage.anonymousCreateObject(new RepositoryClass<>(row.getType()), DatabaseHelper.getRowName(row), databaseResultSet.getTable(table)));
-            } else if (stage instanceof ElementStageTransformer transformer) {
+                Reflections.writeField(object, row, subElementStage.createInstance(table + "_" + SQLHelper.getRowName(row), row, new RepositoryClass(row.getType()), SQLResultSet));
+            } else if (stage instanceof SQLElementStage<?> elementStage) {
+                Reflections.writeField(object, row, elementStage.anonymousCreateObject(new RepositoryClass<>(row.getType()), SQLHelper.getRowName(row), SQLResultSet.getTable(table)));
+            } else if (stage instanceof SQLElementStageTransformer transformer) {
                 var transformedStage = transformer.transformTo();
                 //todo
             }

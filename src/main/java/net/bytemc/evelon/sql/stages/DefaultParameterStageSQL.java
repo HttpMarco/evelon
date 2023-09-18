@@ -26,11 +26,11 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 import java.lang.reflect.Field;
 
-public final class DefaultParameterStage implements ElementStage<Object> {
+public final class DefaultParameterStageSQL implements SQLElementStage<Object> {
 
     @Override
     public @Unmodifiable String elementRowData(@Nullable Field field, @NotNull RepositoryClass<Object> clazz) {
-        var type = DatabaseType.getType(clazz.clazz(), DatabaseType.TEXT, DatabaseType.INT, DatabaseType.BIGINT, DatabaseType.BOOL, DatabaseType.TINYINT, DatabaseType.DOUBLE, DatabaseType.FLOAT);
+        var type = SQLType.getType(clazz.clazz(), SQLType.TEXT, SQLType.INT, SQLType.BIGINT, SQLType.BOOL, SQLType.TINYINT, SQLType.DOUBLE, SQLType.FLOAT);
 
         // type can be only null if a parameter is not allowed in sql.
         if (type == null) {
@@ -38,9 +38,9 @@ public final class DefaultParameterStage implements ElementStage<Object> {
             return null;
         }
 
-        if (type == DatabaseType.TEXT && field != null && field.isAnnotationPresent(PrimaryKey.class)) {
+        if (type == SQLType.TEXT && field != null && field.isAnnotationPresent(PrimaryKey.class)) {
             // mariaDb need a specific length for the primary key. The Default value is 255.
-            return DatabaseType.VARCHAR.type().formatted("255");
+            return SQLType.VARCHAR.type().formatted("255");
         }
         return type.type();
     }
@@ -48,7 +48,7 @@ public final class DefaultParameterStage implements ElementStage<Object> {
     @Override
     public @NotNull @Unmodifiable Pair<@Nullable String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Object object) {
         // mariadb disallow "'" in a boolean value
-        var fieldName = field == null ? "value" : DatabaseHelper.getRowName(field);
+        var fieldName = field == null ? "value" : SQLHelper.getRowName(field);
 
         if (object instanceof Boolean || object.getClass().equals(boolean.class)) {
             return new Pair<>(fieldName, object.toString());
@@ -57,7 +57,7 @@ public final class DefaultParameterStage implements ElementStage<Object> {
     }
 
     @Override
-    public Object createObject(RepositoryClass<Object> clazz, String id, DatabaseResultSet.Table table) {
+    public Object createObject(RepositoryClass<Object> clazz, String id, SQLResultSet.Table table) {
         return table.get(id, clazz.clazz());
     }
 

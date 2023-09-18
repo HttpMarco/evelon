@@ -18,18 +18,21 @@ package net.bytemc.evelon.repository;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.local.LocalStorage;
-import net.bytemc.evelon.sql.DatabaseStorage;
+import net.bytemc.evelon.sql.SQLStorage;
 import net.bytemc.evelon.Storage;
+
+import java.util.function.Supplier;
 
 @Getter
 @AllArgsConstructor
 public enum RepositoryDepartureOrder {
 
-    CHRONOLOGICAL(null),
-    LOCAL(LocalStorage.class),
-    DATABASE(DatabaseStorage.class);
+    CHRONOLOGICAL(() -> null),
+    LOCAL(() -> LocalStorage.class),
+    DATABASE(() -> Evelon.getDatabaseCradinates().databaseProtocol().getStorageClass());
 
-    final Class<? extends Storage> storage;
+    final Supplier<Class<? extends Storage>> storage;
 
 }

@@ -34,14 +34,14 @@ public final class ColumEntryInstanceProcess {
 
         var repository = repositoryQuery.getRepository();
         var neededTables = getNeededTables(repository.getName(), repository.repositoryClass());
-        var query = new StringBuilder("SELECT * FROM " + repository.getName() + " %s" + DatabaseHelper.getDatabaseFilterQuery(repositoryQuery.getFilters()) + (limit == -1 ? "" : " LIMIT " + limit) + ";");
-        var primaryNames = String.join(", ", repository.repositoryClass().getPrimaries().stream().map(DatabaseHelper::getRowName).toList());
+        var query = new StringBuilder("SELECT * FROM " + repository.getName() + " %s" + SQLHelper.getDatabaseFilterQuery(repositoryQuery.getFilters()) + (limit == -1 ? "" : " LIMIT " + limit) + ";");
+        var primaryNames = String.join(", ", repository.repositoryClass().getPrimaries().stream().map(SQLHelper::getRowName).toList());
         var innerJoins = String.join(" ", neededTables.keySet().stream().filter(it -> !it.equalsIgnoreCase(repositoryQuery.getRepository().getName())).map(it -> "INNER JOIN " + it + " USING (" + primaryNames + ")").toList());
 
-        var databaseResults = DatabaseConnection.executeQuery(query.toString().formatted(innerJoins), resultSet -> {
-            var elements = new ArrayList<DatabaseResultSet>();
+        var databaseResults = SQLConnection.executeQuery(query.toString().formatted(innerJoins), resultSet -> {
+            var elements = new ArrayList<SQLResultSet>();
             while (resultSet.next()) {
-                var result = new DatabaseResultSet();
+                var result = new SQLResultSet();
                 for (var tables : neededTables.keySet()) {
                     var table = result.addTable(tables);
                     for (String column : neededTables.get(tables)) {
@@ -51,7 +51,7 @@ public final class ColumEntryInstanceProcess {
                 elements.add(result);
             }
             return elements;
-        }, new ArrayList<DatabaseResultSet>());
+        }, new ArrayList<SQLResultSet>());
 
         var repositoryType = repository.repositoryClass().clazz();
         var stage = StageHandler.getInstance().getElementStage(repositoryType);
@@ -76,9 +76,9 @@ public final class ColumEntryInstanceProcess {
             }
 
             if (stage instanceof SubElementStage<?>) {
-                tables.putAll(getNeededTables(children + "_" + DatabaseHelper.getRowName(row), new RepositoryClass<>(row.getType())));
-            } else if (stage instanceof ElementStage<?>) {
-                columns.add(DatabaseHelper.getRowName(row));
+                tables.putAll(getNeededTables(children + "_" + SQLHelper.getRowName(row), new RepositoryClass<>(row.getType())));
+            } else if (stage instanceof SQLElementStage<?>) {
+                columns.add(SQLHelper.getRowName(row));
             }
         }
         tables.put(children, columns);

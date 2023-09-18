@@ -21,7 +21,7 @@ import net.bytemc.evelon.sql.stages.*;
 import net.bytemc.evelon.sql.substages.CollectionObjectStage;
 import net.bytemc.evelon.sql.substages.MapObjectStage;
 import net.bytemc.evelon.sql.substages.VirtualObjectStage;
-import net.bytemc.evelon.sql.transformers.RecordTransformer;
+import net.bytemc.evelon.sql.transformers.RecordTransformerSQL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,14 +38,14 @@ public final class StageHandler {
 
     public StageHandler() {
         // for primitives, default java arguments
-        this.stages.add(new DefaultParameterStage());
+        this.stages.add(new DefaultParameterStageSQL());
 
         // only for enumeration types -> mariadb extra type
-        this.stages.add(new EnumerationStage());
+        this.stages.add(new EnumerationStageSQL());
 
-        this.stages.add(new PathStage());
-        this.stages.add(new UuidStage());
-        this.stages.add(new DateStage());
+        this.stages.add(new PathStageSQL());
+        this.stages.add(new UuidStageSQL());
+        this.stages.add(new DateStageSQL());
 
         // this for: hashmaps, treemap, concurentHashMap...
         this.stages.add(new MapObjectStage());
@@ -54,7 +54,7 @@ public final class StageHandler {
         this.stages.add(new CollectionObjectStage());
 
         // transform record to object -> deny duplicated code
-        this.stages.add(new RecordTransformer());
+        this.stages.add(new RecordTransformerSQL());
 
         // for custom user objects
         this.stages.add(new VirtualObjectStage());

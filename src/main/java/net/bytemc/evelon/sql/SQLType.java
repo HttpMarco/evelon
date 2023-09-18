@@ -20,7 +20,7 @@ import lombok.Getter;
 
 import java.util.Arrays;
 
-public enum DatabaseType {
+public enum SQLType {
 
     TINYINT(byte.class, Byte.class),
     SMALLINT,
@@ -73,15 +73,15 @@ public enum DatabaseType {
     @Getter
     private Class<?>[] compatibleClasses;
 
-    DatabaseType(String type) {
+    SQLType(String type) {
         this.type = type;
     }
 
-    DatabaseType(Class<?>... compatibleClasses) {
+    SQLType(Class<?>... compatibleClasses) {
         this.compatibleClasses = compatibleClasses;
     }
 
-    DatabaseType() {
+    SQLType() {
         this.type = this.name();
     }
 
@@ -89,7 +89,7 @@ public enum DatabaseType {
         return type == null ? this.name() : type;
     }
 
-    public static DatabaseType getType(Class<?> clazz, DatabaseType... databaseType) {
-        return Arrays.stream(databaseType).filter(it -> Arrays.stream(it.getCompatibleClasses()).anyMatch(s -> s.equals(clazz))).findFirst().orElse(null);
+    public static SQLType getType(Class<?> clazz, SQLType... SQLType) {
+        return Arrays.stream(SQLType).filter(it -> Arrays.stream(it.getCompatibleClasses()).anyMatch(s -> s.equals(clazz))).findFirst().orElse(null);
     }
 }

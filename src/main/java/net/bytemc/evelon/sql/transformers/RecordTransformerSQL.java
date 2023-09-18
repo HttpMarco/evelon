@@ -16,20 +16,21 @@
 
 package net.bytemc.evelon.sql.transformers;
 
-import net.bytemc.evelon.sql.ElementStageTransformer;
+import net.bytemc.evelon.sql.SQLElementStageTransformer;
 import net.bytemc.evelon.sql.Stage;
 import net.bytemc.evelon.sql.StageHandler;
-import net.bytemc.evelon.sql.substages.CollectionObjectStage;
+import net.bytemc.evelon.sql.substages.VirtualObjectStage;
 
-public final class ArrayTransformer implements ElementStageTransformer {
+public final class RecordTransformerSQL implements SQLElementStageTransformer {
 
     @Override
     public Stage<?> transformTo() {
-        return  StageHandler.getInstance().getStage(CollectionObjectStage.class);
+        return StageHandler.getInstance().getStage(VirtualObjectStage.class);
     }
 
     @Override
     public boolean isElement(Class<?> type) {
-        return type.isArray();
+        return type.isRecord();
     }
+
 }

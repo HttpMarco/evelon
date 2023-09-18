@@ -42,7 +42,7 @@ public final class PrimaryKeyCheckStep extends AnalyseStep {
                 continue;
             }
 
-            List<DatabaseRowData> data = DatabaseHelper.getRowData(repository.getName(), row.getName());
+            List<RowData> data = SQLHelper.getRowData(repository.getName(), row.getName());
             //todo
 
         }

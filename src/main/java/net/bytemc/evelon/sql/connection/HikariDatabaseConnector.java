@@ -20,26 +20,37 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.bytemc.evelon.DatabaseProtocol;
 import net.bytemc.evelon.Evelon;
+import net.bytemc.evelon.h2.H2Connection;
+import org.h2.Driver;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 @RequiredArgsConstructor
 public final class HikariDatabaseConnector {
 
-    private static final String JDBC_DRIVER_CLASS_NAME = "org.mariadb.jdbc.Driver";
-    private static final String CONNECT_URL_FORMAT = "jdbc:mariadb://%s:%d/%s?serverTimezone=UTC";
+    private static final String CONNECT_URL_FORMAT = "jdbc:%s://%s:%d/%s?serverTimezone=UTC";
 
     @Getter
-    private HikariDataSource hikariDataSource;
+    private static HikariDataSource hikariDataSource;
 
-    public HikariDatabaseConnector createConnection() {
+    public HikariDatabaseConnector createConnection(DatabaseProtocol databaseProtocol) {
         var hikariConfig = new HikariConfig();
         var cradinates = Evelon.getDatabaseCradinates();
 
-        hikariConfig.setJdbcUrl(String.format(CONNECT_URL_FORMAT, cradinates.hostname(), cradinates.port(), cradinates.database()));
-        hikariConfig.setDriverClassName(JDBC_DRIVER_CLASS_NAME);
+        hikariConfig.setJdbcUrl(String.format(CONNECT_URL_FORMAT, databaseProtocol.toString(), cradinates.hostname(), cradinates.port(), cradinates.database()));
+
+        if (databaseProtocol == DatabaseProtocol.H2) {
+            Driver.load();
+            hikariConfig.setJdbcUrl("jdbc:h2:" + H2Connection.getPath().toAbsolutePath());
+        } else {
+            hikariConfig.setDriverClassName(databaseProtocol.getDriver());
+        }
+
         hikariConfig.setUsername(cradinates.user());
         hikariConfig.setPassword(cradinates.password());
 
@@ -68,6 +79,12 @@ public final class HikariDatabaseConnector {
             return this.hikariDataSource.getConnection();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void close() {
+        if (hikariDataSource != null && !hikariDataSource.isClosed()) {
+            hikariDataSource.close();
         }
     }
 }

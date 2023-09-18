@@ -16,8 +16,11 @@
 
 package net.bytemc.evelon.sql;
 
-public interface ElementStageTransformer extends Stage<Object> {
+import java.sql.SQLException;
 
-    Stage<?> transformTo();
+@FunctionalInterface
+public interface SQLFunction<I, O> {
+
+    O apply(I i) throws SQLException;
 
 }

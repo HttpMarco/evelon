@@ -43,17 +43,17 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
         }
         var rowValues = new ArrayList<String>();
         // collect all needed foreign keys
-        DatabaseForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
+        SQLForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
 
-        var rowName = DatabaseHelper.getRowName(field);
-        if (stage instanceof ElementStage<?> elementStage) {
+        var rowName = SQLHelper.getRowName(field);
+        if (stage instanceof SQLElementStage<?> elementStage) {
             rowValues.add(rowName + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(clazz)));
         } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
             var rowClazz = new RepositoryClass<>(clazz);
             for (var row : rowClazz.getRows()) {
                 var rowStage = StageHandler.getInstance().getElementStage(row.getType());
-                if (rowStage instanceof ElementStage<?> elementStage) {
-                    rowValues.add(DatabaseHelper.getRowName(row) + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(row.getType())));
+                if (rowStage instanceof SQLElementStage<?> elementStage) {
+                    rowValues.add(SQLHelper.getRowName(row) + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(row.getType())));
                 } else {
                     throw new StageNotSupportedException(row.getType());
                 }
@@ -62,8 +62,8 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
             throw new StageNotSupportedException(clazz);
         }
         // add database schema link
-        DatabaseForeignKeyHelper.convertToDatabaseForeignLink(rowValues, keys);
-        queries.add(DatabaseHelper.create(table, String.join(", ", rowValues)));
+        SQLForeignKeyHelper.convertToDatabaseForeignLink(rowValues, keys);
+        queries.add(SQLHelper.create(table, String.join(", ", rowValues)));
     }
 
     @Override
@@ -76,27 +76,27 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
             throw new StageNotFoundException(listType);
         }
 
-        if (stage instanceof ElementStage<?> elementStage) {
+        if (stage instanceof SQLElementStage<?> elementStage) {
             for (var item : value) {
-                var columns = DatabaseForeignKeyHelper.convertKeyObjectsToElements(keys);
+                var columns = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
                 var element = elementStage.anonymousElementEntryData(new RepositoryClass<>(listType), null, item);
-                columns.put(DatabaseHelper.getRowName(field) + "_" + element.left(), element.right());
-                queries.add(DatabaseHelper.insertDefault(table, String.join(", ", columns.keySet()), String.join(", ", columns.values())));
+                columns.put(SQLHelper.getRowName(field) + "_" + element.left(), element.right());
+                queries.add(SQLHelper.insertDefault(table, String.join(", ", columns.keySet()), String.join(", ", columns.values())));
             }
         } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
             for (var element : value) {
-                var columns = DatabaseForeignKeyHelper.convertKeyObjectsToElements(keys);
+                var columns = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
                 var rowClazz = new RepositoryClass<>(listType);
                 for (var row : rowClazz.getRows()) {
                     var rowStage = StageHandler.getInstance().getElementStage(row.getType());
-                    if (rowStage instanceof ElementStage<?> elementStage) {
+                    if (rowStage instanceof SQLElementStage<?> elementStage) {
                         var object = Reflections.readField(element, row);
-                        columns.put(DatabaseHelper.getRowName(row) + "_value", elementStage.anonymousElementEntryData(new RepositoryClass<>(row.getType()), row, object).right());
+                        columns.put(SQLHelper.getRowName(row) + "_value", elementStage.anonymousElementEntryData(new RepositoryClass<>(row.getType()), row, object).right());
                     } else {
                         throw new StageNotSupportedException(row.getType());
                     }
                 }
-                queries.add(DatabaseHelper.insertDefault(table, String.join(", ", columns.keySet()), String.join(", ", columns.values())));
+                queries.add(SQLHelper.insertDefault(table, String.join(", ", columns.keySet()), String.join(", ", columns.values())));
             }
 
         } else {
@@ -112,12 +112,12 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
     }
 
     @Override
-    public Collection<?> createInstance(String tableName, Field parentField, RepositoryClass<Collection<?>> clazz, DatabaseResultSet resultSet) {
+    public Collection<?> createInstance(String tableName, Field parentField, RepositoryClass<Collection<?>> clazz, SQLResultSet resultSet) {
 
         var listType = Reflections.readGenericFromClass(parentField)[0];
 
         // we can't use the result, because we need to collect all elements
-        return DatabaseConnection.executeQuery("SELECT * FROM " + tableName + ";", (result) -> {
+        return SQLConnection.executeQuery("SELECT * FROM " + tableName + ";", (result) -> {
             var list = new ArrayList<>();
             var stage = StageHandler.getInstance().getElementStage(listType);
             if (stage == null) {
@@ -125,12 +125,12 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
             }
 
             while (result.next()) {
-                var databaseResultSet = new DatabaseResultSet();
+                var databaseResultSet = new SQLResultSet();
                 var repositoryClass = new RepositoryClass<>(listType);
                 var table = databaseResultSet.addTable("default");
 
-                if (stage instanceof ElementStage<?> elementStage) {
-                    var rowName = DatabaseHelper.getRowName(parentField) + "_value";
+                if (stage instanceof SQLElementStage<?> elementStage) {
+                    var rowName = SQLHelper.getRowName(parentField) + "_value";
                     table.setProperty(rowName, result.getObject(rowName));
                     list.add(elementStage.anonymousCreateObject(repositoryClass, rowName, table));
                 } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
@@ -138,10 +138,10 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
 
                     for (var row : repositoryClass.getRows()) {
                         var rowStage = StageHandler.getInstance().getElementStage(row.getType());
-                        if (rowStage instanceof ElementStage<?> elementStage) {
-                            var rowName = DatabaseHelper.getRowName(row) + "_value";
-                            table.setProperty(DatabaseHelper.getRowName(row), result.getObject(rowName));
-                            Reflections.writeField(object, row, elementStage.anonymousCreateObject(new RepositoryClass<>(row.getType()), DatabaseHelper.getRowName(row), table));
+                        if (rowStage instanceof SQLElementStage<?> elementStage) {
+                            var rowName = SQLHelper.getRowName(row) + "_value";
+                            table.setProperty(SQLHelper.getRowName(row), result.getObject(rowName));
+                            Reflections.writeField(object, row, elementStage.anonymousCreateObject(new RepositoryClass<>(row.getType()), SQLHelper.getRowName(row), table));
                         } else {
                             throw new StageNotSupportedException(row.getType());
                         }

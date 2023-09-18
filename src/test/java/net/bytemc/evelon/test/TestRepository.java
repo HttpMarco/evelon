@@ -1,22 +1,22 @@
 package net.bytemc.evelon.test;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import net.bytemc.evelon.repository.annotations.Entity;
 import net.bytemc.evelon.repository.annotations.PrimaryKey;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 @Setter
 @Getter
 @AllArgsConstructor
-@Entity(name = "polus")
+@Entity(name = "polus2")
 public class TestRepository {
 
     @PrimaryKey
     private String name;
     private UUID uniqueId;
-    private Map<String, Long> connectedStates;
+    private int personalNumber;
 
 }

@@ -22,28 +22,27 @@ import net.bytemc.evelon.sql.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
+import java.util.Date;
 
-public final class EnumerationStage implements ElementStage<Enum<?>> {
+public final class DateStageSQL implements SQLElementStage<Date> {
 
     @Override
-    public String elementRowData(@Nullable Field field, RepositoryClass<Enum<?>> repository) {
-        var type = (Class<Enum<?>>) field.getType();
-        return DatabaseType.ENUM.type().formatted(String.join(",", Arrays.stream(type.getEnumConstants()).map(it -> Schema.encloseSchema(it.name())).toList()));
+    public String elementRowData(@Nullable Field field, RepositoryClass<Date> repository) {
+        return SQLType.DATE.type();
     }
 
     @Override
-    public Pair<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Enum<?> object) {
-        return new Pair<>(DatabaseHelper.getRowName(field), Schema.encloseSchema(object.name()));
+    public Pair<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Date object) {
+        return new Pair<>(SQLHelper.getRowName(field), Schema.encloseSchema(new java.sql.Date(object.getTime())));
     }
 
     @Override
-    public Enum<?> createObject(RepositoryClass clazz, String id, DatabaseResultSet.Table table) {
-        return Enum.valueOf((Class<? extends Enum>) clazz.clazz(), table.get(id, String.class));
+    public Date createObject(RepositoryClass<Date> clazz, String id, SQLResultSet.Table table) {
+        return new Date(table.get(id, java.sql.Date.class).getTime());
     }
 
     @Override
     public boolean isElement(Class<?> type) {
-        return type.isEnum();
+        return type.equals(Date.class);
     }
 }

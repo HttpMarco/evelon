@@ -18,10 +18,11 @@ package net.bytemc.evelon.repository;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.local.LocalStorage;
 import net.bytemc.evelon.misc.Reflections;
-import net.bytemc.evelon.sql.DatabaseHelper;
-import net.bytemc.evelon.sql.DatabaseStorage;
+import net.bytemc.evelon.sql.SQLHelper;
+import net.bytemc.evelon.sql.SQLStorage;
 import net.bytemc.evelon.StorageHandler;
 
 import java.util.ArrayList;
@@ -57,12 +58,12 @@ public final class RepositoryQuery<T> {
 
     public void delete() {
         StorageHandler.getStorage(LocalStorage.class).delete(this);
-        StorageHandler.getStorage(DatabaseStorage.class).delete(this);
+        StorageHandler.getStorage(Evelon.getDatabaseCradinates().databaseProtocol().getStorageClass()).delete(this);
     }
 
     public void create(T value) {
         StorageHandler.getStorage(LocalStorage.class).create(this, value);
-        StorageHandler.getStorage(DatabaseStorage.class).create(this, value);
+        StorageHandler.getStorage(Evelon.getDatabaseCradinates().databaseProtocol().getStorageClass()).create(this, value);
     }
 
     public void cache(T value) {
@@ -73,13 +74,13 @@ public final class RepositoryQuery<T> {
         var localStorage = StorageHandler.getStorage(LocalStorage.class);
 
         for (var primary : getRepository().repositoryClass().getPrimaries()) {
-            filter(Filter.match(DatabaseHelper.getRowName(primary), Reflections.readField(value, primary)));
+            filter(Filter.match(SQLHelper.getRowName(primary), Reflections.readField(value, primary)));
         }
 
         if(!localStorage.exists(this)) {
             localStorage.create(this, value);
         }
-        var databaseStorage = StorageHandler.getStorage(DatabaseStorage.class);
+        var databaseStorage = StorageHandler.getStorage(Evelon.getDatabaseCradinates().databaseProtocol().getStorageClass());
         if(!databaseStorage.exists(this)) {
             databaseStorage.create(this, value);
         }

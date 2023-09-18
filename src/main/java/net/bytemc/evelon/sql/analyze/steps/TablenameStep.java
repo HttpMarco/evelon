@@ -18,8 +18,8 @@ package net.bytemc.evelon.sql.analyze.steps;
 
 import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.repository.annotations.Entity;
-import net.bytemc.evelon.sql.DatabaseConnection;
-import net.bytemc.evelon.sql.DatabaseHelper;
+import net.bytemc.evelon.sql.SQLConnection;
+import net.bytemc.evelon.sql.SQLHelper;
 import net.bytemc.evelon.sql.analyze.AnalyseResult;
 import net.bytemc.evelon.sql.analyze.AnalyseStep;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +40,7 @@ public final class TablenameStep extends AnalyseStep {
                 return false;
             }
 
-            if(DatabaseHelper.isTableExists(originalName) && !DatabaseHelper.isTableExists(entityName)) {
+            if(SQLHelper.isTableExists(originalName) && !SQLHelper.isTableExists(entityName)) {
                 result.addDetections("The table name is not correct. The table name should be " + entityName + " instead of " + originalName + ".");
                 return true;
             }
@@ -53,7 +53,7 @@ public final class TablenameStep extends AnalyseStep {
     @Override
     public void manipulate(@NotNull Repository<?> repository) {
         // change the name of the current table if exists to the new one.
-        DatabaseConnection.executeUpdate("RENAME TABLE IF EXISTS " + repository.repositoryClass().clazz().getSimpleName() + " TO " + repository.getName() + ";");
+        SQLConnection.executeUpdate("RENAME TABLE IF EXISTS " + repository.repositoryClass().clazz().getSimpleName() + " TO " + repository.getName() + ";");
     }
 
 }

@@ -22,8 +22,15 @@ public final class Evelon {
     @Getter
     private static EvelonConfig config;
 
-    @Setter
     private static DatabaseCradinates databaseCradinates;
+
+    public static void setDatabaseCradinates(DatabaseCradinates databaseCradinates) {
+        if (Evelon.databaseCradinates != null) {
+            throw new UnsupportedOperationException("Evelon already initialized");
+        }
+        Evelon.databaseCradinates = databaseCradinates;
+        StorageHandler.initStorage(databaseCradinates.databaseProtocol());
+    }
 
     @SneakyThrows
     public static DatabaseCradinates getDatabaseCradinates() {
@@ -50,14 +57,15 @@ public final class Evelon {
             final DatabaseCradinates fileCradinates = GSON.fromJson(Files.readString(path), DatabaseCradinates.class);
             if (!fileCradinates.hostname().isEmpty()) {
                 final PasswordDecoder decoder = config.getPasswordDecoder();
-                databaseCradinates = new DatabaseCradinates(
-                    fileCradinates.databaseProtocol(),
-                    fileCradinates.hostname(),
-                    (decoder != null ? decoder.decode(fileCradinates.password()) : fileCradinates.password()),
-                    fileCradinates.user(),
-                    fileCradinates.database(),
-                    fileCradinates.port()
-                );
+                setDatabaseCradinates(
+                    new DatabaseCradinates(
+                        fileCradinates.databaseProtocol(),
+                        fileCradinates.hostname(),
+                        (decoder != null ? decoder.decode(fileCradinates.password()) : fileCradinates.password()),
+                        fileCradinates.user(),
+                        fileCradinates.database(),
+                        fileCradinates.port()
+                ));
             } else {
                 System.err.println("Database cradinates are null! Please set them before using the database! " +
                     "Evelon#setDatabaseCradinates(DatabaseCradinates) or fill in config-file (" + config.getConfigPath().toAbsolutePath() + ")");

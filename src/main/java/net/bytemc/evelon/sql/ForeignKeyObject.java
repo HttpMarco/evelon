@@ -23,6 +23,6 @@ import java.lang.reflect.Field;
 public record ForeignKeyObject(String id, String value) {
 
     public static ForeignKeyObject of(Field primaryField, Object parent) {
-        return new ForeignKeyObject(DatabaseHelper.getRowName(primaryField), "'" + Reflections.readField(parent, primaryField).toString() + "'");
+        return new ForeignKeyObject(SQLHelper.getRowName(primaryField), "'" + Reflections.readField(parent, primaryField).toString() + "'");
     }
 }
