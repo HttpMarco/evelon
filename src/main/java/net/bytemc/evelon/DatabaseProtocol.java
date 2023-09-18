@@ -20,6 +20,11 @@ public enum DatabaseProtocol {
     private final Class<? extends Storage> storageClass;
     private String driver;
 
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase();
+    }
+
     //TODO
     // MySQL
     // POSTGRESQL
