@@ -10,16 +10,13 @@ import java.util.UUID;
 
 @Setter
 @Getter
-@ToString
 @AllArgsConstructor
-@NoArgsConstructor
-@Entity(name = "polus")
+@Entity(name = "polus2")
 public class TestRepository {
 
     @PrimaryKey
     private String name;
     private UUID uniqueId;
-    private HashMap<String, Long> connectedStates;
     private int personalNumber;
 
 }

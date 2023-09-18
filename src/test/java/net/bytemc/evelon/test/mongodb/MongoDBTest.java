@@ -20,18 +20,16 @@ import java.util.UUID;
  */
 public class MongoDBTest {
 
-    private static final TestRepository[] REPOSITORIES = new TestRepository[] {
+    private static final TestRepository[] REPOSITORIES = new TestRepository[]{
             new TestRepository(
                     "HabsGleich",
                     UUID.fromString("013eddfc-e9f7-46b3-a52c-a8cfac27d64e"),
-                    new HashMap<>(),
-                30
+                    30
             ),
             new TestRepository(
                     "Habi",
                     UUID.fromString("c09a363f-9b04-4343-b4e0-380e286bd751"),
-                    new HashMap<>(Map.of("Lobby-1", 52000L, "BedWars-1", 23000L)),
-                64
+                    64
             )
     };
 
@@ -39,12 +37,12 @@ public class MongoDBTest {
     public void test() {
         Debugger.setEnable(true);
         Evelon.setDatabaseCradinates(new DatabaseCradinates(
-            DatabaseProtocol.MONGODB,
-            "localhost",
-            "ThisIsAGoodPasswordTrustMe",
-            "admin",
-            "admin",
-            27017
+                DatabaseProtocol.MONGODB,
+                "localhost",
+                "ThisIsAGoodPasswordTrustMe",
+                "admin",
+                "admin",
+                27017
         ));
 
         final Repository<TestRepository> repository = Repository.create(TestRepository.class);
