@@ -58,12 +58,12 @@ public final class RepositoryQuery<T> {
 
     public void delete() {
         StorageHandler.getStorage(LocalStorage.class).delete(this);
-        StorageHandler.getStorage(Evelon.getDatabaseCradinates().databaseProtocol().getStorageClass()).delete(this);
+        StorageHandler.getCurrentStorage().delete(this);
     }
 
     public void create(T value) {
         StorageHandler.getStorage(LocalStorage.class).create(this, value);
-        StorageHandler.getStorage(Evelon.getDatabaseCradinates().databaseProtocol().getStorageClass()).create(this, value);
+        StorageHandler.getCurrentStorage().create(this, value);
     }
 
     public void cache(T value) {
@@ -80,7 +80,7 @@ public final class RepositoryQuery<T> {
         if(!localStorage.exists(this)) {
             localStorage.create(this, value);
         }
-        var databaseStorage = StorageHandler.getStorage(Evelon.getDatabaseCradinates().databaseProtocol().getStorageClass());
+        var databaseStorage = StorageHandler.getCurrentStorage();
         if(!databaseStorage.exists(this)) {
             databaseStorage.create(this, value);
         }

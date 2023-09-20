@@ -70,11 +70,11 @@ public final class RepositoryQueryActions<T> {
 
     public boolean exists() {
         if (order == RepositoryDepartureOrder.DATABASE) {
-            return StorageHandler.getStorage(SQLStorage.class).exists(query);
+            return StorageHandler.getCurrentStorage().exists(query);
         } else if (order == RepositoryDepartureOrder.LOCAL) {
             return StorageHandler.getStorage(LocalStorage.class).exists(query);
         } else {
-            return StorageHandler.getStorage(LocalStorage.class).exists(query) || StorageHandler.getStorage(SQLStorage.class).exists(query);
+            return StorageHandler.getStorage(LocalStorage.class).exists(query) || StorageHandler.getCurrentStorage().exists(query);
         }
     }
 
