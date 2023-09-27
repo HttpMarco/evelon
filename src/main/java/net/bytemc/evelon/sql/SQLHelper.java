@@ -37,7 +37,7 @@ public final class SQLHelper {
     }
 
     public static String getRowName(Field field) {
-        return (field.isAnnotationPresent(Row.class) ? field.getAnnotation(Row.class).name() : field.getName()).toLowerCase();
+        return (field.isAnnotationPresent(Row.class) ? field.getAnnotation(Row.class).name() : field.getName());
     }
 
     public static List<RowData> getRowData(String table, String... rowId) {
