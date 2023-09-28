@@ -37,17 +37,13 @@ public final class Evelon {
             EvelonConfig evelonConfig;
 
             if (Files.notExists(DEFAULT_CONFIG_PATH)) {
-                final var file = DEFAULT_CONFIG_PATH.toFile();
-
-                if (!file.mkdirs()) {
-                    System.out.println("Could not create config parent folders. Evelon will fail to init!");
-                    return null;
-                }
+                Files.createDirectories(DEFAULT_CONFIG_PATH.getParent());
+                Files.createFile(DEFAULT_CONFIG_PATH);
 
                 evelonConfig = EvelonConfig.DEFAULT;
 
-                if (!file.exists() && file.createNewFile()) {
-                    Files.writeString(file.toPath(), GSON.toJson(evelonConfig));
+                if (Files.exists(DEFAULT_CONFIG_PATH)) {
+                    Files.writeString(DEFAULT_CONFIG_PATH, GSON.toJson(evelonConfig));
                 } else {
                     System.out.println("Could not create config file. Evelon will fail to init!");
                     return null;
