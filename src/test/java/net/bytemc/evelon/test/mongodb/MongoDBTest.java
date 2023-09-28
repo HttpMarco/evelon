@@ -9,8 +9,6 @@ import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.test.TestRepository;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 /**

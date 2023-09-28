@@ -20,7 +20,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.local.LocalStorage;
-import net.bytemc.evelon.sql.SQLStorage;
 import net.bytemc.evelon.Storage;
 
 import java.util.function.Supplier;

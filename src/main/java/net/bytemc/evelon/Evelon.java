@@ -7,70 +7,73 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import net.bytemc.evelon.cradinates.DatabaseCradinates;
 import net.bytemc.evelon.cradinates.EvelonConfig;
-import net.bytemc.evelon.cradinates.PasswordDecoder;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 public final class Evelon {
 
     private static final Gson GSON = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
-    private static final Path DEFAULT_CRADINATES_FILE = Path.of("evelon/cradinates.json");
+    private static final Path DEFAULT_CONFIG_PATH = Path.of("configs/evelon-config.json");
 
     @Setter
     @Getter
     private static EvelonConfig config;
 
-    private static DatabaseCradinates databaseCradinates;
+    private static DatabaseCradinates DATABASE_CRADINATES;
 
     public static void setDatabaseCradinates(DatabaseCradinates databaseCradinates) {
-        if (Evelon.databaseCradinates != null) {
-            throw new UnsupportedOperationException("Evelon already initialized");
+        if (DATABASE_CRADINATES != null) {
+            throw new UnsupportedOperationException("Database cradinates have already been set. Maybe you set useThisConfig=true in the evlon-config.json?");
         }
-        Evelon.databaseCradinates = databaseCradinates;
+
+        DATABASE_CRADINATES = databaseCradinates;
         StorageHandler.initStorage(databaseCradinates.databaseProtocol());
     }
 
     @SneakyThrows
     public static DatabaseCradinates getDatabaseCradinates() {
-        if (databaseCradinates == null) {
-            final Path path = (config.getConfigPath() != null ? config.getConfigPath() : DEFAULT_CRADINATES_FILE);
-            if (!Files.exists(path)) {
-                System.out.println("No Cradinates was defined in code, generating file...");
+        if (DATABASE_CRADINATES == null) {
+            EvelonConfig evelonConfig;
 
-                final File file = path.toFile();
-                if (!file.getParentFile().exists()) {
-                    file.getParentFile().mkdirs();
+            if (Files.notExists(DEFAULT_CONFIG_PATH)) {
+                final var file = DEFAULT_CONFIG_PATH.toFile();
+
+                if (!file.mkdirs()) {
+                    System.out.println("Could not create config parent folders. Evelon will fail to init!");
+                    return null;
                 }
+
+                evelonConfig = EvelonConfig.DEFAULT;
+
                 if (!file.exists() && file.createNewFile()) {
-                    Files.writeString(file.toPath(), GSON.toJson(new DatabaseCradinates(
-                        DatabaseProtocol.MARIADB,
-                        "",
-                        "",
-                        "",
-                        "",
-                        3306
-                    )));
+                    Files.writeString(file.toPath(), GSON.toJson(evelonConfig));
+                } else {
+                    System.out.println("Could not create config file. Evelon will fail to init!");
+                    return null;
                 }
+            } else {
+                evelonConfig = GSON.fromJson(Files.readString(DEFAULT_CONFIG_PATH), EvelonConfig.class);
             }
-            final DatabaseCradinates fileCradinates = GSON.fromJson(Files.readString(path), DatabaseCradinates.class);
-            if (!fileCradinates.hostname().isEmpty()) {
-                final PasswordDecoder decoder = config.getPasswordDecoder();
-                setDatabaseCradinates(
-                    new DatabaseCradinates(
-                        fileCradinates.databaseProtocol(),
-                        fileCradinates.hostname(),
-                        (decoder != null ? decoder.decode(fileCradinates.password()) : fileCradinates.password()),
-                        fileCradinates.user(),
-                        fileCradinates.database(),
-                        fileCradinates.port()
+
+            if (evelonConfig.isUseThisConfig()) {
+                setDatabaseCradinates(new DatabaseCradinates(
+                        evelonConfig.getDatabaseProtocol(),
+                        evelonConfig.getHostname(),
+                        evelonConfig.getPassword(),
+                        evelonConfig.getUsername(),
+                        evelonConfig.getDatabase(),
+                        evelonConfig.getPort()
                 ));
             } else {
-                System.err.println("Database cradinates are null! Please set them before using the database! " +
-                    "Evelon#setDatabaseCradinates(DatabaseCradinates) or fill in config-file (" + config.getConfigPath().toAbsolutePath() + ")");
+                System.err.println("The provided evelon config tells evelon to not use the values provided in it. " +
+                        "DATABASE CRADINATES ARE NULL! " +
+                        "You have to set them yourself using Evelon#setDatbaseCradinates(DatabaseCradinates) " +
+                        "or fill them in the config file (" + DEFAULT_CONFIG_PATH.toAbsolutePath() + ") " +
+                        "before interacting with the database.");
             }
         }
-        return databaseCradinates;
+
+        return DATABASE_CRADINATES;
     }
 }

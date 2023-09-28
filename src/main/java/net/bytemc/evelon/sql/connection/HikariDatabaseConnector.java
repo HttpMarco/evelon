@@ -25,8 +25,6 @@ import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.h2.H2Connection;
 import org.h2.Driver;
 
-import java.io.File;
-import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 

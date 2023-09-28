@@ -19,7 +19,6 @@ package net.bytemc.evelon.repository;
 import lombok.AllArgsConstructor;
 import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.local.LocalStorage;
-import net.bytemc.evelon.sql.SQLStorage;
 import net.bytemc.evelon.Storage;
 import net.bytemc.evelon.StorageHandler;
 import org.jetbrains.annotations.NotNull;
