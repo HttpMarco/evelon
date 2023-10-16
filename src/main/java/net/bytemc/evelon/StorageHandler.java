@@ -38,6 +38,10 @@ public final class StorageHandler {
         storages.add(protocol.getStorageClass().getConstructor().newInstance());
     }
 
+    public static Storage getCurrentStorage() {
+        return getStorage(Evelon.getDatabaseCradinates().databaseProtocol().getStorageClass());
+    }
+
     /**
      * @param clazz the class of the storage
      * @param <T>

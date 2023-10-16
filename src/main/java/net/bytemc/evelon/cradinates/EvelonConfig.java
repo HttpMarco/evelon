@@ -16,24 +16,27 @@
 
 package net.bytemc.evelon.cradinates;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
+import net.bytemc.evelon.DatabaseProtocol;
 
-import java.nio.file.Path;
 
-/**
- * Created: 10.08.2023
- *
- * @author HabsGleich
- */
+@AllArgsConstructor
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public final class EvelonConfig {
+public class EvelonConfig {
+    public static EvelonConfig DEFAULT = new EvelonConfig(false,
+            DatabaseProtocol.MARIADB,
+            "hostname",
+            "username",
+            "password",
+            "database",
+            3306);
 
-    private Path configPath;
-    private PasswordDecoder passwordDecoder;
-
+    private boolean useThisConfig;
+    private DatabaseProtocol databaseProtocol;
+    private String hostname;
+    private String username;
+    private String password;
+    private String database;
+    private int port;
 }

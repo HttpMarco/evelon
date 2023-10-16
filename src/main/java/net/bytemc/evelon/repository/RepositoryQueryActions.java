@@ -19,7 +19,6 @@ package net.bytemc.evelon.repository;
 import lombok.AllArgsConstructor;
 import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.local.LocalStorage;
-import net.bytemc.evelon.sql.SQLStorage;
 import net.bytemc.evelon.Storage;
 import net.bytemc.evelon.StorageHandler;
 import org.jetbrains.annotations.NotNull;
@@ -70,11 +69,11 @@ public final class RepositoryQueryActions<T> {
 
     public boolean exists() {
         if (order == RepositoryDepartureOrder.DATABASE) {
-            return StorageHandler.getStorage(SQLStorage.class).exists(query);
+            return StorageHandler.getCurrentStorage().exists(query);
         } else if (order == RepositoryDepartureOrder.LOCAL) {
             return StorageHandler.getStorage(LocalStorage.class).exists(query);
         } else {
-            return StorageHandler.getStorage(LocalStorage.class).exists(query) || StorageHandler.getStorage(SQLStorage.class).exists(query);
+            return StorageHandler.getStorage(LocalStorage.class).exists(query) || StorageHandler.getCurrentStorage().exists(query);
         }
     }
 
