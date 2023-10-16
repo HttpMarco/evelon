@@ -18,19 +18,19 @@ package net.bytemc.evelon.local;
 
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.Filter;
+import net.bytemc.evelon.repository.Repository;
+import net.bytemc.evelon.repository.RepositoryClass;
+import net.bytemc.evelon.repository.RepositoryHelper;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
 import java.util.stream.Stream;
 
 public final class LocalStorageHelper {
 
-    public static <T> Stream<T> filter(List<Filter> filters, Stream<T> defaultStream) {
-
+    public static <T> Stream<T> filter(Repository<?> clazz, List<Filter> filters, Stream<T> defaultStream) {
         for (var filter : filters) {
-            defaultStream = filter.localFilter(defaultStream);
+            defaultStream = filter.localFilter(clazz.repositoryClass(), defaultStream);
         }
-
         return defaultStream;
     }
 
@@ -39,8 +39,13 @@ public final class LocalStorageHelper {
      * @param parent object with the field
      * @return
      */
-    public static @Nullable Number getNumberFilter(String id, Object parent) {
-        var element = getObjectFilter(id, parent);
+    public static @Nullable Number getNumberFilter(RepositoryClass<?> clazz, String id, Object parent) {
+        var element = getObjectFilter(clazz, id, parent);
+
+        if(element == null)  {
+            throw new NullPointerException("The field " + id + " is not present.");
+        }
+
         if (!Reflections.isNumber(element.getClass())) {
             System.err.println("Error while filtering: The field " + id + " is not a number.");
             return null;
@@ -54,13 +59,13 @@ public final class LocalStorageHelper {
      * @param parent
      * @return
      */
-    public static @Nullable Object getObjectFilter(String id, Object parent) {
-        try {
-            var fitlerField = parent.getClass().getDeclaredField(id);
-            var object = Reflections.readField(parent, fitlerField);
-            return object;
-        } catch (NoSuchFieldException e) {
-            return null;
+    public static @Nullable Object getObjectFilter(RepositoryClass<?> clazz, String id, Object parent) {
+        // check if superclasses have an equal name
+        if(clazz.getRows().stream().filter(it -> RepositoryHelper.getFieldName(it).equalsIgnoreCase(id)).count() > 1) {
+            throw new IllegalArgumentException("The field id " + id + " is present in multiple superclasses. For filtering you need to specify the superclass.");
         }
+        var fitlerField = clazz.getRows().stream().filter(it -> RepositoryHelper.getFieldName(it).equalsIgnoreCase(id)).findFirst().orElse(null);
+        var object = Reflections.readField(parent, fitlerField);
+        return object;
     }
 }
