@@ -16,9 +16,7 @@
 
 package net.bytemc.evelon.repository;
 
-import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.internal.MongoClientImpl;
 import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.local.LocalStorage;
 import net.bytemc.evelon.mongo.MongoConnection;

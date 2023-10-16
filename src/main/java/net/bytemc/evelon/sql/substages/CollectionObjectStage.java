@@ -77,6 +77,9 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
         }
 
         if (stage instanceof SQLElementStage<?> elementStage) {
+            if(value == null) {
+                return queries;
+            }
             for (var item : value) {
                 var columns = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
                 var element = elementStage.anonymousElementEntryData(new RepositoryClass<>(listType), null, item);
