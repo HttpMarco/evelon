@@ -6,7 +6,7 @@
 
     <groupId>net.bytemc</groupId>
     <artifactId>evelon</artifactId>
-    <version>1.3.3-SNAPSHOT</version>
+    <version>1.3.5</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -115,9 +115,16 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <shadedArtifactAttached>true</shadedArtifactAttached>
                     <finalName>${project.artifactId}-${project.version}</finalName>
+
+                    <relocations>
+                        <!-- som platforms have problems finding classes -->
+                        <relocation>
+                            <pattern>org.mariadb.jdbc</pattern>
+                            <shadedPattern>net.bytemc.relocate.org.mariadb.jdbc</shadedPattern>
+                        </relocation>
+                    </relocations>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>

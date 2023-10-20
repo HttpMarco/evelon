@@ -45,7 +45,14 @@ public final class HikariDatabaseConnector {
         if (databaseProtocol == DatabaseProtocol.H2) {
             Driver.load();
             hikariConfig.setJdbcUrl("jdbc:h2:" + H2Connection.getPath().toAbsolutePath());
+        } else if (databaseProtocol == DatabaseProtocol.MARIADB) {
+            try {
+                Class.forName(databaseProtocol.getDriver());
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         } else {
+            // h2 and mariadb have problems with the driver, but it works -> don't touch it
             hikariConfig.setDriverClassName(databaseProtocol.getDriver());
         }
 
