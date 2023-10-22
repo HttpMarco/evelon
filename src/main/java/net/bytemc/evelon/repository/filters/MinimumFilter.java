@@ -19,6 +19,7 @@ package net.bytemc.evelon.repository.filters;
 import com.mongodb.client.model.Filters;
 import net.bytemc.evelon.local.LocalStorageHelper;
 import net.bytemc.evelon.repository.AbstractIdFilter;
+import net.bytemc.evelon.repository.RepositoryClass;
 import org.bson.conversions.Bson;
 
 import java.util.stream.Stream;
@@ -43,10 +44,10 @@ public final class MinimumFilter extends AbstractIdFilter {
     }
 
     @Override
-    public <T> Stream<T> localFilter(Stream<T> stream) {
+    public <T> Stream<T> localFilter(RepositoryClass<?> clazz, Stream<T> stream) {
         return stream.filter(it -> {
             // read field from an object
-            var numberFilter = LocalStorageHelper.getNumberFilter(getId(), it);
+            var numberFilter = LocalStorageHelper.getNumberFilter(clazz, getId(), it);
 
             return numberFilter == null ? false : numberFilter.doubleValue() >= value.doubleValue();
         });

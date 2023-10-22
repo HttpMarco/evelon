@@ -19,6 +19,7 @@ package net.bytemc.evelon.repository.filters;
 import com.mongodb.client.model.Filters;
 import net.bytemc.evelon.local.LocalStorageHelper;
 import net.bytemc.evelon.repository.AbstractIdFilter;
+import net.bytemc.evelon.repository.RepositoryClass;
 import net.bytemc.evelon.sql.Schema;
 import org.bson.conversions.Bson;
 
@@ -44,7 +45,7 @@ public final class MatchFilter extends AbstractIdFilter {
     }
 
     @Override
-    public <T> Stream<T> localFilter(Stream<T> stream) {
-        return stream.filter(it -> LocalStorageHelper.getObjectFilter(getId(), it).equals(value));
+    public <T> Stream<T> localFilter(RepositoryClass<?> clazz, Stream<T> stream) {
+        return stream.filter(it -> LocalStorageHelper.getObjectFilter(clazz, getId(), it).equals(value));
     }
 }

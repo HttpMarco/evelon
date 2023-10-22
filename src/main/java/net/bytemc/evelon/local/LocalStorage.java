@@ -40,7 +40,7 @@ public final class LocalStorage implements Storage {
     @Override
     public <T> void delete(RepositoryQuery<T> query) {
         var elements = cache.get(query.getRepository());
-        var deletableEntries = LocalStorageHelper.filter(query.getFilters(), elements.stream()).toList();
+        var deletableEntries = LocalStorageHelper.filter(query.getRepository(), query.getFilters(), elements.stream()).toList();
 
         var objects = cache.get(query.getRepository());
         objects.removeAll(deletableEntries);
@@ -49,7 +49,7 @@ public final class LocalStorage implements Storage {
 
     @Override
     public <T> List<T> findAll(RepositoryQuery<T> query) {
-        return LocalStorageHelper.filter(query.getFilters(), cache.get(query.getRepository()).stream()).map(element -> (T) element).toList();
+        return LocalStorageHelper.filter(query.getRepository(), query.getFilters(), cache.get(query.getRepository()).stream()).map(element -> (T) element).toList();
     }
 
     @Override

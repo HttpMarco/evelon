@@ -20,6 +20,7 @@ import com.mongodb.client.model.Filters;
 import net.bytemc.evelon.local.LocalStorageHelper;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.AbstractIdFilter;
+import net.bytemc.evelon.repository.RepositoryClass;
 import org.bson.conversions.Bson;
 
 import java.util.stream.Stream;
@@ -51,11 +52,11 @@ public final class BetweenFilter extends AbstractIdFilter {
     }
 
     @Override
-    public <T> Stream<T> localFilter(Stream<T> stream) {
+    public <T> Stream<T> localFilter(RepositoryClass<?> clazz, Stream<T> stream) {
         // maybe we must check every fall of number types and not only the doubles.
         return stream.filter(it -> {
             // read field from an object
-            var numberFilter = LocalStorageHelper.getNumberFilter(getId(), it);
+            var numberFilter = LocalStorageHelper.getNumberFilter(clazz, getId(), it);
 
             return numberFilter != null && numberFilter.doubleValue() >= ((Number) minimumBounce).doubleValue() && numberFilter.doubleValue() <= ((Number) maximumBounce).doubleValue();
         });

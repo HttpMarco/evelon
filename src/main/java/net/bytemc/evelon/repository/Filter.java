@@ -29,7 +29,7 @@ public interface Filter {
 
     Bson mongoFilter();
 
-    <T> Stream<T> localFilter(Stream<T> stream);
+    <T> Stream<T> localFilter(RepositoryClass<?> clazz, Stream<T> stream);
 
     static Filter min(String id, Number min) {
         return new MinimumFilter(id, min);
