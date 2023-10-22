@@ -106,8 +106,11 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
                 continue;
             }
 
-            if(stage instanceof SubElementStage<?> subElementStage) {
-                //TODO FIXME: #24
+            if (stage instanceof SubElementStage<?> subElementStage) {
+                //TODO FIXME: #24 - Test check
+                queries.addAll(this.onAnonymousUpdateParentElement(table + "_" + SQLHelper.getRowName(row), row, parent, query, Reflections.readField(value, row),
+                        new RepositoryClass<>(value.getClass()).collectForeignKeyValues(value)
+                ));
             }
 
         }
