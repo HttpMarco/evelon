@@ -103,7 +103,13 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             if (stage instanceof SQLElementStage<?> elementStage) {
                 var result = elementStage.anonymousElementEntryData(objectClass, row, object);
                 values.put(result.left(), result.right());
+                continue;
             }
+
+            if(stage instanceof SubElementStage<?> subElementStage) {
+                //TODO FIXME: #24
+            }
+
         }
         queries.add(SQLHelper.update(table, (String.join(", ", values.keySet().stream().map(it -> it + "=" + values.get(it)).toList()) + SQLHelper.getDatabaseFilterQuery(query.getFilters()))));
         return queries;
