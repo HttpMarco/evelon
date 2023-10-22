@@ -6,7 +6,7 @@
 
     <groupId>net.bytemc</groupId>
     <artifactId>evelon</artifactId>
-    <version>1.3.5</version>
+    <version>1.3.6-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
