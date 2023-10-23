@@ -34,7 +34,7 @@ public enum SQLType {
     DECIMAL,
     BOOL(boolean.class, Boolean.class),
 
-    VARCHAR("VARCHAR(%s)"),
+    VARCHAR("VARCHAR(%d)"),
     CHAR,
     TINYTEXT,
     TEXT(String.class),
@@ -85,11 +85,12 @@ public enum SQLType {
         this.type = this.name();
     }
 
-    public String type() {
-        return type == null ? this.name() : type;
-    }
-
     public static SQLType getType(Class<?> clazz, SQLType... SQLType) {
         return Arrays.stream(SQLType).filter(it -> Arrays.stream(it.getCompatibleClasses()).anyMatch(s -> s.equals(clazz))).findFirst().orElse(null);
+    }
+
+    @Override
+    public String toString() {
+        return type == null ? this.name() : type;
     }
 }
