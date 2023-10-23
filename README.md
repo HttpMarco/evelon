@@ -14,22 +14,3 @@ Copyright by ByteMC-Network
 
 ## Usage
 To learn how to use Evelon to easily interact with your sql-database check our <a href="https://github.com/ByteMCNetzwerk/evelon/wiki">wiki</a>.
-
-## Release-notes
-### v1.0.1
-- Implemented count query function
-
-### v1.0.2
-- Implemented findFirst query function
-- Implemented async query functions
-
-### v1.1.0
-- Implemented startup properties
-- Implemented database cradinates
-- Added support for maps and superclasses
-- Fixed multiple errors
-
-### v1.2.0
-- Implemented mongodb support
-- better abstract sql schema
-- support h2 database
