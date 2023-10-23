@@ -16,6 +16,8 @@
 
 package net.bytemc.evelon.sql.stages;
 
+import net.bytemc.evelon.DatabaseProtocol;
+import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.misc.Pair;
 import net.bytemc.evelon.repository.RepositoryClass;
 import net.bytemc.evelon.sql.*;
@@ -28,7 +30,12 @@ public final class UuidStageSQL implements SQLElementStage<UUID> {
 
     @Override
     public String elementRowData(@Nullable Field field, RepositoryClass<UUID> repository) {
-        return SQLType.UUID.type();
+
+        if(Evelon.getDatabaseCradinates().databaseProtocol() == DatabaseProtocol.MYSQL) {
+            return SQLType.VARCHAR.toString().formatted(36);
+        }
+
+        return SQLType.UUID.toString();
     }
 
     @Override
