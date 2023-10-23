@@ -88,11 +88,11 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
     }
 
     @Override
-    public List<String> onUpdateParentElement(String table, Field field, Repository<?> parent, RepositoryQuery<Object> query, Object value, ForeignKeyObject... keys) {
+    public List<String> onUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<Object> query, RepositoryClass<Object> clazz, Object value, ForeignKeyObject... keys) {
         var queries = new ArrayList<String>();
         var values = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
 
-        for (var row : query.getRepository().repositoryClass().getRows()) {
+        for (var row : clazz.getRows()) {
             var stage = StageHandler.getInstance().getElementStage(row.getType());
             if (stage == null) {
                 throw new StageNotFoundException(row.getType());
@@ -106,15 +106,16 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
                 continue;
             }
 
-            if (stage instanceof SubElementStage<?> subElementStage) {
-                //TODO FIXME: #24 - Test check
-                queries.addAll(this.onAnonymousUpdateParentElement(table + "_" + SQLHelper.getRowName(row), row, parent, query, Reflections.readField(value, row),
-                        new RepositoryClass<>(value.getClass()).collectForeignKeyValues(value)
-                ));
+            if (stage instanceof SubElementStage<?>) {
+                var repositoryClass = new RepositoryClass<>(row.getType());
+                var subTable = table + "_" + SQLHelper.getRowName(row);
+                queries.addAll(this.onAnonymousUpdateParentElement(subTable, parent, query, repositoryClass, object, repositoryClass.collectForeignKeyValues(value)));
             }
 
         }
-        queries.add(SQLHelper.update(table, (String.join(", ", values.keySet().stream().map(it -> it + "=" + values.get(it)).toList()) + SQLHelper.getDatabaseFilterQuery(query.getFilters()))));
+        if(!values.isEmpty()) {
+            queries.add(SQLHelper.update(table, (String.join(", ", values.keySet().stream().map(it -> it + "=" + values.get(it)).toList()) + SQLHelper.getDatabaseFilterQuery(query.getFilters()))));
+        }
         return queries;
     }
 
