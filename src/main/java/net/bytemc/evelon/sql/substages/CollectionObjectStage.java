@@ -109,8 +109,8 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
     }
 
     @Override
-    public List<String> onUpdateParentElement(String table, Field field, Repository<?> parent, RepositoryQuery<Collection<?>> clazz, Collection<?> value, ForeignKeyObject... keys) {
-        //todo
+    public List<String> onUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<Collection<?>> query, RepositoryClass<Collection<?>> clazz, Collection<?> value, ForeignKeyObject... keys) {
+        //TODO
         return null;
     }
 

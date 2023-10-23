@@ -88,11 +88,11 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
     }
 
     @Override
-    public List<String> onUpdateParentElement(String table, Field field, Repository<?> parent, RepositoryQuery<Object> query, Object value, ForeignKeyObject... keys) {
+    public List<String> onUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<Object> query, RepositoryClass<Object> clazz, Object value, ForeignKeyObject... keys) {
         var queries = new ArrayList<String>();
         var values = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
 
-        for (var row : query.getRepository().repositoryClass().getRows()) {
+        for (var row : clazz.getRows()) {
             var stage = StageHandler.getInstance().getElementStage(row.getType());
             if (stage == null) {
                 throw new StageNotFoundException(row.getType());
@@ -103,9 +103,19 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             if (stage instanceof SQLElementStage<?> elementStage) {
                 var result = elementStage.anonymousElementEntryData(objectClass, row, object);
                 values.put(result.left(), result.right());
+                continue;
             }
+
+            if (stage instanceof SubElementStage<?>) {
+                var repositoryClass = new RepositoryClass<>(row.getType());
+                var subTable = table + "_" + SQLHelper.getRowName(row);
+                queries.addAll(this.onAnonymousUpdateParentElement(subTable, parent, query, repositoryClass, object, repositoryClass.collectForeignKeyValues(value)));
+            }
+
         }
-        queries.add(SQLHelper.update(table, (String.join(", ", values.keySet().stream().map(it -> it + "=" + values.get(it)).toList()) + SQLHelper.getDatabaseFilterQuery(query.getFilters()))));
+        if(!values.isEmpty()) {
+            queries.add(SQLHelper.update(table, (String.join(", ", values.keySet().stream().map(it -> it + "=" + values.get(it)).toList()) + SQLHelper.getDatabaseFilterQuery(query.getFilters()))));
+        }
         return queries;
     }
 

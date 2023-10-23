@@ -17,7 +17,7 @@ public final class ColumnUpdateProcess {
             System.err.println("The stage of the repository class " + repository.repositoryClass().clazz().getName() + " is not a virtual object stage. This is not supported.");
             return;
         }
-        var queries = virtualObjectStage.onAnonymousUpdateParentElement(query.getRepository().getName(), null, query.getRepository(), query, value);
+        var queries = virtualObjectStage.onAnonymousUpdateParentElement(query.getRepository().getName(), query.getRepository(), query, query.getRepository().repositoryClass(), value);
         for(int i = queries.size() - 1; i >= 0; i--) {
             SQLConnection.executeUpdate(queries.get(i));
         }
