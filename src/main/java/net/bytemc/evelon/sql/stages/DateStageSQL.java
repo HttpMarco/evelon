@@ -28,7 +28,7 @@ public final class DateStageSQL implements SQLElementStage<Date> {
 
     @Override
     public String elementRowData(@Nullable Field field, RepositoryClass<Date> repository) {
-        return SQLType.DATE.type();
+        return SQLType.DATE.toString();
     }
 
     @Override

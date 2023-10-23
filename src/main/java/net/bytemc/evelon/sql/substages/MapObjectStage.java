@@ -50,8 +50,8 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
         SQLForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
         // add map key value -> unique -> primary key
         var keyDatabaseType = keyElementStage.anonymousElementRowData(field, new RepositoryClass<>(keyType));
-        if (keyDatabaseType.equals(SQLType.TEXT.type())) {
-            keyDatabaseType = SQLType.VARCHAR.type().formatted("255");
+        if (keyDatabaseType.equals(SQLType.TEXT.toString())) {
+            keyDatabaseType = SQLType.VARCHAR.toString().formatted(255);
         }
         rowValues.add(SQLHelper.getRowName(field) + "_key " + keyDatabaseType + " PRIMARY KEY");
 

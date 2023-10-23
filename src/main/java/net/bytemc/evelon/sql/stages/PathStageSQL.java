@@ -28,7 +28,7 @@ public final class PathStageSQL implements SQLElementStage<Path> {
 
     @Override
     public String elementRowData(@Nullable Field field, RepositoryClass<Path> repository) {
-        return SQLType.TEXT.type();
+        return SQLType.TEXT.toString();
     }
 
     @Override

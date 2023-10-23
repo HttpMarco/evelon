@@ -29,7 +29,7 @@ public final class EnumerationStageSQL implements SQLElementStage<Enum<?>> {
     @Override
     public String elementRowData(@Nullable Field field, RepositoryClass<Enum<?>> repository) {
         var type = (Class<Enum<?>>) field.getType();
-        return SQLType.ENUM.type().formatted(String.join(",", Arrays.stream(type.getEnumConstants()).map(it -> Schema.encloseSchema(it.name())).toList()));
+        return SQLType.ENUM.toString().formatted(String.join(",", Arrays.stream(type.getEnumConstants()).map(it -> Schema.encloseSchema(it.name())).toList()));
     }
 
     @Override
