@@ -21,13 +21,10 @@ import org.jetbrains.annotations.NotNull;
 
 public record DatabaseCradinates(DatabaseProtocol databaseProtocol, String hostname, String password, String user, String database, int port) {
 
+    private static String defaultUrl = "jdbc:%s://%s:%d/%s?useUnicode=true&autoReconnect=true&user=%s&password=%s";
+
     public @NotNull String toUrl() {
-        return this.defaultUrl().formatted(databaseProtocol.name().toLowerCase(), hostname, port, database, user, password);
+        return defaultUrl.formatted(databaseProtocol.name().toLowerCase(), hostname, port, database, user, password);
     }
-
-    private String defaultUrl() {
-        return "jdbc:%s://%s:%d/%s?useUnicode=true&autoReconnect=true&user=%s&password=%s";
-    }
-
 }
 

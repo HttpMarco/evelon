@@ -76,5 +76,4 @@ public final class Evelon {
     public static void useDefaultLocalDatabase() {
         setDatabaseCradinates(new DatabaseCradinates(DatabaseProtocol.H2, "", "", "", "default", 3306));
     }
-
 }
