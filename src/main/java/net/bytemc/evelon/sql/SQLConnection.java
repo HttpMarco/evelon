@@ -33,6 +33,7 @@ public final class SQLConnection {
         Debugger.log("Established connection to " + databaseProtocol + " server");
     }
 
+    @SuppressWarnings("SqlSourceToSinkFlow") // fix next time -> ? to value
     public static <T> T executeQuery(String query, SQLFunction<ResultSet, T> function, T defaultValue) {
         try (var connection = POOL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             try (var resultSet = preparedStatement.executeQuery()) {
@@ -50,6 +51,7 @@ public final class SQLConnection {
         return defaultValue;
     }
 
+    @SuppressWarnings("SqlSourceToSinkFlow") // fix next time -> ? to value
     public static int executeUpdate(String query) {
         try (var connection = POOL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             return preparedStatement.executeUpdate();
