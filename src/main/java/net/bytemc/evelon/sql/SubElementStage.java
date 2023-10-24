@@ -27,11 +27,7 @@ import java.util.List;
 public interface SubElementStage<T> extends Stage<T> {
 
     /**
-     * @param table
-     * @param current
-     * @param field
      * @param keys    possible foreign keys
-     * @return the current sql query for create statements
      */
     void onParentTableCollectData(List<String> queries, String table, RepositoryClass<?> current, Field field, ForeignKey... keys);
 
@@ -47,11 +43,6 @@ public interface SubElementStage<T> extends Stage<T> {
         return this.onUpdateParentElement(table, parent, (RepositoryQuery<T>) query, (RepositoryClass<T>) clazz, (T) value, keys);
     }
 
-    /**
-     * @param table
-     * @param clazz
-     * @return
-     */
     T createInstance(String table, @Nullable Field parentField, RepositoryClass<T> clazz, SQLResultSet resultSet);
 
 }

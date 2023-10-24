@@ -4,7 +4,6 @@ import lombok.SneakyThrows;
 import net.bytemc.evelon.Storage;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.mongo.misc.MongoHelper;
-import net.bytemc.evelon.repository.Filter;
 import net.bytemc.evelon.repository.RepositoryHelper;
 import net.bytemc.evelon.repository.RepositoryQuery;
 import org.bson.Document;

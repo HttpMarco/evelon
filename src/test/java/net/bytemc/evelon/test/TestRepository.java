@@ -4,8 +4,6 @@ import lombok.*;
 import net.bytemc.evelon.repository.annotations.Entity;
 import net.bytemc.evelon.repository.annotations.PrimaryKey;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Setter

@@ -1,7 +1,5 @@
 package net.bytemc.evelon.exception;
 
-import java.lang.reflect.Field;
-
 public final class NumberNotPresentException extends RuntimeException {
 
     public NumberNotPresentException(Class<?> type, String id) {

@@ -44,7 +44,6 @@ public final class StorageHandler {
 
     /**
      * @param clazz the class of the storage
-     * @param <T>
      * @return the current storage of the declared class, if not found, it will return null
      */
     public static <T extends Storage> @Nullable T getStorage(Class<T> clazz) {

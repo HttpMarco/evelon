@@ -18,11 +18,9 @@ package net.bytemc.evelon.repository;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.local.LocalStorage;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.sql.SQLHelper;
-import net.bytemc.evelon.sql.SQLStorage;
 import net.bytemc.evelon.StorageHandler;
 
 import java.util.ArrayList;

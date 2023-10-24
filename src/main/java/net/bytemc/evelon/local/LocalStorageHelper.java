@@ -37,7 +37,6 @@ public final class LocalStorageHelper {
     /**
      * @param id field name
      * @param parent object with the field
-     * @return
      */
     public static @Nullable Number getNumberFilter(RepositoryClass<?> clazz, String id, Object parent) {
         var element = getObjectFilter(clazz, id, parent);
@@ -54,11 +53,6 @@ public final class LocalStorageHelper {
         return number;
     }
 
-    /**
-     * @param id
-     * @param parent
-     * @return
-     */
     public static @Nullable Object getObjectFilter(RepositoryClass<?> clazz, String id, Object parent) {
         // check if superclasses have an equal name
         if(clazz.getRows().stream().filter(it -> RepositoryHelper.getFieldName(it).equalsIgnoreCase(id)).count() > 1) {

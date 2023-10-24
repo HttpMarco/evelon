@@ -30,31 +30,12 @@ public interface Storage {
      */
     <T> void create(RepositoryQuery<T> query, T value);
 
-    /**
-     * @param query
-     * @param <T>
-     */
     <T> void delete(RepositoryQuery<T> query);
 
-    /**
-     * @param query
-     * @param <T>
-     * @return
-     */
     <T> List<T> findAll(RepositoryQuery<T> query);
 
-    /**
-     * @param query a query to the specific repository
-     * @param <T>
-     * @return
-     */
     <T> @Nullable T findFirst(RepositoryQuery<T> query);
 
-    /**
-     * @param query
-     * @param value
-     * @param <T>
-     */
     <T> void update(RepositoryQuery<T> query, T value);
 
     <T> boolean exists(RepositoryQuery<T> query);

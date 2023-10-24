@@ -22,7 +22,6 @@ import net.bytemc.evelon.sql.process.*;
 import net.bytemc.evelon.Storage;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.Connection;
 import java.util.Arrays;
 import java.util.List;
 
