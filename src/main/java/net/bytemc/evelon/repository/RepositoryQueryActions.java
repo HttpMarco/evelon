@@ -35,7 +35,6 @@ public final class RepositoryQueryActions<T> {
     private final RepositoryQuery<T> query;
     private final RepositoryDepartureOrder order;
 
-    //TODO duplicate code
     private void handleStorage(Consumer<Storage> handler) {
 
         if (order == null) {
@@ -94,5 +93,4 @@ public final class RepositoryQueryActions<T> {
         handleStorage(storage -> result.set(storage.sum(query, id)));
         return result.get();
     }
-
 }

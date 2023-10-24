@@ -27,7 +27,6 @@ public enum DatabaseProtocol {
     }
 
     //TODO
-    // MySQL
     // POSTGRESQL
 
 }

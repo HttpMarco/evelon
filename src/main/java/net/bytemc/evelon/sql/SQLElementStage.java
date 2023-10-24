@@ -61,7 +61,6 @@ public interface SQLElementStage<T> extends Stage<T> {
 
     /**
      * @param clazz is the repository class of the object
-     * @param <T> the type of the object
      * @return a new object of the type
      */
     T createObject(RepositoryClass<T> clazz, String id, SQLResultSet.Table table);
