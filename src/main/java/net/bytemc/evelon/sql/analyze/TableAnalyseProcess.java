@@ -22,7 +22,7 @@ import net.bytemc.evelon.sql.analyze.steps.TablenameStep;
 
 public final class TableAnalyseProcess {
 
-    private static AnalyseStep[] steps = new AnalyseStep[]{
+    private static final AnalyseStep[] steps = new AnalyseStep[]{
 
             // The first step is to check if the table name is correct.
             new TablenameStep(),

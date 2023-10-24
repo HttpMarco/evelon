@@ -38,7 +38,7 @@ public final class EnumerationStageSQL implements SQLElementStage<Enum<?>> {
     }
 
     @Override
-    public Enum<?> createObject(RepositoryClass clazz, String id, SQLResultSet.Table table) {
+    public Enum<?> createObject(RepositoryClass<Enum<?>> clazz, String id, SQLResultSet.Table table) {
         return Enum.valueOf((Class<? extends Enum>) clazz.clazz(), table.get(id, String.class));
     }
 

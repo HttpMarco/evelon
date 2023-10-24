@@ -63,7 +63,7 @@ public final class RepositoryQueryAsync<T> {
 
     private void runAsync(Runnable runnable) {
         CompletableFuture.runAsync(runnable).exceptionally(throwable -> {
-            throwable.printStackTrace();
+            System.err.println("Probaly error call on async exception: " + throwable.getMessage() + " \n " + throwable.getCause().toString());
             return null;
         });
     }

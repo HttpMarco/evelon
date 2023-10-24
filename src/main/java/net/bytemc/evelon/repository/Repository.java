@@ -76,7 +76,7 @@ public record Repository<T>(RepositoryClass<T> repositoryClass, StartupPropertie
     public String getName() {
         if (repositoryClass.clazz().isAnnotationPresent(Entity.class)) {
             var data = repositoryClass.clazz().getDeclaredAnnotation(Entity.class);
-            if (data.name().length() == 0) {
+            if (data.name().isEmpty()) {
                 return this.repositoryClass.clazz().getSimpleName();
             } else {
                 return data.name();

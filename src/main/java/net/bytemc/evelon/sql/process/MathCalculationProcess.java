@@ -12,15 +12,15 @@ import java.util.function.Function;
 public final class MathCalculationProcess {
 
     public static <T> long count(RepositoryQuery<T> query) {
-        return calculationDatabaseFields("count", options -> SQLHelper.count(options), -1L, query, null, false);
+        return calculationDatabaseFields("count", SQLHelper::count, -1L, query, null, false);
     }
 
     public static <T> long sum(RepositoryQuery<T> query, String id) {
-        return calculationDatabaseFields("sum", options -> SQLHelper.sum(options), BigDecimal.valueOf(-1), query, id, true).longValue();
+        return calculationDatabaseFields("sum", SQLHelper::sum, BigDecimal.valueOf(-1), query, id, true).longValue();
     }
 
     public static <T> double avg(RepositoryQuery<T> query, String id) {
-        return calculationDatabaseFields("avg", options -> SQLHelper.avg(options), BigDecimal.valueOf(-1), query, id, true).doubleValue();
+        return calculationDatabaseFields("avg", SQLHelper::avg, BigDecimal.valueOf(-1), query, id, true).doubleValue();
     }
 
     private static <T> T calculationDatabaseFields(String key, Function<String[], String> query, T defaultValue, RepositoryQuery<?> repositoryQuery, String id, boolean checkNumber) {

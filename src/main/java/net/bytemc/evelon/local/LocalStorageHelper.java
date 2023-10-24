@@ -49,8 +49,7 @@ public final class LocalStorageHelper {
             System.err.println("Error while filtering: The field " + id + " is not a number.");
             return null;
         }
-        var number = (Number) element;
-        return number;
+        return (Number) element;
     }
 
     public static @Nullable Object getObjectFilter(RepositoryClass<?> clazz, String id, Object parent) {
@@ -59,7 +58,6 @@ public final class LocalStorageHelper {
             throw new IllegalArgumentException("The field id " + id + " is present in multiple superclasses. For filtering you need to specify the superclass.");
         }
         var fitlerField = clazz.getRows().stream().filter(it -> RepositoryHelper.getFieldName(it).equalsIgnoreCase(id)).findFirst().orElse(null);
-        var object = Reflections.readField(parent, fitlerField);
-        return object;
+        return Reflections.readField(parent, fitlerField);
     }
 }

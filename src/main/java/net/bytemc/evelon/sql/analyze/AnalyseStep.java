@@ -31,7 +31,7 @@ public abstract class AnalyseStep {
 
 
     /**
-     * This method is called when the step detected a chnage and need the manipulation
+     * This method is called when the step detected a change and need the manipulation
      */
     public abstract void manipulate(@NotNull Repository<?> repository);
 

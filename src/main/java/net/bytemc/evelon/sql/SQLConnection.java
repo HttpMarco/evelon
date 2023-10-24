@@ -42,7 +42,7 @@ public final class SQLConnection {
                 return defaultValue;
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.err.println("Error while execute update: " + exception.getMessage() + " with " + exception.getCause().toString());
         } finally {
             if (Debugger.isEnable()) {
                 System.out.println(query);

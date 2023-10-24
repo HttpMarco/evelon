@@ -25,8 +25,8 @@ import java.util.List;
 public final class AnalyseResult {
 
     // collect all detections and warnings
-    private List<String> detections = new ArrayList<>();
-    private List<String> warnings = new ArrayList<>();
+    private final List<String> detections = new ArrayList<>();
+    private final List<String> warnings = new ArrayList<>();
 
 
     /**

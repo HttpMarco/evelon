@@ -49,7 +49,7 @@ public final class MaximumFilter extends AbstractIdFilter {
             // read field from an object
             var numberFilter = LocalStorageHelper.getNumberFilter(clazz, getId(), it);
 
-            return numberFilter == null ? false : numberFilter.doubleValue() <= value.doubleValue();
+            return numberFilter != null && numberFilter.doubleValue() <= value.doubleValue();
         });
     }
 }

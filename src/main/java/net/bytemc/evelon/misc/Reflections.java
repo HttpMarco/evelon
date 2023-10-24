@@ -19,6 +19,7 @@ package net.bytemc.evelon.misc;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.List;
@@ -51,7 +52,7 @@ public final class Reflections {
         try {
             return field.get(parent);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            System.err.println("Cannot get field '" + field.getName() + "' from " + parent.getClass().getSimpleName());
         }
         return null;
     }
@@ -65,7 +66,7 @@ public final class Reflections {
             field.setAccessible(true);
             field.set(parent, value);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            System.err.println("Cannot set field '" + field.getName() + "' on " + parent.getClass().getSimpleName() + " with value: " + value.toString());
         }
     }
 
@@ -75,8 +76,8 @@ public final class Reflections {
      */
     public static boolean isNumber(Class<?> clazz) {
         return Number.class.isAssignableFrom(clazz) ||
-            (clazz.isPrimitive() && clazz == int.class || clazz == long.class || clazz == double.class
-                || clazz == float.class || clazz == short.class || clazz == byte.class);
+                (clazz.isPrimitive() && clazz == int.class || clazz == long.class || clazz == double.class
+                        || clazz == float.class || clazz == short.class || clazz == byte.class);
     }
 
     public static boolean isNumberFromField(Class<?> clazz, String fieldId) {
@@ -100,7 +101,12 @@ public final class Reflections {
         try {
             return (T) unsafe.allocateInstance(tClass);
         } catch (InstantiationException e) {
-            e.printStackTrace();
+            try {
+                // default empty constructor
+                return tClass.getConstructor().newInstance();
+            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+                System.err.println("Cannot create new object: " + tClass.getSimpleName());
+            }
         }
         return null;
     }

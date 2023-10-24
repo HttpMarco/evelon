@@ -47,7 +47,7 @@ public final class DefaultParameterStageSQL implements SQLElementStage<Object> {
 
     @Override
     public @NotNull @Unmodifiable Pair<@Nullable String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Object object) {
-        // mariadb disallow "'" in a boolean value
+        // mariadb disallow ' in a boolean value
         var fieldName = field == null ? "value" : SQLHelper.getRowName(field);
 
         if (object instanceof Boolean || object.getClass().equals(boolean.class)) {

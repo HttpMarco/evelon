@@ -49,7 +49,7 @@ public final class HikariDatabaseConnector {
             try {
                 Class.forName(databaseProtocol.getDriver());
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                System.err.println("Cannot load driver class: " + databaseProtocol.getDriver());
             }
         } else {
             // h2 and mariadb have problems with the driver, but it works -> don't touch it
