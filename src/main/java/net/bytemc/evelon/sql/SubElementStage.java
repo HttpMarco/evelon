@@ -45,7 +45,9 @@ public interface SubElementStage<T> extends Stage<T> {
 
     T createInstance(String table, @Nullable Field parentField, RepositoryClass<T> clazz, SQLResultSet resultSet);
 
-    Object createAnonymousInstance(String table, @Nullable Field parentField, RepositoryClass<?> clazz, SQLResultSet resultSet);
+    default Object createAnonymousInstance(String table, @Nullable Field parentField, RepositoryClass<?> clazz, SQLResultSet resultSet) {
+        return this.createInstance(table, parentField, (RepositoryClass<T>) clazz, resultSet);
+    }
 
 
 }
