@@ -5,7 +5,7 @@ Copyright by ByteMC-Network
 <hr>
 
 **Latest stable-version:** 1.3.7<br>
-**Latest snapshot-version:** 1.3.8-SNAPSHOT<br>
+**Latest snapshot-version:** 1.3.9-SNAPSHOT<br>
 **All available versions:** 
 <a href="https://artifactory.bytemc.de/ui/native/bytemc-public/net/bytemc/evelon/">Click </a>
 
