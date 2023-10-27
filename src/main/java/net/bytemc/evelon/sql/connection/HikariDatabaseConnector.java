@@ -45,7 +45,7 @@ public final class HikariDatabaseConnector {
         if (databaseProtocol == DatabaseProtocol.H2) {
             Driver.load();
             hikariConfig.setJdbcUrl("jdbc:h2:" + H2Connection.getPath().toAbsolutePath());
-        } else if (databaseProtocol == DatabaseProtocol.MARIADB || databaseProtocol == DatabaseProtocol.POSTGRESQL) {
+        } else if (databaseProtocol == DatabaseProtocol.MARIADB || databaseProtocol == DatabaseProtocol.MYSQL || databaseProtocol == DatabaseProtocol.POSTGRESQL) {
             try {
                 Class.forName(databaseProtocol.getDriver());
             } catch (ClassNotFoundException e) {
