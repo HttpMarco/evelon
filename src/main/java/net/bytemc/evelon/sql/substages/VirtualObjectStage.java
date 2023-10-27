@@ -47,6 +47,16 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
         SQLForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
         for (var row : current.getRows()) {
             var stage = StageHandler.getInstance().getElementStage(row.getType());
+
+            // check if the current typ is a transformer
+            if(stage instanceof SQLElementStageTransformer transformer) {
+                stage = transformer.transformTo();
+                // prov that the transformer is not a transformer
+                if(stage instanceof SQLElementStageTransformer<?>) {
+                    throw new IllegalStateException("Transformer can't be a transformer");
+                }
+            }
+
             if (stage instanceof SQLElementStage<?> elementStage) {
                 // create net repository class, because there can be multiple rows of the same type
                 var elementClass = new RepositoryClass<>(row.getType());
@@ -56,11 +66,8 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             } else if (stage instanceof SubElementStage<?> subElementStage) {
                 var subTableName = table + "_" + SQLHelper.getRowName(row);
                 var subTableRepositoryClazz = new RepositoryClass<>(row.getType());
-
                 //TODO use current.collect
                 subElementStage.onParentTableCollectData(queries, subTableName, subTableRepositoryClazz, row, current.getPrimaries().stream().map(it -> new ForeignKey(table, it)).toArray(ForeignKey[]::new));
-            } else if(stage instanceof SQLElementStageTransformer transformer) {
-                //todo
             }
         }
         // add database schema link
@@ -78,6 +85,11 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             if (stage == null) {
                 throw new StageNotFoundException(row.getType());
             }
+
+            if(stage instanceof SQLElementStageTransformer transformer) {
+                stage = transformer.transformTo();
+            }
+
             var object = Reflections.readField(value, row);
             var objectClass = new RepositoryClass<>(row.getType());
             if (stage instanceof SubElementStage<?> subElementStage) {
@@ -85,8 +97,6 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             } else if (stage instanceof SQLElementStage<?> elementStage) {
                 var result = elementStage.anonymousElementEntryData(objectClass, row, object);
                 values.put(result.left(), result.right());
-            } else if (stage instanceof SQLElementStageTransformer transformer) {
-                //todo
             }
         }
         queries.add(SQLHelper.insertDefault(table, String.join(", ", values.keySet()), String.join(", ", values.values())));
