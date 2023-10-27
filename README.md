@@ -1,9 +1,5 @@
 ## Evelon
 
-Copyright by ByteMC-Network
-
-<hr>
-
 **Latest stable-version:** 1.3.7<br>
 **Latest snapshot-version:** 1.3.9-SNAPSHOT<br>
 **All available versions:** 
