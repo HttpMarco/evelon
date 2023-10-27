@@ -34,32 +34,29 @@ public final class Evelon {
     @SneakyThrows
     public static DatabaseCradinates getDatabaseCradinates() {
         if (DATABASE_CRADINATES == null) {
-            EvelonConfig evelonConfig;
-
+            EvelonConfig config;
             if (Files.notExists(DEFAULT_CONFIG_PATH)) {
                 Files.createDirectories(DEFAULT_CONFIG_PATH.getParent());
                 Files.createFile(DEFAULT_CONFIG_PATH);
-
-                evelonConfig = EvelonConfig.DEFAULT;
-
+                config = EvelonConfig.DEFAULT;
                 if (Files.exists(DEFAULT_CONFIG_PATH)) {
-                    Files.writeString(DEFAULT_CONFIG_PATH, GSON.toJson(evelonConfig));
+                    Files.writeString(DEFAULT_CONFIG_PATH, GSON.toJson(config));
                 } else {
                     System.out.println("Could not create config file. Evelon will fail to init!");
                     return null;
                 }
             } else {
-                evelonConfig = GSON.fromJson(Files.readString(DEFAULT_CONFIG_PATH), EvelonConfig.class);
+                config = GSON.fromJson(Files.readString(DEFAULT_CONFIG_PATH), EvelonConfig.class);
             }
 
-            if (evelonConfig.isUseThisConfig()) {
+            if (config.isUseThisConfig()) {
                 setDatabaseCradinates(new DatabaseCradinates(
-                        evelonConfig.getDatabaseProtocol(),
-                        evelonConfig.getHostname(),
-                        evelonConfig.getPassword(),
-                        evelonConfig.getUsername(),
-                        evelonConfig.getDatabase(),
-                        evelonConfig.getPort()
+                        config.getDatabaseProtocol(),
+                        config.getHostname(),
+                        config.getPassword(),
+                        config.getUsername(),
+                        config.getDatabase(),
+                        config.getPort()
                 ));
             } else {
                 System.err.println("The provided evelon config tells evelon to not use the values provided in it. " +
