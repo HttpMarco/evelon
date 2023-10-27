@@ -31,15 +31,15 @@ public interface SubElementStage<T> extends Stage<T> {
      */
     void onParentTableCollectData(List<String> queries, String table, RepositoryClass<?> current, Field field, ForeignKey... keys);
 
-    List<String> onParentElement(String table, Field field, Repository<?> parent, RepositoryClass<T> clazz, T value, ForeignKeyObject... keys);
+    List<String> onParentElement(String table, Field field, Repository<?> parent, RepositoryClass<T> clazz, T value, ForeignKey... keys);
 
-    default List<String> onAnonymousParentElement(String table, Field field, Repository<?> parent, RepositoryClass<?> clazz, Object value, ForeignKeyObject... keys) {
+    default List<String> onAnonymousParentElement(String table, Field field, Repository<?> parent, RepositoryClass<?> clazz, Object value, ForeignKey... keys) {
         return this.onParentElement(table, field, parent, (RepositoryClass<T>) clazz, (T) value, keys);
     }
 
-    List<String> onUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<T> query, RepositoryClass<T> clazz, T value, ForeignKeyObject... keys);
+    List<String> onUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<T> query, RepositoryClass<T> clazz, T value, ForeignKey... keys);
 
-    default List<String> onAnonymousUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<?> query, RepositoryClass<?> clazz, Object value, ForeignKeyObject... keys) {
+    default List<String> onAnonymousUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<?> query, RepositoryClass<?> clazz, Object value, ForeignKey... keys) {
         return this.onUpdateParentElement(table, parent, (RepositoryQuery<T>) query, (RepositoryClass<T>) clazz, (T) value, keys);
     }
 

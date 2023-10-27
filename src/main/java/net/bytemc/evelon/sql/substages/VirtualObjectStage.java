@@ -69,7 +69,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
     }
 
     @Override
-    public List<String> onParentElement(String table, Field field, Repository<?> parent, RepositoryClass<Object> clazz, Object value, ForeignKeyObject... keys) {
+    public List<String> onParentElement(String table, Field field, Repository<?> parent, RepositoryClass<Object> clazz, Object value, ForeignKey... keys) {
         var queries = new ArrayList<String>();
         var values = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
 
@@ -94,7 +94,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
     }
 
     @Override
-    public List<String> onUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<Object> query, RepositoryClass<Object> clazz, Object value, ForeignKeyObject... keys) {
+    public List<String> onUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<Object> query, RepositoryClass<Object> clazz, Object value, ForeignKey... keys) {
         var queries = new ArrayList<String>();
         var values = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
 

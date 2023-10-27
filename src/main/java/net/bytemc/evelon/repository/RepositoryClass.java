@@ -18,7 +18,7 @@ package net.bytemc.evelon.repository;
 
 import net.bytemc.evelon.repository.annotations.Ignore;
 import net.bytemc.evelon.repository.annotations.PrimaryKey;
-import net.bytemc.evelon.sql.ForeignKeyObject;
+import net.bytemc.evelon.sql.ForeignKey;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
@@ -64,9 +64,9 @@ public record RepositoryClass<T>(Class<T> clazz) {
 
     /**
      * @param instance the instance of the class
-     * @return all primary keys with their values as {@link ForeignKeyObject}
+     * @return all primary keys with their values as {@link ForeignKey}
      */
-    public ForeignKeyObject[] collectForeignKeyValues(@NotNull Object instance) {
-        return getPrimaries().stream().map(it -> ForeignKeyObject.of(it, instance)).toArray(ForeignKeyObject[]::new);
+    public ForeignKey[] collectForeignKeyValues(@NotNull Object instance) {
+        return getPrimaries().stream().map(it -> new ForeignKey(it, instance)).toArray(ForeignKey[]::new);
     }
 }

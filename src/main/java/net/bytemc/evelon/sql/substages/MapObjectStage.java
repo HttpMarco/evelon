@@ -67,7 +67,7 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
     }
 
     @Override
-    public List<String> onParentElement(String table, Field field, Repository<?> parent, RepositoryClass<Map<?, ?>> clazz, Map<?, ?> value, ForeignKeyObject... keys) {
+    public List<String> onParentElement(String table, Field field, Repository<?> parent, RepositoryClass<Map<?, ?>> clazz, Map<?, ?> value, ForeignKey... keys) {
         //todo: check duplicated code
         var queries = new ArrayList<String>();
         var generic = Reflections.readGenericFromClass(field);
@@ -90,7 +90,7 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
     }
 
     @Override
-    public List<String> onUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<Map<?, ?>> query, RepositoryClass<Map<?, ?>> clazz, Map<?, ?> value, ForeignKeyObject... keys) {
+    public List<String> onUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<Map<?, ?>> query, RepositoryClass<Map<?, ?>> clazz, Map<?, ?> value, ForeignKey... keys) {
         //todo
         return null;
     }
