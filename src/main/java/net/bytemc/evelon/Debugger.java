@@ -19,7 +19,7 @@ package net.bytemc.evelon;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Debugger {
+public final class Debugger {
 
     @Setter
     @Getter
