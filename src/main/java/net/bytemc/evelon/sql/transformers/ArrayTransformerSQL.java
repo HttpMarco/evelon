@@ -20,12 +20,25 @@ import net.bytemc.evelon.sql.SQLElementStageTransformer;
 import net.bytemc.evelon.sql.Stage;
 import net.bytemc.evelon.sql.StageHandler;
 import net.bytemc.evelon.sql.substages.CollectionObjectStage;
+import java.util.Arrays;
 
-public final class ArrayTransformerSQL implements SQLElementStageTransformer {
+public final class ArrayTransformerSQL implements SQLElementStageTransformer<Object[]> {
 
     @Override
     public Stage<?> transformTo() {
         return  StageHandler.getInstance().getStage(CollectionObjectStage.class);
+    }
+
+    @Override
+    public Object transform(Object[] value) {
+        return Arrays.asList(value);
+    }
+
+    @Override
+    public Object[] rollback(Object value) {
+
+        //TODO check this implementation
+        throw new UnsupportedOperationException("rollback not supported for arrays");
     }
 
     @Override

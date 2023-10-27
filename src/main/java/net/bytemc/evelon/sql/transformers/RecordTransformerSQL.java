@@ -21,7 +21,7 @@ import net.bytemc.evelon.sql.Stage;
 import net.bytemc.evelon.sql.StageHandler;
 import net.bytemc.evelon.sql.substages.VirtualObjectStage;
 
-public final class RecordTransformerSQL implements SQLElementStageTransformer {
+public final class RecordTransformerSQL implements SQLElementStageTransformer<Object> {
 
     @Override
     public Stage<?> transformTo() {
