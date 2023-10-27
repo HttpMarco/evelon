@@ -27,26 +27,26 @@ public final class SQLForeignKeyHelper {
 
     public static void convertToDatabaseElementsWithType(List<String> elements, ForeignKey... keys) {
         for (var key : keys) {
-            var keyStage = StageHandler.getInstance().getElementStage(key.foreignKey().getType());
+            var keyStage = StageHandler.getInstance().getElementStage(key.getForeignKey().getType());
             if (keyStage == null) {
-                throw new StageNotFoundException(key.foreignKey().getType());
+                throw new StageNotFoundException(key.getForeignKey().getType());
             }
             if (keyStage instanceof SQLElementStage<?> elementStage) {
-                elements.add(SQLHelper.getRowName(key.foreignKey()) + " " + elementStage.anonymousElementRowData(key.foreignKey(), new RepositoryClass<>(key.foreignKey().getType())) + " NOT NULL");
+                elements.add(SQLHelper.getRowName(key.getForeignKey()) + " " + elementStage.anonymousElementRowData(key.getForeignKey(), new RepositoryClass<>(key.getForeignKey().getType())) + " NOT NULL");
             }
         }
     }
 
     public static void convertToDatabaseForeignLink(List<String> elements, ForeignKey... keys) {
         for (var key : keys) {
-            elements.add("FOREIGN KEY (" + key.parentField() + ") REFERENCES " + key.parentTable() + "(" + key.parentField() + ") ON DELETE CASCADE");
+            elements.add("FOREIGN KEY (" + key.parentField() + ") REFERENCES " + key.getForeignKey() + "(" + key.parentField() + ") ON DELETE CASCADE");
         }
     }
 
-    public static Map<String, String> convertKeyObjectsToElements(ForeignKeyObject... keys) {
+    public static Map<String, String> convertKeyObjectsToElements(ForeignKey... keys) {
         var elements = new HashMap<String, String>();
         for (var key : keys) {
-            elements.put(key.id(), key.value());
+            elements.put(key.parentField(), key.toString());
         }
         return elements;
     }

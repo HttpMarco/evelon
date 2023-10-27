@@ -16,12 +16,44 @@
 
 package net.bytemc.evelon.sql;
 
+import lombok.Getter;
+import net.bytemc.evelon.misc.Reflections;
+
 import java.lang.reflect.Field;
 
-public record ForeignKey(String parentTable, Field foreignKey) {
+@Getter
+public class ForeignKey {
+
+    private String parentTable;
+    private Field foreignKey;
+    private Object optionalValue = null;
+
+    public ForeignKey(String parentTable, Field foreignKey) {
+        this.parentTable = parentTable;
+        this.foreignKey = foreignKey;
+    }
+
+    public ForeignKey(Field parentField, Object value) {
+        this.foreignKey = parentField;
+        valueOf(value);
+    }
+
+    public ForeignKey valueOf(Object value) {
+        optionalValue = value;
+        return this;
+    }
 
     public String parentField() {
         return SQLHelper.getRowName(foreignKey);
     }
 
+    public String toString(Object parent) {
+        valueOf(parent);
+        return toString();
+    }
+
+    @Override
+    public String toString() {
+        return "'" + Reflections.readField(optionalValue, foreignKey).toString() + "'";
+    }
 }

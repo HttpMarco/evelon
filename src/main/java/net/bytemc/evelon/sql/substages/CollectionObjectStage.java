@@ -67,7 +67,7 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
     }
 
     @Override
-    public List<String> onParentElement(String table, Field field, Repository<?> parent, RepositoryClass<Collection<?>> clazz, Collection<?> value, ForeignKeyObject... keys) {
+    public List<String> onParentElement(String table, Field field, Repository<?> parent, RepositoryClass<Collection<?>> clazz, Collection<?> value, ForeignKey... keys) {
         var queries = new ArrayList<String>();
         var listType = Reflections.readGenericFromClass(field)[0];
         var stage = StageHandler.getInstance().getElementStage(listType);
@@ -109,7 +109,7 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
     }
 
     @Override
-    public List<String> onUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<Collection<?>> query, RepositoryClass<Collection<?>> clazz, Collection<?> value, ForeignKeyObject... keys) {
+    public List<String> onUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<Collection<?>> query, RepositoryClass<Collection<?>> clazz, Collection<?> value, ForeignKey... keys) {
         //TODO
         return null;
     }
