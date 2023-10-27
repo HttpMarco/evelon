@@ -45,6 +45,10 @@ public final class UuidStageSQL implements SQLElementStage<UUID> {
 
     @Override
     public UUID createObject(RepositoryClass<UUID> clazz, String id, SQLResultSet.Table table) {
+        if(Evelon.getDatabaseCradinates().databaseProtocol() == DatabaseProtocol.MYSQL) {
+            // mysql are noobs because they have no uuid type
+            return UUID.fromString(table.get(id, String.class));
+        }
         return table.get(id, UUID.class);
     }
 
