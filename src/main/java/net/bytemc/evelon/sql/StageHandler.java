@@ -21,6 +21,8 @@ import net.bytemc.evelon.sql.stages.*;
 import net.bytemc.evelon.sql.substages.CollectionObjectStage;
 import net.bytemc.evelon.sql.substages.MapObjectStage;
 import net.bytemc.evelon.sql.substages.VirtualObjectStage;
+import net.bytemc.evelon.sql.transformers.ArrayTransformerSQL;
+import net.bytemc.evelon.sql.transformers.LocaleDateTransformerSQL;
 import net.bytemc.evelon.sql.transformers.RecordTransformerSQL;
 
 import java.util.ArrayList;
@@ -55,6 +57,8 @@ public final class StageHandler {
 
         // transform record to object -> deny duplicated code
         this.stages.add(new RecordTransformerSQL());
+        this.stages.add(new ArrayTransformerSQL());
+        this.stages.add(new LocaleDateTransformerSQL());
 
         // for custom user objects
         this.stages.add(new VirtualObjectStage());
