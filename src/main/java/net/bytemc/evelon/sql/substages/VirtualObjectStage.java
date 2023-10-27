@@ -54,7 +54,13 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
                 var result = elementStage.anonymousElementRowData(row, elementClass);
                 rowValues.add(TableCreationProcess.appendPrimaryKey(row, SQLHelper.getRowName(row) + " " + result));
             } else if (stage instanceof SubElementStage<?> subElementStage) {
-                subElementStage.onParentTableCollectData(queries, table + "_" + SQLHelper.getRowName(row), new RepositoryClass<>(row.getType()), row, current.getPrimaries().stream().map(it -> new ForeignKey(table, it)).toArray(ForeignKey[]::new));
+                var subTableName = table + "_" + SQLHelper.getRowName(row);
+                var subTableRepositoryClazz = new RepositoryClass<>(row.getType());
+
+                //TODO use current.collect
+                subElementStage.onParentTableCollectData(queries, subTableName, subTableRepositoryClazz, row, current.getPrimaries().stream().map(it -> new ForeignKey(table, it)).toArray(ForeignKey[]::new));
+            } else if(stage instanceof SQLElementStageTransformer transformer) {
+                //todo
             }
         }
         // add database schema link
