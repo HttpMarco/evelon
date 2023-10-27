@@ -16,8 +16,15 @@
 
 package net.bytemc.evelon.sql;
 
-public interface SQLElementStageTransformer extends Stage<Object> {
+public interface SQLElementStageTransformer<R> extends Stage<R> {
 
     Stage<?> transformTo();
 
+    default Object transform(R value) {
+        return value;
+    }
+
+    default R rollback(Object value) {
+        return (R) value;
+    }
 }
