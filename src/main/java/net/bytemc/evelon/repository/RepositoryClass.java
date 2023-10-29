@@ -69,4 +69,9 @@ public record RepositoryClass<T>(Class<T> clazz) {
     public ForeignKey[] collectForeignKeyValues(@NotNull Object instance) {
         return getPrimaries().stream().map(it -> new ForeignKey(it, instance)).toArray(ForeignKey[]::new);
     }
+
+    public ForeignKey[] collectForeignKeyValues(String table) {
+        return getPrimaries().stream().map(it -> new ForeignKey(table, it)).toArray(ForeignKey[]::new);
+    }
+
 }
