@@ -1,5 +1,10 @@
 package net.bytemc.evelon.mongo;
 
+import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Accumulators;
+import com.mongodb.client.model.Aggregates;
 import lombok.SneakyThrows;
 import net.bytemc.evelon.Storage;
 import net.bytemc.evelon.misc.Reflections;
@@ -12,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -50,9 +56,9 @@ public final class MongoStorage implements Storage {
     @Override
     public <T> void update(RepositoryQuery<T> query, T value) {
         final Bson filter = MongoHelper.filtersOrPrimaries(query.getFilters(), query.getRepository(), value)
-            .orElseThrow((Supplier<Throwable>) () ->
-                new UnsupportedOperationException("You have to define a primary key, or use filters to do a mongo update")
-            );
+                .orElseThrow((Supplier<Throwable>) () ->
+                        new UnsupportedOperationException("You have to define a primary key, or use filters to do a mongo update")
+                );
 
         final Document update = new Document();
         for (Field row : query.getRepository().repositoryClass().getRows()) {
@@ -73,13 +79,30 @@ public final class MongoStorage implements Storage {
 
     @Override
     public <T> long sum(RepositoryQuery<T> query, String id) {
-        // todo
+        // TODO Implement filters (not change logic -> database order)
+        var collection = MongoConnection.getDatabase().getCollection(query.getRepository().getName());
+        // Aggregationspipeline erstellen, um die Summe zu berechnen
+        var pipeline = Arrays.asList(Aggregates.group(null, Accumulators.sum("total", "$" + id)));
+        var result = collection.aggregate(pipeline);
+
+        if (result.iterator().hasNext()) {
+            Document sumDocument = result.first();
+            return sumDocument.getInteger("total", 0);
+        }
         return 0;
     }
 
     @Override
     public <T> double avg(RepositoryQuery<T> query, String id) {
-        //todo
-        return 0;
+        // TODO Implement filters (not change logic -> database order)
+        MongoCollection<Document> collection = MongoConnection.getDatabase().getCollection(query.getRepository().getName());
+        // Aggregationspipeline erstellen, um den Durchschnitt zu berechnen
+        List<Bson> pipeline = Arrays.asList(Aggregates.group(null, Accumulators.avg("average", "$" + id)));
+        AggregateIterable<Document> result = collection.aggregate(pipeline);
+        if (result.iterator().hasNext()) {
+            Document averageDocument = result.first();
+            return averageDocument.getDouble("average");
+        }
+        return 0.0;
     }
 }
