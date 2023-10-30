@@ -16,7 +16,6 @@
 
 package net.bytemc.evelon.sql.substages;
 
-import net.bytemc.evelon.exception.StageNotFoundException;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.repository.RepositoryClass;
@@ -46,6 +45,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
         // collect all needed foreign keys
         SQLForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
         for (var row : current.getRows()) {
+            System.out.println(row.getName() + ":" + row.getType());
             var stage = transformStage(row.getType());
             // create net repository class, because there can be multiple rows of the same type
             var subTableRepositoryClazz = new RepositoryClass<>(row.getType());
@@ -76,7 +76,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
 
             if(originalStage instanceof SQLElementStageTransformer transformer) {
                 // we need to roll back the value to the original object type
-                object = transformer.rollback(object, row);
+                object = transformer.transform(object);
             }
 
             if (stage instanceof SubElementStage<?> subElementStage) {
@@ -136,7 +136,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
 
             if(originalStage instanceof SQLElementStageTransformer transformer) {
                 // we need to transform the value to the executed object type
-                value = transformer.transform(value);
+                value = transformer.rollback(value, row);
             }
             Reflections.writeField(object, row, value);
         }
