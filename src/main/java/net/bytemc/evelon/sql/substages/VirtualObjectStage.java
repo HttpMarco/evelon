@@ -69,9 +69,16 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
         var values = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
 
         for (var row : clazz.getRows()) {
-            var stage = transformStage(row.getType());
+            var originalStage = StageHandler.getInstance().getElementStage(row.getType());
+            var stage = transform(originalStage);
             var object = Reflections.readField(value, row);
             var objectClass = new RepositoryClass<>(row.getType());
+
+            if(originalStage instanceof SQLElementStageTransformer transformer) {
+                // we need to roll back the value to the original object type
+                object = transformer.rollback(object);
+            }
+
             if (stage instanceof SubElementStage<?> subElementStage) {
                 queries.addAll(subElementStage.onAnonymousParentElement(parent.appendChildrenName(SQLHelper.getRowName(row)), row, parent, objectClass, object, clazz.collectForeignKeyValues(value)));
             } else if (stage instanceof SQLElementStage<?> elementStage) {
