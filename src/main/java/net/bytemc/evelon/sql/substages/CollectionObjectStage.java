@@ -29,6 +29,8 @@ import java.util.*;
 
 public final class CollectionObjectStage implements SubElementStage<Collection<?>> {
 
+    private static final String VALUE_NAME = "_value";
+
     @Override
     public boolean isElement(Class<?> type) {
         return Collection.class.isAssignableFrom(type);
@@ -36,30 +38,27 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
 
     @Override
     public void onParentTableCollectData(List<String> queries, String table, RepositoryClass<?> current, Field field, ForeignKey... keys) {
-        var clazz = Reflections.readGenericFromClass(field)[0];
-        var stage = StageHandler.getInstance().getElementStage(clazz);
-        if (stage == null) {
-            throw new StageNotFoundException(clazz);
-        }
+        var listType = Reflections.readGenericFromClass(field)[0];
+        var stage = StageHandler.getInstance().getElementStage(listType);
         var rowValues = new ArrayList<String>();
         // collect all needed foreign keys
         SQLForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
 
         var rowName = SQLHelper.getRowName(field);
         if (stage instanceof SQLElementStage<?> elementStage) {
-            rowValues.add(rowName + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(clazz)));
+            rowValues.add(rowName + VALUE_NAME + " " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(listType)));
         } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
-            var rowClazz = new RepositoryClass<>(clazz);
+            var rowClazz = new RepositoryClass<>(listType);
             for (var row : rowClazz.getRows()) {
                 var rowStage = StageHandler.getInstance().getElementStage(row.getType());
                 if (rowStage instanceof SQLElementStage<?> elementStage) {
-                    rowValues.add(SQLHelper.getRowName(row) + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(row.getType())));
+                    rowValues.add(SQLHelper.getRowName(row) + VALUE_NAME + " " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(row.getType())));
                 } else {
                     throw new StageNotSupportedException(row.getType());
                 }
             }
         } else {
-            throw new StageNotSupportedException(clazz);
+            throw new StageNotSupportedException(listType);
         }
         // add database schema link
         SQLForeignKeyHelper.convertToDatabaseForeignLink(rowValues, keys);
@@ -72,29 +71,25 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
         var listType = Reflections.readGenericFromClass(field)[0];
         var stage = StageHandler.getInstance().getElementStage(listType);
 
-        if (stage == null) {
-            throw new StageNotFoundException(listType);
-        }
-
+        RepositoryClass<?> listRepository = new RepositoryClass<>(listType);
         if (stage instanceof SQLElementStage<?> elementStage) {
-            if(value == null) {
+            if (value == null) {
                 return queries;
             }
             for (var item : value) {
                 var columns = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
-                var element = elementStage.anonymousElementEntryData(new RepositoryClass<>(listType), null, item);
+                var element = elementStage.anonymousElementEntryData(listRepository, null, item);
                 columns.put(SQLHelper.getRowName(field) + "_" + element.left(), element.right());
                 queries.add(SQLHelper.insertDefault(table, String.join(", ", columns.keySet()), String.join(", ", columns.values())));
             }
         } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
             for (var element : value) {
                 var columns = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
-                var rowClazz = new RepositoryClass<>(listType);
-                for (var row : rowClazz.getRows()) {
+                for (var row : listRepository.getRows()) {
                     var rowStage = StageHandler.getInstance().getElementStage(row.getType());
                     if (rowStage instanceof SQLElementStage<?> elementStage) {
                         var object = Reflections.readField(element, row);
-                        columns.put(SQLHelper.getRowName(row) + "_value", elementStage.anonymousElementEntryData(new RepositoryClass<>(row.getType()), row, object).right());
+                        columns.put(SQLHelper.getRowName(row) + VALUE_NAME, elementStage.anonymousElementEntryData(new RepositoryClass<>(row.getType()), row, object).right());
                     } else {
                         throw new StageNotSupportedException(row.getType());
                     }
@@ -110,6 +105,8 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
 
     @Override
     public List<String> onUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<Collection<?>> query, RepositoryClass<Collection<?>> clazz, Collection<?> value, ForeignKey... keys) {
+
+
         //TODO
         return null;
     }
@@ -123,17 +120,13 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
         return SQLConnection.executeQuery("SELECT * FROM " + tableName + ";", (result) -> {
             var list = new ArrayList<>();
             var stage = StageHandler.getInstance().getElementStage(listType);
-            if (stage == null) {
-                throw new StageNotFoundException(clazz.clazz());
-            }
-
             while (result.next()) {
                 var databaseResultSet = new SQLResultSet();
                 var repositoryClass = new RepositoryClass<>(listType);
                 var table = databaseResultSet.addTable("default");
 
                 if (stage instanceof SQLElementStage<?> elementStage) {
-                    var rowName = SQLHelper.getRowName(parentField) + "_value";
+                    var rowName = SQLHelper.getRowName(parentField) + VALUE_NAME;
                     table.setProperty(rowName, result.getObject(rowName));
                     list.add(elementStage.anonymousCreateObject(repositoryClass, rowName, table));
                 } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
@@ -142,7 +135,7 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
                     for (var row : repositoryClass.getRows()) {
                         var rowStage = StageHandler.getInstance().getElementStage(row.getType());
                         if (rowStage instanceof SQLElementStage<?> elementStage) {
-                            var rowName = SQLHelper.getRowName(row) + "_value";
+                            var rowName = SQLHelper.getRowName(row) + VALUE_NAME;
                             table.setProperty(SQLHelper.getRowName(row), result.getObject(rowName));
                             Reflections.writeField(object, row, elementStage.anonymousCreateObject(new RepositoryClass<>(row.getType()), SQLHelper.getRowName(row), table));
                         } else {
