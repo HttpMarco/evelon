@@ -46,16 +46,15 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
         // collect all needed foreign keys
         SQLForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
         for (var row : current.getRows()) {
-            var stage = checkAndTransformStage(row.getType());
+            var stage = transformStage(row.getType());
+            // create net repository class, because there can be multiple rows of the same type
+            var subTableRepositoryClazz = new RepositoryClass<>(row.getType());
             if (stage instanceof SQLElementStage<?> elementStage) {
-                // create net repository class, because there can be multiple rows of the same type
-                var elementClass = new RepositoryClass<>(row.getType());
                 // collect all current rows
-                var result = elementStage.anonymousElementRowData(row, elementClass);
+                var result = elementStage.anonymousElementRowData(row, subTableRepositoryClazz);
                 rowValues.add(TableCreationProcess.appendPrimaryKey(row, SQLHelper.getRowName(row) + " " + result));
             } else if (stage instanceof SubElementStage<?> subElementStage) {
                 var subTableName = table + "_" + SQLHelper.getRowName(row);
-                var subTableRepositoryClazz = new RepositoryClass<>(row.getType());
                 subElementStage.onParentTableCollectData(queries, subTableName, subTableRepositoryClazz, row, current.collectForeignKeyValues(table));
             }
         }
@@ -70,7 +69,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
         var values = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
 
         for (var row : clazz.getRows()) {
-            var stage = checkAndTransformStage(row.getType());
+            var stage = transformStage(row.getType());
             var object = Reflections.readField(value, row);
             var objectClass = new RepositoryClass<>(row.getType());
             if (stage instanceof SubElementStage<?> subElementStage) {
@@ -90,7 +89,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
         var values = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
 
         for (var row : clazz.getRows()) {
-            var stage = checkAndTransformStage(row.getType());
+            var stage = transformStage(row.getType());
             var object = Reflections.readField(value, row);
             var objectClass = new RepositoryClass<>(row.getType());
 
@@ -102,7 +101,6 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
                 var subTable = table + "_" + SQLHelper.getRowName(row);
                 queries.addAll(this.onAnonymousUpdateParentElement(subTable, parent, query, repositoryClass, object, repositoryClass.collectForeignKeyValues(value)));
             }
-
         }
         if (!values.isEmpty()) {
             queries.add(SQLHelper.update(table, (String.join(", ", values.keySet().stream().map(it -> it + "=" + values.get(it)).toList()) + SQLHelper.getDatabaseFilterQuery(query.getFilters()))));
@@ -114,7 +112,13 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
     public Object createInstance(String table, Field parentField, RepositoryClass<Object> clazz, SQLResultSet SQLResultSet) {
         var object = Reflections.allocate(clazz.clazz());
         for (var row : clazz.getRows()) {
-            var stage = checkAndTransformStage(row.getType());
+            var originalStage = StageHandler.getInstance().getElementStage(row.getType());
+            var stage = transform(originalStage);
+
+            if(stage == null) {
+                throw new StageNotFoundException(row.getType());
+            }
+
             var subRepositoryClazz = new RepositoryClass(row.getType());
             var rowName = SQLHelper.getRowName(row);
             Object value;
@@ -126,23 +130,31 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             } else {
                 throw new UnsupportedOperationException("Cannot create instance of " + row.getType().getSimpleName() + " for " + clazz.clazz().getSimpleName());
             }
+
+            if(originalStage instanceof SQLElementStageTransformer transformer) {
+                // we need to transform the value to the executed object type
+                value = transformer.transform(value);
+            }
             Reflections.writeField(object, row, value);
         }
         return object;
     }
 
-    //TODO check better value
-    private <T> Stage<T> checkAndTransformStage(Class<T> row) {
+    private <T> Stage<T> transformStage(Class<T> row) {
         var stage = StageHandler.getInstance().getElementStage(row);
         if (stage == null) {
             throw new StageNotFoundException(row);
         }
+        return transform(stage);
+    }
+
+    private <T> Stage<T> transform(Stage<T> stage) {
         if(stage instanceof SQLElementStageTransformer transformer) {
             stage = transformer.transformTo();
             if (stage instanceof SQLElementStageTransformer<?>) {
                 throw new IllegalStateException("Transformer can't be a transformer");
             }
         }
-        return (Stage<T>) stage;
+        return stage;
     }
 }

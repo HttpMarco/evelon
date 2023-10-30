@@ -69,8 +69,8 @@ public final class StageHandler {
      * @param type clazz of the object
      * @return the current stage of the class, if not found return null
      */
-    public Stage<?> getElementStage(Class<?> type) {
-        return this.stages.stream().filter(it -> it.isElement(type)).findFirst().orElse(null);
+    public <T> Stage<T> getElementStage(Class<T> type) {
+        return (Stage<T>) this.stages.stream().filter(it -> it.isElement(type)).findFirst().orElse(null);
     }
 
     /**
