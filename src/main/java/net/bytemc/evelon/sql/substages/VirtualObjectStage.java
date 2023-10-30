@@ -122,10 +122,6 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
             var originalStage = StageHandler.getInstance().getElementStage(row.getType());
             var stage = transform(originalStage);
 
-            if(stage == null) {
-                throw new StageNotFoundException(row.getType());
-            }
-
             var subRepositoryClazz = new RepositoryClass(row.getType());
             var rowName = SQLHelper.getRowName(row);
             Object value;
@@ -148,11 +144,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
     }
 
     private <T> Stage<T> transformStage(Class<T> row) {
-        var stage = StageHandler.getInstance().getElementStage(row);
-        if (stage == null) {
-            throw new StageNotFoundException(row);
-        }
-        return transform(stage);
+        return transform(StageHandler.getInstance().getElementStage(row));
     }
 
     private <T> Stage<T> transform(Stage<T> stage) {

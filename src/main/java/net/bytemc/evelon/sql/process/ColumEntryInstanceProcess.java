@@ -55,10 +55,6 @@ public final class ColumEntryInstanceProcess {
 
         var repositoryType = repository.repositoryClass().clazz();
         var stage = StageHandler.getInstance().getElementStage(repositoryType);
-
-        if (stage == null) {
-            throw new StageNotFoundException(repositoryType);
-        }
         return databaseResults.stream().map(it -> ((SubElementStage<T>) stage).createInstance(repository.getName(), null, repository.repositoryClass(), it)).toList();
     }
 

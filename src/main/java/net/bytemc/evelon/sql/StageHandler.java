@@ -17,6 +17,7 @@
 package net.bytemc.evelon.sql;
 
 import lombok.Getter;
+import net.bytemc.evelon.exception.StageNotFoundException;
 import net.bytemc.evelon.sql.stages.*;
 import net.bytemc.evelon.sql.substages.CollectionObjectStage;
 import net.bytemc.evelon.sql.substages.MapObjectStage;
@@ -70,7 +71,7 @@ public final class StageHandler {
      * @return the current stage of the class, if not found return null
      */
     public <T> Stage<T> getElementStage(Class<T> type) {
-        return (Stage<T>) this.stages.stream().filter(it -> it.isElement(type)).findFirst().orElse(null);
+        return (Stage<T>) this.stages.stream().filter(it -> it.isElement(type)).findFirst().orElseThrow(() -> new StageNotFoundException(type));
     }
 
     /**

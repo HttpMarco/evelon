@@ -15,8 +15,6 @@
  */
 
 package net.bytemc.evelon.sql;
-
-import net.bytemc.evelon.exception.StageNotFoundException;
 import net.bytemc.evelon.repository.RepositoryClass;
 
 import java.util.HashMap;
@@ -28,9 +26,6 @@ public final class SQLForeignKeyHelper {
     public static void convertToDatabaseElementsWithType(List<String> elements, ForeignKey... keys) {
         for (var key : keys) {
             var keyStage = StageHandler.getInstance().getElementStage(key.getForeignKey().getType());
-            if (keyStage == null) {
-                throw new StageNotFoundException(key.getForeignKey().getType());
-            }
             if (keyStage instanceof SQLElementStage<?> elementStage) {
                 elements.add(SQLHelper.getRowName(key.getForeignKey()) + " " + elementStage.anonymousElementRowData(key.getForeignKey(), new RepositoryClass<>(key.getForeignKey().getType())) + " NOT NULL");
             }

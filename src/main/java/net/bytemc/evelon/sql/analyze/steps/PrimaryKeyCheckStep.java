@@ -32,10 +32,6 @@ public final class PrimaryKeyCheckStep extends AnalyseStep {
         for (var row : repository.repositoryClass().getRows()) {
             var stage = StageHandler.getInstance().getElementStage(row.getType());
 
-            if (stage == null) {
-                continue;
-            }
-
             // today we cant check a map or list foreign keys
             if (stage instanceof SubElementStage<?> subElementStage) {
                 result.addWarning("Sub tables are not supported yet. You can control this manually.");
