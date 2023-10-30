@@ -1,35 +1,33 @@
-## Evelon (Not released)
-Last update: 31.08.2023 <br>
-Copyright by ByteMC-Network
-
-<hr>
+## Evelon
 
 **Latest stable-version:** 1.3.7<br>
-**Latest snapshot-version:** 1.3.6-SNAPSHOT<br>
+**Latest snapshot-version:** 1.3.11-SNAPSHOT<br>
 **All available versions:** 
 <a href="https://artifactory.bytemc.de/ui/native/bytemc-public/net/bytemc/evelon/">Click </a>
 
-<a href="https://github.com/ByteMCNetzwerk/evelon"><img src="https://img.shields.io/github/issues/bytemcnetzwerk/evelon?color=10c298" alt="Issues Badge"/></a>
-<a href="https://github.com/ByteMCNetzwerk/evelon"><img src="https://img.shields.io/github/stars/bytemcNetzwerk/Evelon?color=10c298" alt="Stars Badge"/></a>
+## Dependency
+
+> **Warning**
+>  
+> You need following repository `public-bytemc`
+
+Repository: 
+```xml
+<repository>
+    <id>public-bytemc</id>
+    <url>https://artifactory.bytemc.de/artifactory/public-bytemc</url>
+</repository>
+```
+Dependency:
+```xml
+<dependency>
+    <groupId>net.bytemc</groupId>
+    <artifactId>evelon</artifactId>
+    <version>VERSION</version>
+</dependency>
+```
+
+
 
 ## Usage
 To learn how to use Evelon to easily interact with your sql-database check our <a href="https://github.com/ByteMCNetzwerk/evelon/wiki">wiki</a>.
-
-## Release-notes
-### v1.0.1
-- Implemented count query function
-
-### v1.0.2
-- Implemented findFirst query function
-- Implemented async query functions
-
-### v1.1.0
-- Implemented startup properties
-- Implemented database cradinates
-- Added support for maps and superclasses
-- Fixed multiple errors
-
-### v1.2.0
-- Implemented mongodb support
-- better abstract sql schema
-- support h2 database
