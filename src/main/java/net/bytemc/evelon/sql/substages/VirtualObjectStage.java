@@ -76,7 +76,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
 
             if(originalStage instanceof SQLElementStageTransformer transformer) {
                 // we need to roll back the value to the original object type
-                object = transformer.rollback(object);
+                object = transformer.rollback(object, row);
             }
 
             if (stage instanceof SubElementStage<?> subElementStage) {

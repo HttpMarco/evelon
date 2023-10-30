@@ -16,17 +16,22 @@
 
 package net.bytemc.evelon.sql.transformers;
 
+import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.sql.SQLElementStageTransformer;
 import net.bytemc.evelon.sql.Stage;
 import net.bytemc.evelon.sql.StageHandler;
 import net.bytemc.evelon.sql.substages.CollectionObjectStage;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.List;
 
 public final class ArrayTransformerSQL implements SQLElementStageTransformer<Object[]> {
 
     @Override
     public Stage<?> transformTo() {
-        return  StageHandler.getInstance().getStage(CollectionObjectStage.class);
+        return StageHandler.getInstance().getStage(CollectionObjectStage.class);
     }
 
     @Override
@@ -35,10 +40,14 @@ public final class ArrayTransformerSQL implements SQLElementStageTransformer<Obj
     }
 
     @Override
-    public Object[] rollback(Object value) {
-
-        //TODO check this implementation
-        throw new UnsupportedOperationException("rollback not supported for arrays");
+    public Object[] rollback(Object value, Field field) {
+        var list = (List<?>) value;
+        var listType = Reflections.readGenericFromClass(field)[0];
+        Object[] array = (Object[]) Array.newInstance(listType, list.size());
+        for (int i = 0; i < list.size(); i++) {
+            array[i] = list.get(i);
+        }
+        return array;
     }
 
     @Override

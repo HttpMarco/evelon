@@ -16,6 +16,8 @@
 
 package net.bytemc.evelon.sql;
 
+import java.lang.reflect.Field;
+
 public interface SQLElementStageTransformer<R> extends Stage<R> {
 
     Stage<?> transformTo();
@@ -24,7 +26,7 @@ public interface SQLElementStageTransformer<R> extends Stage<R> {
         return value;
     }
 
-    default R rollback(Object value) {
+    default R rollback(Object value, Field field) {
         return (R) value;
     }
 }
