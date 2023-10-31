@@ -18,17 +18,8 @@ public final class MySQLDBTest {
     @Disabled
     public void test() {
         Debugger.setEnable(true);
-        Evelon.setDatabaseCradinates(new DatabaseCradinates(
-                DatabaseProtocol.MYSQL,
-                "localhost",
-                "",
-                "root",
-                "polo",
-                3306
-        ));
-
-        final Repository<TestRepository> repository = Repository.create(TestRepository.class, StartupProperties.syncAll());
-        repository.query().create(new TestRepository("polo", UUID.randomUUID(), 20));
+        Evelon.setCradinates(DatabaseProtocol.MYSQL, "localhost", "", "root", "polo", 3306);
+        TestRepository.REPOSITORY.query().create(new TestRepository("polo", UUID.randomUUID(), 20));
     }
 
 }

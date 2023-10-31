@@ -14,27 +14,11 @@ import java.util.UUID;
 
 public class MariaDBTest {
 
-    private static final TestRepository TEST_MARIADB_REPOSITORY = new TestRepository(
-        "HabsGleich",
-        UUID.fromString("013eddfc-e9f7-46b3-a52c-a8cfac27d64e"),
-        64
-    );
-
     @Test
     @Disabled
     public void test() {
         Debugger.setEnable(true);
-        Evelon.setDatabaseCradinates(new DatabaseCradinates(
-            DatabaseProtocol.MARIADB,
-            "127.0.0.1",
-            "test123",
-            "root",
-            "tnw",
-            3306
-        ));
-
-        final Repository<TestRepository> repository = Repository.create(TestRepository.class, StartupProperties.syncAll());
-        repository.query().create(TEST_MARIADB_REPOSITORY);
+        Evelon.setCradinates(DatabaseProtocol.MARIADB, "127.0.0.1", "test123", "root", "tnw", 3306);
+        TestRepository.REPOSITORY.query().create(TestRepository.TEST_REPO);
     }
-
 }
