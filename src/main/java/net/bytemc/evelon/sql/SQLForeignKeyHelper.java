@@ -34,7 +34,7 @@ public final class SQLForeignKeyHelper {
 
     public static void convertToDatabaseForeignLink(List<String> elements, ForeignKey... keys) {
         for (var key : keys) {
-            elements.add("FOREIGN KEY (" + key.parentField() + ") REFERENCES " + key.getForeignKey() + "(" + key.parentField() + ") ON DELETE CASCADE");
+            elements.add("FOREIGN KEY (" + key.parentField() + ") REFERENCES " + key.getParentTable() + "(" + key.parentField() + ") ON DELETE CASCADE");
         }
     }
 
