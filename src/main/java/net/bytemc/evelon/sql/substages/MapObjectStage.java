@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Field;
 import java.util.*;
 
-public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
+public final class MapObjectStage extends AbstractSubElementStage<Map<?, ?>> {
 
     @Override
     public boolean isElement(Class<?> type) {
@@ -39,15 +39,14 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
         var generic = Reflections.readGenericFromClass(field);
         var keyType = generic[0];
         var valueType = generic[1];
-        var keyStage = StageHandler.getInstance().getElementStage(keyType);
-        var valueStage = StageHandler.getInstance().getElementStage(valueType);
+        var keyStage = getStageHandler().getElementStage(keyType);
+        var valueStage = getStageHandler().getElementStage(valueType);
 
         if (!(keyStage instanceof SQLElementStage<?> keyElementStage)) {
             throw new StageNotSupportedException(keyType);
         }
-        var rowValues = new ArrayList<String>();
-        // collect all needed foreign keys
-        SQLForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
+        var rowValues = SQLForeignKeyHelper.convertToDatabaseElementsWithType(keys);
+
         // add map key value -> unique -> primary key
         var keyDatabaseType = keyElementStage.anonymousElementRowData(field, new RepositoryClass<>(keyType));
         if (keyDatabaseType.equals(SQLType.TEXT.toString())) {
@@ -73,8 +72,8 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
         var generic = Reflections.readGenericFromClass(field);
         var keyType = generic[0];
         var valueType = generic[1];
-        var keyStage = StageHandler.getInstance().getElementStage(keyType);
-        var valueStage = StageHandler.getInstance().getElementStage(valueType);
+        var keyStage = getStageHandler().getElementStage(keyType);
+        var valueStage = getStageHandler().getElementStage(valueType);
 
         for (var keyObject : value.keySet()) {
             var elements = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
@@ -103,8 +102,8 @@ public final class MapObjectStage implements SubElementStage<Map<?, ?>> {
 
         var keyType = generic[0];
         var valueType = generic[1];
-        var keyStage = StageHandler.getInstance().getElementStage(keyType);
-        var valueStage = StageHandler.getInstance().getElementStage(valueType);
+        var keyStage = getStageHandler().getElementStage(keyType);
+        var valueStage = getStageHandler().getElementStage(valueType);
 
         return SQLConnection.executeQuery("SELECT * FROM " + tableName, result -> {
             while (result.next()) {

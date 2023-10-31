@@ -30,7 +30,7 @@ import java.util.*;
 /**
  * This stage is only for collections of other stages as declared fields.
  */
-public final class VirtualObjectStage implements SubElementStage<Object> {
+public final class VirtualObjectStage extends AbstractSubElementStage<Object> {
 
     @Override
     public boolean isElement(Class<?> type) {
@@ -41,9 +41,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
     @Override
     public void onParentTableCollectData(List<String> queries, String table, RepositoryClass<?> current, @Nullable Field field, ForeignKey... keys) {
         // the collected object statements;
-        var rowValues = new ArrayList<String>();
-        // collect all needed foreign keys
-        SQLForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
+        var rowValues = SQLForeignKeyHelper.convertToDatabaseElementsWithType(keys);
         for (var row : current.getRows()) {
             var stage = transformStage(row.getType());
             // create net repository class, because there can be multiple rows of the same type
@@ -68,7 +66,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
         var values = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
 
         for (var row : clazz.getRows()) {
-            var originalStage = StageHandler.getInstance().getElementStage(row.getType());
+            var originalStage = getStageHandler().getElementStage(row.getType());
             var stage = transform(originalStage);
             var object = Reflections.readField(value, row);
             var objectClass = new RepositoryClass<>(row.getType());
@@ -118,7 +116,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
     public Object createInstance(String table, Field parentField, RepositoryClass<Object> clazz, SQLResultSet SQLResultSet) {
         var object = Reflections.allocate(clazz.clazz());
         for (var row : clazz.getRows()) {
-            var originalStage = StageHandler.getInstance().getElementStage(row.getType());
+            var originalStage = getStageHandler().getElementStage(row.getType());
             var stage = transform(originalStage);
 
             var subRepositoryClazz = new RepositoryClass(row.getType());
@@ -143,7 +141,7 @@ public final class VirtualObjectStage implements SubElementStage<Object> {
     }
 
     private <T> Stage<T> transformStage(Class<T> row) {
-        return transform(StageHandler.getInstance().getElementStage(row));
+        return transform(getStageHandler().getElementStage(row));
     }
 
     private <T> Stage<T> transform(Stage<T> stage) {

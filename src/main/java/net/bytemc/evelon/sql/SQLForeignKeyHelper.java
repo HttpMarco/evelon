@@ -17,19 +17,22 @@
 package net.bytemc.evelon.sql;
 import net.bytemc.evelon.repository.RepositoryClass;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public final class SQLForeignKeyHelper {
 
-    public static void convertToDatabaseElementsWithType(List<String> elements, ForeignKey... keys) {
+    public static List<String> convertToDatabaseElementsWithType(ForeignKey... keys) {
+        var elements = new ArrayList<String>();
         for (var key : keys) {
             var keyStage = StageHandler.getInstance().getElementStage(key.getForeignKey().getType());
             if (keyStage instanceof SQLElementStage<?> elementStage) {
                 elements.add(SQLHelper.getRowName(key.getForeignKey()) + " " + elementStage.anonymousElementRowData(key.getForeignKey(), new RepositoryClass<>(key.getForeignKey().getType())) + " NOT NULL");
             }
         }
+        return elements;
     }
 
     public static void convertToDatabaseForeignLink(List<String> elements, ForeignKey... keys) {

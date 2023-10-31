@@ -16,7 +16,6 @@
 
 package net.bytemc.evelon.sql.substages;
 
-import net.bytemc.evelon.exception.StageNotFoundException;
 import net.bytemc.evelon.exception.StageNotSupportedException;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.Repository;
@@ -27,9 +26,7 @@ import net.bytemc.evelon.sql.*;
 import java.lang.reflect.Field;
 import java.util.*;
 
-public final class CollectionObjectStage implements SubElementStage<Collection<?>> {
-
-    private static final String VALUE_NAME = "_value";
+public final class CollectionObjectStage extends AbstractSubElementStage<Collection<?>> {
 
     @Override
     public boolean isElement(Class<?> type) {
@@ -38,11 +35,9 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
 
     @Override
     public void onParentTableCollectData(List<String> queries, String table, RepositoryClass<?> current, Field field, ForeignKey... keys) {
-       var listType = Reflections.readGenericFromClass(field)[0];
-        var stage = StageHandler.getInstance().getElementStage(listType);
-        var rowValues = new ArrayList<String>();
-        // collect all needed foreign keys
-        SQLForeignKeyHelper.convertToDatabaseElementsWithType(rowValues, keys);
+        var listType = Reflections.readGenericFromClass(field)[0];
+        var stage = getStageHandler().getElementStage(listType);
+        var rowValues = SQLForeignKeyHelper.convertToDatabaseElementsWithType(keys);
 
         var rowName = SQLHelper.getRowName(field);
         if (stage instanceof SQLElementStage<?> elementStage) {
@@ -50,7 +45,7 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
         } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
             var rowClazz = new RepositoryClass<>(listType);
             for (var row : rowClazz.getRows()) {
-                var rowStage = StageHandler.getInstance().getElementStage(row.getType());
+                var rowStage = getStageHandler().getElementStage(row.getType());
                 if (rowStage instanceof SQLElementStage<?> elementStage) {
                     rowValues.add(SQLHelper.getRowName(row) + VALUE_NAME + " " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(row.getType())));
                 } else {
@@ -69,7 +64,7 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
     public List<String> onParentElement(String table, Field field, Repository<?> parent, RepositoryClass<Collection<?>> clazz, Collection<?> value, ForeignKey... keys) {
         var queries = new ArrayList<String>();
         var listType = Reflections.readGenericFromClass(field)[0];
-        var stage = StageHandler.getInstance().getElementStage(listType);
+        var stage = getStageHandler().getElementStage(listType);
 
         RepositoryClass<?> listRepository = new RepositoryClass<>(listType);
         if (stage instanceof SQLElementStage<?> elementStage) {
@@ -86,7 +81,7 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
             for (var element : value) {
                 var columns = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
                 for (var row : listRepository.getRows()) {
-                    var rowStage = StageHandler.getInstance().getElementStage(row.getType());
+                    var rowStage = getStageHandler().getElementStage(row.getType());
                     if (rowStage instanceof SQLElementStage<?> elementStage) {
                         var object = Reflections.readField(element, row);
                         columns.put(SQLHelper.getRowName(row) + VALUE_NAME, elementStage.anonymousElementEntryData(new RepositoryClass<>(row.getType()), row, object).right());
@@ -119,7 +114,7 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
         // we can't use the result, because we need to collect all elements
         return SQLConnection.executeQuery("SELECT * FROM " + tableName + ";", (result) -> {
             var list = new ArrayList<>();
-            var stage = StageHandler.getInstance().getElementStage(listType);
+            var stage = getStageHandler().getElementStage(listType);
             while (result.next()) {
                 var databaseResultSet = new SQLResultSet();
                 var repositoryClass = new RepositoryClass<>(listType);
@@ -133,7 +128,7 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
                     var object = Reflections.allocate(listType);
 
                     for (var row : repositoryClass.getRows()) {
-                        var rowStage = StageHandler.getInstance().getElementStage(row.getType());
+                        var rowStage = getStageHandler().getElementStage(row.getType());
                         if (rowStage instanceof SQLElementStage<?> elementStage) {
                             var rowName = SQLHelper.getRowName(row) + VALUE_NAME;
                             table.setProperty(SQLHelper.getRowName(row), result.getObject(rowName));
