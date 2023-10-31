@@ -6,9 +6,6 @@ import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.test.DefaultTest;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
-
-import java.util.UUID;
 
 public class MariaDBTest {
 
