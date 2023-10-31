@@ -18,6 +18,7 @@ package net.bytemc.evelon.local;
 
 import net.bytemc.evelon.exception.NumberNotPresentException;
 import net.bytemc.evelon.misc.Reflections;
+import net.bytemc.evelon.misc.SortedOrder;
 import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.repository.RepositoryQuery;
 import net.bytemc.evelon.Storage;
@@ -92,6 +93,12 @@ public final class LocalStorage implements Storage {
         } else {
             throw new NumberNotPresentException(query.getRepository().repositoryClass().clazz(), id);
         }
+    }
+
+    @Override
+    public <T> List<T> order(RepositoryQuery<T> query, int max, SortedOrder order) {
+        //TODO
+        return null;
     }
 
     public void initializeRepository(Repository<?> repository) {

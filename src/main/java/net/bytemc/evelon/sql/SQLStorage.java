@@ -17,6 +17,7 @@
 package net.bytemc.evelon.sql;
 
 import net.bytemc.evelon.DatabaseProtocol;
+import net.bytemc.evelon.misc.SortedOrder;
 import net.bytemc.evelon.repository.RepositoryQuery;
 import net.bytemc.evelon.sql.process.*;
 import net.bytemc.evelon.Storage;
@@ -79,5 +80,11 @@ public abstract class SQLStorage implements Storage {
     @Override
     public <T> double avg(RepositoryQuery<T> query, String id) {
         return MathCalculationProcess.avg(query, id);
+    }
+
+    @Override
+    public <T> List<T> order(RepositoryQuery<T> query, int max, SortedOrder order) {
+        // TODO
+        return null;
     }
 }

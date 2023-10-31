@@ -8,6 +8,7 @@ import com.mongodb.client.model.Aggregates;
 import lombok.SneakyThrows;
 import net.bytemc.evelon.Storage;
 import net.bytemc.evelon.misc.Reflections;
+import net.bytemc.evelon.misc.SortedOrder;
 import net.bytemc.evelon.mongo.misc.MongoHelper;
 import net.bytemc.evelon.repository.RepositoryHelper;
 import net.bytemc.evelon.repository.RepositoryQuery;
@@ -104,5 +105,10 @@ public final class MongoStorage implements Storage {
             return averageDocument.getDouble("average");
         }
         return 0.0;
+    }
+
+    @Override
+    public <T> List<T> order(RepositoryQuery<T> query, int max, SortedOrder order) {
+        return null;
     }
 }

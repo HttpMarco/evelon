@@ -16,6 +16,7 @@
 
 package net.bytemc.evelon;
 
+import net.bytemc.evelon.misc.SortedOrder;
 import net.bytemc.evelon.repository.RepositoryQuery;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,6 +46,8 @@ public interface Storage {
     <T> long sum(RepositoryQuery<T> query, String id);
 
     <T> double avg(RepositoryQuery<T> query, String id);
+
+    <T> List<T> order(RepositoryQuery<T> query, int max, SortedOrder order);
 
     default <T> void createIfNotExists(RepositoryQuery<T> query, T value) {
         if(!exists(query)) {
