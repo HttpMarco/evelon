@@ -22,7 +22,11 @@ public final class Evelon {
 
     private static DatabaseCradinates DATABASE_CRADINATES;
 
-    public static void setDatabaseCradinates(DatabaseCradinates databaseCradinates) {
+    public static void setCradinates(DatabaseProtocol databaseProtocol, String hostname, String password, String user, String database, int port) {
+        setCradinates(new DatabaseCradinates(databaseProtocol, hostname, password, user, database, port));
+    }
+
+    public static void setCradinates(DatabaseCradinates databaseCradinates) {
         if (DATABASE_CRADINATES != null) {
             throw new UnsupportedOperationException("Database cradinates have already been set. Maybe you set useThisConfig=true in the evlon-config.json?");
         }
@@ -32,7 +36,7 @@ public final class Evelon {
     }
 
     @SneakyThrows
-    public static DatabaseCradinates getDatabaseCradinates() {
+    public static DatabaseCradinates getCradinates() {
         if (DATABASE_CRADINATES == null) {
             EvelonConfig config;
             if (Files.notExists(DEFAULT_CONFIG_PATH)) {
@@ -50,7 +54,7 @@ public final class Evelon {
             }
 
             if (config.isUseThisConfig()) {
-                setDatabaseCradinates(new DatabaseCradinates(
+                setCradinates(new DatabaseCradinates(
                         config.getDatabaseProtocol(),
                         config.getHostname(),
                         config.getPassword(),
@@ -71,6 +75,6 @@ public final class Evelon {
     }
 
     public static void useDefaultLocalDatabase() {
-        setDatabaseCradinates(new DatabaseCradinates(DatabaseProtocol.H2, "", "", "", "default", 3306));
+        setCradinates(new DatabaseCradinates(DatabaseProtocol.H2, "", "", "", "default", 3306));
     }
 }
