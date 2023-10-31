@@ -20,6 +20,7 @@ import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.List;
@@ -118,7 +119,18 @@ public final class Reflections {
     }
 
     public static Class<?>[] readGenericFromClass(Field field) {
-        final ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
-        return Arrays.stream(parameterizedType.getActualTypeArguments()).map(type -> (Class<?>) type).toArray(value -> new Class<?>[value]);
+        var genericType = field.getGenericType();
+
+        if(genericType instanceof ParameterizedType parameterizedType) {
+            return Arrays.stream(parameterizedType.getActualTypeArguments()).map(type -> (Class<?>) type).toArray(value -> new Class<?>[value]);
+        } else{
+            throw new UnsupportedOperationException("Cannot read generic from field: " + field.getName());
+        }
     }
+
+    public static boolean isFieldStatic(Field field) {
+        int modifiers = field.getModifiers();
+        return Modifier.isStatic(modifiers);
+    }
+
 }

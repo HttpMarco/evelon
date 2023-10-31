@@ -16,6 +16,7 @@
 
 package net.bytemc.evelon.repository;
 
+import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.annotations.Ignore;
 import net.bytemc.evelon.repository.annotations.PrimaryKey;
 import net.bytemc.evelon.sql.ForeignKey;
@@ -51,7 +52,9 @@ public record RepositoryClass<T>(Class<T> clazz) {
         Class<?> tClass = clazz;
 
         while (tClass != null) {
-            fields.addAll(Arrays.stream(tClass.getDeclaredFields()).filter(it -> !it.isAnnotationPresent(Ignore.class)).toList());
+            fields.addAll(Arrays.stream(tClass.getDeclaredFields())
+                    .filter(it -> !Reflections.isFieldStatic(it))
+                    .filter(it -> !it.isAnnotationPresent(Ignore.class)).toList());
             tClass = tClass.getSuperclass();
         }
 
