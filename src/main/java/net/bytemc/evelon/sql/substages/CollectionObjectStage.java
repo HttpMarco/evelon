@@ -41,13 +41,13 @@ public final class CollectionObjectStage extends AbstractSubElementStage<Collect
 
         var rowName = SQLHelper.getRowName(field);
         if (stage instanceof SQLElementStage<?> elementStage) {
-            rowValues.add(rowName + VALUE_NAME + " " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(listType)));
+            rowValues.add(rowName + VALUE_ID + " " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(listType)));
         } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
             var rowClazz = new RepositoryClass<>(listType);
             for (var row : rowClazz.getRows()) {
                 var rowStage = getStageHandler().getElementStage(row.getType());
                 if (rowStage instanceof SQLElementStage<?> elementStage) {
-                    rowValues.add(SQLHelper.getRowName(row) + VALUE_NAME + " " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(row.getType())));
+                    rowValues.add(SQLHelper.getRowName(row) + VALUE_ID + " " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(row.getType())));
                 } else {
                     throw new StageNotSupportedException(row.getType());
                 }
@@ -84,7 +84,7 @@ public final class CollectionObjectStage extends AbstractSubElementStage<Collect
                     var rowStage = getStageHandler().getElementStage(row.getType());
                     if (rowStage instanceof SQLElementStage<?> elementStage) {
                         var object = Reflections.readField(element, row);
-                        columns.put(SQLHelper.getRowName(row) + VALUE_NAME, elementStage.anonymousElementEntryData(new RepositoryClass<>(row.getType()), row, object).right());
+                        columns.put(SQLHelper.getRowName(row) + VALUE_ID, elementStage.anonymousElementEntryData(new RepositoryClass<>(row.getType()), row, object).right());
                     } else {
                         throw new StageNotSupportedException(row.getType());
                     }
@@ -121,7 +121,7 @@ public final class CollectionObjectStage extends AbstractSubElementStage<Collect
                 var table = databaseResultSet.addTable("default");
 
                 if (stage instanceof SQLElementStage<?> elementStage) {
-                    var rowName = SQLHelper.getRowName(parentField) + VALUE_NAME;
+                    var rowName = SQLHelper.getRowName(parentField) + VALUE_ID;
                     table.setProperty(rowName, result.getObject(rowName));
                     list.add(elementStage.anonymousCreateObject(repositoryClass, rowName, table));
                 } else if (stage instanceof SubElementStage<?> subElementStage && subElementStage instanceof VirtualObjectStage) {
@@ -130,7 +130,7 @@ public final class CollectionObjectStage extends AbstractSubElementStage<Collect
                     for (var row : repositoryClass.getRows()) {
                         var rowStage = getStageHandler().getElementStage(row.getType());
                         if (rowStage instanceof SQLElementStage<?> elementStage) {
-                            var rowName = SQLHelper.getRowName(row) + VALUE_NAME;
+                            var rowName = SQLHelper.getRowName(row) + VALUE_ID;
                             table.setProperty(SQLHelper.getRowName(row), result.getObject(rowName));
                             Reflections.writeField(object, row, elementStage.anonymousCreateObject(new RepositoryClass<>(row.getType()), SQLHelper.getRowName(row), table));
                         } else {

@@ -6,7 +6,7 @@ import net.bytemc.evelon.sql.SubElementStage;
 
 abstract class AbstractSubElementStage<T> implements SubElementStage<T> {
 
-    static final String VALUE_NAME = "_value";
+    static final String VALUE_ID = "_value";
 
     @Getter
     private StageHandler stageHandler;

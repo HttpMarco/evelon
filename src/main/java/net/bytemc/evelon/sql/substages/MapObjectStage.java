@@ -55,7 +55,7 @@ public final class MapObjectStage extends AbstractSubElementStage<Map<?, ?>> {
         rowValues.add(SQLHelper.getRowName(field) + "_key " + keyDatabaseType + " PRIMARY KEY");
 
         if (valueStage instanceof SQLElementStage<?> elementStage) {
-            rowValues.add(SQLHelper.getRowName(field) + "_value " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(keyType)));
+            rowValues.add(SQLHelper.getRowName(field) + VALUE_ID + " " + elementStage.anonymousElementRowData(null, new RepositoryClass<>(keyType)));
         } else {
             //todo
             throw new StageNotSupportedException(valueType);
@@ -81,7 +81,7 @@ public final class MapObjectStage extends AbstractSubElementStage<Map<?, ?>> {
                 elements.put(SQLHelper.getRowName(field) + "_key", elementStage.anonymousElementEntryData(new RepositoryClass<>(keyType), null, keyObject).right());
             }
             if (valueStage instanceof SQLElementStage<?> elementStage) {
-                elements.put(SQLHelper.getRowName(field) + "_value", elementStage.anonymousElementEntryData(new RepositoryClass<>(valueType), null, value.get(keyObject)).right());
+                elements.put(SQLHelper.getRowName(field) + VALUE_ID, elementStage.anonymousElementEntryData(new RepositoryClass<>(valueType), null, value.get(keyObject)).right());
             }
             queries.add(SQLHelper.insertDefault(table, String.join(", ", elements.keySet()), String.join(", ", elements.values())));
         }
@@ -112,7 +112,7 @@ public final class MapObjectStage extends AbstractSubElementStage<Map<?, ?>> {
                         var databaseResultSet = new SQLResultSet();
                         var table = databaseResultSet.addTable("default");
                         var keyName = SQLHelper.getRowName(parentField) + "_key";
-                        var rowName = SQLHelper.getRowName(parentField) + "_value";
+                        var rowName = SQLHelper.getRowName(parentField) + VALUE_ID;
                         table.setProperty(rowName, result.getObject(rowName));
                         table.setProperty(keyName, result.getObject(keyName));
                         map.put(keyElementStage.anonymousCreateObject(new RepositoryClass<>(keyType), keyName, table), valueElementStage.anonymousCreateObject(new RepositoryClass<>(valueType), rowName, table));
