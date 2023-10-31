@@ -38,7 +38,7 @@ public final class CollectionObjectStage implements SubElementStage<Collection<?
 
     @Override
     public void onParentTableCollectData(List<String> queries, String table, RepositoryClass<?> current, Field field, ForeignKey... keys) {
-        var listType = Reflections.readGenericFromClass(field)[0];
+       var listType = Reflections.readGenericFromClass(field)[0];
         var stage = StageHandler.getInstance().getElementStage(listType);
         var rowValues = new ArrayList<String>();
         // collect all needed foreign keys
