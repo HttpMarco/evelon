@@ -20,7 +20,6 @@ import net.bytemc.evelon.repository.Repository;
 import org.bson.Document;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.configuration.CodecRegistries;
-import org.bson.codecs.configuration.CodecRegistry;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,12 +36,12 @@ public final class MongoConnection {
 
     @ApiStatus.Internal
     public static void init() {
-        final DatabaseCradinates cradinates = Evelon.getDatabaseCradinates();
-        final CodecRegistry codecRegistry = CodecRegistries.fromProviders(
+        final var cradinates = Evelon.getCradinates();
+        final var codecRegistry = CodecRegistries.fromProviders(
             CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry()),
             new EvelonCodecProvider(ObjectMapperFactory.create())
         );
-        final MongoClientSettings settings = MongoClientSettings.builder()
+        final var settings = MongoClientSettings.builder()
             .applyConnectionString(CONNECTION_STRING.apply(cradinates))
             .uuidRepresentation(UuidRepresentation.JAVA_LEGACY)
             .codecRegistry(codecRegistry)

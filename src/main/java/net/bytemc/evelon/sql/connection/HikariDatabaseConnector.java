@@ -38,7 +38,7 @@ public final class HikariDatabaseConnector {
 
     public HikariDatabaseConnector createConnection(DatabaseProtocol databaseProtocol) {
         var hikariConfig = new HikariConfig();
-        var cradinates = Evelon.getDatabaseCradinates();
+        var cradinates = Evelon.getCradinates();
 
         hikariConfig.setJdbcUrl(String.format(CONNECT_URL_FORMAT, databaseProtocol.toString(), cradinates.hostname(), cradinates.port(), cradinates.database()));
 
