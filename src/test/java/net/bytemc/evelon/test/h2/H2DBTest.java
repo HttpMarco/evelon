@@ -4,6 +4,7 @@ import net.bytemc.evelon.Debugger;
 import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.repository.properties.StartupProperties;
+import net.bytemc.evelon.test.DefaultTest;
 import net.bytemc.evelon.test.TestRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,6 @@ public class H2DBTest {
         Debugger.setEnable(true);
         Evelon.useDefaultLocalDatabase();
         final Repository<TestRepository> repository = Repository.create(TestRepository.class, StartupProperties.syncAll());
-        repository.query().create(TestRepository.TEST_REPO);
+        repository.query().create(DefaultTest.TEST_REPO);
     }
 }

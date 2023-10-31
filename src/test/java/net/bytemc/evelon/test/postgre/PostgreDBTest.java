@@ -3,9 +3,8 @@ package net.bytemc.evelon.test.postgre;
 import net.bytemc.evelon.DatabaseProtocol;
 import net.bytemc.evelon.Debugger;
 import net.bytemc.evelon.Evelon;
-import net.bytemc.evelon.cradinates.DatabaseCradinates;
 import net.bytemc.evelon.repository.Filter;
-import net.bytemc.evelon.repository.Repository;
+import net.bytemc.evelon.test.DefaultTest;
 import net.bytemc.evelon.test.TestRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,7 @@ public class PostgreDBTest {
         Debugger.setEnable(true);
         Evelon.setCradinates(DatabaseProtocol.POSTGRESQL, "localhost", "password", "user", "database", 5432);
 
-        for (TestRepository repo : TestRepository.REPOSITORY.query().filter(Filter.between("personalNumber", 25, 36)).database().findAll()) {
+        for (TestRepository repo : DefaultTest.REPOSITORY.query().filter(Filter.between("personalNumber", 25, 36)).database().findAll()) {
             System.out.println(repo.toString());
         }
     }
