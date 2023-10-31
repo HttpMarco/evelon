@@ -46,7 +46,7 @@ public record Repository<T>(RepositoryClass<T> repositoryClass, StartupPropertie
 
         StorageHandler.getStorage(LocalStorage.class).initializeRepository(repository);
 
-        switch (Evelon.getDatabaseCradinates().databaseProtocol()) {
+        switch (Evelon.getCradinates().databaseProtocol()) {
             case MARIADB, H2, MYSQL, POSTGRESQL -> {
                 // check if table exists in sql, else create table
                 // check also old table names, because the table can be renamed and not lose the data.

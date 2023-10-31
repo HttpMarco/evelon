@@ -44,7 +44,7 @@ public final class RepositoryQueryActions<T> {
 
         if (order == RepositoryDepartureOrder.CHRONOLOGICAL) {
             handler.accept(StorageHandler.getStorage(LocalStorage.class));
-            handler.accept(StorageHandler.getStorage(Evelon.getDatabaseCradinates().databaseProtocol().getStorageClass()));
+            handler.accept(StorageHandler.getStorage(Evelon.getCradinates().databaseProtocol().getStorageClass()));
             return;
         }
         handler.accept(StorageHandler.getStorage(order.getStorage().get()));

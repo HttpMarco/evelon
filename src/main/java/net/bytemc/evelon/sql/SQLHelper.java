@@ -30,7 +30,7 @@ import java.util.List;
 public final class SQLHelper {
 
     public static boolean isTableExists(String tableName) {
-        if(Evelon.getDatabaseCradinates().databaseProtocol() == DatabaseProtocol.H2) {
+        if(Evelon.getCradinates().databaseProtocol() == DatabaseProtocol.H2) {
             return  SQLConnection.executeQuery(("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = " + Schema.encloseSchema("%s") + ";").formatted(tableName), ResultSet::next, false);
         }
         return SQLConnection.executeQuery(("SHOW TABLES LIKE " + Schema.encloseSchema("%s") + ";").formatted(tableName), ResultSet::next, false);

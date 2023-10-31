@@ -31,7 +31,7 @@ public final class UuidStageSQL implements SQLElementStage<UUID> {
     @Override
     public String elementRowData(@Nullable Field field, RepositoryClass<UUID> repository) {
 
-        if(Evelon.getDatabaseCradinates().databaseProtocol() == DatabaseProtocol.MYSQL) {
+        if(Evelon.getCradinates().databaseProtocol() == DatabaseProtocol.MYSQL) {
             return SQLType.VARCHAR.toString().formatted(36);
         }
 
@@ -45,7 +45,7 @@ public final class UuidStageSQL implements SQLElementStage<UUID> {
 
     @Override
     public UUID createObject(RepositoryClass<UUID> clazz, String id, SQLResultSet.Table table) {
-        if(Evelon.getDatabaseCradinates().databaseProtocol() == DatabaseProtocol.MYSQL) {
+        if(Evelon.getCradinates().databaseProtocol() == DatabaseProtocol.MYSQL) {
             // mysql are noobs because they have no uuid type
             return UUID.fromString(table.get(id, String.class));
         }

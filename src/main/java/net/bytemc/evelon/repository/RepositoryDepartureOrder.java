@@ -30,7 +30,7 @@ public enum RepositoryDepartureOrder {
 
     CHRONOLOGICAL(() -> null),
     LOCAL(() -> LocalStorage.class),
-    DATABASE(() -> Evelon.getDatabaseCradinates().databaseProtocol().getStorageClass());
+    DATABASE(() -> Evelon.getCradinates().databaseProtocol().getStorageClass());
 
     final Supplier<Class<? extends Storage>> storage;
 

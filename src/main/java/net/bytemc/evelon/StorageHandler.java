@@ -39,7 +39,7 @@ public final class StorageHandler {
     }
 
     public static Storage getCurrentStorage() {
-        return getStorage(Evelon.getDatabaseCradinates().databaseProtocol().getStorageClass());
+        return getStorage(Evelon.getCradinates().databaseProtocol().getStorageClass());
     }
 
     /**
