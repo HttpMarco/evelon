@@ -1,7 +1,7 @@
 ## Evelon
 
 **Latest stable-version:** 1.3.7<br>
-**Latest snapshot-version:** 1.4.3-SNAPSHOT<br>
+**Latest snapshot-version:** 1.4.4-SNAPSHOT<br>
 **All available versions:** 
 <a href="https://artifactory.bytemc.de/ui/native/bytemc-public/net/bytemc/evelon/">Click </a>
 
