@@ -8,9 +8,8 @@ import net.bytemc.evelon.sql.stages.DateStageSQL;
 import java.lang.reflect.Field;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-public final class LocaleDateTransformerSQL implements SQLElementStageTransformer<LocalDate> {
+public final class LocalDateTransformerSQL implements SQLElementStageTransformer<LocalDate> {
 
     @Override
     public Stage<?> transformTo() {
