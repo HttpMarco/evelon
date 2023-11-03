@@ -75,13 +75,13 @@ public final class HikariDatabaseConnector {
         hikariConfig.setConnectionTimeout(10_000);
         hikariConfig.setValidationTimeout(10_000);
 
-        this.hikariDataSource = new HikariDataSource(hikariConfig);
+        hikariDataSource = new HikariDataSource(hikariConfig);
         return this;
     }
 
     public Connection getConnection() {
         try {
-            return this.hikariDataSource.getConnection();
+            return hikariDataSource.getConnection();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
