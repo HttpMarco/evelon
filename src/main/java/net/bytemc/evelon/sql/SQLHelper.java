@@ -62,27 +62,27 @@ public final class SQLHelper {
                 .toList());
     }
 
-    public static String insertDefault(String... values) {
+    public static String insertDefault(Object... values) {
         return "INSERT INTO %s(%s) VALUES(%s);".formatted(values);
     }
 
-    public static String create(String... value) {
+    public static String create(Object... value) {
         return "CREATE TABLE IF NOT EXISTS %s(%s);".formatted(value);
     }
 
-    public static String update(String... value) {
+    public static String update(Object... value) {
         return "UPDATE %s SET %s;".formatted(value);
     }
 
-    public static String count(String... value) {
+    public static String count(Object... value) {
         return "SELECT COUNT(*) AS %s FROM %s".formatted(value);
     }
 
-    public static String sum(String... value) {
+    public static String sum(Object... value) {
         return "SELECT SUM(%s) AS %s FROM %s".formatted(value);
     }
 
-    public static String avg(String... value) {
+    public static String avg(Object... value) {
         return "SELECT AVG(%s) AS %s FROM %s".formatted(value);
     }
 }
