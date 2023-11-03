@@ -9,7 +9,7 @@ abstract class AbstractSubElementStage<T> implements SubElementStage<T> {
     static final String VALUE_ID = "_value";
 
     @Getter
-    private StageHandler stageHandler;
+    private final StageHandler stageHandler;
 
     public AbstractSubElementStage() {
         this.stageHandler = StageHandler.getInstance();

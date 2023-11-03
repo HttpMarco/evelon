@@ -25,7 +25,7 @@ import java.lang.reflect.Field;
 public class ForeignKey {
 
     private String parentTable;
-    private Field foreignKey;
+    private final Field foreignKey;
     private Object optionalValue = null;
 
     public ForeignKey(String parentTable, Field foreignKey) {
