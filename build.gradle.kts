@@ -66,12 +66,10 @@ publishing {
     repositories {
         maven {
             name = "bytemc"
-            url = uri("https://repo.habsgleich.tech/repository/maven-releases/")
+            url = uri("https://artifactory.bytemc.de/artifactory/bytemc-public/")
             credentials {
-                username = property("REPO_USER").toString()
-                password = property("REPO_PASSWORD").toString()
-                /*username = System.getenv("BYTEMC_REPO_USERNAME")
-                password = System.getenv("BYTEMC_REPO_PASSWORD")*/
+                username = System.getenv("BYTEMC_REPO_USERNAME")
+                password = System.getenv("BYTEMC_REPO_PASSWORD")
             }
         }
     }
