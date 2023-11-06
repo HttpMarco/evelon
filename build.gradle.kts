@@ -40,7 +40,7 @@ dependencies {
 }
 
 tasks.withType<Test> {
-    useJUnitPlatform()
+    useJUnit();
 }
 
 tasks.withType<JavaCompile> {
