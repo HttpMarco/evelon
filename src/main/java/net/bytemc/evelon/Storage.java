@@ -56,7 +56,7 @@ public interface Storage {
 
     <T> double avg(RepositoryQuery<T> query, String id);
 
-    <T> List<T> order(RepositoryQuery<T> query, int max, SortedOrder order);
+    <T> List<T> order(RepositoryQuery<T> query, String id, int max, SortedOrder order);
 
     default <T> void createIfNotExists(RepositoryQuery<T> query, T value) {
         if(!exists(query)) {

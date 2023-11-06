@@ -16,8 +16,11 @@
 
 package net.bytemc.evelon.repository;
 
+import net.bytemc.evelon.StorageHandler;
+import net.bytemc.evelon.misc.SortedOrder;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
@@ -56,6 +59,10 @@ public final class RepositoryQueryActionsAsync<T> {
 
     public CompletableFuture<Long> sum(String id) {
         return this.supplyAsync(() -> this.syncActions.sum(id));
+    }
+
+    public CompletableFuture<Collection<T>> order(String id, int max, SortedOrder order) {
+        return this.supplyAsync(() -> this.syncActions.order(id, max, order));
     }
 
     private void runAsync(Runnable runnable) {

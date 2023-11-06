@@ -3,6 +3,7 @@ package net.bytemc.evelon.test.mongodb.simulation;
 import net.bytemc.evelon.DatabaseProtocol;
 import net.bytemc.evelon.Debugger;
 import net.bytemc.evelon.Evelon;
+import net.bytemc.evelon.misc.SortedOrder;
 import net.bytemc.evelon.repository.Repository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,7 @@ public final class CoinTest {
 
         createEntries();
         sumCoins();
+        sortEntries();
     }
 
     @Test
@@ -42,8 +44,16 @@ public final class CoinTest {
     @Test
     @Disabled
     public void sumCoins() {
-        System.out.println("Sum: " + REPOSITORY.query()
-            .database()
-            .sum("coins"));
+        var sum = REPOSITORY.query().database().sum("coins");
+        System.out.println("Sum: " + sum);
+    }
+
+    @Test
+    @Disabled
+    public void sortEntries() {
+        System.out.println("Sorted:");
+        for (CoinRepository coinRepository : REPOSITORY.query().database().order("coins", 1000, SortedOrder.DESC)) {
+            System.out.println(coinRepository.getCoins());
+        }
     }
 }

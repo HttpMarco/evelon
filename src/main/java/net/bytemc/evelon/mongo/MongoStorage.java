@@ -2,10 +2,7 @@ package net.bytemc.evelon.mongo;
 
 import com.mongodb.Function;
 import com.mongodb.client.FindIterable;
-import com.mongodb.client.model.Accumulators;
-import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.BsonField;
-import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.*;
 import lombok.SneakyThrows;
 import net.bytemc.evelon.Storage;
 import net.bytemc.evelon.misc.Reflections;
@@ -45,14 +42,7 @@ public final class MongoStorage extends MongoDriver implements Storage {
 
     @Override
     public <T> List<T> findAll(RepositoryQuery<T> query) {
-        var collection = getJsonCollection(query.getRepository());
-        FindIterable<JsonObject> iterable;
-        if (!query.getFilters().isEmpty()) {
-            iterable = collection.find(linkFilters(query.getFilters()));
-        } else {
-            iterable = collection.find();
-        }
-        return iterable
+        return query(query)
             .map(jsonObject -> GSON.fromJson(jsonObject.getJson(), query.getRepository().repositoryClass().clazz()))
             .into(new ArrayList<>());
     }
@@ -63,8 +53,8 @@ public final class MongoStorage extends MongoDriver implements Storage {
             throw new UnsupportedOperationException("You have to define filters to do a mongo find");
         }
         final Bson filter = MongoHelper.linkFilters(query.getFilters());
-        return getJsonCollection(query.getRepository())
-            .find(filter)
+        return query(query)
+            .limit(1)
             .map(jsonObject -> GSON.fromJson(jsonObject.getJson(), query.getRepository().repositoryClass().clazz()))
             .first();
     }
@@ -112,8 +102,23 @@ public final class MongoStorage extends MongoDriver implements Storage {
     }
 
     @Override
-    public <T> List<T> order(RepositoryQuery<T> query, int max, SortedOrder order) {
-        return null;
+    public <T> List<T> order(RepositoryQuery<T> query, String id, int max, SortedOrder order) {
+        return query(query)
+            .limit(max)
+            .sort(order.toMongo(id))
+            .map(jsonObject -> GSON.fromJson(jsonObject.getJson(), query.getRepository().repositoryClass().clazz()))
+            .into(new ArrayList<>());
+    }
+
+    private <T> FindIterable<JsonObject> query(RepositoryQuery<T> query) {
+        var collection = getJsonCollection(query.getRepository());
+        FindIterable<JsonObject> iterable;
+        if (!query.getFilters().isEmpty()) {
+            iterable = collection.find(linkFilters(query.getFilters()));
+        } else {
+            iterable = collection.find();
+        }
+        return iterable;
     }
 
     private <T> T calculate(

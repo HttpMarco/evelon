@@ -100,7 +100,7 @@ public final class LocalStorage implements Storage {
     }
 
     @Override
-    public <T> List<T> order(RepositoryQuery<T> query, int max, SortedOrder order) {
+    public <T> List<T> order(RepositoryQuery<T> query, String id, int max, SortedOrder order) {
         //TODO
         return null;
     }
