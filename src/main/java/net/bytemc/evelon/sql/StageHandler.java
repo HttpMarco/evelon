@@ -17,7 +17,7 @@
 package net.bytemc.evelon.sql;
 
 import lombok.Getter;
-import net.bytemc.evelon.exception.StageNotFoundException;
+import net.bytemc.evelon.exception.stage.StageNotFoundException;
 import net.bytemc.evelon.sql.stages.*;
 import net.bytemc.evelon.sql.substages.CollectionObjectStage;
 import net.bytemc.evelon.sql.substages.MapObjectStage;

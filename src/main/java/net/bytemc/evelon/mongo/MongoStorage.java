@@ -8,6 +8,8 @@ import com.mongodb.client.model.BsonField;
 import com.mongodb.client.model.UpdateOptions;
 import lombok.SneakyThrows;
 import net.bytemc.evelon.Storage;
+import net.bytemc.evelon.exception.field.FieldNotFoundException;
+import net.bytemc.evelon.exception.field.NumberNotPresentException;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.misc.SortedOrder;
 import net.bytemc.evelon.mongo.misc.MongoHelper;
@@ -147,14 +149,10 @@ public final class MongoStorage extends MongoDriver implements Storage {
         var field = Reflections.getOptionalField(query.getRepository().repositoryClass().clazz(), id);
         var repositoryClass = query.getRepository().repositoryClass().clazz();
         if (field.isEmpty()) {
-            throw new UnsupportedOperationException(
-                "Cannot find field '" + id + "' in repository-class '" + repositoryClass.getName() + "'"
-            );
+            throw new FieldNotFoundException(repositoryClass, id);
         }
         if (!Reflections.isNumber(field.get().getType())) {
-            throw new UnsupportedOperationException(
-                "Field '" + id + "' in repository-class '" + repositoryClass.getName() + "' is not a number"
-            );
+            throw new NumberNotPresentException(repositoryClass, id);
         }
 
         var collection = getCollection(query.getRepository());

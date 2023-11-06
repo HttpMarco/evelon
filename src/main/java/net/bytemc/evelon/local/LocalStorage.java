@@ -17,7 +17,7 @@
 package net.bytemc.evelon.local;
 
 import net.bytemc.evelon.Storage;
-import net.bytemc.evelon.exception.NumberNotPresentException;
+import net.bytemc.evelon.exception.field.NumberNotPresentException;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.misc.SortedOrder;
 import net.bytemc.evelon.repository.Repository;
