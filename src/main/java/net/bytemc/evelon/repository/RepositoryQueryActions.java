@@ -36,15 +36,13 @@ public final class RepositoryQueryActions<T> {
     private final RepositoryDepartureOrder order;
 
     private void handleStorage(Consumer<Storage> handler) {
-
         if (order == null) {
             System.err.println("RepositoryDepartureOrder is null, please specify a departure order.");
             return;
         }
-
         if (order == RepositoryDepartureOrder.CHRONOLOGICAL) {
             handler.accept(StorageHandler.getStorage(LocalStorage.class));
-            handler.accept(StorageHandler.getStorage(Evelon.getCradinates().databaseProtocol().getStorageClass()));
+            handler.accept(StorageHandler.getCurrentStorage());
             return;
         }
         handler.accept(StorageHandler.getStorage(order.getStorage().get()));

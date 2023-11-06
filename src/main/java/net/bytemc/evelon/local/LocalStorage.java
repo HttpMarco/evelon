@@ -39,6 +39,10 @@ public final class LocalStorage implements Storage {
     }
 
     @Override
+    public <T> void upsert(RepositoryQuery<T> query, T value) {
+    }
+
+    @Override
     public <T> void delete(RepositoryQuery<T> query) {
         var elements = cache.get(query.getRepository());
         var deletableEntries = LocalStorageHelper.filter(query.getRepository(), query.getFilters(), elements.stream()).toList();

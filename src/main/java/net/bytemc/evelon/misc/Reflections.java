@@ -24,6 +24,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public final class Reflections {
 
@@ -90,6 +91,14 @@ public final class Reflections {
             return parent.getDeclaredField(fieldId);
         } catch (NoSuchFieldException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static Optional<Field> getOptionalField(Class<?> parent, String fieldId) {
+        try {
+            return Optional.of(parent.getDeclaredField(fieldId));
+        } catch (NoSuchFieldException e) {
+            return Optional.empty();
         }
     }
 

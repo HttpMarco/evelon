@@ -56,10 +56,14 @@ public abstract class SQLStorage implements Storage {
         return entries.get(0);
     }
 
-
     @Override
     public <T> void update(RepositoryQuery<T> query, T value) {
         ColumnUpdateProcess.update(query, value);
+    }
+
+    @Override
+    public <T> void upsert(RepositoryQuery<T> query, T value) {
+        throw new UnsupportedOperationException("This method is not implemented yet");
     }
 
     @Override

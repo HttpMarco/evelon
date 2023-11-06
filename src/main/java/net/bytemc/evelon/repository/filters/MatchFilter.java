@@ -17,12 +17,14 @@
 package net.bytemc.evelon.repository.filters;
 
 import com.mongodb.client.model.Filters;
+import net.bytemc.evelon.Debugger;
 import net.bytemc.evelon.local.LocalStorageHelper;
 import net.bytemc.evelon.repository.AbstractIdFilter;
 import net.bytemc.evelon.repository.RepositoryClass;
 import net.bytemc.evelon.sql.Schema;
 import org.bson.conversions.Bson;
 
+import java.util.Collection;
 import java.util.stream.Stream;
 
 public final class MatchFilter extends AbstractIdFilter {
@@ -41,7 +43,9 @@ public final class MatchFilter extends AbstractIdFilter {
 
     @Override
     public Bson mongoFilter() {
-        return Filters.eq(getId(), value);
+        // We need to convert non-primitive types to string cause bson validation is weird
+        boolean convert = (!value.getClass().isPrimitive() && !(value instanceof Collection<?>));
+        return Filters.eq(getId(), (convert ? value.toString() : value));
     }
 
     @Override
