@@ -63,7 +63,11 @@ public abstract class SQLStorage implements Storage {
 
     @Override
     public <T> void upsert(RepositoryQuery<T> query, T value) {
-        throw new UnsupportedOperationException("This method is not implemented yet");
+        if (exists(query)) {
+            update(query, value);
+        } else {
+            create(query, value);
+        }
     }
 
     @Override
