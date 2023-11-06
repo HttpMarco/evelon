@@ -61,6 +61,15 @@ public final class RepositoryQueryActions<T> {
         return element.get();
     }
 
+    public void manipulate(Consumer<T> manipulator) {
+        var value = findFirst();
+        if (value == null) {
+            return;
+        }
+        manipulator.accept(value);
+        update(value);
+    }
+
     public void update(T value) {
         handleStorage(storage -> storage.update(query, value));
     }

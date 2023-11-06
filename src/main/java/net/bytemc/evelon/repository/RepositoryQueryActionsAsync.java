@@ -16,13 +16,13 @@
 
 package net.bytemc.evelon.repository;
 
-import net.bytemc.evelon.StorageHandler;
 import net.bytemc.evelon.misc.SortedOrder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public final class RepositoryQueryActionsAsync<T> {
@@ -43,6 +43,10 @@ public final class RepositoryQueryActionsAsync<T> {
 
     public void update(T value) {
         this.runAsync(() -> this.syncActions.update(value));
+    }
+
+    public void manipulate(Consumer<T> manipulator) {
+        this.runAsync(() -> this.syncActions.manipulate(manipulator));
     }
 
     public CompletableFuture<Boolean> exists() {
