@@ -1,4 +1,4 @@
-name: Neutral maven build test
+name: Neutral gradle build test
 
 on:
   push:
@@ -8,9 +8,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 20
@@ -18,6 +16,6 @@ jobs:
       with:
         java-version: '20'
         distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+        cache: gradle
+    - name: Build with Gradle
+      run: gradle build
