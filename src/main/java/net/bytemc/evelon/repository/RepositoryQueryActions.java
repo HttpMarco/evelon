@@ -17,10 +17,9 @@
 package net.bytemc.evelon.repository;
 
 import lombok.AllArgsConstructor;
-import net.bytemc.evelon.Evelon;
-import net.bytemc.evelon.local.LocalStorage;
 import net.bytemc.evelon.Storage;
 import net.bytemc.evelon.StorageHandler;
+import net.bytemc.evelon.local.LocalStorage;
 import net.bytemc.evelon.misc.SortedOrder;
 import org.jetbrains.annotations.NotNull;
 
@@ -64,6 +63,10 @@ public final class RepositoryQueryActions<T> {
 
     public void update(T value) {
         handleStorage(storage -> storage.update(query, value));
+    }
+
+    public void upsert(T value) {
+        handleStorage(storage -> storage.upsert(query, value));
     }
 
     public boolean exists() {

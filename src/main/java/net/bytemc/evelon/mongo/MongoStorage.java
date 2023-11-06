@@ -2,7 +2,10 @@ package net.bytemc.evelon.mongo;
 
 import com.mongodb.Function;
 import com.mongodb.client.FindIterable;
-import com.mongodb.client.model.*;
+import com.mongodb.client.model.Accumulators;
+import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.BsonField;
+import com.mongodb.client.model.UpdateOptions;
 import lombok.SneakyThrows;
 import net.bytemc.evelon.Storage;
 import net.bytemc.evelon.misc.Reflections;
@@ -52,7 +55,6 @@ public final class MongoStorage extends MongoDriver implements Storage {
         if (query.getFilters().isEmpty()) {
             throw new UnsupportedOperationException("You have to define filters to do a mongo find");
         }
-        final Bson filter = MongoHelper.linkFilters(query.getFilters());
         return query(query)
             .limit(1)
             .map(jsonObject -> GSON.fromJson(jsonObject.getJson(), query.getRepository().repositoryClass().clazz()))
@@ -62,12 +64,12 @@ public final class MongoStorage extends MongoDriver implements Storage {
     @SneakyThrows
     @Override
     public <T> void update(RepositoryQuery<T> query, T value) {
-
+        update(query, value, null);
     }
 
     @Override
     public <T> void upsert(RepositoryQuery<T> query, T value) {
-
+        update(query, value, UPSERT_OPTIONS);
     }
 
     @Override
@@ -119,6 +121,20 @@ public final class MongoStorage extends MongoDriver implements Storage {
             iterable = collection.find();
         }
         return iterable;
+    }
+
+    private <T> void update(RepositoryQuery<T> query, T value, UpdateOptions options) {
+        var filters = MongoHelper.filtersOrPrimaries(query.getFilters(), query.getRepository(), value).orElseThrow(
+            () -> new UnsupportedOperationException("You have to define primary-keys or filters to do a mongo update")
+        );
+        var document = Document.parse(GSON.toJson(value));
+        var update = new Document("$set", document);
+        var collection = getJsonCollection(query.getRepository());
+        if (options == null) {
+            collection.updateMany(filters, update);
+        } else {
+            collection.updateMany(filters, update, options);
+        }
     }
 
     private <T> T calculate(
