@@ -31,6 +31,15 @@ public interface Storage {
      */
     <T> void create(RepositoryQuery<T> query, T value);
 
+    /**
+     * An upsert will create a new dataset if it does not exist, otherwise it will update the existing one.
+     *
+     * @param query a query to the specific repository
+     * @param value an object from the specific repository
+     * @param <T> repository type
+     */
+    <T> void upsert(RepositoryQuery<T> query, T value);
+
     <T> void delete(RepositoryQuery<T> query);
 
     <T> List<T> findAll(RepositoryQuery<T> query);
@@ -47,7 +56,7 @@ public interface Storage {
 
     <T> double avg(RepositoryQuery<T> query, String id);
 
-    <T> List<T> order(RepositoryQuery<T> query, int max, SortedOrder order);
+    <T> List<T> order(RepositoryQuery<T> query, String id, int max, SortedOrder order);
 
     default <T> void createIfNotExists(RepositoryQuery<T> query, T value) {
         if(!exists(query)) {

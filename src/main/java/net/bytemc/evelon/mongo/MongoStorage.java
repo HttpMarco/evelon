@@ -1,71 +1,77 @@
 package net.bytemc.evelon.mongo;
 
-import com.mongodb.client.AggregateIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
+import com.mongodb.Function;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.BsonField;
+import com.mongodb.client.model.UpdateOptions;
 import lombok.SneakyThrows;
 import net.bytemc.evelon.Storage;
+import net.bytemc.evelon.exception.field.FieldNotFoundException;
+import net.bytemc.evelon.exception.field.NumberNotPresentException;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.misc.SortedOrder;
 import net.bytemc.evelon.mongo.misc.MongoHelper;
-import net.bytemc.evelon.repository.RepositoryHelper;
 import net.bytemc.evelon.repository.RepositoryQuery;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.json.JsonObject;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.Supplier;
 
-import static net.bytemc.evelon.mongo.misc.MongoHelper.*;
+import static net.bytemc.evelon.mongo.misc.MongoHelper.linkFilters;
 
-public final class MongoStorage implements Storage {
+public final class MongoStorage extends MongoDriver implements Storage {
+
+    private static final UpdateOptions UPSERT_OPTIONS = new UpdateOptions().upsert(true);
 
     public MongoStorage() {
-        MongoConnection.init();
+        init();
     }
 
     @Override
     public <T> void create(RepositoryQuery<T> query, T value) {
-        getCollection(query.getRepository()).insertOne(value);
+        getJsonCollection(query.getRepository()).insertOne(new JsonObject(GSON.toJson(value)));
     }
 
     @Override
     public <T> void delete(RepositoryQuery<T> query) {
         if (query.getFilters().isEmpty()) {
-            throw new UnsupportedOperationException("You have to define a primary key, or use filters to do a mongo update");
+            throw new UnsupportedOperationException("You have to define filters to do a mongo deletion");
         }
-        getCollection(query.getRepository()).findOneAndDelete(linkFilters(query.getFilters()));
+        getJsonCollection(query.getRepository()).deleteMany(linkFilters(query.getFilters()));
     }
 
     @Override
     public <T> List<T> findAll(RepositoryQuery<T> query) {
-        return query(query, -1).into(new ArrayList<>());
+        return query(query)
+            .map(jsonObject -> GSON.fromJson(jsonObject.getJson(), query.getRepository().repositoryClass().clazz()))
+            .into(new ArrayList<>());
     }
 
     @Override
     public <T> @Nullable T findFirst(RepositoryQuery<T> query) {
-        return query(query, 1).first();
+        if (query.getFilters().isEmpty()) {
+            throw new UnsupportedOperationException("You have to define filters to do a mongo find");
+        }
+        return query(query)
+            .limit(1)
+            .map(jsonObject -> GSON.fromJson(jsonObject.getJson(), query.getRepository().repositoryClass().clazz()))
+            .first();
     }
 
     @SneakyThrows
     @Override
     public <T> void update(RepositoryQuery<T> query, T value) {
-        final Bson filter = MongoHelper.filtersOrPrimaries(query.getFilters(), query.getRepository(), value)
-                .orElseThrow((Supplier<Throwable>) () ->
-                        new UnsupportedOperationException("You have to define a primary key, or use filters to do a mongo update")
-                );
+        update(query, value, null);
+    }
 
-        final Document update = new Document();
-        for (Field row : query.getRepository().repositoryClass().getRows()) {
-            update.append(RepositoryHelper.getFieldName(row), Reflections.readField(value, row));
-        }
-        getCollection(query.getRepository()).updateOne(filter, new Document("$set", update));
+    @Override
+    public <T> void upsert(RepositoryQuery<T> query, T value) {
+        update(query, value, UPSERT_OPTIONS);
     }
 
     @Override
@@ -75,40 +81,94 @@ public final class MongoStorage implements Storage {
 
     @Override
     public <T> long count(RepositoryQuery<T> query) {
+        if (query.getFilters().isEmpty()) {
+            return getCollection(query.getRepository()).countDocuments();
+        }
         return getCollection(query.getRepository()).countDocuments(linkFilters(query.getFilters()));
     }
 
     @Override
     public <T> long sum(RepositoryQuery<T> query, String id) {
-        // TODO Implement filters (not change logic -> database order)
-        var collection = MongoConnection.getDatabase().getCollection(query.getRepository().getName());
-        // Aggregationspipeline erstellen, um die Summe zu berechnen
-        var pipeline = Arrays.asList(Aggregates.group(null, Accumulators.sum("total", "$" + id)));
-        var result = collection.aggregate(pipeline);
-
-        if (result.iterator().hasNext()) {
-            Document sumDocument = result.first();
-            return sumDocument.getInteger("total", 0);
-        }
-        return 0;
+        return calculate(query, id,
+            Accumulators.sum("total", "$" + id),
+            document -> document.getInteger("total").longValue(),
+            0L
+        );
     }
 
     @Override
     public <T> double avg(RepositoryQuery<T> query, String id) {
-        // TODO Implement filters (not change logic -> database order)
-        MongoCollection<Document> collection = MongoConnection.getDatabase().getCollection(query.getRepository().getName());
-        // Aggregationspipeline erstellen, um den Durchschnitt zu berechnen
-        List<Bson> pipeline = Arrays.asList(Aggregates.group(null, Accumulators.avg("average", "$" + id)));
-        AggregateIterable<Document> result = collection.aggregate(pipeline);
-        if (result.iterator().hasNext()) {
-            Document averageDocument = result.first();
-            return averageDocument.getDouble("average");
-        }
-        return 0.0;
+        return calculate(query, id,
+            Accumulators.avg("average", "$" + id),
+            document -> document.getDouble("average"),
+            0.0D
+        );
     }
 
     @Override
-    public <T> List<T> order(RepositoryQuery<T> query, int max, SortedOrder order) {
-        return null;
+    public <T> List<T> order(RepositoryQuery<T> query, String id, int max, SortedOrder order) {
+        return query(query)
+            .limit(max)
+            .sort(order.toMongo(id))
+            .map(jsonObject -> GSON.fromJson(jsonObject.getJson(), query.getRepository().repositoryClass().clazz()))
+            .into(new ArrayList<>());
+    }
+
+    private <T> FindIterable<JsonObject> query(RepositoryQuery<T> query) {
+        var collection = getJsonCollection(query.getRepository());
+        FindIterable<JsonObject> iterable;
+        if (!query.getFilters().isEmpty()) {
+            iterable = collection.find(linkFilters(query.getFilters()));
+        } else {
+            iterable = collection.find();
+        }
+        return iterable;
+    }
+
+    private <T> void update(RepositoryQuery<T> query, T value, UpdateOptions options) {
+        var filters = MongoHelper.filtersOrPrimaries(query.getFilters(), query.getRepository(), value).orElseThrow(
+            () -> new UnsupportedOperationException("You have to define primary-keys or filters to do a mongo update")
+        );
+        var document = Document.parse(GSON.toJson(value));
+        var update = new Document("$set", document);
+        var collection = getJsonCollection(query.getRepository());
+        if (options == null) {
+            collection.updateMany(filters, update);
+        } else {
+            collection.updateMany(filters, update, options);
+        }
+    }
+
+    private <T> T calculate(
+        RepositoryQuery<?> query,
+        String id,
+        BsonField pipelineAction,
+        Function<Document, T> map,
+        T def
+    ) {
+        var field = Reflections.getOptionalField(query.getRepository().repositoryClass().clazz(), id);
+        var repositoryClass = query.getRepository().repositoryClass().clazz();
+        if (field.isEmpty()) {
+            throw new FieldNotFoundException(repositoryClass, id);
+        }
+        if (!Reflections.isNumber(field.get().getType())) {
+            throw new NumberNotPresentException(repositoryClass, id);
+        }
+
+        var collection = getCollection(query.getRepository());
+        var pipeline = new ArrayList<Bson>(2);
+        if (!query.getFilters().isEmpty()) {
+            pipeline.add(Aggregates.match(linkFilters(query.getFilters())));
+        }
+        pipeline.add(Aggregates.group(null, pipelineAction));
+
+        var result = collection.aggregate(pipeline);
+        try (var iterator = result.iterator()) {
+            if (iterator.hasNext()) {
+                var document = iterator.next();
+                return map.apply(document);
+            }
+        }
+        return def;
     }
 }

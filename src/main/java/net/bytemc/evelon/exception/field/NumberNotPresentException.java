@@ -1,4 +1,4 @@
-package net.bytemc.evelon.exception;
+package net.bytemc.evelon.exception.field;
 
 public final class NumberNotPresentException extends RuntimeException {
 

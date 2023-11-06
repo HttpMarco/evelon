@@ -16,12 +16,12 @@
 
 package net.bytemc.evelon.local;
 
-import net.bytemc.evelon.exception.NumberNotPresentException;
+import net.bytemc.evelon.Storage;
+import net.bytemc.evelon.exception.field.NumberNotPresentException;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.misc.SortedOrder;
 import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.repository.RepositoryQuery;
-import net.bytemc.evelon.Storage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -36,6 +36,15 @@ public final class LocalStorage implements Storage {
     @Override
     public <T> void create(RepositoryQuery<T> query, T value) {
         Reflections.writeList((List<T>) this.cache.get(query.getRepository()), value);
+    }
+
+    @Override
+    public <T> void upsert(RepositoryQuery<T> query, T value) {
+        if (exists(query)) {
+            update(query, value);
+        } else {
+            create(query, value);
+        }
     }
 
     @Override
@@ -96,7 +105,7 @@ public final class LocalStorage implements Storage {
     }
 
     @Override
-    public <T> List<T> order(RepositoryQuery<T> query, int max, SortedOrder order) {
+    public <T> List<T> order(RepositoryQuery<T> query, String id, int max, SortedOrder order) {
         //TODO
         return null;
     }

@@ -17,13 +17,14 @@
 package net.bytemc.evelon.repository;
 
 import lombok.AllArgsConstructor;
-import net.bytemc.evelon.Evelon;
-import net.bytemc.evelon.local.LocalStorage;
 import net.bytemc.evelon.Storage;
 import net.bytemc.evelon.StorageHandler;
+import net.bytemc.evelon.local.LocalStorage;
+import net.bytemc.evelon.misc.SortedOrder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -36,15 +37,13 @@ public final class RepositoryQueryActions<T> {
     private final RepositoryDepartureOrder order;
 
     private void handleStorage(Consumer<Storage> handler) {
-
         if (order == null) {
             System.err.println("RepositoryDepartureOrder is null, please specify a departure order.");
             return;
         }
-
         if (order == RepositoryDepartureOrder.CHRONOLOGICAL) {
             handler.accept(StorageHandler.getStorage(LocalStorage.class));
-            handler.accept(StorageHandler.getStorage(Evelon.getCradinates().databaseProtocol().getStorageClass()));
+            handler.accept(StorageHandler.getCurrentStorage());
             return;
         }
         handler.accept(StorageHandler.getStorage(order.getStorage().get()));
@@ -64,6 +63,10 @@ public final class RepositoryQueryActions<T> {
 
     public void update(T value) {
         handleStorage(storage -> storage.update(query, value));
+    }
+
+    public void upsert(T value) {
+        handleStorage(storage -> storage.upsert(query, value));
     }
 
     public boolean exists() {
@@ -92,5 +95,9 @@ public final class RepositoryQueryActions<T> {
         var result = new AtomicLong(-1);
         handleStorage(storage -> result.set(storage.sum(query, id)));
         return result.get();
+    }
+
+    public Collection<T> order(String id, int max, SortedOrder order) {
+        return StorageHandler.getCurrentStorage().order(query, id, max, order);
     }
 }

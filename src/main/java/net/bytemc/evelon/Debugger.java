@@ -29,7 +29,7 @@ public final class Debugger {
         if (!enable) {
             return;
         }
-        System.out.println(message);
+        System.out.println("DEBUG: " + message);
     }
 
 }

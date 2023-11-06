@@ -1,6 +1,6 @@
 package net.bytemc.evelon.sql.process;
 
-import net.bytemc.evelon.exception.NumberNotPresentException;
+import net.bytemc.evelon.exception.field.NumberNotPresentException;
 import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.RepositoryQuery;
 import net.bytemc.evelon.sql.SQLConnection;

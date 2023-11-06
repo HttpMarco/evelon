@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package net.bytemc.evelon.exception;
+package net.bytemc.evelon.exception.stage;
 
-public final class StageNotSupportedException extends RuntimeException {
+public final class StageNotFoundException extends NullPointerException {
 
-    public StageNotSupportedException(Class<?> clazz) {
-        super("Stage for class " + clazz.getSimpleName() + " not supported.");
+    public StageNotFoundException(Class<?> searchedStageClass) {
+        super("No stage found for class: " + searchedStageClass.getSimpleName());
     }
 }

@@ -19,7 +19,8 @@ package net.bytemc.evelon.repository;
 import com.mongodb.client.MongoDatabase;
 import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.local.LocalStorage;
-import net.bytemc.evelon.mongo.MongoConnection;
+import net.bytemc.evelon.mongo.MongoDriver;
+import net.bytemc.evelon.mongo.MongoStorage;
 import net.bytemc.evelon.repository.annotations.Entity;
 import net.bytemc.evelon.repository.properties.StartupProperties;
 import net.bytemc.evelon.sql.SQLHelper;
@@ -41,12 +42,17 @@ public record Repository<T>(RepositoryClass<T> repositoryClass, StartupPropertie
      * Check the state of the current repository in the database and create a new table if it does not exist.
      */
     public static <T> @NotNull Repository<T> create(Class<T> clazz, StartupProperties<T> startupProperty) {
+        var protocol = Evelon.getCradinates().databaseProtocol();
+        if (protocol == null) {
+            throw new NullPointerException("The database protocol is null");
+        }
+
         // create a local list
         var repository = new Repository<>(new RepositoryClass<>(clazz), startupProperty);
 
         StorageHandler.getStorage(LocalStorage.class).initializeRepository(repository);
 
-        switch (Evelon.getCradinates().databaseProtocol()) {
+        switch (protocol) {
             case MARIADB, H2, MYSQL, POSTGRESQL -> {
                 // check if table exists in sql, else create table
                 // check also old table names, because the table can be renamed and not lose the data.
@@ -58,7 +64,7 @@ public record Repository<T>(RepositoryClass<T> repositoryClass, StartupPropertie
                 }
             }
             case MONGODB -> {
-                final MongoDatabase database = MongoConnection.getDatabase();
+                final MongoDatabase database = StorageHandler.getStorage(MongoStorage.class).getDatabase();
                 database.createCollection(repository.getName());
             }
         }
