@@ -23,7 +23,7 @@ public final class LocalDateTransformerSQL implements SQLElementStageTransformer
 
     @Override
     public LocalDate rollback(Object value, Field field) {
-        return ((Date) value).toLocalDate();
+        return new Date(((java.util.Date) value).getTime()).toLocalDate();
     }
 
     @Override
