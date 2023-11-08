@@ -113,7 +113,7 @@ public final class VirtualObjectStage extends AbstractSubElementStage<Object> {
     }
 
     @Override
-    public Object createInstance(String table, Field parentField, RepositoryClass<Object> clazz, SQLResultSet SQLResultSet) {
+    public Object createInstance(String table, Field parentField, RepositoryClass<Object> clazz, SQLResultSet result) {
         var object = Reflections.allocate(clazz.clazz());
         for (var row : clazz.getRows()) {
             var originalStage = getStageHandler().getElementStage(row.getType());
@@ -124,9 +124,9 @@ public final class VirtualObjectStage extends AbstractSubElementStage<Object> {
             Object value;
             if (stage instanceof SubElementStage<?> subElementStage) {
                 var subTableName = table + "_" + rowName;
-                value = subElementStage.createInstance(subTableName, row, subRepositoryClazz, SQLResultSet);
+                value = subElementStage.createInstance(subTableName, row, subRepositoryClazz, result);
             } else if (stage instanceof SQLElementStage<?> elementStage) {
-                value = elementStage.anonymousCreateObject(subRepositoryClazz, rowName, SQLResultSet.getTable(table));
+                value = elementStage.anonymousCreateObject(subRepositoryClazz, rowName, result.getTable(table));
             } else {
                 throw new UnsupportedOperationException("Cannot create instance of " + row.getType().getSimpleName() + " for " + clazz.clazz().getSimpleName());
             }
