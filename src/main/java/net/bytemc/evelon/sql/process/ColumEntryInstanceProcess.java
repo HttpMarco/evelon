@@ -51,7 +51,6 @@ public final class ColumEntryInstanceProcess {
             }
             return elements;
         }, new ArrayList<SQLResultSet>());
-
         var repositoryType = repository.repositoryClass().clazz();
         var stage = StageHandler.getInstance().getElementStage(repositoryType);
         return databaseResults.stream().map(it -> ((SubElementStage<T>) stage).createInstance(repository.getName(), null, repository.repositoryClass(), it)).toList();
@@ -66,7 +65,11 @@ public final class ColumEntryInstanceProcess {
         for (var row : clazz.getRows()) {
             var stage = StageHandler.getInstance().getElementStage(row.getType());
 
-            if(stage instanceof CollectionObjectStage || stage instanceof MapObjectStage) {
+            if (stage instanceof SQLElementStageTransformer<?> transformer) {
+                stage = transformer.transformTo();
+            }
+
+            if (stage instanceof CollectionObjectStage || stage instanceof MapObjectStage) {
                 continue;
             }
 
@@ -74,6 +77,8 @@ public final class ColumEntryInstanceProcess {
                 tables.putAll(getNeededTables(children + "_" + SQLHelper.getRowName(row), new RepositoryClass<>(row.getType())));
             } else if (stage instanceof SQLElementStage<?>) {
                 columns.add(SQLHelper.getRowName(row));
+            } else {
+                throw new UnsupportedOperationException("Cannot create instance of " + row.getType().getSimpleName() + " for " + clazz.clazz().getSimpleName());
             }
         }
         tables.put(children, columns);
