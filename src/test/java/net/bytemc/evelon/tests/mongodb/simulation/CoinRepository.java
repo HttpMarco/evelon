@@ -1,4 +1,4 @@
-package net.bytemc.evelon.test.mongodb.simulation;
+package net.bytemc.evelon.tests.mongodb.simulation;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

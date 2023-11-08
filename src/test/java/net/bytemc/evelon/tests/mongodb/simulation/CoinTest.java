@@ -1,4 +1,4 @@
-package net.bytemc.evelon.test.mongodb.simulation;
+package net.bytemc.evelon.tests.mongodb.simulation;
 
 import net.bytemc.evelon.DatabaseProtocol;
 import net.bytemc.evelon.Debugger;
