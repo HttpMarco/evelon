@@ -30,6 +30,6 @@ public final class LocalDateTimeTransformerSQL implements SQLElementStageTransfo
 
     @Override
     public boolean isElement(Class<?> type) {
-        return type.equals(LocalDate.class);
+        return type.equals(LocalDateTime.class);
     }
 }
