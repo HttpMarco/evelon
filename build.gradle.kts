@@ -34,13 +34,15 @@ dependencies {
     api("com.h2database:h2:2.2.224")
     api("org.postgresql:postgresql:42.6.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
     testCompileOnly("org.projectlombok:lombok:$lombok")
     testAnnotationProcessor("org.projectlombok:lombok:$lombok")
+
+    testImplementation(platform("org.junit:junit-bom:5.10.1"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
 tasks.withType<Test> {
-    useJUnit()
+    useJUnitPlatform();
 }
 
 tasks.withType<JavaCompile> {

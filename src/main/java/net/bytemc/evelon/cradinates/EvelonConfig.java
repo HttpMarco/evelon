@@ -20,7 +20,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.bytemc.evelon.DatabaseProtocol;
 
-
 @AllArgsConstructor
 @Getter
 public class EvelonConfig {

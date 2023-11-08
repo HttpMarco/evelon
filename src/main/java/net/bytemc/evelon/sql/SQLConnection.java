@@ -33,7 +33,6 @@ public final class SQLConnection {
         Debugger.log("Established connection to " + databaseProtocol + " server");
     }
 
-    @SuppressWarnings("SqlSourceToSinkFlow") // fix next time -> ? to value
     public static <T> T executeQuery(String query, SQLFunction<ResultSet, T> function, T defaultValue) {
         try (var connection = POOL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             try (var resultSet = preparedStatement.executeQuery()) {
@@ -44,14 +43,11 @@ public final class SQLConnection {
         } catch (SQLException exception) {
             System.err.println("Error while execute update: " + exception.getMessage() + " with " + exception.getCause().toString());
         } finally {
-            if (Debugger.isEnable()) {
-                System.out.println(query);
-            }
+            Debugger.log(query);
         }
         return defaultValue;
     }
 
-    @SuppressWarnings("SqlSourceToSinkFlow") // fix next time -> ? to value
     public static int executeUpdate(String query) {
         try (var connection = POOL.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             return preparedStatement.executeUpdate();
@@ -59,9 +55,7 @@ public final class SQLConnection {
             System.err.println("Error while executing update: " + query);
             return -1;
         } finally {
-            if (Debugger.isEnable()) {
-                System.out.println(query);
-            }
+            Debugger.log(query);
         }
     }
 }
