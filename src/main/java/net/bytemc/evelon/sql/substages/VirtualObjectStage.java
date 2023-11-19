@@ -93,9 +93,15 @@ public final class VirtualObjectStage extends AbstractSubElementStage<Object> {
         var values = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
 
         for (var row : clazz.getRows()) {
-            var stage = transformStage(row.getType());
+            var originalStage = getStageHandler().getElementStage(row.getType());
+            var stage = transform(originalStage);
             var object = Reflections.readField(value, row);
             var objectClass = new RepositoryClass<>(row.getType());
+
+            if(originalStage instanceof SQLElementStageTransformer transformer) {
+                // we need to roll back the value to the original object type
+                object = transformer.transform(object);
+            }
 
             if (stage instanceof SQLElementStage<?> elementStage) {
                 var result = elementStage.anonymousElementEntryData(objectClass, row, object);
