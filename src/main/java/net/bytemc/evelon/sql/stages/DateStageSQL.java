@@ -22,6 +22,7 @@ import net.bytemc.evelon.sql.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
+import java.sql.Timestamp;
 import java.util.Date;
 
 public final class DateStageSQL implements SQLElementStage<Date> {
@@ -32,8 +33,12 @@ public final class DateStageSQL implements SQLElementStage<Date> {
     }
 
     @Override
-    public Pair<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Date object) {
-        return new Pair<>(SQLHelper.getRowName(field), Schema.encloseSchema(new java.sql.Date(object.getTime())));
+    public Pair<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Date date) {
+        var id = SQLHelper.getRowName(field);
+        if(date instanceof Timestamp) {
+            return new Pair<>(id, Schema.encloseSchema(date));
+        }
+        return new Pair<>(id, Schema.encloseSchema(new java.sql.Date(date.getTime())));
     }
 
     @Override

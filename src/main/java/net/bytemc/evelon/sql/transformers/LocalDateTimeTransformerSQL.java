@@ -6,7 +6,7 @@ import net.bytemc.evelon.sql.StageHandler;
 import net.bytemc.evelon.sql.stages.DateStageSQL;
 
 import java.lang.reflect.Field;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -20,7 +20,7 @@ public final class LocalDateTimeTransformerSQL implements SQLElementStageTransfo
 
     @Override
     public Object transform(LocalDateTime value) {
-        return Date.from(value.atZone(ZoneId.systemDefault()).toInstant());
+        return new Timestamp(Date.from(value.atZone(ZoneId.systemDefault()).toInstant()).getTime());
     }
 
     @Override
