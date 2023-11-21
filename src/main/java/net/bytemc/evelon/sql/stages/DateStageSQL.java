@@ -16,6 +16,8 @@
 
 package net.bytemc.evelon.sql.stages;
 
+import net.bytemc.evelon.DatabaseProtocol;
+import net.bytemc.evelon.Evelon;
 import net.bytemc.evelon.misc.Pair;
 import net.bytemc.evelon.repository.RepositoryClass;
 import net.bytemc.evelon.sql.*;
@@ -29,13 +31,21 @@ public final class DateStageSQL implements SQLElementStage<Date> {
 
     @Override
     public String elementRowData(@Nullable Field field, RepositoryClass<Date> repository) {
+        // we need this because h2 is so bruch
+        if(Evelon.getCradinates().databaseProtocol() == DatabaseProtocol.H2) {
+            return SQLType.BIGINT.toString();
+        }
         return SQLType.DATE.toString();
     }
 
     @Override
     public Pair<String, String> elementEntryData(RepositoryClass<?> repositoryClass, @Nullable Field field, Date date) {
         var id = SQLHelper.getRowName(field);
-        if(date instanceof Timestamp) {
+        // we need this because h2 is so bruch
+        if(Evelon.getCradinates().databaseProtocol() == DatabaseProtocol.H2) {
+            return new Pair<>(id, Schema.encloseSchema(date.getTime()));
+        }
+        if (date instanceof Timestamp) {
             return new Pair<>(id, Schema.encloseSchema(date));
         }
         return new Pair<>(id, Schema.encloseSchema(new java.sql.Date(date.getTime())));
@@ -43,6 +53,10 @@ public final class DateStageSQL implements SQLElementStage<Date> {
 
     @Override
     public Date createObject(RepositoryClass<Date> clazz, String id, SQLResultSet.Table table) {
+        // we need this because h2 is so bruch
+        if(Evelon.getCradinates().databaseProtocol() == DatabaseProtocol.H2) {
+            return new Date(table.get(id, Long.class));
+        }
         return new Date(table.get(id, java.sql.Date.class).getTime());
     }
 
