@@ -14,3 +14,4 @@ This application provides seamless object mapping between a local application an
 | json       | -                 | -.-.-             | no          |
 | yml        | -                 | -.-.-             | no          |
 | redis      | -                 | -.-.-             | no          |
+| arangodb   | -                 | -.-.-             | no          |
