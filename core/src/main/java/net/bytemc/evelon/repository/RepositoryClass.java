@@ -1,13 +1,15 @@
 package net.bytemc.evelon.repository;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 
-final class RepositoryClass<T> {
+public final class RepositoryClass<T> {
 
     private final Class<T> clazz;
     private final RepositoryField[] fields;
 
-    public RepositoryClass(Class<T> clazz) {
+    public RepositoryClass(@NotNull Class<T> clazz) {
         this.clazz = clazz;
         this.fields = Arrays.stream(clazz.getDeclaredFields())
                 .map(RepositoryField::new).toArray(value -> new RepositoryField[0]);

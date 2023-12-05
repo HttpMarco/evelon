@@ -1,15 +1,17 @@
 package net.bytemc.evelon.repository;
 
 import net.bytemc.evelon.annotations.RowName;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 
-final class RepositoryField {
+public final class RepositoryField {
 
     private final String name;
     private final Field field;
 
-    public RepositoryField(Field field) {
+    public RepositoryField(@NotNull Field field) {
         if (field.isAnnotationPresent(RowName.class)) {
             this.name = field.getDeclaredAnnotation(RowName.class).name();
         } else {
@@ -22,7 +24,8 @@ final class RepositoryField {
         return this.name;
     }
 
-    public Class<?> type() {
+    @Contract(pure = true)
+    public @NotNull Class<?> type() {
         return this.field.getType();
     }
 }
