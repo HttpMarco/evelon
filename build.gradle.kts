@@ -20,6 +20,9 @@ dependencies {
     compileOnly("org.jetbrains:annotations:24.0.1")
     testImplementation(platform("org.junit:junit-bom:5.10.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+
+    implementation("org.apache.logging.log4j:log4j-core:2.22.0")
+
 }
 
 tasks.withType<Test> {
