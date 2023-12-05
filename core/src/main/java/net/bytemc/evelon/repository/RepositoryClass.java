@@ -22,4 +22,12 @@ public final class RepositoryClass<T> {
     public RepositoryField[] getFields() {
         return fields;
     }
+
+    public boolean hasField(String id) {
+        return Arrays.stream(fields).anyMatch(field -> field.getName().equals(id));
+    }
+
+    public RepositoryField getField(String id) {
+        return Arrays.stream(fields).filter(field -> field.getName().equals(id)).findFirst().orElse(null);
+    }
 }
