@@ -1,6 +1,6 @@
 package net.bytemc.evelon.repository;
 
-final class Repository<T> {
+public final class Repository<T> {
 
     private final RepositoryClass<T> clazz;
 
