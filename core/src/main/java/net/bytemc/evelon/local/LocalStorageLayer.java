@@ -11,13 +11,8 @@ import java.util.Map;
 
 public final class LocalStorageLayer implements RepositoryLayer {
 
-    private static final Map<Repository<?>, List<?>> LOCAL_POOL = new HashMap<>();
-
     @Override
-    @SuppressWarnings("unchecked")
     public <T> void create(DataQuery<T> query, T value) {
-        var currentData = (List<T>) LOCAL_POOL.getOrDefault(query.getRepository(), new ArrayList<>());
-        currentData.add(value);
-        LOCAL_POOL.put(query.getRepository(), currentData);
+        query.getRepository().localStorage().add(LocalStorageEntry.of(value));
     }
 }
