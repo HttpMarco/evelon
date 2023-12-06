@@ -1,11 +1,14 @@
 package net.bytemc.evelon.local;
 
+import net.bytemc.evelon.filters.Filter;
+import net.bytemc.evelon.filters.LayerFilterHandler;
 import net.bytemc.evelon.layers.RepositoryLayer;
 import net.bytemc.evelon.misc.EvelonReflections;
 import net.bytemc.evelon.misc.SortedOrder;
 import net.bytemc.evelon.query.DataQuery;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public final class LocalStorageLayer implements RepositoryLayer {
@@ -35,6 +38,11 @@ public final class LocalStorageLayer implements RepositoryLayer {
     @Override
     public <T> void update(DataQuery<T> query, T value) {
         // nothing to do because the same memory reference is used
+    }
+
+    @Override
+    public <T> void updateIf(DataQuery<T> query, T value, Predicate<T> predicate) {
+        //TODO: implement
     }
 
     @Override
@@ -84,6 +92,12 @@ public final class LocalStorageLayer implements RepositoryLayer {
                 return Long.compare(value2, value1);
             }
         }).toList();
+    }
+
+    @Override
+    public LayerFilterHandler getFilterHandler() {
+        //TODO: implement
+        return null;
     }
 
     private <T> Stream<T> applyFilters(@NotNull DataQuery<T> query) {

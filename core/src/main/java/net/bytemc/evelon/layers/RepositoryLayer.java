@@ -1,9 +1,11 @@
 package net.bytemc.evelon.layers;
 
+import net.bytemc.evelon.filters.LayerFilterHandler;
 import net.bytemc.evelon.misc.SortedOrder;
 import net.bytemc.evelon.query.DataQuery;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public interface RepositoryLayer {
     /**
@@ -49,6 +51,16 @@ public interface RepositoryLayer {
      * @param <T>   The type parameter indicating the class type of the value.
      */
     <T> void update(DataQuery<T> query, T value);
+
+    /**
+     * Updates existing data entries based on the specified query and new value.
+     *
+     * @param query     The DataQuery object representing the query for updating data entries.
+     * @param value     The new value of type T that will replace the existing value.
+     * @param predicate The value will only be updated if the specified predicate returns true.
+     * @param <T>       The type parameter indicating the class type of the value.
+     */
+    <T> void updateIf(DataQuery<T> query, T value, Predicate<T> predicate);
 
     /**
      * Updates or inserts a new data entry based on the specified query and value.
@@ -126,5 +138,12 @@ public interface RepositoryLayer {
      * @return A List containing the ordered data entries up to the specified maximum.
      */
     <T> List<T> order(DataQuery<T> query, String id, int max, SortedOrder order);
+
+    /**
+     * Gets the filter handler for this layer.
+     *
+     * @return The filter handler.
+     */
+    LayerFilterHandler getFilterHandler();
 
 }
