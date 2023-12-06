@@ -92,7 +92,7 @@ public final class MapObjectStage extends AbstractSubElementStage<Map<?, ?>> {
     }
 
     @Override
-    public List<String> onUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<Map<?, ?>> query, RepositoryClass<Map<?, ?>> clazz, Map<?, ?> value, ForeignKey... keys) {
+    public List<String> onUpdateParentElement(String table, Field field, Repository<?> parent, RepositoryQuery<Map<?, ?>> query, RepositoryClass<Map<?, ?>> clazz, Map<?, ?> value, ForeignKey... keys) {
         //todo
         return null;
     }

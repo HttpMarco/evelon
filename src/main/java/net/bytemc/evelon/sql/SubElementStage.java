@@ -37,10 +37,10 @@ public interface SubElementStage<T> extends Stage<T> {
         return this.onParentElement(table, field, parent, (RepositoryClass<T>) clazz, (T) value, keys);
     }
 
-    List<String> onUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<T> query, RepositoryClass<T> clazz, T value, ForeignKey... keys);
+    List<String> onUpdateParentElement(String table, Field field, Repository<?> parent, RepositoryQuery<T> query, RepositoryClass<T> clazz, T value, ForeignKey... keys);
 
-    default List<String> onAnonymousUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<?> query, RepositoryClass<?> clazz, Object value, ForeignKey... keys) {
-        return this.onUpdateParentElement(table, parent, (RepositoryQuery<T>) query, (RepositoryClass<T>) clazz, (T) value, keys);
+    default List<String> onAnonymousUpdateParentElement(String table, Field field, Repository<?> parent, RepositoryQuery<?> query, RepositoryClass<?> clazz, Object value, ForeignKey... keys) {
+        return this.onUpdateParentElement(table, field, parent, (RepositoryQuery<T>) query, (RepositoryClass<T>) clazz, (T) value, keys);
     }
 
     T createInstance(String table, @Nullable Field parentField, RepositoryClass<T> clazz, SQLResultSet resultSet);
