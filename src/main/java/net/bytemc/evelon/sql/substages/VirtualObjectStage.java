@@ -20,6 +20,7 @@ import net.bytemc.evelon.misc.Reflections;
 import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.repository.RepositoryClass;
 import net.bytemc.evelon.repository.RepositoryQuery;
+import net.bytemc.evelon.repository.annotations.PrimaryKey;
 import net.bytemc.evelon.sql.*;
 import net.bytemc.evelon.sql.process.TableCreationProcess;
 import org.jetbrains.annotations.Nullable;
@@ -88,11 +89,16 @@ public final class VirtualObjectStage extends AbstractSubElementStage<Object> {
     }
 
     @Override
-    public List<String> onUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<Object> query, RepositoryClass<Object> clazz, Object value, ForeignKey... keys) {
+    public List<String> onUpdateParentElement(String table, Field field, Repository<?> parent, RepositoryQuery<Object> query, RepositoryClass<Object> clazz, Object value, ForeignKey... keys) {
         var queries = new ArrayList<String>();
         var values = SQLForeignKeyHelper.convertKeyObjectsToElements(keys);
 
         for (var row : clazz.getRows()) {
+            if(row.isAnnotationPresent(PrimaryKey.class)) {
+                // cannot update a primary key
+                continue;
+            }
+
             var originalStage = getStageHandler().getElementStage(row.getType());
             var stage = transform(originalStage);
             var object = Reflections.readField(value, row);
@@ -106,10 +112,14 @@ public final class VirtualObjectStage extends AbstractSubElementStage<Object> {
             if (stage instanceof SQLElementStage<?> elementStage) {
                 var result = elementStage.anonymousElementEntryData(objectClass, row, object);
                 values.put(result.left(), result.right());
-            } else if (stage instanceof SubElementStage<?>) {
-                var repositoryClass = new RepositoryClass<>(row.getType());
+            } else if (stage instanceof SubElementStage<?> subElementStage) {
                 var subTable = table + "_" + SQLHelper.getRowName(row);
-                queries.addAll(this.onAnonymousUpdateParentElement(subTable, parent, query, repositoryClass, object, repositoryClass.collectForeignKeyValues(value)));
+                queries.addAll(subElementStage.onAnonymousParentElement(parent.appendChildrenName(SQLHelper.getRowName(row)), row, parent, objectClass, object, clazz.collectForeignKeyValues(value)));
+                // delete all entries and set the content bevor the update
+                queries.addAll(subElementStage.onAnonymousUpdateParentElement(subTable, row, parent, query, objectClass, object, clazz.getPrimaries()
+                        .stream()
+                        .map(it -> new ForeignKey(it, Reflections.readField(value, it)))
+                        .toArray(ForeignKey[]::new)));
             }
         }
         if (!values.isEmpty()) {
