@@ -17,19 +17,13 @@
 package net.bytemc.evelon.sql.analyze;
 
 import net.bytemc.evelon.repository.Repository;
-import net.bytemc.evelon.sql.analyze.steps.PrimaryKeyCheckStep;
 import net.bytemc.evelon.sql.analyze.steps.TablenameStep;
 
 public final class TableAnalyseProcess {
 
     private static final AnalyseStep[] steps = new AnalyseStep[]{
-
             // The first step is to check if the table name is correct.
             new TablenameStep(),
-
-            // The second step is to check if the table has all primary key.
-            new PrimaryKeyCheckStep(),
-
     };
 
     public static void run(Repository<?> repository) {
