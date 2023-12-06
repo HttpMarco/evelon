@@ -28,6 +28,6 @@ public final class RepositoryClass<T> {
     }
 
     public RepositoryField getField(String id) {
-        return Arrays.stream(fields).filter(field -> field.getName().equals(id)).findFirst().orElse(null);
+        return Arrays.stream(fields).filter(field -> field.getName().equals(id)).findFirst().orElseThrow();
     }
 }
