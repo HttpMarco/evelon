@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "net.bytemc.evelon"
-version = "1.5.0"
+version = "2.0.0"
 
 repositories {
     mavenCentral()
