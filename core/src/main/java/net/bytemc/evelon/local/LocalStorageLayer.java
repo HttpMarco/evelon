@@ -1,6 +1,5 @@
 package net.bytemc.evelon.local;
 
-import net.bytemc.evelon.filters.Filter;
 import net.bytemc.evelon.filters.LayerFilterHandler;
 import net.bytemc.evelon.layers.RepositoryLayer;
 import net.bytemc.evelon.misc.EvelonReflections;
@@ -32,7 +31,7 @@ public final class LocalStorageLayer implements RepositoryLayer {
 
     @Override
     public <T> void delete(DataQuery<T> query, T value) {
-        query.getRepository().localStorage().remove(value);
+        query.getRepository().localStorage().removeIf(entry -> entry.value().equals(value));
     }
 
     @Override
@@ -42,7 +41,7 @@ public final class LocalStorageLayer implements RepositoryLayer {
 
     @Override
     public <T> void updateIf(DataQuery<T> query, T value, Predicate<T> predicate) {
-        //TODO: implement
+        // nothing to do because the same memory reference is used
     }
 
     @Override
