@@ -22,9 +22,11 @@ import net.bytemc.evelon.repository.Repository;
 import net.bytemc.evelon.repository.RepositoryClass;
 import net.bytemc.evelon.repository.RepositoryQuery;
 import net.bytemc.evelon.sql.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -101,11 +103,10 @@ public final class CollectionObjectStage extends AbstractSubElementStage<Collect
     }
 
     @Override
-    public List<String> onUpdateParentElement(String table, Repository<?> parent, RepositoryQuery<Collection<?>> query, RepositoryClass<Collection<?>> clazz, Collection<?> value, ForeignKey... keys) {
-
-
-        //TODO
-        return null;
+    public @NotNull List<String> onUpdateParentElement(String table, Field field, Repository<?> parent, RepositoryQuery<Collection<?>> query, RepositoryClass<Collection<?>> clazz, Collection<?> value, ForeignKey... keys) {
+        var list = new ArrayList<String>();
+        list.add("DELETE FROM " + table + " WHERE " + String.join(", ", Arrays.stream(keys).map(it -> SQLHelper.getRowName(it.getForeignKey()) + "='" + it.getOptionalValue().toString() + "'").toList()));
+        return list;
     }
 
     @Override
