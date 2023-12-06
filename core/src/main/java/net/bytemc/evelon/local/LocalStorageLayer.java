@@ -1,14 +1,10 @@
 package net.bytemc.evelon.local;
 
-import net.bytemc.evelon.exceptions.RequiredFieldTypeNotPresentException;
 import net.bytemc.evelon.layers.RepositoryLayer;
 import net.bytemc.evelon.misc.EvelonReflections;
 import net.bytemc.evelon.misc.SortedOrder;
 import net.bytemc.evelon.query.DataQuery;
-import net.bytemc.evelon.repository.Repository;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -90,7 +86,7 @@ public final class LocalStorageLayer implements RepositoryLayer {
         }).toList();
     }
 
-    private <T> Stream<T> applyFilters(DataQuery<T> query) {
+    private <T> Stream<T> applyFilters(@NotNull DataQuery<T> query) {
         return query.getRepository().localStorage().stream().map(LocalStorageEntry::value);
     }
 }
