@@ -1,7 +1,5 @@
 package net.bytemc.evelon.filters;
 
-import net.bytemc.evelon.misc.EvelonReflections;
-
 public abstract class AbstractTextFilter<T> implements Filter<T, String> {
 
     private final String id;
