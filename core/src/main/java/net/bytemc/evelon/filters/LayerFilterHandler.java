@@ -16,7 +16,7 @@ public interface LayerFilterHandler<T, R> {
      * @param min The minimum value to filter.
      * @return A filter object.
      */
-    Filter<T, R> min(String id, int min);
+    Filter<T, Number> min(String id, int min);
 
     /**
      * Creates a filter to only include values less than or equal to the specified maximum.
@@ -25,7 +25,7 @@ public interface LayerFilterHandler<T, R> {
      * @param max The maximum value to filter.
      * @return A filter object.
      */
-    Filter<T, R> max(String id, int max);
+    Filter<T, Number> max(String id, int max);
 
     /**
      * Creates a filter to only include values within the specified range (inclusive).
@@ -35,7 +35,7 @@ public interface LayerFilterHandler<T, R> {
      * @param max The maximum value of the range.
      * @return A filter object.
      */
-    Filter<T, R> between(String id, int min, int max);
+    Filter<T, Number> between(String id, int min, int max);
 
     /**
      * Creates a filter to include values that match the specified value.
