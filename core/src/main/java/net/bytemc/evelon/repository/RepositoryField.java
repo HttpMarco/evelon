@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 
-public final class RepositoryField {
+public class RepositoryField {
 
     private final String name;
     private final Field field;
