@@ -65,9 +65,9 @@ public interface LayerFilterHandler<T, R> {
     Filter<T, String> like(String id, String value);
 
     // filters for date calculations
-    Filter<T, R> someDate(String id, Date date, TimeUnit timeUnit);
+    Filter<T, Date> sameDate(String id, Date date, TimeUnit timeUnit);
 
-    Filter<T, R> betweenTime(String id, Date date, String date2);
+    Filter<T, Date> betweenTime(String id, Date date, String date2);
 
-    Filter<T, R> sameTime(String id, Date date);
+    Filter<T, Date> sameTime(String id, Date date);
 }

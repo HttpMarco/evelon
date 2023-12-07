@@ -40,17 +40,17 @@ public final class LocalFilterHandler implements LayerFilterHandler<Boolean, Obj
     }
 
     @Override
-    public Filter<Boolean, Object> someDate(String id, Date date, TimeUnit timeUnit) {
+    public Filter<Boolean, Date> sameDate(String id, Date date, TimeUnit timeUnit) {
+        return new SameDateLocalFilter(id, date, timeUnit);
+    }
+
+    @Override
+    public Filter<Boolean, Date> betweenTime(String id, Date date, String date2) {
         return null;
     }
 
     @Override
-    public Filter<Boolean, Object> betweenTime(String id, Date date, String date2) {
-        return null;
-    }
-
-    @Override
-    public Filter<Boolean, Object> sameTime(String id, Date date) {
-        return null;
+    public Filter<Boolean, Date> sameTime(String id, Date date) {
+        return new SameDateLocalFilter(id, date, TimeUnit.MILLISECONDS);
     }
 }
