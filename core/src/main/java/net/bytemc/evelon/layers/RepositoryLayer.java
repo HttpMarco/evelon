@@ -7,7 +7,14 @@ import net.bytemc.evelon.query.DataQuery;
 import java.util.List;
 import java.util.function.Predicate;
 
-public interface RepositoryLayer {
+public abstract class RepositoryLayer<T, R> {
+
+    private final LayerFilterHandler<T, R> filterHandler;
+
+    public RepositoryLayer(LayerFilterHandler<T, R> filterHandler) {
+        this.filterHandler = filterHandler;
+    }
+
     /**
      * Creates a new data entry based on the specified query and value.
      *
@@ -15,7 +22,7 @@ public interface RepositoryLayer {
      * @param value The value of type T that will be associated with the data entry.
      * @param <T>   The type parameter indicating the class type of the value.
      */
-    <T> void create(DataQuery<T> query, T value);
+    public abstract <T> void create(DataQuery<T> query, T value);
 
     /**
      * Creates a new entry in the data store if it does not already exist.
@@ -24,7 +31,7 @@ public interface RepositoryLayer {
      * @param query the {@code DataQuery} used to check for the existence of the entry
      * @param value the value to be stored if the entry does not exist
      */
-    <T> void createIfNotExists(DataQuery<T> query, T value);
+    public abstract <T> void createIfNotExists(DataQuery<T> query, T value);
 
     /**
      * Deletes data entries based on the specified query.
@@ -32,7 +39,7 @@ public interface RepositoryLayer {
      * @param query The DataQuery object representing the query for deleting data entries.
      * @param <T>   The type parameter indicating the class type of the data entries.
      */
-    <T> void deleteAll(DataQuery<T> query);
+    public abstract <T> void deleteAll(DataQuery<T> query);
 
     /**
      * Deletes data entries based on the specified query.
@@ -41,7 +48,7 @@ public interface RepositoryLayer {
      * @param value The value of type T that will be associated with the data entry.
      * @param <T>   The type parameter indicating the class type of the data entries.
      */
-    <T> void delete(DataQuery<T> query, T value);
+    public abstract <T> void delete(DataQuery<T> query, T value);
 
     /**
      * Updates existing data entries based on the specified query and new value.
@@ -50,7 +57,7 @@ public interface RepositoryLayer {
      * @param value The new value of type T that will replace the existing value.
      * @param <T>   The type parameter indicating the class type of the value.
      */
-    <T> void update(DataQuery<T> query, T value);
+    public abstract <T> void update(DataQuery<T> query, T value);
 
     /**
      * Updates existing data entries based on the specified query and new value.
@@ -60,7 +67,7 @@ public interface RepositoryLayer {
      * @param predicate The value will only be updated if the specified predicate returns true.
      * @param <T>       The type parameter indicating the class type of the value.
      */
-    <T> void updateIf(DataQuery<T> query, T value, Predicate<T> predicate);
+    public abstract <T> void updateIf(DataQuery<T> query, T value, Predicate<T> predicate);
 
     /**
      * Updates or inserts a new data entry based on the specified query and value.
@@ -69,7 +76,7 @@ public interface RepositoryLayer {
      * @param value The value of type T that will be associated with the data entry.
      * @param <T>   The type parameter indicating the class type of the value.
      */
-    <T> void upsert(DataQuery<T> query, T value);
+    public abstract <T> void upsert(DataQuery<T> query, T value);
 
     /**
      * Finds all data entries based on the specified query.
@@ -78,7 +85,7 @@ public interface RepositoryLayer {
      * @param <T>   The type parameter indicating the class type of the data entries.
      * @return A List containing all data entries that match the query.
      */
-    <T> List<T> findAll(DataQuery<T> query);
+    public abstract <T> List<T> findAll(DataQuery<T> query);
 
     /**
      * Finds a single data entry based on the specified query.
@@ -87,7 +94,7 @@ public interface RepositoryLayer {
      * @param <T>   The type parameter indicating the class type of the data entry.
      * @return The data entry that matches the query, or null if no match is found.
      */
-    <T> T find(DataQuery<T> query);
+    public abstract <T> T find(DataQuery<T> query);
 
     /**
      * Checks if any data entries exist based on the specified query.
@@ -96,7 +103,7 @@ public interface RepositoryLayer {
      * @param <T>   The type parameter indicating the class type of the data entries.
      * @return True if at least one data entry exists, otherwise false.
      */
-    <T> boolean exists(DataQuery<T> query);
+    public abstract <T> boolean exists(DataQuery<T> query);
 
     /**
      * Counts the number of data entries based on the specified query.
@@ -105,7 +112,7 @@ public interface RepositoryLayer {
      * @param <T>   The type parameter indicating the class type of the data entries.
      * @return The number of data entries that match the query.
      */
-    <T> long count(DataQuery<T> query);
+    public abstract <T> long count(DataQuery<T> query);
 
     /**
      * Calculates the sum of a numeric property (specified by 'id') of data entries based on the specified query.
@@ -115,7 +122,7 @@ public interface RepositoryLayer {
      * @param <T>   The type parameter indicating the class type of the data entries.
      * @return The sum of the specified numeric property for data entries that match the query.
      */
-    <T> long sum(DataQuery<T> query, String id);
+    public abstract <T> long sum(DataQuery<T> query, String id);
 
     /**
      * Calculates the average of a numeric property (specified by 'id') of data entries based on the specified query.
@@ -125,7 +132,7 @@ public interface RepositoryLayer {
      * @param <T>   The type parameter indicating the class type of the data entries.
      * @return The average of the specified numeric property for data entries that match the query.
      */
-    <T> double avg(DataQuery<T> query, String id);
+    public abstract <T> double avg(DataQuery<T> query, String id);
 
     /**
      * Orders and retrieves a specified maximum number of data entries based on the specified query and sorting criteria.
@@ -137,13 +144,14 @@ public interface RepositoryLayer {
      * @param <T>   The type parameter indicating the class type of the data entries.
      * @return A List containing the ordered data entries up to the specified maximum.
      */
-    <T> List<T> order(DataQuery<T> query, String id, int max, SortedOrder order);
+    public abstract <T> List<T> order(DataQuery<T> query, String id, int max, SortedOrder order);
 
     /**
      * Gets the filter handler for this layer.
      *
      * @return The filter handler.
      */
-    LayerFilterHandler getFilterHandler();
-
+    public LayerFilterHandler<T, R> getFilterHandler() {
+        return this.filterHandler;
+    }
 }

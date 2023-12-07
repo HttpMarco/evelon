@@ -10,7 +10,11 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public final class LocalStorageLayer implements RepositoryLayer {
+public final class LocalStorageLayer extends RepositoryLayer<Boolean, Object> {
+
+    public LocalStorageLayer() {
+        super(new LocalFilterHandler());
+    }
 
     @Override
     public <T> void create(@NotNull DataQuery<T> query, T value) {
@@ -94,8 +98,7 @@ public final class LocalStorageLayer implements RepositoryLayer {
     }
 
     @Override
-    public LayerFilterHandler getFilterHandler() {
-        //TODO: implement
+    public LayerFilterHandler<Boolean, Object> getFilterHandler() {
         return null;
     }
 
