@@ -50,10 +50,10 @@ public interface LayerFilterHandler<T, R> {
      * Creates a filter to exclude values that match any of the specified values.
      *
      * @param id     The identifier for the filter.
-     * @param values The values to exclude.
+     * @param value The values to exclude.
      * @return A filter object.
      */
-    Filter<T, R> nonMatch(String id, Object values);
+    Filter<T, R> noneMatch(String id, Object value);
 
     /**
      * Creates a filter to include values that contain the specified text.
@@ -62,7 +62,7 @@ public interface LayerFilterHandler<T, R> {
      * @param value The text to match.
      * @return A filter object.
      */
-    Filter<T, R> like(String id, String value);
+    Filter<T, String> like(String id, String value);
 
     // filters for date calculations
     Filter<T, R> someDate(String id, Date date, TimeUnit timeUnit);
