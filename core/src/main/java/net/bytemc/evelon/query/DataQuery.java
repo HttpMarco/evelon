@@ -2,7 +2,7 @@ package net.bytemc.evelon.query;
 
 import net.bytemc.evelon.repository.Repository;
 
-public class DataQuery<T> {
+public final class DataQuery<T> {
 
     private Repository<T> repository;
 
