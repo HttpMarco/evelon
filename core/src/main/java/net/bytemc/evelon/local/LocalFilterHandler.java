@@ -45,8 +45,8 @@ public final class LocalFilterHandler implements LayerFilterHandler<Boolean, Obj
     }
 
     @Override
-    public Filter<Boolean, Date> betweenTime(String id, Date date, String date2) {
-        return null;
+    public Filter<Boolean, Date> betweenTime(String id, Date minDate, Date maxDate) {
+        return new BetweenTimeLocalFilter(id, minDate, maxDate);
     }
 
     @Override

@@ -67,7 +67,7 @@ public interface LayerFilterHandler<T, R> {
     // filters for date calculations
     Filter<T, Date> sameDate(String id, Date date, TimeUnit timeUnit);
 
-    Filter<T, Date> betweenTime(String id, Date date, String date2);
+    Filter<T, Date> betweenTime(String id, Date minDate, Date maxDate);
 
     Filter<T, Date> sameTime(String id, Date date);
 }
