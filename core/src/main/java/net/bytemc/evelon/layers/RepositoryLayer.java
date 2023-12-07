@@ -7,11 +7,11 @@ import net.bytemc.evelon.query.DataQuery;
 import java.util.List;
 import java.util.function.Predicate;
 
-public abstract class RepositoryLayer<T, R> {
+public abstract class RepositoryLayer {
 
-    private final LayerFilterHandler<T, R> filterHandler;
+    private final LayerFilterHandler<?, ?> filterHandler;
 
-    public RepositoryLayer(LayerFilterHandler<T, R> filterHandler) {
+    public RepositoryLayer(LayerFilterHandler<?, ?> filterHandler) {
         this.filterHandler = filterHandler;
     }
 
@@ -151,7 +151,7 @@ public abstract class RepositoryLayer<T, R> {
      *
      * @return The filter handler.
      */
-    public LayerFilterHandler<T, R> getFilterHandler() {
+    public LayerFilterHandler<?, ?> getFilterHandler() {
         return this.filterHandler;
     }
 }

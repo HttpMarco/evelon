@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public final class LocalStorageLayer extends RepositoryLayer<Boolean, Object> {
+public final class LocalStorageLayer extends RepositoryLayer {
 
     public LocalStorageLayer() {
         super(new LocalFilterHandler());
