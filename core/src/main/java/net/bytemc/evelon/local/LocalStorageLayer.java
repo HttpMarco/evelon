@@ -98,6 +98,18 @@ public final class LocalStorageLayer extends RepositoryLayer {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public <E, T> List<E> collect(DataQuery<T> query, String id, Class<E> clazz) {
+        return findAll(query).stream().map(it -> (E) EvelonReflections.getFieldValue(id, it)).toList();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <E, T> E collectSingle(DataQuery<T> query, String id, Class<E> clazz) {
+        return  (E) EvelonReflections.getFieldValue(id, find(query));
+    }
+
+    @Override
     public LayerFilterHandler<Boolean, Object> getFilterHandler() {
         return null;
     }

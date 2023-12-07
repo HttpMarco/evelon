@@ -146,6 +146,10 @@ public abstract class RepositoryLayer {
      */
     public abstract <T> List<T> order(DataQuery<T> query, String id, int max, SortedOrder order);
 
+    public abstract <E, T> List<E> collect(DataQuery<T> query, String id, Class<E> clazz);
+
+    public abstract <E, T> E collectSingle(DataQuery<T> query, String id, Class<E> clazz);
+
     /**
      * Gets the filter handler for this layer.
      *
