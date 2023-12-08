@@ -12,7 +12,7 @@ repositories {
     mavenCentral()
 
     maven {
-        url = uri("https://artifactory.bytemc.de/artifactory/bytemc-public/")
+        url = uri("https://nexus.bytemc.de/repository/maven-public/")
     }
 }
 
@@ -68,7 +68,7 @@ publishing {
     repositories {
         maven {
             name = "bytemc"
-            url = uri("https://artifactory.bytemc.de/artifactory/bytemc-public/")
+            url = uri("https://nexus.bytemc.de/repository/maven-public/")
             credentials {
                 username = System.getenv("BYTEMC_REPO_USERNAME")
                 password = System.getenv("BYTEMC_REPO_PASSWORD")
