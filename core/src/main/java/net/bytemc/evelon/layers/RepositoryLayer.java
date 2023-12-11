@@ -162,6 +162,10 @@ public abstract class RepositoryLayer {
 
     public abstract <E, T> E collectSingle(DataQuery<T> query, String id, Class<E> clazz);
 
+    public abstract <T> T max(DataQuery<T> query, String id);
+
+    public abstract <T> T min(DataQuery<T> query, String id);
+
     /**
      * Gets the filter handler for this layer.
      *

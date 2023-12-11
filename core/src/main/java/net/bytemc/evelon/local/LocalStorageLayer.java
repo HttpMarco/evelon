@@ -6,6 +6,8 @@ import net.bytemc.evelon.misc.EvelonReflections;
 import net.bytemc.evelon.misc.SortedOrder;
 import net.bytemc.evelon.query.DataQuery;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -114,6 +116,16 @@ public final class LocalStorageLayer extends RepositoryLayer {
     @SuppressWarnings("unchecked")
     public <E, T> E collectSingle(DataQuery<T> query, String id, Class<E> clazz) {
         return  (E) EvelonReflections.getFieldValue(id, find(query));
+    }
+
+    @Override
+    public <T> T max(DataQuery<T> query, String id) {
+        return this.findAll(query).stream().max(Comparator.comparingLong(o -> (long) EvelonReflections.getFieldValue(id, o))).orElse(null);
+    }
+
+    @Override
+    public <T> T min(DataQuery<T> query, String id) {
+        return this.findAll(query).stream().min(Comparator.comparingLong(o -> (long) EvelonReflections.getFieldValue(id, o))).orElse(null);
     }
 
     @Override
