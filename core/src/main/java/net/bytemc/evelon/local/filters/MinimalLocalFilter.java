@@ -2,6 +2,7 @@ package net.bytemc.evelon.local.filters;
 
 import net.bytemc.evelon.filters.AbstractNumberFilter;
 import net.bytemc.evelon.repository.Repository;
+import org.jetbrains.annotations.NotNull;
 
 public final class MinimalLocalFilter extends AbstractNumberFilter<Boolean> {
 
@@ -10,7 +11,7 @@ public final class MinimalLocalFilter extends AbstractNumberFilter<Boolean> {
     }
 
     @Override
-    public Boolean filter(Repository<?> repository, Number requiredType) {
+    public @NotNull Boolean filter(Repository<?> repository, Number requiredType) {
         return getValue().doubleValue() >= requiredType.doubleValue();
     }
 }
