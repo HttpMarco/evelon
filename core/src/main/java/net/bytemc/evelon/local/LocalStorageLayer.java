@@ -60,6 +60,11 @@ public final class LocalStorageLayer extends RepositoryLayer {
     }
 
     @Override
+    public <T> List<T> findAll(DataQuery<T> query, int limit) {
+        return this.applyFilters(query).limit(limit).toList();
+    }
+
+    @Override
     public <T> T find(DataQuery<T> query) {
         return this.applyFilters(query).findAny().orElse(null);
     }
@@ -89,11 +94,7 @@ public final class LocalStorageLayer extends RepositoryLayer {
         return this.findAll(query).stream().sorted((o1, o2) -> {
             var value1 = (long) EvelonReflections.getFieldValue(id, o1);
             var value2 = (long) EvelonReflections.getFieldValue(id, o2);
-            if (order == SortedOrder.ASCENDING) {
-                return Long.compare(value1, value2);
-            } else {
-                return Long.compare(value2, value1);
-            }
+            return order == SortedOrder.ASCENDING ? Long.compare(value1, value2) : Long.compare(value2, value1);
         }).toList();
     }
 
@@ -101,6 +102,12 @@ public final class LocalStorageLayer extends RepositoryLayer {
     @SuppressWarnings("unchecked")
     public <E, T> List<E> collect(DataQuery<T> query, String id, Class<E> clazz) {
         return findAll(query).stream().map(it -> (E) EvelonReflections.getFieldValue(id, it)).toList();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <E, T> List<E> collect(DataQuery<T> query, String id, int limit, Class<E> clazz) {
+        return findAll(query, limit).stream().map(it -> (E) EvelonReflections.getFieldValue(id, it)).toList();
     }
 
     @Override

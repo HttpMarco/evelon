@@ -88,6 +88,16 @@ public abstract class RepositoryLayer {
     public abstract <T> List<T> findAll(DataQuery<T> query);
 
     /**
+     * Finds all data entries based on the specified query.
+     *
+     * @param query The DataQuery object representing the query for finding data entries.
+     * @param <T>   The type parameter indicating the class type of the data entries.
+     * @param limit The maximum number of data entries to retrieve.
+     * @return A List containing all data entries that match the query.
+     */
+    public abstract <T> List<T> findAll(DataQuery<T> query, int limit);
+
+    /**
      * Finds a single data entry based on the specified query.
      *
      * @param query The DataQuery object representing the query for finding a data entry.
@@ -139,14 +149,16 @@ public abstract class RepositoryLayer {
      *
      * @param query The DataQuery object representing the query for ordering data entries.
      * @param id    The identifier of the property by which data entries are sorted.
-     * @param max   The maximum number of data entries to retrieve.
+     * @param limit   The maximum number of data entries to retrieve.
      * @param order The sorting order (ascending or descending).
      * @param <T>   The type parameter indicating the class type of the data entries.
      * @return A List containing the ordered data entries up to the specified maximum.
      */
-    public abstract <T> List<T> order(DataQuery<T> query, String id, int max, SortedOrder order);
+    public abstract <T> List<T> order(DataQuery<T> query, String id, int limit, SortedOrder order);
 
     public abstract <E, T> List<E> collect(DataQuery<T> query, String id, Class<E> clazz);
+
+    public abstract <E, T> List<E> collect(DataQuery<T> query, String id, int limit, Class<E> clazz);
 
     public abstract <E, T> E collectSingle(DataQuery<T> query, String id, Class<E> clazz);
 
