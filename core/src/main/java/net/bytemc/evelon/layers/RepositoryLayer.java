@@ -2,6 +2,7 @@ package net.bytemc.evelon.layers;
 
 import net.bytemc.evelon.filters.LayerFilterHandler;
 import net.bytemc.evelon.misc.SortedOrder;
+import net.bytemc.evelon.model.Model;
 import net.bytemc.evelon.query.DataQuery;
 
 import java.util.List;
@@ -10,9 +11,11 @@ import java.util.function.Predicate;
 public abstract class RepositoryLayer {
 
     private final LayerFilterHandler<?, ?> filterHandler;
+    private final Model model;
 
-    public RepositoryLayer(LayerFilterHandler<?, ?> filterHandler) {
+    public RepositoryLayer(LayerFilterHandler<?, ?> filterHandler, Model model) {
         this.filterHandler = filterHandler;
+        this.model = model;
     }
 
     /**
@@ -149,7 +152,7 @@ public abstract class RepositoryLayer {
      *
      * @param query The DataQuery object representing the query for ordering data entries.
      * @param id    The identifier of the property by which data entries are sorted.
-     * @param limit   The maximum number of data entries to retrieve.
+     * @param limit The maximum number of data entries to retrieve.
      * @param order The sorting order (ascending or descending).
      * @param <T>   The type parameter indicating the class type of the data entries.
      * @return A List containing the ordered data entries up to the specified maximum.
@@ -171,7 +174,11 @@ public abstract class RepositoryLayer {
      *
      * @return The filter handler.
      */
-    public LayerFilterHandler<?, ?> getFilterHandler() {
+    public LayerFilterHandler<?, ?> filterHandler() {
         return this.filterHandler;
+    }
+
+    public Model model() {
+        return this.model;
     }
 }
