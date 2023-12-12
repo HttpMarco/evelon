@@ -1,5 +1,6 @@
 package net.bytemc.evelon.misc;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 public class EvelonReflections {
@@ -12,8 +13,16 @@ public class EvelonReflections {
 
     public static Object getFieldValue(String id, Object value) {
         try {
-            return value.getClass().getDeclaredField(id).get(value);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return getFieldValue(value.getClass().getDeclaredField(id), value);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Object getFieldValue(Field field, Object value) {
+        try {
+            return field.get(value);
+        } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
