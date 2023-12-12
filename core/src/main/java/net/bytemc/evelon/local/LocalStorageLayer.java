@@ -1,9 +1,9 @@
 package net.bytemc.evelon.local;
 
-import net.bytemc.evelon.filters.LayerFilterHandler;
 import net.bytemc.evelon.layers.RepositoryLayer;
 import net.bytemc.evelon.misc.EvelonReflections;
 import net.bytemc.evelon.misc.SortedOrder;
+import net.bytemc.evelon.model.EmptyModel;
 import net.bytemc.evelon.query.DataQuery;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 public final class LocalStorageLayer extends RepositoryLayer {
 
     public LocalStorageLayer() {
-        super(new LocalFilterHandler());
+        super(new LocalFilterHandler(), new EmptyModel());
     }
 
     @Override
@@ -126,11 +126,6 @@ public final class LocalStorageLayer extends RepositoryLayer {
     @Override
     public <T> T min(DataQuery<T> query, String id) {
         return this.findAll(query).stream().min(Comparator.comparingLong(o -> (long) EvelonReflections.getFieldValue(id, o))).orElse(null);
-    }
-
-    @Override
-    public LayerFilterHandler<Boolean, Object> getFilterHandler() {
-        return null;
     }
 
     private <T> Stream<T> applyFilters(@NotNull DataQuery<T> query) {

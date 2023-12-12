@@ -13,16 +13,16 @@ public final class RepositoryClass<T> {
     private final RepositoryField[] fields;
     private final Set<RepositoryField> primaries = new HashSet<>();
 
-    public RepositoryClass(@NotNull Class<T> clazz) {
+    public RepositoryClass(@NotNull Class<T> clazz, Repository<?> repository) {
         this.clazz = clazz;
         this.fields = Arrays.stream(clazz.getDeclaredFields())
                 .map(field -> {
                     if (field.isAnnotationPresent(PrimaryKey.class)) {
-                        var primaryField = new PrimaryRepositoryField(field);
+                        var primaryField = new PrimaryRepositoryField(field, repository);
                         primaries.add(primaryField);
                         return primaryField;
                     }
-                    return new RepositoryField(field);
+                    return new RepositoryField(field, repository);
                 }).toArray(value -> new RepositoryField[0]);
     }
 
