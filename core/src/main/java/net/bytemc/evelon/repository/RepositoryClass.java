@@ -10,11 +10,14 @@ import java.util.Set;
 public final class RepositoryClass<T> {
 
     private final Class<T> clazz;
+    private final Repository<?> repository;
+
     private final RepositoryField[] fields;
     private final Set<RepositoryField> primaries = new HashSet<>();
 
     public RepositoryClass(@NotNull Class<T> clazz, Repository<?> repository) {
         this.clazz = clazz;
+        this.repository = repository;
         this.fields = Arrays.stream(clazz.getDeclaredFields())
                 .map(field -> {
                     if (field.isAnnotationPresent(PrimaryKey.class)) {
@@ -24,6 +27,10 @@ public final class RepositoryClass<T> {
                     }
                     return new RepositoryField(field, repository);
                 }).toArray(value -> new RepositoryField[0]);
+    }
+
+    public RepositoryClass<?> subClass(RepositoryField field) {
+        return new RepositoryClass<>(field.type(), repository);
     }
 
     public Class<?> getOrigin() {
