@@ -8,7 +8,7 @@ import net.bytemc.evelon.repository.RepositoryClass;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbstractVirtuellSubStage<T> implements SubStage<List<T>, Object> {
+public abstract class AbstractVirtuellSubStage<T, R> implements SubStage<List<T>, Object> {
 
     private final RepositoryLayer layer;
 
@@ -22,9 +22,12 @@ public class AbstractVirtuellSubStage<T> implements SubStage<List<T>, Object> {
         var list = new ArrayList<T>();
         for (var field : repositoryClass.getFields()) {
             var stage = field.getStage(layer);
+
+
             if (stage instanceof SubStage<?, ?> subStage) {
                 list.add((T) subStage.serializeCommon(id + "_" + field.getName(), field.getValue(input), repositoryClass.subClass(field)));
-            } else if (stage instanceof ElementStage<?, ?> elementStage) {
+            } else if (stage instanceof ElementStage<?> elementStage) {
+
                 //TODO
             } else {
                 //TODO THROW
@@ -37,4 +40,7 @@ public class AbstractVirtuellSubStage<T> implements SubStage<List<T>, Object> {
     public boolean isElement(Class<?> type) {
         return true;
     }
+
+    public abstract R parentSerializeObject();
+
 }

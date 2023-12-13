@@ -16,7 +16,7 @@ public class RepositoryField {
     private final String name;
     private final Field field;
 
-    private final Map<RepositoryLayer, Stage<?, ?>> layerStorages = new HashMap<>();
+    private final Map<RepositoryLayer, Stage> layerStorages = new HashMap<>();
 
     public RepositoryField(@NotNull Field field, Repository<?> repository) {
         if (field.isAnnotationPresent(RowName.class)) {
@@ -44,7 +44,7 @@ public class RepositoryField {
         return EvelonReflections.getFieldValue(this.field, parent);
     }
 
-    public Stage<?, ?> getStage(RepositoryLayer layer) {
+    public Stage getStage(RepositoryLayer layer) {
         return this.layerStorages.get(layer);
     }
 }
