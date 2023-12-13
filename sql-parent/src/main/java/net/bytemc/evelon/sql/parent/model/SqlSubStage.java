@@ -4,6 +4,6 @@ import net.bytemc.evelon.model.SubStage;
 
 import java.util.List;
 
-public abstract class SqlSubStage<I> extends SubStage<List<String>, I> {
+public abstract class SqlSubStage<I> implements SubStage<List<String>, I> {
 
 }
