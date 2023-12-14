@@ -6,6 +6,7 @@ import net.bytemc.evelon.misc.EvelonReflections;
 import net.bytemc.evelon.model.Stage;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ public class RepositoryField {
     private final String name;
     private final Field field;
 
+    private final boolean canNull;
     private final Map<RepositoryLayer, Stage> layerStorages = new HashMap<>();
 
     public RepositoryField(@NotNull Field field, Repository<?> repository) {
@@ -29,7 +31,9 @@ public class RepositoryField {
         for (RepositoryLayer layer : repository.layers()) {
             layerStorages.put(layer, layer.model().findStage(this));
         }
+        this.canNull = type().isPrimitive() || field.isAnnotationPresent(NotNull.class);
     }
+
 
     public String getName() {
         return this.name;
@@ -46,5 +50,9 @@ public class RepositoryField {
 
     public Stage getStage(RepositoryLayer layer) {
         return this.layerStorages.get(layer);
+    }
+
+    public boolean isCanNull() {
+        return canNull;
     }
 }
