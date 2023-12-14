@@ -1,3 +1,3 @@
 rootProject.name = "evelon"
-include("core")
-include("sql-parent")
+include("evelon-core")
+include("evelon-sql-parent")

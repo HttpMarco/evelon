@@ -1,0 +1,11 @@
+[versions]
+
+hikari = "5.1.0"
+lombok = "1.18.30"
+annotations = "24.0.1"
+
+[libraries]
+
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
+hikari = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari" }
+annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
