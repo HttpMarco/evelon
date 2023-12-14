@@ -20,7 +20,7 @@ public final class LocalStorageLayer extends RepositoryLayer {
 
     @Override
     public <T> void create(@NotNull DataQuery<T> query, T value) {
-        query.getRepository().localStorage().add(LocalStorageEntry.of(value));
+        query.getRepository().getLocalData().add(LocalStorageEntry.of(value));
     }
 
     @Override
@@ -32,12 +32,12 @@ public final class LocalStorageLayer extends RepositoryLayer {
 
     @Override
     public <T> void deleteAll(DataQuery<T> query) {
-        this.applyFilters(query).forEach(t -> query.getRepository().localStorage().removeIf(entry -> entry.value().equals(t)));
+        this.applyFilters(query).forEach(t -> query.getRepository().getLocalData().removeIf(entry -> entry.value().equals(t)));
     }
 
     @Override
     public <T> void delete(DataQuery<T> query, T value) {
-        query.getRepository().localStorage().removeIf(entry -> entry.value().equals(value));
+        query.getRepository().getLocalData().removeIf(entry -> entry.value().equals(value));
     }
 
     @Override
@@ -129,6 +129,6 @@ public final class LocalStorageLayer extends RepositoryLayer {
     }
 
     private <T> Stream<T> applyFilters(@NotNull DataQuery<T> query) {
-        return query.getRepository().localStorage().stream().map(LocalStorageEntry::value);
+        return query.getRepository().getLocalData().stream().map(LocalStorageEntry::value);
     }
 }

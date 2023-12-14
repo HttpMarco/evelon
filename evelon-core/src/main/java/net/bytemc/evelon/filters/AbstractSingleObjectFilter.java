@@ -7,4 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public abstract class AbstractSingleObjectFilter<T> implements Filter<T, Object> {
 
+    private final String id;
+    private final Object value;
+
 }

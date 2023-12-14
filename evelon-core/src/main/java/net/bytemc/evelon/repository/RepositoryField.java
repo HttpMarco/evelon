@@ -29,7 +29,7 @@ public class RepositoryField {
         }
         this.field = field;
 
-        for (RepositoryLayer layer : repository.layers()) {
+        for (RepositoryLayer layer : repository.getLayers()) {
             layerStorages.put(layer, layer.model().findStage(this));
         }
         this.canNull = type().isPrimitive() || field.isAnnotationPresent(NotNull.class);
