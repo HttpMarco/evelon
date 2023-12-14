@@ -19,7 +19,7 @@ public class RepositoryField {
     private final String name;
     private final Field field;
     private final boolean canNull;
-    private final Map<RepositoryLayer, Stage> layerStorages = new HashMap<>();
+    private final Map<Class< ? extends RepositoryLayer>, Stage> layerStorages = new HashMap<>();
 
     public RepositoryField(@NotNull Field field, Repository<?> repository) {
         if (field.isAnnotationPresent(RowName.class)) {
@@ -29,10 +29,10 @@ public class RepositoryField {
         }
         this.field = field;
 
-        for (RepositoryLayer layer : repository.getLayers()) {
-            layerStorages.put(layer, layer.model().findStage(this));
+        for (var layer : repository.getLayers()) {
+            layerStorages.put(layer.getClass(), layer.model().findStage(this));
         }
-        this.canNull = type().isPrimitive() || field.isAnnotationPresent(NotNull.class);
+        this.canNull = !(type().isPrimitive() || field.isAnnotationPresent(NotNull.class));
     }
 
     @Contract(pure = true)
@@ -44,7 +44,8 @@ public class RepositoryField {
         return EvelonReflections.getFieldValue(this.field, parent);
     }
 
-    public Stage getStage(RepositoryLayer layer) {
+
+    public Stage getStage(Class<? extends RepositoryLayer> layer) {
         return this.layerStorages.get(layer);
     }
 

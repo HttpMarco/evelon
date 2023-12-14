@@ -15,3 +15,11 @@ This application provides seamless object mapping between a local application an
 | yml        | -                 | -.-.-            | no          |
 | redis      | -                 | -.-.-            | no          |
 | arangodb   | -                 | -.-.-            | no          |
+
+
+### Analyze tools:
+
+- [ ] check created/remove fields
+- [ ] enum list update
+- [ ] primaries & foreign keys check
+- [ ] nullable value check 

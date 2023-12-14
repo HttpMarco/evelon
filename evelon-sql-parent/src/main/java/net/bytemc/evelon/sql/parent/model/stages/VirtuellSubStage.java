@@ -2,6 +2,7 @@ package net.bytemc.evelon.sql.parent.model.stages;
 
 import net.bytemc.evelon.model.subs.AbstractVirtuellSubStage;
 import net.bytemc.evelon.repository.RepositoryClass;
+import net.bytemc.evelon.sql.parent.model.layer.SqlRepositoryLayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +20,12 @@ public final class VirtuellSubStage extends AbstractVirtuellSubStage<List<String
         var queryElements = new ArrayList<String>();
         // we need to create the table rows
         for (var field : clazz.getFields()) {
+
             var fieldElement = field.getName() + " " + "";//TODO TYPE
 
             //TODO check primary
 
-            if (field.isCanNull()) {
+            if (!field.isCanNull()) {
                 fieldElement += " NOT NULL";
             }
         }
