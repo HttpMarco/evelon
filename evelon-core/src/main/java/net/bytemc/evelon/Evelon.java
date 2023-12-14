@@ -1,9 +1,12 @@
 package net.bytemc.evelon;
 
+import lombok.Getter;
 import net.bytemc.evelon.layers.RepositoryLayerHandler;
 
+@Getter
 public class Evelon {
 
+    @Getter
     private static Evelon instance;
     private final RepositoryLayerHandler repositoryLayerHandler;
 
@@ -12,13 +15,4 @@ public class Evelon {
 
         this.repositoryLayerHandler = new RepositoryLayerHandler();
     }
-
-    public static Evelon getInstance() {
-        return instance;
-    }
-
-    public RepositoryLayerHandler getRepositoryLayerHandler() {
-        return repositoryLayerHandler;
-    }
-
 }

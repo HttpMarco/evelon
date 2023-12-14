@@ -1,5 +1,6 @@
 package net.bytemc.evelon.repository;
 
+import lombok.Getter;
 import net.bytemc.evelon.annotations.RowName;
 import net.bytemc.evelon.layers.RepositoryLayer;
 import net.bytemc.evelon.misc.EvelonReflections;
@@ -12,11 +13,11 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
 public class RepositoryField {
 
     private final String name;
     private final Field field;
-
     private final boolean canNull;
     private final Map<RepositoryLayer, Stage> layerStorages = new HashMap<>();
 
@@ -34,11 +35,6 @@ public class RepositoryField {
         this.canNull = type().isPrimitive() || field.isAnnotationPresent(NotNull.class);
     }
 
-
-    public String getName() {
-        return this.name;
-    }
-
     @Contract(pure = true)
     public @NotNull Class<?> type() {
         return this.field.getType();
@@ -52,7 +48,4 @@ public class RepositoryField {
         return this.layerStorages.get(layer);
     }
 
-    public boolean isCanNull() {
-        return canNull;
-    }
 }

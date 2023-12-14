@@ -1,21 +1,10 @@
 package net.bytemc.evelon.filters;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public abstract class AbstractSingleObjectFilter<T> implements Filter<T, Object> {
 
-    private final String id;
-    private final Object value;
-
-    public AbstractSingleObjectFilter(String id, Object value) {
-        this.id = id;
-        this.value = value;
-    }
-
-    @Override
-    public String getId() {
-        return this.id;
-    }
-
-    public Object getValue() {
-        return value;
-    }
 }

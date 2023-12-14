@@ -1,5 +1,6 @@
 package net.bytemc.evelon.repository;
 
+import lombok.Getter;
 import net.bytemc.evelon.annotations.PrimaryKey;
 import org.jetbrains.annotations.NotNull;
 
@@ -7,16 +8,16 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
 public final class RepositoryClass<T> {
 
-    private final Class<T> clazz;
+    private final Class<T> origin;
     private final Repository<?> repository;
-
     private final RepositoryField[] fields;
     private final Set<RepositoryField> primaries = new HashSet<>();
 
     public RepositoryClass(@NotNull Class<T> clazz, Repository<?> repository) {
-        this.clazz = clazz;
+        this.origin = clazz;
         this.repository = repository;
         this.fields = Arrays.stream(clazz.getDeclaredFields())
                 .map(field -> {
@@ -31,18 +32,6 @@ public final class RepositoryClass<T> {
 
     public RepositoryClass<?> subClass(RepositoryField field) {
         return new RepositoryClass<>(field.type(), repository);
-    }
-
-    public Class<?> getOrigin() {
-        return this.clazz;
-    }
-
-    public RepositoryField[] getFields() {
-        return fields;
-    }
-
-    public Set<RepositoryField> getPrimaries() {
-        return this.primaries;
     }
 
     public boolean hasField(String id) {
