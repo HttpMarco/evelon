@@ -1,7 +1,7 @@
 # Evelon
 
 **Latest stable-version:** 1.5.0<br>
-**Latest snapshot-version:** 1.5.1-SNAPSHOT<br>
+**Latest snapshot-version:** 1.5.5-SNAPSHOT<br>
 **All available versions:** 
 <a href="https://artifactory.bytemc.de/ui/native/bytemc-public/net/bytemc/evelon/">Click </a>
 
@@ -15,14 +15,14 @@ Maven
 ```xml
 <repository>
     <id>public-bytemc</id>
-    <url>https://artifactory.bytemc.de/artifactory/public-bytemc</url>
+    <url>https://nexus.bytemc.de/repository/maven-public/</url>
 </repository>
 ```
 
 Gradle (Kotlin DSL)
 ```kotlin
 maven {
-    url = uri("https://artifactory.bytemc.de/artifactory/bytemc-public/")
+    url = uri("https://nexus.bytemc.de/repository/maven-public/")
 }
 ```
 
