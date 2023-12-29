@@ -1,33 +1,21 @@
-plugins {
-    java
-    `java-library`
-    `maven-publish`
-    //id ("com.github.johnrengelman.shadow") version "8.1.1"
-}
-
-group = "net.bytemc"
-version = "2.0.0"
-
 allprojects {
-    version = rootProject.version
+    version = "2.0.1-SNAPSHOT"
     group = "net.bytemc.evelon"
-    repositories {
-        mavenCentral()
-        maven {
-            url = uri("https://artifactory.bytemc.de/artifactory/bytemc-public/")
-        }
-    }
 }
 
 subprojects {
-
     apply(plugin = "java")
 
+    repositories {
+        mavenCentral()
+    }
+
     dependencies {
-        compileOnly(rootProject.libs.annotations)
-        compileOnly(rootProject.libs.lombok)
-        annotationProcessor(rootProject.libs.lombok)
-        annotationProcessor(rootProject.libs.lombok)
+        "compileOnly"(rootProject.libs.lombok)
+        "annotationProcessor"(rootProject.libs.lombok)
+
+        "compileOnly"(rootProject.libs.guice)
+        "compileOnly"(rootProject.libs.gson)
     }
 
     tasks.withType<JavaCompile>().configureEach {
