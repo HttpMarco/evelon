@@ -2,10 +2,8 @@
 
 lombok = "1.18.30"
 gson = "2.10.1"
-guice = "7.0.0"
 
 [libraries]
 
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
-guice = { group = "com.google.inject", name = "guice", version.ref = "guice" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }

@@ -3,6 +3,5 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.guice)
     implementation(libs.gson)
 }
