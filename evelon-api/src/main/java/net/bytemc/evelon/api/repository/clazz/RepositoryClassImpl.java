@@ -1,5 +1,7 @@
 package net.bytemc.evelon.api.repository.clazz;
 
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import net.bytemc.evelon.api.annotations.PrimaryKey;
 import net.bytemc.evelon.api.repository.RepositoryClass;
 import net.bytemc.evelon.api.repository.RepositoryField;
@@ -7,6 +9,8 @@ import net.bytemc.evelon.api.repository.field.PrimaryRepositoryFieldImpl;
 import net.bytemc.evelon.api.repository.field.RepositoryFieldImpl;
 import java.util.Arrays;
 
+@Getter
+@Accessors(fluent = true)
 public class RepositoryClassImpl implements RepositoryClass {
 
     private final Class<?> clazz;
@@ -23,20 +27,5 @@ public class RepositoryClassImpl implements RepositoryClass {
         this.primaryFields = Arrays.stream(fields)
                 .filter(repositoryField -> repositoryField instanceof PrimaryRepositoryFieldImpl)
                 .toArray(RepositoryField[]::new);
-    }
-
-    @Override
-    public Class<?> clazz() {
-        return this.clazz;
-    }
-
-    @Override
-    public RepositoryField[] fields() {
-        return this.fields;
-    }
-
-    @Override
-    public RepositoryField[] primaryFields() {
-        return this.primaryFields;
     }
 }
