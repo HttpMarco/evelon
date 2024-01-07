@@ -15,6 +15,7 @@ This application provides seamless object mapping between a local application an
 | yml        | -                 | -.-.-            | no          |
 | redis      | -                 | -.-.-            | no          |
 | arangodb   | -                 | -.-.-            | no          |
+| scylladb   | -                 | -.-.-            | no          |
 
 
 ### Analyze tools:
