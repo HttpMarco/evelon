@@ -3,7 +3,6 @@ package dev.httpmarco.evelon.common.local;
 import dev.httpmarco.evelon.common.layers.RepositoryLayer;
 import dev.httpmarco.evelon.common.misc.Reflections;
 import dev.httpmarco.evelon.common.misc.SortedOrder;
-import dev.httpmarco.evelon.common.model.EmptyModel;
 import dev.httpmarco.evelon.common.query.DataQuery;
 import dev.httpmarco.evelon.common.repository.local.LocalStorageEntry;
 
@@ -15,7 +14,7 @@ import java.util.stream.Stream;
 public class LocalStorageLayer extends RepositoryLayer {
 
     public LocalStorageLayer() {
-        super(new LocalFilterHandler(), new EmptyModel());
+        super(new LocalFilterHandler(), new LocalModel());
     }
 
     @Override

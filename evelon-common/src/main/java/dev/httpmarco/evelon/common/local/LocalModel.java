@@ -1,8 +1,10 @@
-package dev.httpmarco.evelon.common.model;
+package dev.httpmarco.evelon.common.local;
 
+import dev.httpmarco.evelon.common.model.Model;
+import dev.httpmarco.evelon.common.model.Stage;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
 
-public class EmptyModel implements Model{
+public class LocalModel implements Model {
 
     @Override
     public Stage findStage(RepositoryField field) {
