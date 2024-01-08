@@ -1,6 +1,6 @@
 allprojects {
     version = "2.0.1-SNAPSHOT"
-    group = "net.bytemc.evelon"
+    group = "dev.httpmarco.evelon"
 }
 
 subprojects {
