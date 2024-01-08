@@ -1,4 +1,4 @@
-package net.bytemc.evelon.api.annotations;
+package net.bytemc.evelon.common.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

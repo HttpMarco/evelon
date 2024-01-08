@@ -1,6 +1,6 @@
-package net.bytemc.evelon.api.repository.field;
+package net.bytemc.evelon.common.repository.field;
 
-import net.bytemc.evelon.api.repository.RepositoryClass;
+import net.bytemc.evelon.common.repository.RepositoryClass;
 
 import java.lang.reflect.Field;
 

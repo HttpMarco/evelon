@@ -1,4 +1,4 @@
-package net.bytemc.evelon.api.repository;
+package net.bytemc.evelon.common.repository;
 
 /**
  * The "RepositoryField" interface defines basic methods required by a field in a repository.

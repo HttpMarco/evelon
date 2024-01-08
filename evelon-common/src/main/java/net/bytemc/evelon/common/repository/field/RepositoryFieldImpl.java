@@ -1,9 +1,9 @@
-package net.bytemc.evelon.api.repository.field;
+package net.bytemc.evelon.common.repository.field;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import net.bytemc.evelon.api.repository.RepositoryClass;
-import net.bytemc.evelon.api.repository.RepositoryField;
+import net.bytemc.evelon.common.repository.RepositoryClass;
+import net.bytemc.evelon.common.repository.RepositoryField;
 
 import java.lang.reflect.Field;
 

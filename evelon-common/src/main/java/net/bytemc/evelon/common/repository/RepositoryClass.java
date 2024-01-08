@@ -1,4 +1,4 @@
-package net.bytemc.evelon.api.repository;
+package net.bytemc.evelon.common.repository;
 
 public interface RepositoryClass {
 

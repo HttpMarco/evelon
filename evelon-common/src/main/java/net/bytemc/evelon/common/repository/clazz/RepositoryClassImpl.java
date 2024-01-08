@@ -1,12 +1,12 @@
-package net.bytemc.evelon.api.repository.clazz;
+package net.bytemc.evelon.common.repository.clazz;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import net.bytemc.evelon.api.annotations.PrimaryKey;
-import net.bytemc.evelon.api.repository.RepositoryClass;
-import net.bytemc.evelon.api.repository.RepositoryField;
-import net.bytemc.evelon.api.repository.field.PrimaryRepositoryFieldImpl;
-import net.bytemc.evelon.api.repository.field.RepositoryFieldImpl;
+import net.bytemc.evelon.common.annotations.PrimaryKey;
+import net.bytemc.evelon.common.repository.RepositoryClass;
+import net.bytemc.evelon.common.repository.RepositoryField;
+import net.bytemc.evelon.common.repository.field.PrimaryRepositoryFieldImpl;
+import net.bytemc.evelon.common.repository.field.RepositoryFieldImpl;
 import java.util.Arrays;
 
 @Getter
