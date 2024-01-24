@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.common.model;
 
-import dev.httpmarco.evelon.common.repository.RepositoryClass;
+import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
 
 /**
  *
@@ -8,6 +8,6 @@ import dev.httpmarco.evelon.common.repository.RepositoryClass;
  */
 public interface SubStage<R> extends Stage {
 
-    void initialize(String stageId, RepositoryClass<?> clazz, R queries);
+    void initialize(String stageId, RepositoryObjectClass<?> clazz, R queries);
 
 }
