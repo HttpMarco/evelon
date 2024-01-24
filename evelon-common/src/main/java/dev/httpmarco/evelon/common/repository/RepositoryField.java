@@ -19,6 +19,6 @@ public interface RepositoryField {
      *
      * @return The RepositoryClass to which the RepositoryField belongs.
      */
-    RepositoryClass parentClass();
+    RepositoryClass<?> parentClass();
 
 }
