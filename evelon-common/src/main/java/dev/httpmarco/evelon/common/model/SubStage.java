@@ -4,7 +4,7 @@ import dev.httpmarco.evelon.common.repository.RepositoryClass;
 
 /**
  *
- * @param <R> responsement of initialize phase
+ * @param <R> response of initialize phase (String for query languages)
  */
 public interface SubStage<R> extends Stage {
 
