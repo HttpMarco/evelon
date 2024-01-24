@@ -2,7 +2,7 @@ package dev.httpmarco.evelon.common.repository.field;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import dev.httpmarco.evelon.common.repository.RepositoryClass;
+import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
 
 import java.lang.reflect.Field;

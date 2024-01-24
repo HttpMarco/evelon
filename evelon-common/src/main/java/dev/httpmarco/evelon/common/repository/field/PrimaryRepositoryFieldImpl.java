@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.common.repository.field;
 
-import dev.httpmarco.evelon.common.repository.RepositoryClass;
+import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 
 import java.lang.reflect.Field;
 
