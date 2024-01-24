@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.sql.parent.sql;
 
 import dev.httpmarco.evelon.common.repository.RepositoryField;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,10 @@ public class SqlQueryBuilder {
     public SqlQueryBuilder withField(RepositoryField field) {
         queryFields.add(field);
         return this;
+    }
+
+    public @Nullable SqlQueryBuilder parent() {
+        return this.parent;
     }
 
     public SqlQueryBuilder subQuery() {
