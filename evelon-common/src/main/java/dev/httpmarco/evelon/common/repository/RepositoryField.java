@@ -1,5 +1,7 @@
 package dev.httpmarco.evelon.common.repository;
 
+import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
+
 /**
  * The "RepositoryField" interface defines basic methods required by a field in a repository.
  * Such a RepositoryField represents an attribute within a RepositoryClass.
