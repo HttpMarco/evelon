@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 @AllArgsConstructor
-public class HikariConnectionTransmitter {
+public final class HikariConnectionTransmitter {
 
     private HikariConnection hikariConnection;
 

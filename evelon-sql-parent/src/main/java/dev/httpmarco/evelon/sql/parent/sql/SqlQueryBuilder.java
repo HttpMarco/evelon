@@ -35,6 +35,7 @@ public class SqlQueryBuilder {
     }
 
     public String createTable(String id) {
-        return "CREATE TABLE IF NOT EXISTS(%s);".formatted(String.join(", ", queryFields.stream().map(it -> it.id() + " BLOB").toList()));
+        return "CREATE TABLE IF NOT EXISTS %s(%s);" //TODO
+                .formatted(id, String.join(", ", queryFields.stream().map(it -> it.id() + " BLOB").toList()));
     }
 }
