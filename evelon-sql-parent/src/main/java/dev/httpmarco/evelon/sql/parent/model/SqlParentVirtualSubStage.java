@@ -11,13 +11,12 @@ public final class SqlParentVirtualSubStage extends AbstractVirtualSubStage<SqlQ
     @Override
     public void initialize(String stageId, @NotNull RepositoryObjectClass<?> clazz, SqlQueryBuilder query) {
         for (var field : clazz.fields()) {
-            //check staging
-            query.withField(field);
 
-            //TODO
-            SubStage<SqlQueryBuilder> possibleFieldStage = null;
-            // TODO
-            possibleFieldStage.initialize(null, null, query.subQuery());
+            if (field.stage() instanceof SubStage<?> subStage) {
+                subStage.initializeWithMapping(stageId + "_" + field.id(), null, query.subQuery());
+            } else {
+                query.withField(field);
+            }
         }
     }
 }
