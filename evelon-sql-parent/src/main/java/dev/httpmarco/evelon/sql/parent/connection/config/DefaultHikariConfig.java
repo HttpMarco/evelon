@@ -5,7 +5,6 @@ import com.zaxxer.hikari.HikariConfig;
 public class DefaultHikariConfig extends HikariConfig {
 
     public DefaultHikariConfig(String username, String password) {
-
         setUsername(username);
         setPassword(password);
         addDataSourceProperty("cachePrepStmts", "true");
@@ -23,6 +22,5 @@ public class DefaultHikariConfig extends HikariConfig {
         setMaximumPoolSize(100);
         setConnectionTimeout(10_000);
         setValidationTimeout(10_000);
-
     }
 }
