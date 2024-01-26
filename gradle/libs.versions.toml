@@ -7,6 +7,10 @@ hikari = "5.1.0"
 
 annotations = "24.1.0"
 
+
+# protocl drivers
+h2 = "2.2.224"
+
 [libraries]
 
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
@@ -15,3 +19,7 @@ gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 hikari = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari" }
 
 annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
+
+
+# protocl drivers
+h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
