@@ -6,7 +6,7 @@ gson = "2.10.1"
 hikari = "5.1.0"
 
 annotations = "24.1.0"
-
+nexusPublish = "1.3.0"
 
 # protocl drivers
 h2 = "2.2.224"
@@ -23,3 +23,7 @@ annotations = { group = "org.jetbrains", name = "annotations", version.ref = "an
 
 # protocl drivers
 h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
+
+[plugins]
+
+nexusPublish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexusPublish" }
