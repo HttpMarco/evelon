@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.common.repository.field;
 
+import dev.httpmarco.evelon.common.model.Stage;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
@@ -17,5 +18,10 @@ public class RepositoryFieldImpl implements RepositoryField {
     public RepositoryFieldImpl(Field field, RepositoryClass<?> parentClass) {
         this.id = field.getName();
         this.parentClass = parentClass;
+    }
+
+    @Override
+    public Stage stage() {
+        return null;
     }
 }
