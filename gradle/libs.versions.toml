@@ -8,6 +8,8 @@ hikari = "5.1.0"
 annotations = "24.1.0"
 nexusPublish = "1.3.0"
 
+osgan = "1.0.3-20240201.220558-1"
+
 # protocl drivers
 h2 = "2.2.224"
 
@@ -20,6 +22,8 @@ hikari = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari" }
 
 annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
 
+osgan-utils = { group = "dev.httpmarco", name = "osgan-utils", version.ref = "osgan" }
+osgan-reflections = { group = "dev.httpmarco", name = "osgan-reflections", version.ref = "osgan" }
 
 # protocl drivers
 h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
@@ -27,3 +31,7 @@ h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
 [plugins]
 
 nexusPublish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexusPublish" }
+
+
+[bundles]
+osgan = ["osgan-utils", "osgan-reflections"]

@@ -12,6 +12,7 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
     }
 
     dependencies {
@@ -19,6 +20,7 @@ allprojects {
         "compileOnly"(rootProject.libs.annotations)
         "annotationProcessor"(rootProject.libs.lombok)
         "compileOnly"(rootProject.libs.gson)
+        "compileOnly"(rootProject.libs.bundles.osgan)
     }
 
     tasks.withType<JavaCompile>().configureEach {
