@@ -14,6 +14,6 @@ public final class BetweenLocalFilter extends AbstractNumberFilter<Boolean> {
 
     @Override
     public Boolean filter(Repository<?> repository, Number requiredType) {
-        return getValue().doubleValue() <= requiredType.doubleValue() && requiredType.doubleValue() <= max.doubleValue();
+        return value().doubleValue() <= requiredType.doubleValue() && requiredType.doubleValue() <= max.doubleValue();
     }
 }

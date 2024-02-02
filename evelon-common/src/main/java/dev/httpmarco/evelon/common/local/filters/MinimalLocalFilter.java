@@ -11,6 +11,6 @@ public final class MinimalLocalFilter extends AbstractNumberFilter<Boolean> {
 
     @Override
     public Boolean filter(Repository<?> repository, Number requiredType) {
-        return getValue().doubleValue() >= requiredType.doubleValue();
+        return value().doubleValue() >= requiredType.doubleValue();
     }
 }

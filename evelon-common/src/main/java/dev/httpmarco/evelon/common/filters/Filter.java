@@ -4,7 +4,7 @@ import dev.httpmarco.evelon.common.repository.Repository;
 
 public interface Filter<T, R> {
 
-    String getId();
+    String id();
 
     T filter(Repository<?> repository, R requiredType);
 

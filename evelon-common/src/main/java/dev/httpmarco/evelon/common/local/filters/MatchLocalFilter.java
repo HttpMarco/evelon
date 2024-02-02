@@ -11,6 +11,6 @@ public class MatchLocalFilter extends AbstractSingleObjectFilter<Boolean> {
 
     @Override
     public Boolean filter(Repository<?> repository, Object requiredType) {
-        return repository.equals(getValue());
+        return repository.equals(value());
     }
 }

@@ -16,6 +16,6 @@ public final class BetweenTimeLocalFilter extends AbstractDateFilter<Boolean> {
 
     @Override
     public Boolean filter(Repository<?> repository, Date requiredType) {
-        return getValue().getTime() <= requiredType.getTime() && requiredType.getTime() <= max.getTime();
+        return value().getTime() <= requiredType.getTime() && requiredType.getTime() <= max.getTime();
     }
 }

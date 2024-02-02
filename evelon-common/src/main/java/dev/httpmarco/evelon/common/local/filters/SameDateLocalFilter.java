@@ -17,7 +17,7 @@ public final class SameDateLocalFilter extends AbstractDateFilter<Boolean> {
 
     @Override
     public Boolean filter(Repository<?> repository, Date requiredType) {
-        long diffInMilliseconds = requiredType.getTime() - getValue().getTime();
+        long diffInMilliseconds = requiredType.getTime() - value().getTime();
         long diff = timeUnit.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
         return diff == 0;
     }

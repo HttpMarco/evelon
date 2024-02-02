@@ -11,6 +11,6 @@ public final class LikeLocalFilter extends AbstractTextFilter<Boolean> {
 
     @Override
     public Boolean filter(Repository<?> repository, String requiredType) {
-        return getValue().contains(requiredType);
+        return value().contains(requiredType);
     }
 }
