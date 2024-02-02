@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.common.repository.local;
+package dev.httpmarco.evelon.common.local;
 
 import java.util.concurrent.TimeUnit;
 

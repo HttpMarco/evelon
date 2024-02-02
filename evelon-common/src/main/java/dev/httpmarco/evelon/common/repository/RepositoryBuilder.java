@@ -1,8 +1,9 @@
 package dev.httpmarco.evelon.common.repository;
 
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class RepositoryBuilder<T> {
 
     private final Class<T> clazz;
