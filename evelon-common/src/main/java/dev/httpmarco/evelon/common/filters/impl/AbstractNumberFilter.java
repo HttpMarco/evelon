@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import dev.httpmarco.evelon.common.filters.Filter;
 import dev.httpmarco.evelon.common.misc.Reflections;
+import lombok.experimental.Accessors;
 
 @Getter
+@Accessors(fluent = true)
 @AllArgsConstructor
 public abstract class AbstractNumberFilter<T> implements Filter<T, Number> {
 
