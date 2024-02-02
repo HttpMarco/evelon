@@ -9,6 +9,7 @@ public interface SubStage<R> extends Stage {
 
     void initialize(String stageId, RepositoryObjectClass<?> clazz, R queries);
 
+    @SuppressWarnings("unchecked")
     default void initializeWithMapping(String stageId, RepositoryObjectClass<?> clazz, Object queries) {
         this.initialize(stageId, clazz, (R) queries);
     }
