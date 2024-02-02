@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class AbstractEvelonLayer implements EvelonLayer {
+public abstract class AbstractEvelonLayer implements EvelonLayer<Object> {
 
     private final LayerFilterHandler<?, ?> filterHandler;
     private final Model model;
