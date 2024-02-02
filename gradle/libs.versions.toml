@@ -1,29 +1,35 @@
 [versions]
 
-lombok = "1.18.30"
 gson = "2.10.1"
-
+osgan = "1.0.3-20240201.220558-1"
 hikari = "5.1.0"
 
+#utils
 annotations = "24.1.0"
-nexusPublish = "1.3.0"
+lombok = "1.18.30"
 
-osgan = "1.0.3-20240201.220558-1"
+#testing
+jUnit = "5.10.1"
 
 # protocl drivers
 h2 = "2.2.224"
 
+#plugins
+nexusPublish = "1.3.0"
+
 [libraries]
 
-lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
-
 hikari = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari" }
-
-annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
-
 osgan-utils = { group = "dev.httpmarco", name = "osgan-utils", version.ref = "osgan" }
 osgan-reflections = { group = "dev.httpmarco", name = "osgan-reflections", version.ref = "osgan" }
+
+#utils
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
+annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
+
+#testing
+jUnit = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "jUnit" }
 
 # protocl drivers
 h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
@@ -32,6 +38,7 @@ h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
 
 nexusPublish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexusPublish" }
 
-
 [bundles]
+
+utils = ["lombok", "annotations"]
 osgan = ["osgan-utils", "osgan-reflections"]
