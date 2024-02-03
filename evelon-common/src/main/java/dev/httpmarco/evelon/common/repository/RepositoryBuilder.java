@@ -33,7 +33,9 @@ public final class RepositoryBuilder<T> {
 
     public Repository<T> build() {
         var repository = useLocalStorage ? new LocalCacheRepositoryImpl<>(clazz) : new RepositoryImpl<>(clazz);
+        for (Class<EvelonLayer<?>> layerClass : layerClasses) {
 
+        }
         return repository;
     }
 }
