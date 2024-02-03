@@ -8,7 +8,11 @@ public class SimpleRepositoryInsertTest {
 
     public SimpleRepositoryInsertTest() {
 
-        Repository<TestRepository> repository = RepositoryBuilder.of(TestRepository.class).build();
+        Repository<TestRepository> repository = RepositoryBuilder.of(TestRepository.class)
+                .withLocalStorage()
+                .build();
+
+
 
     }
 }
