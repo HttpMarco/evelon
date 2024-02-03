@@ -1,7 +1,7 @@
 package dev.httpmarco.evelon.common.layers;
 
 import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
-import dev.httpmarco.evelon.common.misc.SortedOrder;
+import dev.httpmarco.evelon.common.query.SortedOrder;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.query.DataQuery;
 

@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.common.misc;
+package dev.httpmarco.evelon.common.query;
 
 public enum SortedOrder {
 
