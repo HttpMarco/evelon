@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.common.repository;
 
+import dev.httpmarco.evelon.common.Evelon;
 import dev.httpmarco.evelon.common.layers.EvelonLayer;
 import dev.httpmarco.evelon.common.local.LocalCacheRepositoryImpl;
 import lombok.AccessLevel;
@@ -33,8 +34,8 @@ public final class RepositoryBuilder<T> {
 
     public Repository<T> build() {
         var repository = useLocalStorage ? new LocalCacheRepositoryImpl<>(clazz) : new RepositoryImpl<>(clazz);
-        for (Class<EvelonLayer<?>> layerClass : layerClasses) {
-
+        for (var layerClass : layerClasses) {
+            repository.addLayer(Evelon.getInstance().layerPool().getLayer(layerClass));
         }
         return repository;
     }
