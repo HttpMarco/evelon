@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.common.layers.connection;
 
-public interface RepositoryConnection<T> {
+public interface EvelonLayerConnection<T> {
 
     void close();
 

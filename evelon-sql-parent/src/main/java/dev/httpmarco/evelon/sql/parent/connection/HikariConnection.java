@@ -2,12 +2,12 @@ package dev.httpmarco.evelon.sql.parent.connection;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import dev.httpmarco.evelon.common.layers.connection.RepositoryConnection;
+import dev.httpmarco.evelon.common.layers.connection.EvelonLayerConnection;
 import lombok.SneakyThrows;
 
 import java.sql.Connection;
 
-public class HikariConnection implements RepositoryConnection<Connection> {
+public class HikariConnection implements EvelonLayerConnection<Connection> {
 
     private HikariDataSource dataSource;
     private final HikariConfig config;
