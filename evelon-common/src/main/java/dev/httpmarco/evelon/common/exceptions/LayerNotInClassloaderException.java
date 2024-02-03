@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.common.exception;
+package dev.httpmarco.evelon.common.exceptions;
 
 public final class LayerNotInClassloaderException extends RuntimeException {
 
