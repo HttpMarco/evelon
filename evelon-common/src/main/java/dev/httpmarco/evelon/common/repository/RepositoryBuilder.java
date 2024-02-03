@@ -1,8 +1,12 @@
 package dev.httpmarco.evelon.common.repository;
 
+import dev.httpmarco.evelon.common.layers.EvelonLayer;
 import dev.httpmarco.evelon.common.local.LocalCacheRepositoryImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class RepositoryBuilder<T> {
@@ -11,6 +15,7 @@ public final class RepositoryBuilder<T> {
 
     // current repository settings
     private boolean useLocalStorage = false;
+    private final List<Class<EvelonLayer<?>>> layerClasses = new ArrayList<>();
 
     public static <R> RepositoryBuilder<R> of(Class<R> clazz) {
         return new RepositoryBuilder<>(clazz);
@@ -18,6 +23,11 @@ public final class RepositoryBuilder<T> {
 
     public RepositoryBuilder<T> withLocalStorage() {
         this.useLocalStorage = true;
+        return this;
+    }
+
+    public RepositoryBuilder<T> addAfter(Class<EvelonLayer<?>> clazz) {
+        this.layerClasses.add(clazz);
         return this;
     }
 
