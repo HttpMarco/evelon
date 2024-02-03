@@ -13,6 +13,7 @@ This application provides seamless object mapping between a local application an
 | couchdb    | -                 | -.-.-            | no          |
 | json       | -                 | -.-.-            | no          |
 | yml        | -                 | -.-.-            | no          |
+| aeon       | -                 | -.-.-            | no          |
 | redis      | -                 | -.-.-            | no          |
 | arangodb   | -                 | -.-.-            | no          |
 | scylladb   | -                 | -.-.-            | no          |
