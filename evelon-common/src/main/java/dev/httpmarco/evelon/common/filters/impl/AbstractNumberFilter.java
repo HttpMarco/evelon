@@ -1,9 +1,9 @@
 package dev.httpmarco.evelon.common.filters.impl;
 
+import dev.httpmarco.osgan.utils.types.NumberUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import dev.httpmarco.evelon.common.filters.Filter;
-import dev.httpmarco.evelon.common.misc.Reflections;
 import lombok.experimental.Accessors;
 
 @Getter
@@ -16,6 +16,6 @@ public abstract class AbstractNumberFilter<T> implements Filter<T, Number> {
 
     @Override
     public boolean requirementCheck(Class<?> clazz) {
-        return Reflections.isNumber(clazz);
+        return NumberUtils.isNumber(clazz);
     }
 }

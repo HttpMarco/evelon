@@ -1,12 +1,12 @@
 package dev.httpmarco.evelon.common.model.elements;
 
-import dev.httpmarco.evelon.common.misc.Reflections;
 import dev.httpmarco.evelon.common.model.ElementStage;
+import dev.httpmarco.osgan.utils.Utils;
 
 public abstract class AbstractSimpleParameterStage implements ElementStage<Object> {
 
     @Override
     public boolean isElement(Class<?> type) {
-        return type.isPrimitive() || Reflections.CONSTANT.contains(type);
+        return type.isPrimitive() || Utils.JAVA_ELEMENTS.contains(type);
     }
 }

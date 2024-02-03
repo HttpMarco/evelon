@@ -2,11 +2,11 @@ package dev.httpmarco.evelon.common.local;
 
 import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
 import dev.httpmarco.evelon.common.layers.EvelonLayer;
-import dev.httpmarco.evelon.common.misc.Reflections;
 import dev.httpmarco.evelon.common.misc.SortedOrder;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.query.DataQuery;
 import dev.httpmarco.evelon.common.repository.RepositoryImpl;
+import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
@@ -93,19 +93,19 @@ public class LocalCacheRepositoryImpl<T> extends RepositoryImpl<T> implements Lo
 
     @Override
     public long sum(DataQuery<T> query, String id) {
-        return this.findAll(query).stream().mapToLong(t -> (long) Reflections.getFieldValue(id, t)).sum();
+        return this.findAll(query).stream().mapToLong(t -> (long) Reflections.getField(id, t)).sum();
     }
 
     @Override
     public double avg(DataQuery<T> query, String id) {
-        return this.findAll(query).stream().mapToLong(t -> (long) Reflections.getFieldValue(id, t)).average().orElse(-1);
+        return this.findAll(query).stream().mapToLong(t -> (long) Reflections.getField(id, t)).average().orElse(-1);
     }
 
     @Override
     public List<T> order(DataQuery<T> query, String id, int max, SortedOrder order) {
         return this.findAll(query).stream().sorted((o1, o2) -> {
-            var value1 = (long) Reflections.getFieldValue(id, o1);
-            var value2 = (long) Reflections.getFieldValue(id, o2);
+            var value1 = (long) Reflections.getField(id, o1);
+            var value2 = (long) Reflections.getField(id, o2);
             return order == SortedOrder.ASCENDING ? Long.compare(value1, value2) : Long.compare(value2, value1);
         }).toList();
     }
@@ -113,29 +113,29 @@ public class LocalCacheRepositoryImpl<T> extends RepositoryImpl<T> implements Lo
     @Override
     @SuppressWarnings("unchecked")
     public <E> List<E> collect(DataQuery<T> query, String id, Class<E> clazz) {
-        return findAll(query).stream().map(it -> (E) Reflections.getFieldValue(id, it)).toList();
+        return findAll(query).stream().map(it -> (E) Reflections.getField(id, it)).toList();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <E> List<E> collect(DataQuery<T> query, String id, int limit, Class<E> clazz) {
-        return findAll(query, limit).stream().map(it -> (E) Reflections.getFieldValue(id, it)).toList();
+        return findAll(query, limit).stream().map(it -> (E) Reflections.getField(id, it)).toList();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <E> E collectSingle(DataQuery<T> query, String id, Class<E> clazz) {
-        return (E) Reflections.getFieldValue(id, find(query));
+        return (E) Reflections.getField(id, find(query));
     }
 
     @Override
     public T max(DataQuery<T> query, String id) {
-        return this.findAll(query).stream().max(Comparator.comparingLong(o -> (long) Reflections.getFieldValue(id, o))).orElse(null);
+        return this.findAll(query).stream().max(Comparator.comparingLong(o -> (long) Reflections.getField(id, o))).orElse(null);
     }
 
     @Override
     public T min(DataQuery<T> query, String id) {
-        return this.findAll(query).stream().min(Comparator.comparingLong(o -> (long) Reflections.getFieldValue(id, o))).orElse(null);
+        return this.findAll(query).stream().min(Comparator.comparingLong(o -> (long) Reflections.getField(id, o))).orElse(null);
     }
 
     private Stream<T> applyFilters(DataQuery<T> query) {
