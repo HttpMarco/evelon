@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.sql.parent.protocol;
+package dev.httpmarco.evelon.sql.parent.layer;
 
 public interface ProtocolDriver {
 
