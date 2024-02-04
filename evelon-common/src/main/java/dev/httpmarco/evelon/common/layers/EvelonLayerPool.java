@@ -32,6 +32,10 @@ public final class EvelonLayerPool {
     }
 
     private void initializeLayer(Class<EvelonLayer<?>> layerClass) {
-        cachedLayers.put(layerClass, (EvelonLayer<?>) ReflectionClassAllocater.allocate(layerClass));
+        var allocatedLayer = ReflectionClassAllocater.allocate(layerClass);
+        if(allocatedLayer instanceof ConnectableEvelonLayer<?,?> connectableLayer) {
+            connectableLayer.connection().connect();
+        }
+        cachedLayers.put(layerClass, allocatedLayer);
     }
 }
