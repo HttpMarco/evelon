@@ -24,16 +24,6 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
     }
 
     @Override
-    public void preConnection() {
-
-    }
-
-    @Override
-    public void postConnection() {
-
-    }
-
-    @Override
     public void create(DataQuery<Object> query, Object value) {
 
     }
