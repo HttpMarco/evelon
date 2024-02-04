@@ -15,7 +15,7 @@ import java.util.function.Predicate;
 
 @Getter
 @Accessors(fluent = true)
-public final class SqlParentConnectionLayer implements ConnectableEvelonLayer<Object, Connection> {
+public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer<Object, Connection> {
 
     private final HikariConnection connection;
 
