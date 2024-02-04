@@ -18,5 +18,4 @@ public class Evelon {
         }
         return instance;
     }
-
 }
