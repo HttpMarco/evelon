@@ -1,21 +1,18 @@
 package dev.httpmarco.evelon.sql.parent.layer;
 
 import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
-import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.query.DataQuery;
 import dev.httpmarco.evelon.common.query.SortedOrder;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-
-import java.sql.Connection;
 import java.util.List;
 import java.util.function.Predicate;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer<Object, Connection> {
+public abstract class SqlParentConnectionLayer implements ProtocolConnectableEvelonLayer {
 
     private final HikariConnection connection;
 
