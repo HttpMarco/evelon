@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.sql.parent.sql;
 
 import dev.httpmarco.evelon.common.repository.RepositoryField;
+import dev.httpmarco.evelon.sql.parent.types.SqlTypeFinder;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -35,7 +36,11 @@ public class SqlQueryBuilder {
     }
 
     public String createTable(String id) {
-        return "CREATE TABLE IF NOT EXISTS %s(%s);" //TODO
-                .formatted(id, String.join(", ", queryFields.stream().map(it -> it.id() + " BLOB").toList()));
+        return "CREATE TABLE IF NOT EXISTS " + id + "(" + String.join(",",
+                queryFields
+                        .stream()
+                        .map(field -> field.id() + " " + SqlTypeFinder.findType(field.fieldType()).getType())
+                        .toList()) +
+                ");";
     }
 }
