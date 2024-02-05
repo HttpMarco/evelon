@@ -13,15 +13,22 @@ import java.lang.reflect.Field;
 public class RepositoryFieldImpl implements RepositoryField {
 
     private final String id;
+    private final Class<?> clazz;
     private final RepositoryClass<?> parentClass;
 
     public RepositoryFieldImpl(Field field, RepositoryClass<?> parentClass) {
         this.id = field.getName();
+        this.clazz = field.getType();
         this.parentClass = parentClass;
     }
 
     @Override
     public Stage stage() {
         return null;
+    }
+
+    @Override
+    public Class<?> fieldType() {
+        return this.clazz;
     }
 }

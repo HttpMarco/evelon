@@ -31,4 +31,11 @@ public interface RepositoryField {
      */
     Stage stage();
 
+    /**
+     * Returns the class of the field
+     *
+     * @return The class of field
+     */
+    Class<?> fieldType();
+
 }
