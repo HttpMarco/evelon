@@ -153,10 +153,4 @@ public interface EvelonLayer<T> {
      */
     LayerFilterHandler<?, ?> filterHandler();
 
-    /**
-     * Gets the model for this layer.
-     *
-     * @return The model.
-     */
-    Model model();
 }
