@@ -4,9 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 
 public class DefaultHikariConfig extends HikariConfig {
 
-    public DefaultHikariConfig(String username, String password) {
-        setUsername(username);
-        setPassword(password);
+    public DefaultHikariConfig() {
         addDataSourceProperty("cachePrepStmts", "true");
         addDataSourceProperty("prepStmtCacheSize", "250");
         addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
