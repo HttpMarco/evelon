@@ -3,7 +3,6 @@ package dev.httpmarco.evelon.common.local;
 import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
 import dev.httpmarco.evelon.common.layers.EvelonLayer;
 import dev.httpmarco.evelon.common.query.SortedOrder;
-import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.query.DataQuery;
 import dev.httpmarco.evelon.common.repository.RepositoryImpl;
 import dev.httpmarco.osgan.reflections.Reflections;
@@ -20,7 +19,6 @@ import java.util.stream.Stream;
 @Accessors(fluent = true)
 public class LocalCacheRepositoryImpl<T> extends RepositoryImpl<T> implements LocalCacheRepository<T>, EvelonLayer<T> {
 
-    private final Model model = new LocalModel();
     private final LayerFilterHandler<?, ?> filterHandler = new LocalFilterHandler();
     private final List<LocalStorageEntry<T>> localData = new ArrayList<>();
 
@@ -141,4 +139,5 @@ public class LocalCacheRepositoryImpl<T> extends RepositoryImpl<T> implements Lo
     private Stream<T> applyFilters(DataQuery<T> query) {
         return localData().stream().map(LocalStorageEntry::value);
     }
+
 }
