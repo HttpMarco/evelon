@@ -5,7 +5,7 @@ This application provides seamless object mapping between a local application an
 |------------|-------------------|------------------|-------------|
 | cache      | LocalStorageLayer | -.-.-            | yes         |
 | mysql      | -                 | -.-.-            | no          |
-| h2         | -                 | -.-.-            | no          |
+| h2         | -                 | -.-.-            | in progress |
 | postgresql | -                 | -.-.-            | no          |
 | mariadb    | -                 | -.-.-            | no          |
 | cassandra  | -                 | -.-.-            | no          |
