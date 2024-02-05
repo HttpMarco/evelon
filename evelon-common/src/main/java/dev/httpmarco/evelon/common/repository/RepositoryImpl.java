@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.common.repository;
 
 import dev.httpmarco.evelon.common.layers.EvelonLayer;
+import dev.httpmarco.evelon.common.query.Query;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClassImpl;
 import lombok.Getter;
@@ -23,5 +24,11 @@ public class RepositoryImpl<T> implements Repository<T> {
     @Override
     public void addLayer(EvelonLayer<?> layer) {
         currentLayers.add(layer);
+    }
+
+    @Override
+    public Query query() {
+        //todo
+        return null;
     }
 }
