@@ -8,6 +8,11 @@ public interface EvelonLayerConnection<R extends Credentials, T> {
 
     void connect(R credentials);
 
+    @SuppressWarnings("unchecked")
+    default void connectWithMapping(Object credentials) {
+        this.connect((R) credentials);
+    }
+
     boolean isConnected();
 
     T getConnection();
