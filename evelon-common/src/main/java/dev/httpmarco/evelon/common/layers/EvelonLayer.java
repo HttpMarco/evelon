@@ -2,13 +2,14 @@ package dev.httpmarco.evelon.common.layers;
 
 import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
 import dev.httpmarco.evelon.common.query.SortedOrder;
-import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.query.DataQuery;
 
 import java.util.List;
 import java.util.function.Predicate;
 
 public interface EvelonLayer<T> {
+
+    String id();
 
     /**
      * Creates a new data entry based on the specified query and value.
