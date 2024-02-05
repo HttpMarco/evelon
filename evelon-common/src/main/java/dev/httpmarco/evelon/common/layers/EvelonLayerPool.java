@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.common.layers;
 
+import dev.httpmarco.evelon.common.Evelon;
 import dev.httpmarco.evelon.common.exceptions.LayerNotInClassloaderException;
 import dev.httpmarco.osgan.reflections.allocator.ReflectionClassAllocater;
 import lombok.Getter;
@@ -16,9 +17,9 @@ public final class EvelonLayerPool {
     private final Map<Class<EvelonLayer<?>>, EvelonLayer<?>> cachedLayers = new HashMap<>();
 
     public EvelonLayer<?> getLayer(Class<EvelonLayer<?>> layerClass) {
-        if(!cachedLayers.containsKey(layerClass)) {
+        if (!cachedLayers.containsKey(layerClass)) {
             // check if layer is real in class loader (not only api use)
-            if(!this.checkRequirementOfLayerInitialize(layerClass)) {
+            if (!this.checkRequirementOfLayerInitialize(layerClass)) {
                 throw new LayerNotInClassloaderException(layerClass);
             }
             this.initializeLayer(layerClass);
@@ -33,8 +34,8 @@ public final class EvelonLayerPool {
 
     private void initializeLayer(Class<EvelonLayer<?>> layerClass) {
         var allocatedLayer = ReflectionClassAllocater.allocate(layerClass);
-        if(allocatedLayer instanceof ConnectableEvelonLayer<?,?> connectableLayer) {
-            connectableLayer.connection().connect();
+        if (allocatedLayer instanceof ConnectableEvelonLayer<?, ?, ?> connectableLayer) {
+            connectableLayer.connection().connectWithMapping(Evelon.getInstance().credentialsConfig().credentials(connectableLayer));
         }
         cachedLayers.put(layerClass, allocatedLayer);
     }
