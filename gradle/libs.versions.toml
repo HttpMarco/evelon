@@ -9,7 +9,7 @@ annotations = "24.1.0"
 lombok = "1.18.30"
 
 #testing
-jUnit = "5.10.1"
+jUnit = "5.10.2"
 
 # protocl drivers
 h2 = "2.2.224"
