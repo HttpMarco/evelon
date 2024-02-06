@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 @Accessors(fluent = true)
 public class LocalCacheRepositoryImpl<T> extends RepositoryImpl<T> implements LocalCacheRepository<T>, EvelonLayer<T> {
 
+    private final String id = "LOCAL";
     private final LayerFilterHandler<?, ?> filterHandler = new LocalFilterHandler();
     private final List<LocalStorageEntry<T>> localData = new ArrayList<>();
 

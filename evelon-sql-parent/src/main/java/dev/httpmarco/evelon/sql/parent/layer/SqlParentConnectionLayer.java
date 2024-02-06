@@ -14,10 +14,12 @@ import java.util.function.Predicate;
 @Accessors(fluent = true)
 public abstract class SqlParentConnectionLayer implements ProtocolConnectableEvelonLayer {
 
+    private String id;
     private final HikariConnection connection;
 
-    public SqlParentConnectionLayer() {
+    public SqlParentConnectionLayer(String id) {
         this.connection = new HikariConnection(null);
+        this.id = id;
     }
 
     @Override

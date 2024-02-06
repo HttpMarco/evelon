@@ -12,4 +12,7 @@ public class H2SqlLayer extends SqlParentConnectionLayer {
 
     private final ProtocolDriver protocolDriver = new H2ProtocolDriver();
 
+    public H2SqlLayer() {
+        super("H2");
+    }
 }
