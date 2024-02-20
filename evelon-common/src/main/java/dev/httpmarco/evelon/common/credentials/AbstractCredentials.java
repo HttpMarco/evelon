@@ -10,4 +10,10 @@ import lombok.experimental.Accessors;
 public class AbstractCredentials implements Credentials {
 
     private String id;
+    private boolean enabled;
+
+    public AbstractCredentials(String id) {
+        this.id = id;
+        this.enabled = false;
+    }
 }
