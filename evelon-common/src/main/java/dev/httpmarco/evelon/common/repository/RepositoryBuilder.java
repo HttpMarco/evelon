@@ -3,28 +3,35 @@ package dev.httpmarco.evelon.common.repository;
 import dev.httpmarco.evelon.common.Evelon;
 import dev.httpmarco.evelon.common.layers.EvelonLayer;
 import dev.httpmarco.evelon.common.local.LocalCacheRepositoryImpl;
+import dev.httpmarco.evelon.common.local.LocalStorageBuilder;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public final class RepositoryBuilder<T> {
+@RequiredArgsConstructor
+public class RepositoryBuilder<T> {
 
     private final Class<T> clazz;
 
     // current repository settings
     private boolean useLocalStorage = false;
-    private final List<Class<EvelonLayer<?>>> layerClasses = new ArrayList<>();
+    private List<Class<EvelonLayer<?>>> layerClasses = new ArrayList<>();
+
+    protected RepositoryBuilder(Class<T> clazz, boolean useLocalStorage, List<Class<EvelonLayer<?>>> layerClasses) {
+        this.clazz = clazz;
+        this.useLocalStorage = useLocalStorage;
+        this.layerClasses = layerClasses;
+    }
 
     public static <R> RepositoryBuilder<R> of(Class<R> clazz) {
         return new RepositoryBuilder<>(clazz);
     }
 
-    public RepositoryBuilder<T> withLocalStorage() {
-        this.useLocalStorage = true;
-        return this;
+    public LocalStorageBuilder<T> withLocalStorage() {
+        return new LocalStorageBuilder<>(this.clazz, this.layerClasses);
     }
 
     public RepositoryBuilder<T> addAfter(Class<EvelonLayer<?>> clazz) {
