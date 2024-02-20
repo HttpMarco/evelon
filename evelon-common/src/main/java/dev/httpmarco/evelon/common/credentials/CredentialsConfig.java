@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Accessors(fluent = true)
-public class CredentialsConfig {
+class CredentialsConfig {
 
     private final List<Credentials> credentials = new ArrayList<>();
 

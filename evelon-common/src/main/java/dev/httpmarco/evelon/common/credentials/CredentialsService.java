@@ -6,7 +6,7 @@ public final class CredentialsService {
 
     private CredentialsConfig credentialsConfig;
 
-    public CredentialsService() {
+    CredentialsService() {
         this.update();
     }
 
