@@ -42,7 +42,7 @@ public class RepositoryBuilder<T> {
     public Repository<T> build() {
         var repository = useLocalStorage ? new LocalCacheRepositoryImpl<>(clazz) : new RepositoryImpl<>(clazz);
         for (var layerClass : layerClasses) {
-            repository.addLayer(Evelon.getInstance().layerPool().getLayer(layerClass));
+            repository.addLayer(Evelon.instance().layerPool().getLayer(layerClass));
         }
         return repository;
     }
