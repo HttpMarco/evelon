@@ -1,15 +1,15 @@
 package dev.httpmarco.evelon.common.credentials;
 
-import dev.httpmarco.evelon.common.layers.EvelonLayer;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Accessors(fluent = true)
 public class CredentialsConfig {
 
     private final List<Credentials> credentials = new ArrayList<>();
 
-    public Credentials credentials(EvelonLayer<?> evelonLayer) {
-        return credentials.stream().filter(it -> it.id().equals(evelonLayer.id())).findFirst().orElseThrow();
-    }
 }
