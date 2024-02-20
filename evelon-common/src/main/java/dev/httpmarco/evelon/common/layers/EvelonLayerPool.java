@@ -14,9 +14,9 @@ import java.util.Map;
 @Accessors(fluent = true)
 public final class EvelonLayerPool {
 
-    private final Map<Class<EvelonLayer<?>>, EvelonLayer<?>> cachedLayers = new HashMap<>();
+    private final Map<Class<? extends EvelonLayer<?>>, EvelonLayer<?>> cachedLayers = new HashMap<>();
 
-    public EvelonLayer<?> getLayer(Class<EvelonLayer<?>> layerClass) {
+    public EvelonLayer<?> getLayer(Class<? extends EvelonLayer<?>> layerClass) {
         if (!cachedLayers.containsKey(layerClass)) {
             // check if layer is real in class loader (not only api use)
             if (!this.checkRequirementOfLayerInitialize(layerClass)) {
@@ -29,10 +29,14 @@ public final class EvelonLayerPool {
 
     @SneakyThrows
     private boolean checkRequirementOfLayerInitialize(Class<?> layer) {
-        return ClassLoader.getPlatformClassLoader().loadClass(layer.getName()) != null;
+        try {
+            return ClassLoader.getSystemClassLoader().loadClass(layer.getName()) != null;
+        }catch (ClassNotFoundException exception) {
+           return false;
+        }
     }
 
-    private void initializeLayer(Class<EvelonLayer<?>> layerClass) {
+    private void initializeLayer(Class<? extends EvelonLayer<?>> layerClass) {
         var allocatedLayer = ReflectionClassAllocater.allocate(layerClass);
         if (allocatedLayer instanceof ConnectableEvelonLayer<?, ?, ?> connectableLayer) {
             connectableLayer.connection().connectWithMapping(Evelon.getInstance().credentialsConfig().credentials(connectableLayer));

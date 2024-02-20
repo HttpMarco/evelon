@@ -20,6 +20,16 @@ allprojects {
         "annotationProcessor"(rootProject.libs.lombok)
         "compileOnly"(rootProject.libs.gson)
         "implementation"(rootProject.libs.bundles.osgan)
+
+        // testing
+        "testImplementation"(platform("org.junit:junit-bom:5.10.2"))
+        "testImplementation"("org.junit.jupiter:junit-jupiter")
+        "testImplementation"(rootProject.libs.gson)
+
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
     }
 
     tasks.withType<JavaCompile>().configureEach {

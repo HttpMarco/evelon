@@ -18,9 +18,9 @@ public class RepositoryBuilder<T> {
 
     // current repository settings
     private boolean useLocalStorage = false;
-    private List<Class<EvelonLayer<?>>> layerClasses = new ArrayList<>();
+    private List<Class<? extends EvelonLayer<?>>> layerClasses = new ArrayList<>();
 
-    protected RepositoryBuilder(Class<T> clazz, boolean useLocalStorage, List<Class<EvelonLayer<?>>> layerClasses) {
+    protected RepositoryBuilder(Class<T> clazz, boolean useLocalStorage, List<Class<? extends EvelonLayer<?>>> layerClasses) {
         this.clazz = clazz;
         this.useLocalStorage = useLocalStorage;
         this.layerClasses = layerClasses;
@@ -34,7 +34,7 @@ public class RepositoryBuilder<T> {
         return new LocalStorageBuilder<>(this.clazz, this.layerClasses);
     }
 
-    public RepositoryBuilder<T> addAfter(Class<EvelonLayer<?>> clazz) {
+    public RepositoryBuilder<T> addAfter(Class<? extends EvelonLayer<?>> clazz) {
         this.layerClasses.add(clazz);
         return this;
     }
