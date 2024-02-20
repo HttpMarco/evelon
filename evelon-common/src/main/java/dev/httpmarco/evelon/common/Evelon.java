@@ -1,8 +1,7 @@
 package dev.httpmarco.evelon.common;
 
-import dev.httpmarco.evelon.common.credentials.CredentialsConfig;
+import dev.httpmarco.evelon.common.credentials.CredentialsService;
 import dev.httpmarco.evelon.common.layers.EvelonLayerPool;
-import dev.httpmarco.osgon.configuration.ConfigHelper;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
@@ -10,20 +9,9 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class Evelon {
 
-    private static Evelon instance;
-
+    @Getter
+    private final static Evelon instance = new Evelon();
+    private final CredentialsService credentialsService = new CredentialsService();
     private final EvelonLayerPool layerPool = new EvelonLayerPool();
 
-    private final CredentialsConfig credentialsConfig;
-
-    public Evelon() {
-        credentialsConfig = ConfigHelper.getConfigOrCreate("credentials.json", CredentialsConfig.class, new CredentialsConfig());
-    }
-
-    public static Evelon getInstance() {
-        if (instance == null) {
-            return instance = new Evelon();
-        }
-        return instance;
-    }
 }
