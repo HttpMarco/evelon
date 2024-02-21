@@ -24,6 +24,7 @@ public final class CredentialsService {
 
     @SneakyThrows
     public void update() {
-        Files.writeString(CREDENTIALS_PATH, JsonUtils.toPrettyJson(this.credentialsConfig));
+        // todo fix in osgan
+        Files.writeString(CREDENTIALS_PATH, JsonUtils.getPrettyGson().toJson(this.credentialsConfig));
     }
 }
