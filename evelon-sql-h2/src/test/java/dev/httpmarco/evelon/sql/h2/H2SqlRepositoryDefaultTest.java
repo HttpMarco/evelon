@@ -12,8 +12,5 @@ public class H2SqlRepositoryDefaultTest {
                 .addAfter(H2SqlLayer.class)
                 .build();
 
-
-
     }
-
 }

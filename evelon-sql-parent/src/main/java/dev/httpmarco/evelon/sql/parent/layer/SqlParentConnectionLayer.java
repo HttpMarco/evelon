@@ -18,8 +18,11 @@ public abstract class SqlParentConnectionLayer implements ProtocolConnectableEve
     private final HikariConnection connection;
 
     public SqlParentConnectionLayer(String id) {
-        this.connection = new HikariConnection(null);
         this.id = id;
+
+        // todo search credentials
+        this.connection = new HikariConnection();
+        this.connection.connect(templateCredentials());
     }
 
     @Override

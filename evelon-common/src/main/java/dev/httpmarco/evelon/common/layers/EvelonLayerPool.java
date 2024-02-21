@@ -31,15 +31,17 @@ public final class EvelonLayerPool {
     private boolean checkRequirementOfLayerInitialize(Class<?> layer) {
         try {
             return ClassLoader.getSystemClassLoader().loadClass(layer.getName()) != null;
-        }catch (ClassNotFoundException exception) {
-           return false;
+        } catch (ClassNotFoundException exception) {
+            return false;
         }
     }
 
+    @SneakyThrows
     private void initializeLayer(Class<? extends EvelonLayer<?>> layerClass) {
-        var allocatedLayer = ReflectionClassAllocater.allocate(layerClass);
+        // todo implement in osgan
+        var allocatedLayer = layerClass.getConstructor().newInstance();
         if (allocatedLayer instanceof ConnectableEvelonLayer<?, ?, ?> connectableLayer) {
-         Evelon.instance().credentialsService().addCredentials(connectableLayer);
+            Evelon.instance().credentialsService().addCredentials(connectableLayer);
         }
         cachedLayers.put(layerClass, allocatedLayer);
     }

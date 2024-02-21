@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import dev.httpmarco.evelon.common.credentials.Credentials;
 import dev.httpmarco.evelon.common.layers.connection.EvelonLayerConnection;
+import dev.httpmarco.evelon.sql.parent.connection.config.DefaultHikariConfig;
 import dev.httpmarco.evelon.sql.parent.credentials.AbstractSqlAuthParentCredentials;
 import lombok.SneakyThrows;
 
@@ -14,8 +15,8 @@ public class HikariConnection implements EvelonLayerConnection<Credentials, Conn
     private HikariDataSource dataSource;
     private final HikariConfig config;
 
-    public HikariConnection(HikariConfig config) {
-        this.config = config;
+    public HikariConnection() {
+        this.config = new DefaultHikariConfig();
     }
 
     @SneakyThrows
@@ -38,7 +39,6 @@ public class HikariConnection implements EvelonLayerConnection<Credentials, Conn
             this.config.setUsername(authParentCredentials.username());
             this.config.setPassword(authParentCredentials.password());
         }
-
         this.dataSource = new HikariDataSource(this.config);
     }
 
