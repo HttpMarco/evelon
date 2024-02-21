@@ -1,27 +1,31 @@
 package dev.httpmarco.evelon.sql.parent.layer;
 
+import dev.httpmarco.evelon.common.credentials.Credentials;
 import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
+import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.query.DataQuery;
 import dev.httpmarco.evelon.common.query.SortedOrder;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+
+import java.sql.Connection;
 import java.util.List;
 import java.util.function.Predicate;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class SqlParentConnectionLayer implements ProtocolConnectableEvelonLayer {
+public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer<Object, Credentials, Connection> {
 
     private String id;
     private final HikariConnection connection;
 
-    public SqlParentConnectionLayer(String id) {
+    public SqlParentConnectionLayer(String id, ProtocolDriver driver) {
         this.id = id;
 
         // todo search credentials
-        this.connection = new HikariConnection();
+        this.connection = new HikariConnection(driver);
         this.connection.connect(templateCredentials());
     }
 
