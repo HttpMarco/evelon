@@ -10,8 +10,8 @@ public final class H2SqlCredentials extends AbstractCredentials {
 
     private final String path;
 
-    public H2SqlCredentials(String id, String path) {
-        super(id);
-        this.path = path;
+    public H2SqlCredentials() {
+        super("H2");
+        this.path = "database.h2";
     }
 }

@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.common.layers;
 
+import dev.httpmarco.evelon.common.credentials.Credentials;
 import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
 import dev.httpmarco.evelon.common.query.SortedOrder;
 import dev.httpmarco.evelon.common.query.DataQuery;

@@ -1,5 +1,7 @@
 package dev.httpmarco.evelon.h2.layer;
 
+import dev.httpmarco.evelon.common.credentials.Credentials;
+import dev.httpmarco.evelon.h2.credentials.H2SqlCredentials;
 import dev.httpmarco.evelon.h2.protocol.H2ProtocolDriver;
 import dev.httpmarco.evelon.sql.parent.layer.ProtocolDriver;
 import dev.httpmarco.evelon.sql.parent.layer.SqlParentConnectionLayer;
@@ -14,5 +16,10 @@ public class H2SqlLayer extends SqlParentConnectionLayer {
 
     public H2SqlLayer() {
         super("H2");
+    }
+
+    @Override
+    public Credentials templateCredentials() {
+        return new H2SqlCredentials();
     }
 }
