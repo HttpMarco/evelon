@@ -1,16 +1,29 @@
 package dev.httpmarco.evelon.common.credentials;
 
-import dev.httpmarco.osgon.configuration.ConfigHelper;
+import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
+import dev.httpmarco.osgon.configuration.gson.JsonUtils;
+import lombok.SneakyThrows;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public final class CredentialsService {
 
-    private CredentialsConfig credentialsConfig;
+    private static final Path CREDENTIALS_PATH = Path.of("credentials.json");
 
-    CredentialsService() {
+    private CredentialsConfig credentialsConfig = new CredentialsConfig();
+
+    public CredentialsService() {
         this.update();
     }
 
+    public void addCredentials(ConnectableEvelonLayer<?, ?, ?> layer) {
+        this.credentialsConfig.credentials().add(layer.templateCredentials());
+        this.update();
+    }
+
+    @SneakyThrows
     public void update() {
-        this.credentialsConfig = ConfigHelper.getConfigOrCreate("credentials.json", CredentialsConfig.class, new CredentialsConfig());
+        Files.writeString(CREDENTIALS_PATH, JsonUtils.toPrettyJson(this.credentialsConfig));
     }
 }

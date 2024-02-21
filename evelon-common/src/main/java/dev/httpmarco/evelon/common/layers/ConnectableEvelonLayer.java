@@ -7,4 +7,6 @@ public interface ConnectableEvelonLayer<T, R extends Credentials, C> extends Eve
 
     EvelonLayerConnection<R, C> connection();
 
+    Credentials templateCredentials();
+
 }
