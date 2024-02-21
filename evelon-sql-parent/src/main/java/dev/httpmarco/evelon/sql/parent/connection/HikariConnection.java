@@ -16,9 +16,9 @@ public class HikariConnection implements EvelonLayerConnection<Credentials, Conn
     private HikariDataSource dataSource;
 
     private final HikariConfig config;
-    private final ProtocolDriver protocolDriver;
+    private final ProtocolDriver<?> protocolDriver;
 
-    public HikariConnection(ProtocolDriver driver) {
+    public HikariConnection(ProtocolDriver<?> driver) {
         this.config = new DefaultHikariConfig();
         this.protocolDriver = driver;
     }
@@ -44,7 +44,7 @@ public class HikariConnection implements EvelonLayerConnection<Credentials, Conn
             this.config.setPassword(authParentCredentials.password());
         }
         this.protocolDriver.onInitialize();
-        this.config.setJdbcUrl("jdbc:" + protocolDriver.jdbcString());
+        this.config.setJdbcUrl("jdbc:" + protocolDriver.jdbcStringWithMapping(credentials));
         this.dataSource = new HikariDataSource(this.config);
     }
 

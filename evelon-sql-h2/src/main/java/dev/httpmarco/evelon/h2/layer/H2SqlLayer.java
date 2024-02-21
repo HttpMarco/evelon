@@ -14,8 +14,7 @@ import java.nio.file.Path;
 public class H2SqlLayer extends SqlParentConnectionLayer {
 
     public H2SqlLayer() {
-        //todo get credentials
-        super("H2", new H2ProtocolDriver(Path.of("database.h2")));
+        super("H2", new H2ProtocolDriver());
     }
 
     @Override
