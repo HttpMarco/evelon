@@ -4,4 +4,6 @@ public interface ProtocolDriver {
 
     void onInitialize();
 
+    String jdbcString();
+
 }
