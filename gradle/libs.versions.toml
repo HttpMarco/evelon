@@ -1,7 +1,7 @@
 [versions]
 
 gson = "2.10.1"
-osgan = "1.0.8-20240206.073634-1"
+osgan = "1.0.16-20240222.230231-1"
 hikari = "5.1.0"
 
 # utils
@@ -28,7 +28,7 @@ hikari = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari" }
 
 osgan-utils = { group = "dev.httpmarco", name = "osgan-utils", version.ref = "osgan" }
 osgan-reflections = { group = "dev.httpmarco", name = "osgan-reflections", version.ref = "osgan" }
-osgan-configuration = { group = "dev.httpmarco", name = "osgan-configuration", version.ref = "osgan" }
+osgan-files = { group = "dev.httpmarco", name = "osgan-files", version.ref = "osgan" }
 
 #utils
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
@@ -53,4 +53,4 @@ nexusPublish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "ne
 
 logger = ["slf4j", "log4j"]
 utils = ["lombok", "annotations"]
-osgan = ["osgan-utils", "osgan-reflections", "osgan-configuration"]
+osgan = ["osgan-utils", "osgan-reflections", "osgan-files"]

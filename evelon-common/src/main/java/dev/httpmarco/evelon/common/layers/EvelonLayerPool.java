@@ -2,7 +2,7 @@ package dev.httpmarco.evelon.common.layers;
 
 import dev.httpmarco.evelon.common.Evelon;
 import dev.httpmarco.evelon.common.exceptions.LayerNotInClassloaderException;
-import dev.httpmarco.osgan.reflections.allocator.ReflectionClassAllocater;
+import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
@@ -38,8 +38,7 @@ public final class EvelonLayerPool {
 
     @SneakyThrows
     private void initializeLayer(Class<? extends EvelonLayer<?>> layerClass) {
-        // todo implement in osgan
-        var allocatedLayer = layerClass.getConstructor().newInstance();
+        var allocatedLayer = Reflections.of(layerClass).newInstanceWithNoArgs();
         if (allocatedLayer instanceof ConnectableEvelonLayer<?, ?, ?> connectableLayer) {
             Evelon.instance().credentialsService().addCredentials(connectableLayer);
         }
