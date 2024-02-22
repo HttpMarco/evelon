@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.sql.parent.connection;
 
+import dev.httpmarco.evelon.common.Evelon;
 import lombok.AllArgsConstructor;
 
 import java.sql.PreparedStatement;
@@ -26,7 +27,7 @@ public final class HikariConnectionTransmitter {
             }
             statementTransmitter.result(statement);
         } catch (SQLException exception) {
-            System.err.println("Error while executing update: " + query);
+            Evelon.LOGGER.error("Error while executing update: {}", query, exception);
         }
     }
 }
