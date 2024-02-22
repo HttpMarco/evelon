@@ -5,6 +5,8 @@ import dev.httpmarco.evelon.sql.parent.layer.ProtocolDriver;
 import lombok.AllArgsConstructor;
 import org.h2.Driver;
 
+import java.nio.file.Path;
+
 @AllArgsConstructor
 public class H2ProtocolDriver implements ProtocolDriver<H2SqlCredentials> {
 
@@ -15,6 +17,6 @@ public class H2ProtocolDriver implements ProtocolDriver<H2SqlCredentials> {
 
     @Override
     public String jdbcString(H2SqlCredentials credentials) {
-        return "h2:" + credentials.path();
+        return "h2:" + Path.of(credentials.path()).toAbsolutePath();
     }
 }
