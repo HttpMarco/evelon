@@ -1,35 +1,17 @@
 package dev.httpmarco.evelon.common.credentials;
 
 import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
-import dev.httpmarco.evelon.common.layers.EvelonLayer;
-import dev.httpmarco.osgon.configuration.gson.JsonUtils;
-import lombok.SneakyThrows;
+import dev.httpmarco.osgon.files.json.JsonDocument;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class CredentialsService {
 
-    private static final Path CREDENTIALS_PATH = Path.of("credentials.json");
-
-    private CredentialsConfig credentialsConfig = new CredentialsConfig();
-
-    public CredentialsService() {
-        this.update();
-    }
+    private final JsonDocument<List<Credentials>> config = new JsonDocument<>(new ArrayList<>(), Path.of("credentials.json"));
 
     public void addCredentials(ConnectableEvelonLayer<?, ?, ?> layer) {
-        this.credentialsConfig.credentials().add(layer.templateCredentials());
-        this.update();
-    }
-
-    public boolean isCredentialsPresent(EvelonLayer<?> layer) {
-        return this.credentialsConfig.credentials().stream().anyMatch(it -> it.enabled() && it.id().equals(layer.id()));
-    }
-
-    @SneakyThrows
-    public void update() {
-        // todo fix in osgan
-        Files.writeString(CREDENTIALS_PATH, JsonUtils.getPrettyGson().toJson(this.credentialsConfig));
+        this.config.append(list -> list.add(layer.templateCredentials()));
     }
 }
