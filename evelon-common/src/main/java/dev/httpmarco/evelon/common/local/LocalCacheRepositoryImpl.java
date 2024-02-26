@@ -92,49 +92,46 @@ public class LocalCacheRepositoryImpl<T> extends RepositoryImpl<T> implements Lo
 
     @Override
     public long sum(DataQuery<T> query, String id) {
-        return this.findAll(query).stream().mapToLong(t -> (long) Reflections.getField(id, t)).sum();
+        return this.findAll(query).stream().mapToLong(it -> (long) Reflections.of(it.getClass()).withValue(it).value(id)).sum();
     }
 
     @Override
     public double avg(DataQuery<T> query, String id) {
-        return this.findAll(query).stream().mapToLong(t -> (long) Reflections.getField(id, t)).average().orElse(-1);
+        return this.findAll(query).stream().mapToLong(it -> (long) Reflections.of(it.getClass()).withValue(it).value(id)).average().orElse(-1);
     }
 
     @Override
     public List<T> order(DataQuery<T> query, String id, int max, SortedOrder order) {
         return this.findAll(query).stream().sorted((o1, o2) -> {
-            var value1 = (long) Reflections.getField(id, o1);
-            var value2 = (long) Reflections.getField(id, o2);
+            var value1 = (long) Reflections.of(o1.getClass()).withValue(o1).value(id);
+            var value2 = (long) Reflections.of(o2.getClass()).withValue(o2).value(id);
             return order == SortedOrder.ASCENDING ? Long.compare(value1, value2) : Long.compare(value2, value1);
         }).toList();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <E> List<E> collect(DataQuery<T> query, String id, Class<E> clazz) {
-        return findAll(query).stream().map(it -> (E) Reflections.getField(id, it)).toList();
+        return findAll(query).stream().map(it -> Reflections.of(clazz).withValue(it).value(id)).toList();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <E> List<E> collect(DataQuery<T> query, String id, int limit, Class<E> clazz) {
-        return findAll(query, limit).stream().map(it -> (E) Reflections.getField(id, it)).toList();
+        return findAll(query, limit).stream().map(it -> Reflections.of(clazz).withValue(it).value(id)).toList();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <E> E collectSingle(DataQuery<T> query, String id, Class<E> clazz) {
-        return (E) Reflections.getField(id, find(query));
+        return Reflections.of(clazz).withValue(find(query)).value(id);
     }
 
     @Override
     public T max(DataQuery<T> query, String id) {
-        return this.findAll(query).stream().max(Comparator.comparingLong(o -> (long) Reflections.getField(id, o))).orElse(null);
+        return this.findAll(query).stream().max(Comparator.comparingLong(o -> (long) Reflections.of(o).value(id))).orElse(null);
     }
 
     @Override
     public T min(DataQuery<T> query, String id) {
-        return this.findAll(query).stream().min(Comparator.comparingLong(o -> (long) Reflections.getField(id, o))).orElse(null);
+        return this.findAll(query).stream().min(Comparator.comparingLong(o -> (long) Reflections.of(o.getClass()).withValue(o).value(id))).orElse(null);
     }
 
     private Stream<T> applyFilters(DataQuery<T> query) {
