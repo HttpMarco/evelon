@@ -7,6 +7,7 @@ import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.query.DataQuery;
 import dev.httpmarco.evelon.common.query.SortedOrder;
+import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -19,7 +20,8 @@ import java.util.function.Predicate;
 @Accessors(fluent = true)
 public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer<Object, Credentials, Connection> {
 
-    private String id;
+    private final String id;
+    private boolean active = false;
     private final HikariConnection connection;
 
     public SqlParentConnectionLayer(String id, ProtocolDriver<? extends Credentials> driver) {
@@ -29,7 +31,18 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
 
     @Override
     public void initialize() {
+        this.active = true;
         this.connection.connect(Evelon.instance().credentialsService().credentials(this));
+    }
+
+    @Override
+    public void close() {
+        this.connection.close();
+    }
+
+    @Override
+    public <T> void initializeRepository(Repository<T> repository) {
+        // todo work in progress
     }
 
     @Override
