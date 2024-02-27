@@ -12,7 +12,8 @@ public final class LocalStorageBuilder<T> extends RepositoryBuilder<T> {
         super(clazz, true, layerClasses);
     }
 
-    public void setSynchronizationAdapter(LocalSynchronization localSynchronization) {
+    public RepositoryBuilder<T> setSynchronizationAdapter(LocalSynchronization localSynchronization) {
         //todo
+        return this;
     }
 }
