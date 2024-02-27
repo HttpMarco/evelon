@@ -14,4 +14,12 @@ public final class CredentialsService {
             this.config.append(list -> list.credentials().add(layer.templateCredentials()));
         }
     }
+
+    public boolean isPresent(ConnectableEvelonLayer<?, ?, ?> layer) {
+        return config.value().credentials().stream().anyMatch(it -> it.enabled() && it.id().equals(layer.templateCredentials().id()));
+    }
+
+    public Credentials credentials(ConnectableEvelonLayer<?, ?, ?> layer) {
+        return config.value().credentials().stream().filter(it -> it.id().equals(layer.templateCredentials().id())).findFirst().orElseThrow();
+    }
 }
