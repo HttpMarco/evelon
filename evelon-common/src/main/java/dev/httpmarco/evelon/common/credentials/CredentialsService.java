@@ -4,14 +4,14 @@ import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
 import dev.httpmarco.osgon.files.json.JsonDocument;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
 public final class CredentialsService {
 
-    private final JsonDocument<List<Credentials>> config = new JsonDocument<>(new ArrayList<>(), Path.of("credentials.json"));
+    private final JsonDocument<CredentialsConfiguration> config = new JsonDocument<>(new CredentialsConfiguration(), Path.of("credentials.json"), new CredentialsTypeAdapter());
 
     public void addCredentials(ConnectableEvelonLayer<?, ?, ?> layer) {
-        this.config.append(list -> list.add(layer.templateCredentials()));
+        if (config.value().credentials().stream().noneMatch(it -> it.id().equals(layer.templateCredentials().id()))) {
+            this.config.append(list -> list.credentials().add(layer.templateCredentials()));
+        }
     }
 }
