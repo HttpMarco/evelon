@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.sql.parent.layer;
 
+import dev.httpmarco.evelon.common.Evelon;
 import dev.httpmarco.evelon.common.credentials.Credentials;
 import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
 import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
@@ -21,12 +22,14 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
     private String id;
     private final HikariConnection connection;
 
-    public SqlParentConnectionLayer(String id, ProtocolDriver driver) {
+    public SqlParentConnectionLayer(String id, ProtocolDriver<? extends Credentials> driver) {
         this.id = id;
-
-        // todo search credentials
         this.connection = new HikariConnection(driver);
-        this.connection.connect(templateCredentials());
+    }
+
+    @Override
+    public void initialize() {
+        this.connection.connect(Evelon.instance().credentialsService().credentials(this));
     }
 
     @Override
