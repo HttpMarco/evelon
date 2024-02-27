@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
 import dev.httpmarco.evelon.common.layers.EvelonLayer;
 import dev.httpmarco.evelon.common.query.SortedOrder;
 import dev.httpmarco.evelon.common.query.DataQuery;
+import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.common.repository.RepositoryImpl;
 import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.Getter;
@@ -29,6 +30,21 @@ public class LocalCacheRepositoryImpl<T> extends RepositoryImpl<T> implements Lo
 
     @Override
     public void initialize() {
+        // nothing to do here
+    }
+
+    @Override
+    public boolean active() {
+        return true;
+    }
+
+    @Override
+    public void close() {
+        this.localData.clear();
+    }
+
+    @Override
+    public <T1> void initializeRepository(Repository<T1> repository) {
         // nothing to do here
     }
 
