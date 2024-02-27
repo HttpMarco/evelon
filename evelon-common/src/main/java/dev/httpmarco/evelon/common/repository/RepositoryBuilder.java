@@ -1,11 +1,10 @@
 package dev.httpmarco.evelon.common.repository;
 
 import dev.httpmarco.evelon.common.Evelon;
+import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
 import dev.httpmarco.evelon.common.layers.EvelonLayer;
 import dev.httpmarco.evelon.common.local.LocalCacheRepositoryImpl;
 import dev.httpmarco.evelon.common.local.LocalStorageBuilder;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -42,7 +41,18 @@ public class RepositoryBuilder<T> {
     public Repository<T> build() {
         var repository = useLocalStorage ? new LocalCacheRepositoryImpl<>(clazz) : new RepositoryImpl<>(clazz);
         for (var layerClass : layerClasses) {
-            repository.addLayer(Evelon.instance().layerPool().getLayer(layerClass));
+
+            var layer = Evelon.instance().layerPool().getLayer(layerClass);
+            if (layer instanceof ConnectableEvelonLayer<?, ?, ?> connectableLayer) {
+                if(Evelon.instance().credentialsService().isPresent(connectableLayer)) {
+                    repository.addLayer(layer);
+                    layer.initialize();
+                }else {
+                    System.err.println("Credentials not found for layer: " + layer.id() + " - " + layer.getClass().getSimpleName() + " (layer disabled)");
+                }
+            } else {
+                repository.addLayer(layer);
+            }
         }
         return repository;
     }
