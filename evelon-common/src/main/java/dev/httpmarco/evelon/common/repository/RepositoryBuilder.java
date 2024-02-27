@@ -47,7 +47,10 @@ public class RepositoryBuilder<T> {
                 if(Evelon.instance().credentialsService().isPresent(connectableLayer)) {
                     repository.addLayer(layer);
 
-                    layer.initializeRepository(repository);
+                    if(layer instanceof InitializeRepository initializeRepository) {
+                        initializeRepository.initializeRepository(repository);
+                    }
+
                     if(!layer.active()) {
                         layer.initialize();
                     }
