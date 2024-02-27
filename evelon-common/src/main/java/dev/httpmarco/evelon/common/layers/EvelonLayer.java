@@ -3,17 +3,11 @@ package dev.httpmarco.evelon.common.layers;
 import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
 import dev.httpmarco.evelon.common.query.SortedOrder;
 import dev.httpmarco.evelon.common.query.DataQuery;
-import dev.httpmarco.evelon.common.repository.Repository;
 
 import java.util.List;
 import java.util.function.Predicate;
 
 public interface EvelonLayer<T> extends EvelonLayerSession {
-
-    /**
-     * Initialize the repository for the layer.
-     */
-    <T> void initializeRepository(Repository<T> repository);
 
     /**
      * Gets the id of the layer.

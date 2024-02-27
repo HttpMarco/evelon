@@ -7,6 +7,7 @@ import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.query.DataQuery;
 import dev.httpmarco.evelon.common.query.SortedOrder;
+import dev.httpmarco.evelon.common.repository.InitializeRepository;
 import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import java.util.function.Predicate;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer<Object, Credentials, Connection> {
+public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer<Object, Credentials, Connection>, InitializeRepository {
 
     private final String id;
     private boolean active = false;
