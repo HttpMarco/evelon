@@ -28,6 +28,11 @@ public class LocalCacheRepositoryImpl<T> extends RepositoryImpl<T> implements Lo
     }
 
     @Override
+    public void initialize() {
+        // nothing to do here
+    }
+
+    @Override
     public void create(DataQuery<T> query, T value) {
         localData.add(LocalStorageEntry.of(value));
     }
