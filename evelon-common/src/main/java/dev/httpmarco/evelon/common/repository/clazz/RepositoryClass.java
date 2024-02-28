@@ -1,7 +1,5 @@
 package dev.httpmarco.evelon.common.repository.clazz;
 
-import lombok.SneakyThrows;
-
 public interface RepositoryClass<T> {
 
     Class<T> clazz();

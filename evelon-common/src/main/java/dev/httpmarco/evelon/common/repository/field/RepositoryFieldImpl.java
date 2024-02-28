@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 
@@ -15,13 +16,14 @@ public class RepositoryFieldImpl implements RepositoryField {
 
     private final Field field;
     private final String id;
-    private final Class<?> clazz;
+    private final Class<?> fieldType;
+
     private final RepositoryClass<?> parentClass;
 
     public RepositoryFieldImpl(Field field, RepositoryClass<?> parentClass) {
         this.field = field;
         this.id = this.field.getName();
-        this.clazz = this.field.getType();
+        this.fieldType = this.field.getType();
         this.parentClass = parentClass;
     }
 
@@ -32,7 +34,7 @@ public class RepositoryFieldImpl implements RepositoryField {
      * @param parentClass the parent class of list field
      */
     public RepositoryFieldImpl(Class<?> clazz, String id, RepositoryClass<?> parentClass) {
-        this.clazz = clazz;
+        this.fieldType = clazz;
         this.id = id + "_value";
         this.field = null;
         this.parentClass = parentClass;
@@ -40,11 +42,7 @@ public class RepositoryFieldImpl implements RepositoryField {
 
     @Override
     public Stage<?> stage(Model<?> model) {
-        return model.findStage(this.clazz);
+        return model.findStage(this.fieldType);
     }
 
-    @Override
-    public Class<?> fieldType() {
-        return this.clazz;
-    }
 }
