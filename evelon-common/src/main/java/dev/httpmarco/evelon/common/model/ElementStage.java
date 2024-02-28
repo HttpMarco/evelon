@@ -4,6 +4,6 @@ public interface ElementStage<E, B, T> extends Stage<B> {
 
     E serializeElement(Object element);
 
-    T classBuilderType();
+    T classBuilderType(E element);
 
 }
