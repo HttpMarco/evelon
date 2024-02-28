@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.sql.parent.types;
+package dev.httpmarco.evelon.sql.parent;
 
 import lombok.Getter;
 
