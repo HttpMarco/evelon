@@ -3,7 +3,7 @@ package dev.httpmarco.evelon.common.repository;
 import dev.httpmarco.evelon.common.layers.EvelonLayer;
 import dev.httpmarco.evelon.common.query.Query;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
-import dev.httpmarco.evelon.common.repository.clazz.RepositoryClassImpl;
+import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClassImpl;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
@@ -18,7 +18,7 @@ public class RepositoryImpl<T> implements Repository<T> {
     private final List<EvelonLayer<?>> currentLayers = new ArrayList<>();
 
     public RepositoryImpl(Class<T> clazz) {
-        this.clazz = new RepositoryClassImpl<>(clazz);
+        this.clazz = new RepositoryObjectClassImpl<>(clazz);
     }
 
     @Override
