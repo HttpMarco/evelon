@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.common.model;
 
+import dev.httpmarco.evelon.common.builder.Builder;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class Model<B> {
+public abstract class Model<B extends Builder> {
 
     private final List<Stage<B>> stages = new ArrayList<>();
 

@@ -8,9 +8,9 @@ import dev.httpmarco.evelon.common.query.DataQuery;
 import dev.httpmarco.evelon.common.query.SortedOrder;
 import dev.httpmarco.evelon.common.repository.InitializeRepository;
 import dev.httpmarco.evelon.common.repository.Repository;
+import dev.httpmarco.evelon.sql.parent.SqlQueryBuilder;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.model.SqlModel;
-import dev.httpmarco.evelon.sql.parent.SqlQueryBuilder;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 

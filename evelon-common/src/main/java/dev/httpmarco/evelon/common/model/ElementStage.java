@@ -1,6 +1,8 @@
 package dev.httpmarco.evelon.common.model;
 
-public interface ElementStage<E, B, T> extends Stage<B> {
+import dev.httpmarco.evelon.common.builder.Builder;
+
+public interface ElementStage<E, B extends Builder, T> extends Stage<B> {
 
     E serializeElement(Object element);
 

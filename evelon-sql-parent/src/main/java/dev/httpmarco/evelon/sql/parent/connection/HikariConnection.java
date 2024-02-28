@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 
 import java.sql.Connection;
 
-public class HikariConnection implements EvelonLayerConnection<Credentials, Connection> {
+public final class HikariConnection implements EvelonLayerConnection<Credentials, Connection> {
 
     private HikariDataSource dataSource;
 
