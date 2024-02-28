@@ -45,6 +45,7 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
     @Override
     public <T> void initializeRepository(Repository<T> repository) {
         // todo work in progress
+        model().findStage(repository.clazz().clazz());
     }
 
     @Override
