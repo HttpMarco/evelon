@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.common.repository.field;
 
+import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.Stage;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -23,8 +24,8 @@ public class RepositoryFieldImpl implements RepositoryField {
     }
 
     @Override
-    public Stage stage() {
-        return null;
+    public Stage<?> stage(Model<?> model) {
+        return model.findStage(this.clazz);
     }
 
     @Override

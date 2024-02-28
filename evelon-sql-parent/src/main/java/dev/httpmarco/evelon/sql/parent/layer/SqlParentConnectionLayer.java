@@ -10,7 +10,7 @@ import dev.httpmarco.evelon.common.repository.InitializeRepository;
 import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.model.SqlModel;
-import dev.httpmarco.evelon.sql.parent.sql.SqlQueryBuilder;
+import dev.httpmarco.evelon.sql.parent.SqlQueryBuilder;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
@@ -45,7 +45,7 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
 
     @Override
     public <T> void initializeRepository(Repository<T> repository) {
-        model().findStage(repository.clazz().clazz()).asSubStage().initialize(null, repository.clazz().asObjectClass(), SqlQueryBuilder.emptyInstance());
+        model().findStage(repository.clazz().clazz()).asSubStage().initialize(null, this.model, repository.clazz().asObjectClass(), SqlQueryBuilder.emptyInstance(model));
     }
 
     @Override

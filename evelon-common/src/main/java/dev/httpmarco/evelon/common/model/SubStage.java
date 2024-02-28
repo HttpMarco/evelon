@@ -7,11 +7,11 @@ import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
  */
 public interface SubStage<R> extends Stage<R> {
 
-    void initialize(String stageId, RepositoryObjectClass<?> clazz, R queries);
+    void initialize(String stageId, Model<?> model, RepositoryObjectClass<?> clazz, R queries);
 
     @SuppressWarnings("unchecked")
-    default void initializeWithMapping(String stageId, RepositoryObjectClass<?> clazz, Object queries) {
-        this.initialize(stageId, clazz, (R) queries);
+    default void initializeWithMapping(String stageId, Model<?> model, RepositoryObjectClass<?> clazz, Object queries) {
+        this.initialize(stageId, model, clazz, (R) queries);
     }
 
 }
