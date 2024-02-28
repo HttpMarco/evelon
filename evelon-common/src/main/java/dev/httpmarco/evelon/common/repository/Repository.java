@@ -10,9 +10,6 @@ public interface Repository<T> {
 
     void addLayer(EvelonLayer<?> layer);
 
-
-
-
     Query query();
 
 }
