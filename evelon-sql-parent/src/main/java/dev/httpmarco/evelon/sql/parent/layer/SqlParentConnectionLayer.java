@@ -46,7 +46,7 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
     @Override
     public <T> void initializeRepository(Repository<T> repository) {
         var builder = SqlQueryBuilder.emptyInstance(model);
-        model().findStage(repository.clazz().clazz()).asSubStage().initialize(repository.name(), this.model, repository.clazz().asObjectClass(), builder);
+        model().findStage(repository.clazz().clazz()).asSubStage().initialize(repository.name(), this.model, null, repository.clazz().asObjectClass(), builder);
         connection.transmitter().executeUpdate(builder.tableQuery(repository.name()));
     }
 

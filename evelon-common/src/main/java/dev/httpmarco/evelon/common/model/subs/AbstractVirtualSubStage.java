@@ -9,10 +9,11 @@ import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
 public abstract class AbstractVirtualSubStage<R extends Builder> implements SubStage<R> {
 
     @Override
-    public void initialize(String stageId, Model<?> model, RepositoryObjectClass<?> clazz, R queries) {
+    public void initialize(String stageId, Model<?> model, RepositoryField ownField, RepositoryObjectClass<?> clazz, R queries) {
         for (var field : clazz.fields()) {
             if (field.stage(model) instanceof SubStage<?> subStage) {
-                subStage.initializeWithMapping(stageId + "_" + field.id(), model, null, queries.subBuilder());
+                // todo set clazz !important
+                subStage.initializeWithMapping(stageId + "_" + field.id(), model, null, null, queries.subBuilder());
             } else {
                 initializeSubElement(queries, field);
             }
