@@ -1,13 +1,30 @@
 package dev.httpmarco.evelon.common.model;
 
 import dev.httpmarco.evelon.common.repository.RepositoryField;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public interface Model {
+@Getter
+@Accessors(fluent = true)
+public abstract class Model {
 
-    List<Stage> stages();
+    private List<Stage> stages = new ArrayList<>();
 
-    Stage findStage(RepositoryField field);
+    public Model() {
+        this.applyPlatformStages();
+    }
 
+    public abstract void applyPlatformStages();
+
+    public Stage findStage(RepositoryField field) {
+        return stages.stream().filter(stage -> stage.isElement(field.fieldType())).findFirst().orElse(null);
+    }
+
+    public Stage findStage(Class<?> clazz) {
+        return stages.stream().filter(stage -> stage.isElement(clazz)).findFirst().orElse(null);
+    }
 }

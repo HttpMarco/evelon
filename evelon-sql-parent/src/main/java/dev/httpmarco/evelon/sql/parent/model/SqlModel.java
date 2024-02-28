@@ -11,12 +11,11 @@ import java.util.List;
 
 @Getter
 @Accessors(fluent = true)
-public final class SqlModel implements Model {
-
-    private final List<Stage> stages = new ArrayList<>();
+public final class SqlModel extends Model {
 
     @Override
-    public Stage findStage(RepositoryField field) {
-        return null;
+    public void applyPlatformStages() {
+        stages().add(new SqlParentVirtualSubStage());
+        stages().add(new SqlParentParameterStage());
     }
 }
