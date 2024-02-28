@@ -2,7 +2,7 @@ package dev.httpmarco.evelon.demo;
 
 import dev.httpmarco.evelon.common.annotations.PrimaryKey;
 
-public class SimpleTestRepository {
+public final class SimpleTestRepository {
 
     @PrimaryKey
     private String username;
