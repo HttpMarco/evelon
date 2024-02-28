@@ -13,7 +13,7 @@ public abstract class AbstractVirtualSubStage<R extends Builder> implements SubS
         for (var field : clazz.fields()) {
             if (field.stage(model) instanceof SubStage<?> subStage) {
                 // todo set clazz !important
-                subStage.initializeWithMapping(stageId + "_" + field.id(), model, null, null, queries.subBuilder());
+                subStage.initializeWithMapping(stageId + "_" + field.id(), model, field, null, queries.subBuilder(field.id()));
             } else {
                 initializeSubElement(queries, field);
             }
