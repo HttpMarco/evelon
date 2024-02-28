@@ -47,12 +47,12 @@ public class RepositoryBuilder<T> {
                 if(Evelon.instance().credentialsService().isPresent(connectableLayer)) {
                     repository.addLayer(layer);
 
-                    if(layer instanceof InitializeRepository initializeRepository) {
-                        initializeRepository.initializeRepository(repository);
-                    }
-
                     if(!layer.active()) {
                         layer.initialize();
+                    }
+
+                    if(layer instanceof InitializeRepository initializeRepository) {
+                        initializeRepository.initializeRepository(repository);
                     }
                 }else {
                     System.err.println("Credentials not found for layer: " + layer.id() + " - " + layer.getClass().getSimpleName() + " (layer disabled)");
