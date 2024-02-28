@@ -10,9 +10,9 @@ import java.util.List;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class Model {
+public abstract class Model<B> {
 
-    private List<Stage> stages = new ArrayList<>();
+    private final List<Stage<B>> stages = new ArrayList<>();
 
     public Model() {
         this.applyPlatformStages();
@@ -20,11 +20,11 @@ public abstract class Model {
 
     public abstract void applyPlatformStages();
 
-    public Stage findStage(RepositoryField field) {
+    public Stage<B> findStage(RepositoryField field) {
         return stages.stream().filter(stage -> stage.isElement(field.fieldType())).findFirst().orElse(null);
     }
 
-    public Stage findStage(Class<?> clazz) {
+    public Stage<B> findStage(Class<?> clazz) {
         return stages.stream().filter(stage -> stage.isElement(clazz)).findFirst().orElse(null);
     }
 }
