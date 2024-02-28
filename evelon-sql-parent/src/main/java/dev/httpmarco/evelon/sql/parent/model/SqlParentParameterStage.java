@@ -3,6 +3,7 @@ package dev.httpmarco.evelon.sql.parent.model;
 import dev.httpmarco.evelon.common.model.elements.AbstractSimpleParameterStage;
 import dev.httpmarco.evelon.sql.parent.SqlQueryBuilder;
 import dev.httpmarco.evelon.sql.parent.SqlType;
+import dev.httpmarco.evelon.sql.parent.exception.UnknownSqlTypeException;
 
 public final class SqlParentParameterStage extends AbstractSimpleParameterStage<SqlQueryBuilder, SqlType> {
 
@@ -13,8 +14,11 @@ public final class SqlParentParameterStage extends AbstractSimpleParameterStage<
     }
 
     @Override
-    public SqlType classBuilderType(Object element) {
-        //todo
-        return SqlType.BIT;
+    public SqlType classBuilderType(Class<?> element) {
+        var type = SqlType.find(element);
+        if (type == SqlType.UNKNOWN) {
+            throw new UnknownSqlTypeException(element);
+        }
+        return type;
     }
 }

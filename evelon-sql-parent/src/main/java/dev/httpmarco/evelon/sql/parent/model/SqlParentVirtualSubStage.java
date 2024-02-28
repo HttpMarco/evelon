@@ -18,6 +18,5 @@ public final class SqlParentVirtualSubStage extends AbstractVirtualSubStage<SqlQ
                 query.withField(field);
             }
         }
-        System.err.println(query.createTable("test"));
     }
 }
