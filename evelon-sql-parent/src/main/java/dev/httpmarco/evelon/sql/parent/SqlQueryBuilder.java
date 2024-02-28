@@ -3,6 +3,7 @@ package dev.httpmarco.evelon.sql.parent;
 import dev.httpmarco.evelon.common.model.ElementStage;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
+import dev.httpmarco.evelon.common.repository.field.PrimaryRepositoryFieldImpl;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -38,13 +39,18 @@ public class SqlQueryBuilder {
         return new SqlQueryBuilder(model, this);
     }
 
+    public String tableQuery(String id) {
+        return "CREATE TABLE IF NOT EXISTS " + id + "(" + String.join(", ",
+                queryFields.stream().map(this::formatTableCreationLayout).toList()) + ");";
+    }
+
     @SuppressWarnings("unchecked")
-    public String createTable(String id) {
-        return "CREATE TABLE IF NOT EXISTS " + id + "(" + String.join(",",
-                queryFields
-                        .stream()
-                        .map(it -> it.id() + " " + ((ElementStage<?, SqlQueryBuilder, SqlType>) it.stage(model).asElementStage()).classBuilderType())
-                        .toList()) +
-                ");";
+    private String formatTableCreationLayout(RepositoryField field) {
+        var builder = new StringBuilder(field.id() + " ");
+        builder.append(((ElementStage<?, SqlQueryBuilder, SqlType>) field.stage(model).asElementStage()).classBuilderType(field.fieldType()));
+        if (field instanceof PrimaryRepositoryFieldImpl) {
+            builder.append(" PRIMARY KEY");
+        }
+        return builder.toString();
     }
 }

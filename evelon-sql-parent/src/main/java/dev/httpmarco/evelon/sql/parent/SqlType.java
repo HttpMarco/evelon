@@ -71,4 +71,8 @@ public enum SqlType {
     SqlType() {
         this.type = this.name();
     }
+
+    public static SqlType find(Class<?> clazz) {
+        return CACHED_TYPES.stream().filter(type -> type.compatibleClasses != null && type.compatibleClasses.contains(clazz)).findFirst().orElse(UNKNOWN);
+    }
 }
