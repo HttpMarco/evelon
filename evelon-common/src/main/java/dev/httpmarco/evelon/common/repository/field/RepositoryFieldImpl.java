@@ -13,13 +13,15 @@ import java.lang.reflect.Field;
 @Accessors(fluent = true)
 public class RepositoryFieldImpl implements RepositoryField {
 
+    private final Field field;
     private final String id;
     private final Class<?> clazz;
     private final RepositoryClass<?> parentClass;
 
     public RepositoryFieldImpl(Field field, RepositoryClass<?> parentClass) {
-        this.id = field.getName();
-        this.clazz = field.getType();
+        this.field = field;
+        this.id = this.field.getName();
+        this.clazz = this.field.getType();
         this.parentClass = parentClass;
     }
 

@@ -4,6 +4,8 @@ import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.Stage;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 
+import java.lang.reflect.Field;
+
 /**
  * The "RepositoryField" interface defines basic methods required by a field in a repository.
  * Such a RepositoryField represents an attribute within a RepositoryClass.
@@ -38,5 +40,7 @@ public interface RepositoryField {
      * @return The class of field
      */
     Class<?> fieldType();
+
+    Field field();
 
 }
