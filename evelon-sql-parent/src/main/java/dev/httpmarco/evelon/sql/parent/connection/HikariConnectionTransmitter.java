@@ -21,6 +21,7 @@ public final class HikariConnectionTransmitter {
     }
 
     public void transferPreparedStatement(StatementTransmitter statementTransmitter, String query, Object... arguments) {
+        Evelon.LOGGER.debug("Executing query: {}", query);
         try (var connection = hikariConnection.getConnection(); var statement = connection.prepareStatement(query)) {
             for (int i = 0; i < arguments.length; i++) {
                 statement.setString(i + 1, Objects.toString(arguments[i]));

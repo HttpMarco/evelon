@@ -7,7 +7,9 @@ import dev.httpmarco.evelon.common.layers.connection.EvelonLayerConnection;
 import dev.httpmarco.evelon.sql.parent.connection.config.DefaultHikariConfig;
 import dev.httpmarco.evelon.sql.parent.credentials.AbstractSqlAuthParentCredentials;
 import dev.httpmarco.evelon.sql.parent.layer.ProtocolDriver;
+import lombok.Getter;
 import lombok.SneakyThrows;
+import lombok.experimental.Accessors;
 
 import java.sql.Connection;
 
@@ -18,9 +20,14 @@ public class HikariConnection implements EvelonLayerConnection<Credentials, Conn
     private final HikariConfig config;
     private final ProtocolDriver<?> protocolDriver;
 
+    @Getter
+    @Accessors(fluent = true)
+    private final HikariConnectionTransmitter transmitter;
+
     public HikariConnection(ProtocolDriver<?> driver) {
         this.config = new DefaultHikariConfig();
         this.protocolDriver = driver;
+        this.transmitter = new HikariConnectionTransmitter(this);
     }
 
     @SneakyThrows
