@@ -7,4 +7,8 @@ public interface Stage<R> {
     default SubStage<R> asSubStage() {
         return (SubStage<R>) this;
     }
+
+    default ElementStage<?, R, ?> asElementStage() {
+        return (ElementStage<?, R, ?>) this;
+    }
 }
