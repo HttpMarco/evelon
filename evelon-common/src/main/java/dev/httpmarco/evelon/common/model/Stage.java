@@ -1,6 +1,8 @@
 package dev.httpmarco.evelon.common.model;
 
-public interface Stage<R> {
+import dev.httpmarco.evelon.common.builder.Builder;
+
+public interface Stage<R extends Builder> {
 
     boolean isElement(Class<?> type);
 
