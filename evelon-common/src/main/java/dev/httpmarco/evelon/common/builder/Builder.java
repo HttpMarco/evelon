@@ -20,4 +20,7 @@ public interface Builder<T> {
      */
     Builder<T> withField(RepositoryField repositoryField);
 
+
+    Builder<T> foreignLinkings(RepositoryField... field);
+
 }

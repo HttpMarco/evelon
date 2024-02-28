@@ -12,7 +12,7 @@ import dev.httpmarco.evelon.common.utils.GenericReader;
 
 import java.util.Collection;
 
-public abstract class CollectionSubStage<R extends Builder> implements SubStage<R> {
+public abstract class CollectionSubStage<R extends Builder<R>> implements SubStage<R> {
 
     @Override
     public void initialize(String stageId, Model<?> model, RepositoryField ownField, RepositoryObjectClass<?> clazz, R queries) {
@@ -22,14 +22,15 @@ public abstract class CollectionSubStage<R extends Builder> implements SubStage<
             throw new IllegalStateException("Collection stage tpe has multiple elements. That is not a requirement of collections.");
         }
 
+        // add foreign kek linking
+        queries.foreignLinkings(ownField.parentClass().asObjectClass().primaryFields());
+
         var stage = model.findStage(collectionType[0]);
         if (stage instanceof ElementStage<?, ?, ?>) {
             queries.withField(new RepositoryFieldImpl(collectionType[0], ownField.id(), clazz));
         } else if (stage instanceof SubStage<?> substage) {
-            // todo
-        } else {
-            throw new UnsupportedOperationException("This stage is not supported yet.");
-        }
+            // todo: implementation
+        } else throw new RuntimeException("This stage is not supported yet.");
     }
 
     @Override

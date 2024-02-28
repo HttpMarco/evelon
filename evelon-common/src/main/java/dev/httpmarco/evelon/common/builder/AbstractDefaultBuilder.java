@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Accessors(fluent = true)
@@ -19,11 +20,18 @@ public abstract class AbstractDefaultBuilder<T extends Builder<T>> implements Bu
 
     private final Model<T> model;
     private final List<RepositoryField> queryFields = new ArrayList<>();
+    private final List<RepositoryField> foreignLinking = new ArrayList<>();
 
     private final T parent;
     private final List<T> children = new ArrayList<>();
 
     public @Nullable T parent() {
         return this.parent;
+    }
+
+    @Override
+    public Builder<T> foreignLinkings(RepositoryField... field) {
+        foreignLinking.addAll(Arrays.stream(field).toList());
+        return this;
     }
 }
