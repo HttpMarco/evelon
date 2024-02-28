@@ -25,6 +25,19 @@ public class RepositoryFieldImpl implements RepositoryField {
         this.parentClass = parentClass;
     }
 
+    /**
+     * Constructor only for not field elements (maps or collections)
+     * @param clazz the generic type parameter
+     * @param id parent name
+     * @param parentClass the parent class of list field
+     */
+    public RepositoryFieldImpl(Class<?> clazz, String id, RepositoryClass<?> parentClass) {
+        this.clazz = clazz;
+        this.id = id + "_value";
+        this.field = null;
+        this.parentClass = parentClass;
+    }
+
     @Override
     public Stage<?> stage(Model<?> model) {
         return model.findStage(this.clazz);

@@ -12,6 +12,7 @@ public final class SqlModel extends Model<SqlQueryBuilder> {
     @Override
     public void applyPlatformStages() {
         stages().add(new SqlParentParameterStage());
+        stages().add(new SqlParentCollectionSubStage());
         stages().add(new SqlParentVirtualSubStage());
     }
 }
