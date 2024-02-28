@@ -31,4 +31,9 @@ public class RepositoryImpl<T> implements Repository<T> {
         //todo
         return null;
     }
+
+    @Override
+    public String name() {
+        return clazz().clazz().getSimpleName();
+    }
 }

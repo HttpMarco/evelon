@@ -12,4 +12,6 @@ public interface Repository<T> {
 
     Query query();
 
+    String name();
+
 }
