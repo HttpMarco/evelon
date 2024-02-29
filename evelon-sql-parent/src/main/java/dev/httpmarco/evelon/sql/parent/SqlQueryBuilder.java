@@ -23,19 +23,20 @@ public final class SqlQueryBuilder extends AbstractDefaultBuilder<SqlQueryBuilde
     }
 
     private String tableQuery(String id) {
-        var builder = new StringBuilder("CREATE TABLE IF NOT EXISTS %s (");
+        var query = "CREATE TABLE IF NOT EXISTS %s (%s);";
+        var queryInsert = new StringBuilder();
 
 
-        builder.append(String.join(",", this.queryFields().stream().map(this::formatTableCreationLayout).toList()));
+        queryInsert.append(String.join(",", this.queryFields().stream().map(this::formatTableCreationLayout).toList()));
 
         if (!foreignLinking().isEmpty()) {
-            builder.append(", ");
-            builder.append(String.join(",", this.foreignLinking().stream().map(this::formatTableCreationLayout).toList()));
-            builder.append(", ");
-            builder.append(String.join(", ", foreignLinking().stream().map(it -> "FOREIGN KEY(" + it.id() + ") REFERENCES NULL(" + it.id() + ") ON DELETE CASCADE" ).toList()));
+          //  builder.append(", ");
+            //builder.append(String.join(",", this.foreignLinking().stream().map(this::formatTableCreationLayout).toList()));
+            //builder.append(", ");
+            //builder.append(String.join(", ", foreignLinking().stream().map(it -> "FOREIGN KEY(" + it.id() + ") REFERENCES NULL(" + it.id() + ") ON DELETE CASCADE").toList()));
         }
 
-        return builder.append(");").toString().formatted(id);
+        return query.formatted(id, queryInsert);
     }
 
 

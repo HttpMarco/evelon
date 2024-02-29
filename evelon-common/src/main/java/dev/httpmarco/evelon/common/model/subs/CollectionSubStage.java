@@ -27,7 +27,8 @@ public abstract class CollectionSubStage<R extends Builder<R>> implements SubSta
 
         var stage = model.findStage(collectionType[0]);
         if (stage instanceof ElementStage<?, ?, ?>) {
-            queries.withField(new RepositoryFieldImpl(collectionType[0], ownField.id(), clazz));
+            // TODO
+            // queries.withField(new RepositoryFieldImpl(collectionType[0], ownField.id(), clazz));
         } else if (stage instanceof SubStage<?> substage) {
             // todo: implementation
         } else throw new RuntimeException("This stage is not supported yet.");
@@ -37,6 +38,4 @@ public abstract class CollectionSubStage<R extends Builder<R>> implements SubSta
     public boolean isElement(Class<?> type) {
         return Collection.class.isAssignableFrom(type);
     }
-
-
 }

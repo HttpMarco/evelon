@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class RepositoryObjectClassImpl<C> extends RepositoryClassImpl<C> implements RepositoryObjectClass<C> {
 
     private final RepositoryField[] fields;
-    private final RepositoryField[] primaryFields;
+    private final PrimaryRepositoryFieldImpl[] primaryFields;
 
     public RepositoryObjectClassImpl(Class<C> clazz) {
         super(clazz);
@@ -25,7 +25,7 @@ public class RepositoryObjectClassImpl<C> extends RepositoryClassImpl<C> impleme
 
         this.primaryFields = Arrays.stream(fields)
                 .filter(repositoryField -> repositoryField instanceof PrimaryRepositoryFieldImpl)
-                .toArray(RepositoryField[]::new);
+                .toArray(PrimaryRepositoryFieldImpl[]::new);
     }
 
 
