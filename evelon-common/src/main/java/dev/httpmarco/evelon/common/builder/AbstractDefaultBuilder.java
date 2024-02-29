@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.common.builder;
 
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
+import dev.httpmarco.evelon.common.repository.field.ForeignLinkingRepositoryFieldImpl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -20,7 +21,7 @@ public abstract class AbstractDefaultBuilder<T extends Builder<T>> implements Bu
 
     private final Model<T> model;
     private final List<RepositoryField> queryFields = new ArrayList<>();
-    private final List<RepositoryField> foreignLinking = new ArrayList<>();
+    private final List<ForeignLinkingRepositoryFieldImpl> foreignLinking = new ArrayList<>();
 
     private final T parent;
     private final List<T> children = new ArrayList<>();
@@ -30,7 +31,7 @@ public abstract class AbstractDefaultBuilder<T extends Builder<T>> implements Bu
     }
 
     @Override
-    public Builder<T> foreignLinkings(RepositoryField... field) {
+    public Builder<T> foreignLinkings(ForeignLinkingRepositoryFieldImpl... field) {
         foreignLinking.addAll(Arrays.stream(field).toList());
         return this;
     }

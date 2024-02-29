@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.common.builder;
 
 import dev.httpmarco.evelon.common.repository.RepositoryField;
+import dev.httpmarco.evelon.common.repository.field.ForeignLinkingRepositoryFieldImpl;
 
 /**
  * represent a builder of elements in a data query/update
@@ -21,6 +22,6 @@ public interface Builder<T> {
     Builder<T> withField(RepositoryField repositoryField);
 
 
-    Builder<T> foreignLinkings(RepositoryField... field);
+    Builder<T> foreignLinkings(ForeignLinkingRepositoryFieldImpl... field);
 
 }
