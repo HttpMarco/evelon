@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.common.repository.field;
 
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.Stage;
+import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
@@ -17,26 +18,12 @@ public class RepositoryFieldImpl implements RepositoryField {
     private final Field field;
     private final String id;
     private final Class<?> fieldType;
+    private final RepositoryObjectClass<?> parentClass;
 
-    private final RepositoryClass<?> parentClass;
-
-    public RepositoryFieldImpl(Field field, RepositoryClass<?> parentClass) {
+    public RepositoryFieldImpl(Field field, RepositoryObjectClass<?> parentClass) {
         this.field = field;
         this.id = this.field.getName();
         this.fieldType = this.field.getType();
-        this.parentClass = parentClass;
-    }
-
-    /**
-     * Constructor only for not field elements (maps or collections)
-     * @param clazz the generic type parameter
-     * @param id parent name
-     * @param parentClass the parent class of list field
-     */
-    public RepositoryFieldImpl(Class<?> clazz, String id, RepositoryClass<?> parentClass) {
-        this.fieldType = clazz;
-        this.id = id + "_value";
-        this.field = null;
         this.parentClass = parentClass;
     }
 
