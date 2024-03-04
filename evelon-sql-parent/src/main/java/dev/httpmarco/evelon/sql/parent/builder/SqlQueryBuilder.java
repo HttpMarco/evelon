@@ -13,6 +13,8 @@ import java.util.List;
 @Getter
 public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlModel, HikariConnection> {
 
+    private static final String TABLE_CREATION_QUERY = "CREATE TABLE IF NOT EXISTS %s(%s);";
+
     // table initialize options
     private final List<RepositoryClass<?>> rowTypes = new ArrayList<>();
 
@@ -51,7 +53,6 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     }
 
     private String buildTableInitializeQuery() {
-        // todo
-        return "";
+        return TABLE_CREATION_QUERY.formatted("", "");
     }
 }
