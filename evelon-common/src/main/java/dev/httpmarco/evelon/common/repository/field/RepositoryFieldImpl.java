@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.common.repository.field;
 
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.Stage;
+import dev.httpmarco.evelon.common.repository.clazz.RepositoryClassImpl;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -18,12 +19,15 @@ public class RepositoryFieldImpl implements RepositoryField {
     private final Field field;
     private final String id;
     private final Class<?> fieldType;
+
+    private final RepositoryClass<?> clazz;
     private final RepositoryObjectClass<?> parentClass;
 
     public RepositoryFieldImpl(Field field, RepositoryObjectClass<?> parentClass) {
         this.field = field;
         this.id = this.field.getName();
         this.fieldType = this.field.getType();
+        this.clazz = new RepositoryClassImpl<>(this.fieldType);
         this.parentClass = parentClass;
     }
 

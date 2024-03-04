@@ -41,6 +41,8 @@ public interface RepositoryField {
      */
     Class<?> fieldType();
 
+    RepositoryClass<?> clazz();
+
     Field field();
 
 }
