@@ -55,7 +55,7 @@ public class RepositoryBuilder<T> {
                         initializeRepository.initializeRepository(repository);
                     }
                 }else {
-                    System.err.println("Credentials not found for layer: " + layer.id() + " - " + layer.getClass().getSimpleName() + " (layer disabled)");
+                    Evelon.LOGGER.warn("Credentials not found for layer: {} - {} (layer disabled)", layer.id(), layer.getClass().getSimpleName());
                 }
             } else {
                 repository.addLayer(layer);
