@@ -7,7 +7,7 @@ import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
 /**
  * @param <R> response of initialize phase (String for query languages)
  */
-public interface SubStage<R extends Builder> extends Stage<R> {
+public interface SubStage<R extends Builder<?, ?>> extends Stage<R> {
 
     void initialize(String stageId, Model<?> model, RepositoryField ownField, RepositoryObjectClass<?> clazz, R queries);
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class Model<B extends Builder> {
+public abstract class Model<B extends Builder<?, ?>> {
 
     private final List<Stage<B>> stages = new ArrayList<>();
 

@@ -1,27 +1,9 @@
 package dev.httpmarco.evelon.common.builder;
 
-import dev.httpmarco.evelon.common.repository.RepositoryField;
-import dev.httpmarco.evelon.common.repository.field.ForeignLinkingRepositoryFieldImpl;
+public interface Builder<T extends Builder<?, A>, A> {
 
-/**
- * represent a builder of elements in a data query/update
- */
-public interface Builder<T> {
+    T subBuilder(String subId);
 
-    /**
-     * Create a new builder for sub elements, list or maps
-     *
-     * @return new sub builder
-     */
-    Builder<T> subBuilder(String id);
-
-    /**
-     * Add a value in the current storage
-     * @param repositoryField value how added
-     */
-    Builder<T> withField(RepositoryField repositoryField);
-
-
-    Builder<T> foreignLinkings(ForeignLinkingRepositoryFieldImpl... field);
+    void push(A arg);
 
 }
