@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.sql.parent.layer;
 
 import dev.httpmarco.evelon.common.Evelon;
+import dev.httpmarco.evelon.common.builder.BuilderType;
 import dev.httpmarco.evelon.common.credentials.Credentials;
 import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
 import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
@@ -8,7 +9,7 @@ import dev.httpmarco.evelon.common.query.DataQuery;
 import dev.httpmarco.evelon.common.query.SortedOrder;
 import dev.httpmarco.evelon.common.repository.InitializeRepository;
 import dev.httpmarco.evelon.common.repository.Repository;
-import dev.httpmarco.evelon.sql.parent.SqlQueryBuilder;
+import dev.httpmarco.evelon.sql.parent.builder.SqlQueryBuilder;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.model.SqlModel;
 import lombok.Getter;
@@ -45,9 +46,9 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
 
     @Override
     public <T> void initializeRepository(Repository<T> repository) {
-        var builder = SqlQueryBuilder.emptyInstance(repository.name(), model);
+        var builder = SqlQueryBuilder.emptyInstance(repository.name(), model, BuilderType.INITIALIZE);
         model().findStage(repository.clazz().clazz()).asSubStage().initialize(repository.name(), this.model, null, repository.clazz().asObjectClass(), builder);
-        builder.executeTableQuery(connection);
+        builder.push(connection);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package dev.httpmarco.evelon.sql.parent.model;
 
 import dev.httpmarco.evelon.common.model.Model;
-import dev.httpmarco.evelon.sql.parent.SqlQueryBuilder;
+import dev.httpmarco.evelon.sql.parent.builder.SqlQueryBuilder;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
