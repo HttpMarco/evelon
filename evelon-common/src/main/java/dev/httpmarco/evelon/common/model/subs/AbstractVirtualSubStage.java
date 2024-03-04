@@ -4,9 +4,10 @@ import dev.httpmarco.evelon.common.builder.Builder;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.SubStage;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
+import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
 
-public abstract class AbstractVirtualSubStage<R extends Builder> implements SubStage<R> {
+public abstract class AbstractVirtualSubStage<R extends Builder<?, ?>> implements SubStage<R> {
 
     @Override
     public void initialize(String stageId, Model<?> model, RepositoryField ownField, RepositoryObjectClass<?> clazz, R queries) {
@@ -15,12 +16,12 @@ public abstract class AbstractVirtualSubStage<R extends Builder> implements SubS
                 // todo set clazz !important
                 subStage.initializeWithMapping(stageId + "_" + field.id(), model, field, null, queries.subBuilder(field.id()));
             } else {
-                initializeSubElement(queries, field);
+                initializeSubElement(queries, field.clazz());
             }
         }
     }
 
-    public abstract void initializeSubElement(R query, RepositoryField field);
+    public abstract void initializeSubElement(R query, RepositoryClass<?> field);
 
     @Override
     public boolean isElement(Class<?> type) {
