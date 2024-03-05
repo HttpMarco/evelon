@@ -15,6 +15,7 @@ target/
 
 database.h2.mv.db*
 credentials.json*
+database.h2.trace.db*
 
 ### Eclipse ###
 .apt_generated
