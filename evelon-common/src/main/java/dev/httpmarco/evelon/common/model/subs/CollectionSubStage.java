@@ -8,7 +8,7 @@ import dev.httpmarco.evelon.common.repository.RepositoryField;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClassImpl;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
-import dev.httpmarco.evelon.common.utils.GenericReader;
+import dev.httpmarco.osgan.reflections.Reflections;
 
 import java.util.Collection;
 
@@ -16,7 +16,7 @@ public abstract class CollectionSubStage<R extends Builder<R, ?>> implements Sub
 
     @Override
     public void initialize(String stageId, Model<?> model, RepositoryField ownField, RepositoryObjectClass<?> clazz, R queries) {
-        var collectionListType = GenericReader.readGenericFromClass(ownField.field());
+        var collectionListType = Reflections.of(ownField.field()).generics();
 
         if (collectionListType.length != 1) {
             throw new IllegalStateException("Collection stage tpe has multiple elements. That is not a requirement of collections.");
