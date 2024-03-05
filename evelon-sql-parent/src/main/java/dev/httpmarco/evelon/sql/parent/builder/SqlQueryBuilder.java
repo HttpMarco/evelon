@@ -8,6 +8,7 @@ import dev.httpmarco.evelon.common.repository.field.PrimaryRepositoryFieldImpl;
 import dev.httpmarco.evelon.sql.parent.SqlType;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.model.SqlModel;
+import dev.httpmarco.osgan.utils.exceptions.NotImplementedException;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -82,8 +83,13 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
             return queryParameter;
         }).toList());
 
-        // add foreign key linking // todo
-        parameters.addAll(primaryLinking.stream().map(it -> "foreign key (" + it.id() + ") references " + parent().id() + "(" + it.id() + ")").toList());
+        if (parent() != null && primaryLinking.isEmpty()) {
+            // todo: need object ids to link
+            throw new NotImplementedException("Cannot link primary keys without parent");
+        } else {
+            // add foreign key linking
+            parameters.addAll(primaryLinking.stream().map(it -> "foreign key (" + it.id() + ") references " + parent().id() + "(" + it.id() + ")").toList());
+        }
 
         return TABLE_CREATION_QUERY.formatted(id(), String.join(", ", parameters));
     }
