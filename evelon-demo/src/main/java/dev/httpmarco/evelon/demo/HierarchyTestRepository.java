@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class HierarchyTestRepository {
+public final class HierarchyTestRepository {
 
     private String name;
     private int coins;

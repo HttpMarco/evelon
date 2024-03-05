@@ -11,7 +11,7 @@ import java.util.Map;
 @Getter
 @Accessors(fluent = true)
 @AllArgsConstructor
-public class MapBothElementTestRepository {
+public final class MapBothElementTestRepository {
 
     @PrimaryKey
     private final String mapName;

@@ -12,7 +12,7 @@ import java.util.Map;
 @Getter
 @Accessors(fluent = true)
 @AllArgsConstructor
-public class MapKeyObjectValueElementTestRepository {
+public final class MapKeyObjectValueElementTestRepository {
 
     @PrimaryKey
     private final String mapName;
