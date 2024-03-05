@@ -74,14 +74,12 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
         var parameters = new ArrayList<>(primaryLinking.stream().map(it -> it.id() + " " + SqlType.find(it.clazz().clazz())).toList());
 
         // add all default values
-        parameters.addAll(rowTypes.stream().map(it -> {
-            var queryParameter = it.id() + " " + SqlType.find(it.clazz().clazz());
+        parameters.addAll(rowTypes.stream().map(it -> it.id() + " " + SqlType.find(it.clazz().clazz())).toList());
 
-            if (it instanceof PrimaryRepositoryFieldImpl) {
-                queryParameter = queryParameter + " PRIMARY KEY";
-            }
-            return queryParameter;
-        }).toList());
+
+        if (rowTypes.stream().anyMatch(it -> it instanceof PrimaryRepositoryFieldImpl)) {
+            parameters.add(", PRIMARY KEY (" + String.join(", ", rowTypes.stream().filter(it -> it instanceof PrimaryRepositoryFieldImpl).map(it -> "").toList()) + ")");
+        }
 
         if (parent() != null && primaryLinking.isEmpty()) {
             // todo: need object ids to link
