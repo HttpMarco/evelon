@@ -11,6 +11,7 @@ import dev.httpmarco.evelon.sql.parent.model.SqlModel;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -41,8 +42,13 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     }
 
     @Override
+    public void linkPrimaries(PrimaryRepositoryFieldImpl... fields) {
+        this.primaryLinking.addAll(Arrays.asList(fields));
+    }
+
+    @Override
     public SqlQueryBuilder subBuilder(String subId) {
-        SqlQueryBuilder builder = new SqlQueryBuilder(subId + "_" + subId, model(), type());
+        SqlQueryBuilder builder = new SqlQueryBuilder(id() + "_" + subId, model(), type());
         this.children().add(builder);
         return builder;
     }
@@ -62,13 +68,22 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     }
 
     private String buildTableInitializeQuery() {
-        var parameters = String.join(", ", rowTypes.stream().map(it -> {
+
+        System.err.println("keys: " + primaryLinking.size());
+        for (PrimaryRepositoryFieldImpl repositoryField : primaryLinking) {
+            System.err.println(repositoryField.id() + " " + repositoryField.clazz().clazz() + " PRIMARY KEY");
+        }
+
+        var parameters = rowTypes.stream().map(it -> {
             var queryParameter = it.id() + " " + SqlType.find(it.clazz().clazz());
+
             if(it instanceof PrimaryRepositoryFieldImpl) {
                 queryParameter = queryParameter + " PRIMARY KEY";
             }
             return queryParameter;
-        }).toList());
-        return TABLE_CREATION_QUERY.formatted(id(), parameters);
+        }).toList();
+
+
+        return TABLE_CREATION_QUERY.formatted(id(), String.join(", ", parameters));
     }
 }
