@@ -6,7 +6,7 @@ import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.sql.parent.builder.SqlQueryBuilder;
 import org.jetbrains.annotations.NotNull;
 
-public class SqlParentCollectionSubStage extends CollectionSubStage<SqlQueryBuilder> {
+public final class SqlParentCollectionSubStage extends CollectionSubStage<SqlQueryBuilder> {
 
     @Override
     public void appendElementStage(@NotNull SqlQueryBuilder builder, RepositoryField field) {

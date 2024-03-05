@@ -13,7 +13,7 @@ import dev.httpmarco.evelon.common.repository.field.RepositoryFieldImpl;
 import dev.httpmarco.evelon.sql.parent.builder.SqlQueryBuilder;
 import dev.httpmarco.osgan.utils.exceptions.NotImplementedException;
 
-public class SqlParentMapSubStage extends MapSubStage<SqlQueryBuilder> {
+public final class SqlParentMapSubStage extends MapSubStage<SqlQueryBuilder> {
 
     @Override
     public void initializeKey(SqlQueryBuilder builder, Stage<?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> parentClazz) {
