@@ -28,13 +28,13 @@ public abstract class MapSubStage<B extends Builder<B, ?>> implements SubStage<B
         var keyType = new RepositoryClassImpl<>(mapTypes[0]);
         var valueType = new RepositoryClassImpl<>(mapTypes[1]);
 
-        var keyStage = model.findStage(keyType.clazz());
-        var valueStage = model.findStage(valueType.clazz());
-
-        this.initializeKey(queries, keyStage, ownField, keyType.clazz(), clazz);
+        this.initializeKey(queries, model.findStage(keyType.clazz()), ownField, keyType.clazz(), clazz);
+        this.initializeValue(queries, model.findStage(valueType.clazz()), ownField, valueType.clazz(), clazz);
     }
 
     public abstract void initializeKey(B Builder, Stage<?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> clazz);
+
+    public abstract void initializeValue(B Builder, Stage<?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> clazz);
 
     @Override
     public boolean isElement(Class<?> type) {

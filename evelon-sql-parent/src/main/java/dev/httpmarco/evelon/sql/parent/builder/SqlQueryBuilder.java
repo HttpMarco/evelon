@@ -78,7 +78,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
 
         if (rowTypes.stream().anyMatch(it -> it instanceof PrimaryRepositoryFieldImpl)) {
-            parameters.add(", PRIMARY KEY (" + String.join(", ", rowTypes.stream().filter(it -> it instanceof PrimaryRepositoryFieldImpl).map(it -> "").toList()) + ")");
+            parameters.add("PRIMARY KEY (" + String.join(", ", rowTypes.stream().filter(it -> it instanceof PrimaryRepositoryFieldImpl).map(RepositoryField::id).toList()) + ")");
         }
 
         if (parent() != null && primaryLinking.isEmpty()) {
