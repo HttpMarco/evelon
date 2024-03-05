@@ -12,7 +12,7 @@ import dev.httpmarco.evelon.sql.parent.builder.SqlQueryBuilder;
 public class SqlParentMapSubStage extends MapSubStage<SqlQueryBuilder> {
 
     @Override
-    public void initializeKey(SqlQueryBuilder Builder, Stage<SqlQueryBuilder> stage, Class<?> type, RepositoryObjectClass<?> parentClazz) {
+    public void initializeKey(SqlQueryBuilder Builder, Stage<?> stage, Class<?> type, RepositoryObjectClass<?> parentClazz) {
         if (stage instanceof ElementStage<?, ?, ?>) {
             Builder.addRowType(new PrimaryRepositoryFieldImpl(type, null, parentClazz));
         } else if (stage instanceof SubStage<?>) {

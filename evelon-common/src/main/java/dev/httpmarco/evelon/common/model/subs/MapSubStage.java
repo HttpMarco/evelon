@@ -22,18 +22,19 @@ public abstract class MapSubStage<B extends Builder<B, ?>> implements SubStage<B
             throw new IllegalStateException("Map stage type has not exactly two elements. That is not a requirement of maps.");
         }
 
+        // add foreign key linking
+        queries.linkPrimaries(ownField.parentClass().asObjectClass().primaryFields());
+
         var keyType = new RepositoryClassImpl<>(mapTypes[0]);
         var valueType = new RepositoryClassImpl<>(mapTypes[1]);
 
         var keyStage = model.findStage(keyType.clazz());
         var valueStage = model.findStage(valueType.clazz());
 
-        if (keyStage instanceof ElementStage<?, ?, ?> elementStage) {
-
-        }
+        this.initializeKey(queries, keyStage, keyType.clazz(), clazz);
     }
 
-    public abstract void initializeKey(B Builder, Stage<B> stage, Class<?> type, RepositoryObjectClass<?> clazz);
+    public abstract void initializeKey(B Builder, Stage<?> stage, Class<?> type, RepositoryObjectClass<?> clazz);
 
     @Override
     public boolean isElement(Class<?> type) {
