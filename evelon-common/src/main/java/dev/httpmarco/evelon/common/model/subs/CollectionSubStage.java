@@ -30,7 +30,7 @@ public abstract class CollectionSubStage<R extends Builder<R, ?>> implements Sub
 
         var stage = model.findStage(collectionType);
         if (stage instanceof ElementStage<?, ?, ?>) {
-            this.appendElementStage(queries, new RepositoryClassImpl<>(collectionType));
+            this.appendElementStage(queries, new RepositoryClassImpl<>(collectionType, ownField.id()));
         } else if (stage instanceof SubStage<?> substage) {
             // todo: implementation
         } else throw new RuntimeException("This stage is not supported yet.");
