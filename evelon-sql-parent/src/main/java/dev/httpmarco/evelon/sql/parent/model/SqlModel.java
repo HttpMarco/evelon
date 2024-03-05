@@ -13,6 +13,7 @@ public final class SqlModel extends Model<SqlQueryBuilder> {
     public void applyPlatformStages() {
         stages().add(new SqlParentParameterStage());
         stages().add(new SqlParentCollectionSubStage());
+        stages().add(new SqlParentMapSubStage());
         stages().add(new SqlParentVirtualSubStage());
     }
 }
