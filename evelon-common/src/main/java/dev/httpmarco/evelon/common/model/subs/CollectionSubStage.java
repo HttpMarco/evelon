@@ -8,6 +8,7 @@ import dev.httpmarco.evelon.common.repository.RepositoryField;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
 import dev.httpmarco.evelon.common.repository.field.RepositoryFieldImpl;
 import dev.httpmarco.osgan.reflections.Reflections;
+import dev.httpmarco.osgan.utils.exceptions.NotImplementedException;
 
 import java.util.Collection;
 
@@ -30,6 +31,7 @@ public abstract class CollectionSubStage<R extends Builder<R, ?>> implements Sub
         if (stage instanceof ElementStage<?, ?, ?>) {
             this.appendElementStage(queries, new RepositoryFieldImpl(collectionType, ownField.id(), clazz));
         } else if (stage instanceof SubStage<?> substage) {
+            throw new NotImplementedException("Substages are not supported yet.");
             // todo: implementation
         } else throw new RuntimeException("This stage is not supported yet.");
     }
