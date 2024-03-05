@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.sql.parent.connection;
 
 import dev.httpmarco.evelon.common.Evelon;
 import lombok.AllArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -20,8 +21,8 @@ public final class HikariConnectionTransmitter {
         this.transferPreparedStatement(PreparedStatement::executeQuery, query, arguments);
     }
 
-    public void transferPreparedStatement(StatementTransmitter statementTransmitter, String query, Object... arguments) {
-        Evelon.LOGGER.debug("Executing query: {}", query);
+    public void transferPreparedStatement(StatementTransmitter statementTransmitter, String query, Object @NotNull ... arguments) {
+        Evelon.LOGGER.info("Executing query: {}", query);
         try (var connection = hikariConnection.getConnection(); var statement = connection.prepareStatement(query)) {
             for (int i = 0; i < arguments.length; i++) {
                 statement.setString(i + 1, Objects.toString(arguments[i]));
