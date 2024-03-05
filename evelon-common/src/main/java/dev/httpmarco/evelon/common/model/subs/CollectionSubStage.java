@@ -23,9 +23,8 @@ public abstract class CollectionSubStage<R extends Builder<R, ?>> implements Sub
 
         var collectionType = collectionListType[0];
 
-        // add foreign kek linking
-        // todo
-       // queries.foreignLinkings(ownField.parentClass().asObjectClass().primaryFields());
+        // add foreign key linking
+        queries.linkPrimaries(clazz.primaryFields());
 
         var stage = model.findStage(collectionType);
         if (stage instanceof ElementStage<?, ?, ?>) {
