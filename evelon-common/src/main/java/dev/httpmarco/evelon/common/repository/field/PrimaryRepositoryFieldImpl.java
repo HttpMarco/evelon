@@ -10,6 +10,10 @@ public final class PrimaryRepositoryFieldImpl extends ForeignLinkingRepositoryFi
         super(field, parentClass);
     }
 
+    public PrimaryRepositoryFieldImpl(Class<?> fieldType, String id, RepositoryObjectClass<?> parentClass) {
+        super(fieldType, id, parentClass);
+    }
+
     public ForeignLinkingRepositoryFieldImpl toForeign() {
         return this;
     }

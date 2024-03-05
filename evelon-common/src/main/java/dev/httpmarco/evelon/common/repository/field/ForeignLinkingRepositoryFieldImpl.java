@@ -9,4 +9,8 @@ public class ForeignLinkingRepositoryFieldImpl extends RepositoryFieldImpl {
     public ForeignLinkingRepositoryFieldImpl(Field field, RepositoryObjectClass<?> parentClass) {
         super(field, parentClass);
     }
+
+    public ForeignLinkingRepositoryFieldImpl(Class<?> fieldType, String id, RepositoryObjectClass<?> parentClass) {
+        super(fieldType, id, parentClass);
+    }
 }
