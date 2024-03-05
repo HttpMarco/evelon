@@ -27,9 +27,19 @@ public class RepositoryFieldImpl implements RepositoryField {
         this.field = field;
         this.id = this.field.getName();
         this.fieldType = this.field.getType();
-        this.clazz = new RepositoryClassImpl<>(this.fieldType, id());
+        this.clazz = new RepositoryClassImpl<>(this.fieldType);
         this.parentClass = parentClass;
     }
+
+    public RepositoryFieldImpl(Class<?> fieldType, String id, RepositoryObjectClass<?> parentClass) {
+        this.field = null;
+        this.fieldType = fieldType;
+        this.id = id;
+
+        this.clazz = new RepositoryClassImpl<>(this.fieldType);
+        this.parentClass = parentClass;
+    }
+
 
     @Override
     public Stage<?> stage(Model<?> model) {
