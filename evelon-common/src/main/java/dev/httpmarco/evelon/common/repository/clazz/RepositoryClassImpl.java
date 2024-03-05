@@ -9,7 +9,6 @@ import lombok.experimental.Accessors;
 @Getter
 @Accessors(fluent = true)
 @RequiredArgsConstructor
-@AllArgsConstructor
 public class RepositoryClassImpl<C> implements RepositoryClass<C> {
 
     private final Class<C> clazz;
