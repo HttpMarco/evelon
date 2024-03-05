@@ -3,7 +3,7 @@ package dev.httpmarco.evelon.sql.parent.builder;
 import dev.httpmarco.evelon.common.builder.BuilderType;
 import dev.httpmarco.evelon.common.builder.impl.AbstractBuilder;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
-import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
+import dev.httpmarco.evelon.common.repository.field.ForeignLinkingRepositoryFieldImpl;
 import dev.httpmarco.evelon.common.repository.field.PrimaryRepositoryFieldImpl;
 import dev.httpmarco.evelon.sql.parent.SqlType;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
@@ -21,7 +21,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
     // table initialize options
     private final List<RepositoryField> rowTypes = new ArrayList<>();
-    private final List<PrimaryRepositoryFieldImpl> primaryLinking = new ArrayList<>();
+    private final List<ForeignLinkingRepositoryFieldImpl> primaryLinking = new ArrayList<>();
 
     // value options
     // todo
@@ -69,20 +69,21 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
     private String buildTableInitializeQuery() {
 
-        System.err.println("keys: " + primaryLinking.size());
-        for (PrimaryRepositoryFieldImpl repositoryField : primaryLinking) {
-            System.err.println(repositoryField.id() + " " + repositoryField.clazz().clazz() + " PRIMARY KEY");
-        }
+        // append foreign key types (default: h2 implementation)
+        var parameters = new ArrayList<>(primaryLinking.stream().map(it -> it.id() + " " + SqlType.find(it.clazz().clazz())).toList());
 
-        var parameters = rowTypes.stream().map(it -> {
+        // add all default values
+        parameters.addAll(rowTypes.stream().map(it -> {
             var queryParameter = it.id() + " " + SqlType.find(it.clazz().clazz());
 
-            if(it instanceof PrimaryRepositoryFieldImpl) {
+            if (it instanceof PrimaryRepositoryFieldImpl) {
                 queryParameter = queryParameter + " PRIMARY KEY";
             }
             return queryParameter;
-        }).toList();
+        }).toList());
 
+        // add foreign key linking // todo
+        parameters.addAll(primaryLinking.stream().map(it -> "foreign key (" + it.id() + ") references " + "NULL(" + it.id() + ")").toList());
 
         return TABLE_CREATION_QUERY.formatted(id(), String.join(", ", parameters));
     }
