@@ -4,11 +4,14 @@ import dev.httpmarco.evelon.common.model.elements.AbstractSimpleParameterStage;
 import dev.httpmarco.evelon.sql.parent.builder.SqlQueryBuilder;
 import dev.httpmarco.evelon.sql.parent.SqlType;
 import dev.httpmarco.evelon.sql.parent.exception.UnknownSqlTypeException;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 public final class SqlParentParameterStage extends AbstractSimpleParameterStage<SqlQueryBuilder, SqlType> {
 
+    @Contract(pure = true)
     @Override
-    public Object serializeElement(Object element) {
+    public @Nullable Object serializeElement(Object element) {
         //todo
         return null;
     }

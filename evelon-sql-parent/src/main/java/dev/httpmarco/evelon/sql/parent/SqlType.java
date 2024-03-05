@@ -1,11 +1,13 @@
 package dev.httpmarco.evelon.sql.parent;
 
 import lombok.Getter;
+import lombok.experimental.Accessors;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Getter
+@Accessors(fluent = true)
 public enum SqlType {
 
     TINYINT(byte.class, Byte.class),
