@@ -5,9 +5,8 @@ import dev.httpmarco.evelon.common.model.ElementStage;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.SubStage;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
-import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
-import dev.httpmarco.evelon.common.repository.clazz.RepositoryClassImpl;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
+import dev.httpmarco.evelon.common.repository.field.RepositoryFieldImpl;
 import dev.httpmarco.osgan.reflections.Reflections;
 
 import java.util.Collection;
@@ -30,7 +29,7 @@ public abstract class CollectionSubStage<R extends Builder<R, ?>> implements Sub
 
         var stage = model.findStage(collectionType);
         if (stage instanceof ElementStage<?, ?, ?>) {
-            this.appendElementStage(queries, new RepositoryClassImpl<>(collectionType, ownField.id()));
+            this.appendElementStage(queries, new RepositoryFieldImpl(collectionType, ownField.id(), clazz));
         } else if (stage instanceof SubStage<?> substage) {
             // todo: implementation
         } else throw new RuntimeException("This stage is not supported yet.");
@@ -45,8 +44,8 @@ public abstract class CollectionSubStage<R extends Builder<R, ?>> implements Sub
      * Append the element stage to the builder. Here we cant know the type of the element, so we need to pass the class
      *
      * @param builder the builder
-     * @param clazz the class of the element
+     * @param field the class of the element
      */
-    public abstract void appendElementStage(R builder, RepositoryClass<?> clazz);
+    public abstract void appendElementStage(R builder, RepositoryField field);
 
 }

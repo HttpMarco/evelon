@@ -16,12 +16,12 @@ public abstract class AbstractVirtualSubStage<R extends Builder<?, ?>> implement
                 // todo set clazz !important
                 subStage.initializeWithMapping(stageId + "_" + field.id(), model, field, null, queries.subBuilder(field.id()));
             } else {
-                initializeSubElement(queries, field.clazz());
+                initializeSubElement(queries, field);
             }
         }
     }
 
-    public abstract void initializeSubElement(R query, RepositoryClass<?> field);
+    public abstract void initializeSubElement(R query, RepositoryField field);
 
     @Override
     public boolean isElement(Class<?> type) {
