@@ -3,6 +3,7 @@ package dev.httpmarco.evelon.sql.parent.builder;
 import dev.httpmarco.evelon.common.builder.BuilderType;
 import dev.httpmarco.evelon.common.builder.impl.AbstractBuilder;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
+import dev.httpmarco.evelon.common.repository.field.PrimaryRepositoryFieldImpl;
 import dev.httpmarco.evelon.sql.parent.SqlType;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.model.SqlModel;
@@ -18,6 +19,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
     // table initialize options
     private final List<RepositoryClass<?>> rowTypes = new ArrayList<>();
+    private final List<PrimaryRepositoryFieldImpl> primaryLinking = new ArrayList<>();
 
     // value options
     // todo
@@ -54,7 +56,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     }
 
     private String buildTableInitializeQuery() {
-        var parameters = String.join(", ", rowTypes.stream().map(it -> SqlType.find(it.clazz()).getType()).toList());
+        var parameters = String.join(", ", rowTypes.stream().map(it -> (it.name() + " " + SqlType.find(it.clazz()))).toList());
         return TABLE_CREATION_QUERY.formatted(id(), parameters);
     }
 }
