@@ -29,12 +29,12 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     // filter options
     // todo
 
-    public SqlQueryBuilder(String id, SqlModel model, BuilderType type) {
-        super(id, model, type);
+    public SqlQueryBuilder(String id, SqlModel model, BuilderType type, SqlQueryBuilder parent) {
+        super(id, model, parent, type);
     }
 
     public static SqlQueryBuilder emptyInstance(String id, SqlModel model, BuilderType type) {
-        return new SqlQueryBuilder(id, model, type);
+        return new SqlQueryBuilder(id, model, type, null);
     }
 
     public void addRowType(RepositoryField field) {
@@ -48,7 +48,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
     @Override
     public SqlQueryBuilder subBuilder(String subId) {
-        SqlQueryBuilder builder = new SqlQueryBuilder(id() + "_" + subId, model(), type());
+        SqlQueryBuilder builder = new SqlQueryBuilder(id() + "_" + subId, model(), type(), this);
         this.children().add(builder);
         return builder;
     }
@@ -83,7 +83,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
         }).toList());
 
         // add foreign key linking // todo
-        parameters.addAll(primaryLinking.stream().map(it -> "foreign key (" + it.id() + ") references " + "NULL(" + it.id() + ")").toList());
+        parameters.addAll(primaryLinking.stream().map(it -> "foreign key (" + it.id() + ") references " + parent().id() + "(" + it.id() + ")").toList());
 
         return TABLE_CREATION_QUERY.formatted(id(), String.join(", ", parameters));
     }

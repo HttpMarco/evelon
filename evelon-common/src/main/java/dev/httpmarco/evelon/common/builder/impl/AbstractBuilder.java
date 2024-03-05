@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public abstract class AbstractBuilder<T extends Builder<?, A>, M extends Model<?
     private final String id;
     private final M model;
 
+    private @Nullable T parent;
     private final List<T> children = new ArrayList<>();
 
     private final BuilderType type;
