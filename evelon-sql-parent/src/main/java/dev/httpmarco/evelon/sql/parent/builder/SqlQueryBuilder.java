@@ -42,7 +42,9 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
     @Override
     public SqlQueryBuilder subBuilder(String subId) {
-        return new SqlQueryBuilder(subId + "_" + subId, model(), type());
+        SqlQueryBuilder builder = new SqlQueryBuilder(subId + "_" + subId, model(), type());
+        this.children().add(builder);
+        return builder;
     }
 
     @Override
@@ -50,6 +52,9 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
         switch (type()) {
             case INITIALIZE:
                 connection.transmitter().executeUpdate(buildTableInitializeQuery());
+                for (var child : this.children()) {
+                    child.push(connection);
+                }
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + type());
