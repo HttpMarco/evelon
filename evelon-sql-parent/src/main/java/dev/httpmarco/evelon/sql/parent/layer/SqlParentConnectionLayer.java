@@ -5,7 +5,7 @@ import dev.httpmarco.evelon.common.builder.BuilderType;
 import dev.httpmarco.evelon.common.credentials.Credentials;
 import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
 import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
-import dev.httpmarco.evelon.common.query.DataQuery;
+import dev.httpmarco.evelon.common.query.intern.DataQuery;
 import dev.httpmarco.evelon.common.query.SortedOrder;
 import dev.httpmarco.evelon.common.repository.InitializeRepository;
 import dev.httpmarco.evelon.common.repository.Repository;

@@ -2,6 +2,10 @@ package dev.httpmarco.evelon.common.builder;
 
 public enum BuilderType {
 
-    INITIALIZE;
+    // pre initialize of repository
+    INITIALIZE,
+
+    // add new value in repo
+    CREATION
 
 }
