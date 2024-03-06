@@ -1,7 +1,9 @@
 package dev.httpmarco.evelon.common.query;
 
-public interface Query {
+import dev.httpmarco.evelon.common.query.response.QueryResponse;
 
+public interface Query<T> {
 
+    QueryResponse create(T value);
 
 }

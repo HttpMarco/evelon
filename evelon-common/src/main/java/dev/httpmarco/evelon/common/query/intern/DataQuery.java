@@ -1,5 +1,7 @@
-package dev.httpmarco.evelon.common.query;
+package dev.httpmarco.evelon.common.query.intern;
 
+import dev.httpmarco.evelon.common.query.Query;
+import dev.httpmarco.evelon.common.query.response.QueryResponse;
 import dev.httpmarco.evelon.common.repository.Repository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +13,15 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Accessors(fluent = true)
-public class DataQuery<T> implements Query {
+public class DataQuery<T> implements Query<T> {
 
     @Getter
     private final Repository<T> repository;
     private final List<Filter<?, ?>> filters = new ArrayList<>();
 
+    public QueryResponse create(T value) {
+        var response = new QueryResponse();
+
+        return response;
+    }
 }

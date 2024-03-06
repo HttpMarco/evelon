@@ -2,7 +2,7 @@ package dev.httpmarco.evelon.common.layers;
 
 import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
 import dev.httpmarco.evelon.common.query.SortedOrder;
-import dev.httpmarco.evelon.common.query.DataQuery;
+import dev.httpmarco.evelon.common.query.intern.DataQuery;
 
 import java.util.List;
 import java.util.function.Predicate;
