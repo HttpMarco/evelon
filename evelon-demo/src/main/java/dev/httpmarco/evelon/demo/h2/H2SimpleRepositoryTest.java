@@ -10,7 +10,6 @@ public final class H2SimpleRepositoryTest {
         var repository = RepositoryBuilder.of(SimpleTestRepository.class).addAfter(H2SqlLayer.class).build();
 
         // CREATE VALUE
-        repository.query().create(new SimpleTestRepository());
-
+        repository.query().create(new SimpleTestRepository("Alex", 200));
     }
 }

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class HierarchyParentElement {
+public final class HierarchyParentElement {
 
     private int coinsDate;
     private HierarchyChildrenElement children;

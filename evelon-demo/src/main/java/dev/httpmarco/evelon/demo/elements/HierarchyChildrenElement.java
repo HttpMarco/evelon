@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class HierarchyChildrenElement {
+public final class HierarchyChildrenElement {
 
     private String nameId;
     private int childrenCount;
