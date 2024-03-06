@@ -8,5 +8,9 @@ public final class H2SimpleRepositoryTest {
 
     public static void main(String[] args) {
         var repository = RepositoryBuilder.of(SimpleTestRepository.class).addAfter(H2SqlLayer.class).build();
+
+        // CREATE VALUE
+        repository.query().create(new SimpleTestRepository());
+
     }
 }

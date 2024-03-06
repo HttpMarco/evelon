@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.common.repository;
 
 import dev.httpmarco.evelon.common.layers.EvelonLayer;
 import dev.httpmarco.evelon.common.query.Query;
+import dev.httpmarco.evelon.common.query.intern.DataQuery;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClassImpl;
 import lombok.Getter;
@@ -27,8 +28,15 @@ public class RepositoryImpl<T> implements Repository<T> {
     }
 
     @Override
-    public Query query() {
-        //todo
+    public Query<T> query() {
+        return new DataQuery<>(this);
+    }
+
+    public Query<T> queryLayer(EvelonLayer<?> layer) {
+        if (!currentLayers.contains(layer)) {
+            throw new IllegalArgumentException("Layer " + layer + " is not in the current layer");
+        }
+        //null
         return null;
     }
 
