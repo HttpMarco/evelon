@@ -40,22 +40,28 @@ public class RepositoryBuilder<T> {
     }
 
     public Repository<T> build() {
+
+        // pre - load layers todo better implementation Move to .addAfter
+        for (var layerClass : layerClasses) {
+            var layer = Evelon.instance().layerPool().getLayer(layerClass);
+        }
+
         var repository = useLocalStorage ? new LocalCacheRepositoryImpl<>(clazz) : new RepositoryImpl<>(clazz);
         for (var layerClass : layerClasses) {
 
             var layer = Evelon.instance().layerPool().getLayer(layerClass);
             if (layer instanceof ConnectableEvelonLayer<?, ?, ?> connectableLayer) {
-                if(Evelon.instance().credentialsService().isPresent(connectableLayer)) {
+                if (Evelon.instance().credentialsService().isPresent(connectableLayer)) {
                     repository.addLayer(layer);
 
-                    if(!layer.active()) {
+                    if (!layer.active()) {
                         layer.initialize();
                     }
 
-                    if(layer instanceof InitializeRepository initializeRepository) {
+                    if (layer instanceof InitializeRepository initializeRepository) {
                         initializeRepository.initializeRepository(repository);
                     }
-                }else {
+                } else {
                     Evelon.LOGGER.warn("Credentials not found for layer: {} - {} (layer disabled)", layer.id(), layer.getClass().getSimpleName());
                 }
             } else {

@@ -20,7 +20,6 @@ public interface RepositoryClass<T> {
      */
     <B extends Builder<B, ?>> Stage<T, B> stageOf(Model<B> model);
 
-
     default RepositoryObjectClass<T> asObjectClass() {
         if (this instanceof RepositoryObjectClass<T> objectClass) {
             return objectClass;
