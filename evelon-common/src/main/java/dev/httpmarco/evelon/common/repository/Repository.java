@@ -10,7 +10,7 @@ public interface Repository<T> {
 
     RepositoryClass<T> clazz();
 
-    void addLayer(EvelonLayer<?> layer);
+    void addLayer(EvelonLayer<T> layer);
 
     List<EvelonLayer<T>> layers();
 

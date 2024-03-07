@@ -16,14 +16,14 @@ import java.util.List;
 public class RepositoryImpl<T> implements Repository<T> {
 
     private final RepositoryClass<T> clazz;
-    private final List<EvelonLayer<?>> layers = new ArrayList<>();
+    private final List<EvelonLayer<T>> layers = new ArrayList<>();
 
     public RepositoryImpl(Class<T> clazz) {
         this.clazz = new RepositoryObjectClassImpl<>(clazz);
     }
 
     @Override
-    public void addLayer(EvelonLayer<?> layer) {
+    public void addLayer(EvelonLayer<T> layer) {
         layers.add(layer);
     }
 

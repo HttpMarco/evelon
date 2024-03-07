@@ -8,7 +8,7 @@ import java.util.List;
 
 public final class LocalStorageBuilder<T> extends RepositoryBuilder<T> {
 
-    public LocalStorageBuilder(Class<T> clazz, List<Class<? extends EvelonLayer<?>>> layerClasses) {
+    public LocalStorageBuilder(Class<T> clazz, List<Class<? extends EvelonLayer<T>>> layerClasses) {
         super(clazz, true, layerClasses);
     }
 

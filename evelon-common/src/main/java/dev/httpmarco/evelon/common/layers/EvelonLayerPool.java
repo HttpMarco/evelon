@@ -16,7 +16,8 @@ public final class EvelonLayerPool {
 
     private final Map<Class<? extends EvelonLayer<?>>, EvelonLayer<?>> cachedLayers = new HashMap<>();
 
-    public EvelonLayer<?> getLayer(Class<? extends EvelonLayer<?>> layerClass) {
+    @SuppressWarnings("unchecked")
+    public <T> EvelonLayer<T> getLayer(Class<? extends EvelonLayer<T>> layerClass) {
         if (!cachedLayers.containsKey(layerClass)) {
             // check if layer is real in class loader (not only api use)
             if (!this.checkRequirementOfLayerInitialize(layerClass)) {
@@ -24,7 +25,7 @@ public final class EvelonLayerPool {
             }
             this.initializeLayer(layerClass);
         }
-        return this.cachedLayers.get(layerClass);
+        return (EvelonLayer<T>) this.cachedLayers.get(layerClass);
     }
 
     @SneakyThrows
