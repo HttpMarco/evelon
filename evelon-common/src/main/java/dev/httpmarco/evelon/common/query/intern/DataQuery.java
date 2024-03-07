@@ -21,7 +21,9 @@ public class DataQuery<T> implements Query<T> {
 
     public QueryResponse create(T value) {
         var response = new QueryResponse();
-
+        for (var layer : repository.layers()) {
+            response.append(layer.create(this, value));
+        }
         return response;
     }
 }
