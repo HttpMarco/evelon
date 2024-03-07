@@ -1,10 +1,13 @@
 package dev.httpmarco.evelon.common.query.response;
 
+import dev.httpmarco.evelon.common.Evelon;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 // information about
 @Setter
+@Getter
 @Accessors(fluent = true)
 public class QueryResponse {
 
@@ -38,6 +41,10 @@ public class QueryResponse {
         }
         closed = true;
         processTime = System.currentTimeMillis() - startTime;
+
+        if (response != ResponseType.SUCCESS) {
+            Evelon.LOGGER.error("QueryResponse closed: {} - modified: {} - time: {}ms", response, modifiedElements, processTime);
+        }
         return this;
     }
 }
