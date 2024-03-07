@@ -7,8 +7,6 @@ import dev.httpmarco.evelon.sql.parent.layer.SqlParentConnectionLayer;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
-import java.nio.file.Path;
-
 @Getter
 @Accessors(fluent = true)
 public class H2SqlLayer extends SqlParentConnectionLayer {

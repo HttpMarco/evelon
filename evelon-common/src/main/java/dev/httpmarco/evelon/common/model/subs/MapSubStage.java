@@ -1,7 +1,6 @@
 package dev.httpmarco.evelon.common.model.subs;
 
 import dev.httpmarco.evelon.common.builder.Builder;
-import dev.httpmarco.evelon.common.model.ElementStage;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.Stage;
 import dev.httpmarco.evelon.common.model.SubStage;

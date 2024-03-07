@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 
@@ -40,10 +39,8 @@ public class RepositoryFieldImpl implements RepositoryField {
         this.parentClass = parentClass;
     }
 
-
     @Override
     public Stage<?> stage(Model<?> model) {
         return model.findStage(this.fieldType);
     }
-
 }

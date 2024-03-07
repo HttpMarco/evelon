@@ -10,9 +10,9 @@ import lombok.experimental.Accessors;
 public abstract class AbstractEvelonLayer implements EvelonLayer<Object> {
 
     private final LayerFilterHandler<?, ?> filterHandler;
-    private final Model model;
+    private final Model<?> model;
 
-    public AbstractEvelonLayer(LayerFilterHandler<?, ?> filterHandler, Model model) {
+    public AbstractEvelonLayer(LayerFilterHandler<?, ?> filterHandler, Model<?> model) {
         this.filterHandler = filterHandler;
         this.model = model;
     }

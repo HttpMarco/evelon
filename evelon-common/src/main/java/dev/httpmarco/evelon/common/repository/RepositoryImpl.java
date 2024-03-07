@@ -16,7 +16,7 @@ import java.util.List;
 public class RepositoryImpl<T> implements Repository<T> {
 
     private final RepositoryClass<T> clazz;
-    private final List<EvelonLayer<?>> currentLayers = new ArrayList<>();
+    private final List<EvelonLayer<?>> layers = new ArrayList<>();
 
     public RepositoryImpl(Class<T> clazz) {
         this.clazz = new RepositoryObjectClassImpl<>(clazz);
@@ -24,7 +24,7 @@ public class RepositoryImpl<T> implements Repository<T> {
 
     @Override
     public void addLayer(EvelonLayer<?> layer) {
-        currentLayers.add(layer);
+        layers.add(layer);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class RepositoryImpl<T> implements Repository<T> {
     }
 
     public Query<T> queryLayer(EvelonLayer<?> layer) {
-        if (!currentLayers.contains(layer)) {
+        if (!layers.contains(layer)) {
             throw new IllegalArgumentException("Layer " + layer + " is not in the current layer");
         }
         //null
