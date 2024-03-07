@@ -11,7 +11,7 @@ public interface Builder<B extends Builder<B, A>, A> {
 
     List<B> children();
 
-    void linkPrimaries(PrimaryRepositoryFieldImpl... fields);
+    void linkPrimaries(PrimaryRepositoryFieldImpl<?>... fields);
 
     B subBuilder(String subId);
 

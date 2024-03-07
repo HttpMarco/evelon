@@ -15,7 +15,7 @@ import java.util.Collection;
 public abstract class CollectionSubStage<B extends Builder<B, ?>> implements SubStage<Collection<?>, B> {
 
     @Override
-    public void initialize(String stageId, Model<B> model, RepositoryField<Collection<?>> ownField, RepositoryObjectClass<?> clazz, B queries) {
+    public void initialize(String stageId, Model<B> model, RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries) {
         var collectionListType = Reflections.of(ownField.field()).generics();
 
         if (collectionListType.length != 1) {
@@ -28,7 +28,7 @@ public abstract class CollectionSubStage<B extends Builder<B, ?>> implements Sub
         queries.linkPrimaries(ownField.parentClass().asObjectClass().primaryFields());
 
         var stage = model.findStage(collectionType);
-        if (stage.isSubElementStage()) {
+        if (stage.isElementStage()) {
             this.appendElementStage(queries, new RepositoryFieldImpl(collectionType, ownField.id(), clazz));
         } else if (stage.isSubStage()) {
             throw new NotImplementedException("Substages are not supported yet.");

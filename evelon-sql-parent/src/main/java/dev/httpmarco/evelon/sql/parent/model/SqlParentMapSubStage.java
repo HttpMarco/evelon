@@ -16,29 +16,20 @@ import dev.httpmarco.osgan.utils.exceptions.NotImplementedException;
 public final class SqlParentMapSubStage extends MapSubStage<SqlQueryBuilder> {
 
     @Override
-    public void initializeKey(SqlQueryBuilder builder, Stage<?, ?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> parentClazz) {
-        this.initialize(builder, stage, parentField, type, parentClazz, true);
-    }
-
-    @Override
-    public void initializeValue(SqlQueryBuilder builder, Stage<?, ?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> parentClazz) {
-        this.initialize(builder, stage, parentField, type, parentClazz, false);
-    }
-
-    private void initialize(SqlQueryBuilder Builder, Stage<?, ?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> parentClazz, boolean primary) {
-        if (stage instanceof ElementStage<?, ?, ?>) {
-            if (primary) {
-                Builder.addRowType(new PrimaryRepositoryFieldImpl(type, parentField.id() + "_key", parentClazz));
+    public void initializeMapElement(boolean key, SqlQueryBuilder builder, Stage<?, SqlQueryBuilder> stage, RepositoryField<?> parentField, Class<?> type, RepositoryObjectClass<?> clazz) {
+        if (stage.isElementStage()) {
+            if (key) {
+                builder.addRowType(new PrimaryRepositoryFieldImpl(type, parentField.id() + "_key", clazz));
             } else {
-                Builder.addRowType(new RepositoryFieldImpl(type, parentField.id() + "_value", parentClazz));
+                builder.addRowType(new RepositoryFieldImpl(type, parentField.id() + "_value", clazz));
             }
         } else if (stage instanceof SubStage<?, ?> subStage) {
             if (subStage instanceof AbstractVirtualSubStage<?>) {
                 for (var field : new RepositoryObjectClassImpl<>(type).fields()) {
-                    if (primary) {
-                        Builder.addRowType(new PrimaryRepositoryFieldImpl(field.field(), parentClazz));
+                    if (key) {
+                        builder.addRowType(new PrimaryRepositoryFieldImpl(field.field(), clazz));
                     } else {
-                        Builder.addRowType(new RepositoryFieldImpl(field.field(), parentClazz));
+                        builder.addRowType(new RepositoryFieldImpl(field.field(), clazz));
                     }
                 }
             } else {

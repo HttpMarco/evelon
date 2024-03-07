@@ -18,7 +18,7 @@ public interface Stage<T, B extends Builder<B, ?>> {
         return (SubStage<T, B>) this;
     }
 
-    default boolean isSubElementStage() {
+    default boolean isElementStage() {
         return this instanceof ElementStage<T, ?, B>;
     }
 

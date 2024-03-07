@@ -32,9 +32,9 @@ public class RepositoryFieldImpl<T> implements RepositoryField<T> {
         this.parentClass = parentClass;
     }
 
-    public RepositoryFieldImpl(Class<?> fieldType, String id, RepositoryObjectClass<?> parentClass) {
+    public RepositoryFieldImpl(Class<T> fieldType, String id, RepositoryObjectClass<?> parentClass) {
         this.field = null;
-        this.fieldType = (Class<T>) fieldType;
+        this.fieldType = fieldType;
         this.id = id;
 
         this.clazz = new RepositoryClassImpl<>(this.fieldType);

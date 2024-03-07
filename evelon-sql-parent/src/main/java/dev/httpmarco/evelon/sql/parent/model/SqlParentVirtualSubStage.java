@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 public final class SqlParentVirtualSubStage extends AbstractVirtualSubStage<SqlQueryBuilder> {
 
     @Override
-    public void initializeSubElement(@NotNull SqlQueryBuilder query, RepositoryField field) {
+    public void initializeSubElement(@NotNull SqlQueryBuilder query, RepositoryField<?> field) {
         query.addRowType(field);
     }
 }
