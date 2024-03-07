@@ -11,7 +11,7 @@ import dev.httpmarco.osgan.reflections.Reflections;
 
 import java.util.Map;
 
-public abstract class MapSubStage<B extends Builder<B, ?>> implements SubStage<B> {
+public abstract class MapSubStage<B extends Builder<B, ?>> implements SubStage<Map<?, ?>, B> {
 
     @Override
     public void initialize(String stageId, Model<?> model, RepositoryField ownField, RepositoryObjectClass<?> clazz, B queries) {
@@ -36,9 +36,9 @@ public abstract class MapSubStage<B extends Builder<B, ?>> implements SubStage<B
         // todo
     }
 
-    public abstract void initializeKey(B Builder, Stage<?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> clazz);
+    public abstract void initializeKey(B Builder, Stage<?, ?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> clazz);
 
-    public abstract void initializeValue(B Builder, Stage<?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> clazz);
+    public abstract void initializeValue(B Builder, Stage<?, ?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> clazz);
 
     @Override
     public boolean isElement(Class<?> type) {

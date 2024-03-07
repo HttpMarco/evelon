@@ -2,15 +2,20 @@ package dev.httpmarco.evelon.common.model;
 
 import dev.httpmarco.evelon.common.builder.Builder;
 
-public interface Stage<R extends Builder<?, ?>> {
+/**
+ *
+ * @param <T> Class type
+ * @param <B> Specific builder type
+ */
+public interface Stage<T, B extends Builder<?, ?>> {
 
     boolean isElement(Class<?> type);
 
-    default SubStage<R> asSubStage() {
-        return (SubStage<R>) this;
+    default SubStage<T, B> asSubStage() {
+        return (SubStage<T, B>) this;
     }
 
-    default ElementStage<?, R, ?> asElementStage() {
-        return (ElementStage<?, R, ?>) this;
+    default ElementStage<T, ?, B> asElementStage() {
+        return (ElementStage<T, ?, B>) this;
     }
 }

@@ -2,10 +2,15 @@ package dev.httpmarco.evelon.common.model;
 
 import dev.httpmarco.evelon.common.builder.Builder;
 
-public interface ElementStage<E, B extends Builder<?, ?>, T> extends Stage<B> {
+/**
+ *
+ * @param <T> Type of class
+ * @param <E> Serialized Type
+ * @param <B> Specific Builder Type
+ */
 
-    E serializeElement(Object element);
+public interface ElementStage<T, E, B extends Builder<?, ?>> extends Stage<T, B> {
 
-    T classBuilderType(Class<?> element);
+    E serializeElement(T element);
 
 }

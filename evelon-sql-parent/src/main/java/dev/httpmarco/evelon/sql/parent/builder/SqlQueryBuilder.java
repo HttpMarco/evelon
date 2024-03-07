@@ -22,7 +22,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     private static final String VALUE_CREATION_QUERY = "INSERT INTO %s(%s) VALUES(%s);";
 
     // table initialize options
-    private final List<RepositoryField> rowTypes = new ArrayList<>();
+    private final List<RepositoryField<?>> rowTypes = new ArrayList<>();
     private final List<ForeignLinkingRepositoryFieldImpl> primaryLinking = new ArrayList<>();
 
     // value options
@@ -39,7 +39,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
         return new SqlQueryBuilder(id, model, type, null);
     }
 
-    public void addRowType(RepositoryField field) {
+    public void addRowType(RepositoryField<?> field) {
         this.rowTypes.add(field);
     }
 
@@ -99,6 +99,6 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
     private String buildValueCreationQeury() {
         // todo
-        return VALUE_CREATION_QUERY;
+        return VALUE_CREATION_QUERY.formatted(id(), "", "");
     }
 }

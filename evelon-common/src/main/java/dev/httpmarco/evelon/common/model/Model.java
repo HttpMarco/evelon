@@ -12,7 +12,7 @@ import java.util.List;
 @Accessors(fluent = true)
 public abstract class Model<B extends Builder<?, ?>> {
 
-    private final List<Stage<B>> stages = new ArrayList<>();
+    private final List<Stage<?, B>> stages = new ArrayList<>();
 
     public Model() {
         this.applyPlatformStages();
@@ -20,11 +20,11 @@ public abstract class Model<B extends Builder<?, ?>> {
 
     public abstract void applyPlatformStages();
 
-    public Stage<B> findStage(RepositoryField field) {
+    public Stage<?, B> findStage(RepositoryField field) {
         return stages.stream().filter(stage -> stage.isElement(field.fieldType())).findFirst().orElseThrow();
     }
 
-    public Stage<B> findStage(Class<?> clazz) {
+    public Stage<?, B> findStage(Class<?> clazz) {
         return stages.stream().filter(stage -> stage.isElement(clazz)).findFirst().orElseThrow();
     }
 }

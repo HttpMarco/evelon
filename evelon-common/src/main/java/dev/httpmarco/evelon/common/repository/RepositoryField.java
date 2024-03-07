@@ -10,7 +10,7 @@ import java.lang.reflect.Field;
  * The "RepositoryField" interface defines basic methods required by a field in a repository.
  * Such a RepositoryField represents an attribute within a RepositoryClass.
  */
-public interface RepositoryField {
+public interface RepositoryField<T> {
 
     /**
      * Returns the name of the field, serving as its identifier within the repository.
@@ -32,16 +32,16 @@ public interface RepositoryField {
      *
      * @return The stage of field
      */
-    Stage<?> stage(Model<?> model);
+    Stage<T, ?> stage(Model<?> model);
 
     /**
      * Returns the class of the field
      *
      * @return The class of field
      */
-    Class<?> fieldType();
+    Class<T> fieldType();
 
-    RepositoryClass<?> clazz();
+    RepositoryClass<T> clazz();
 
     Field field();
 

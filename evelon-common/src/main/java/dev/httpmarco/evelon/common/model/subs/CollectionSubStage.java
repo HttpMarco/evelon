@@ -12,7 +12,7 @@ import dev.httpmarco.osgan.utils.exceptions.NotImplementedException;
 
 import java.util.Collection;
 
-public abstract class CollectionSubStage<R extends Builder<R, ?>> implements SubStage<R> {
+public abstract class CollectionSubStage<R extends Builder<R, ?>> implements SubStage<Collection<?>, R> {
 
     @Override
     public void initialize(String stageId, Model<?> model, RepositoryField ownField, RepositoryObjectClass<?> clazz, R queries) {
@@ -30,7 +30,7 @@ public abstract class CollectionSubStage<R extends Builder<R, ?>> implements Sub
         var stage = model.findStage(collectionType);
         if (stage instanceof ElementStage<?, ?, ?>) {
             this.appendElementStage(queries, new RepositoryFieldImpl(collectionType, ownField.id(), clazz));
-        } else if (stage instanceof SubStage<?> substage) {
+        } else if (stage instanceof SubStage<?, ?> substage) {
             throw new NotImplementedException("Substages are not supported yet.");
             // todo: implementation
         } else throw new RuntimeException("This stage is not supported yet.");

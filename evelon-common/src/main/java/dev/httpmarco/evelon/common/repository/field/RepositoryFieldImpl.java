@@ -13,26 +13,27 @@ import java.lang.reflect.Field;
 
 @Getter
 @Accessors(fluent = true)
-public class RepositoryFieldImpl implements RepositoryField {
+@SuppressWarnings("unchecked")
+public class RepositoryFieldImpl<T> implements RepositoryField<T> {
 
     private final Field field;
     private final String id;
-    private final Class<?> fieldType;
+    private final Class<T> fieldType;
 
-    private final RepositoryClass<?> clazz;
+    private final RepositoryClass<T> clazz;
     private final RepositoryObjectClass<?> parentClass;
 
     public RepositoryFieldImpl(Field field, RepositoryObjectClass<?> parentClass) {
         this.field = field;
         this.id = this.field.getName();
-        this.fieldType = this.field.getType();
+        this.fieldType = (Class<T>) this.field.getType();
         this.clazz = new RepositoryClassImpl<>(this.fieldType);
         this.parentClass = parentClass;
     }
 
     public RepositoryFieldImpl(Class<?> fieldType, String id, RepositoryObjectClass<?> parentClass) {
         this.field = null;
-        this.fieldType = fieldType;
+        this.fieldType = (Class<T>) fieldType;
         this.id = id;
 
         this.clazz = new RepositoryClassImpl<>(this.fieldType);
@@ -40,7 +41,7 @@ public class RepositoryFieldImpl implements RepositoryField {
     }
 
     @Override
-    public Stage<?> stage(Model<?> model) {
-        return model.findStage(this.fieldType);
+    public Stage<T, ?> stage(Model<?> model) {
+        return (Stage<T, ?>) model.findStage(this.fieldType);
     }
 }

@@ -16,23 +16,23 @@ import dev.httpmarco.osgan.utils.exceptions.NotImplementedException;
 public final class SqlParentMapSubStage extends MapSubStage<SqlQueryBuilder> {
 
     @Override
-    public void initializeKey(SqlQueryBuilder builder, Stage<?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> parentClazz) {
+    public void initializeKey(SqlQueryBuilder builder, Stage<?, ?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> parentClazz) {
         this.initialize(builder, stage, parentField, type, parentClazz, true);
     }
 
     @Override
-    public void initializeValue(SqlQueryBuilder builder, Stage<?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> parentClazz) {
+    public void initializeValue(SqlQueryBuilder builder, Stage<?, ?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> parentClazz) {
         this.initialize(builder, stage, parentField, type, parentClazz, false);
     }
 
-    private void initialize(SqlQueryBuilder Builder, Stage<?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> parentClazz, boolean primary) {
+    private void initialize(SqlQueryBuilder Builder, Stage<?, ?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> parentClazz, boolean primary) {
         if (stage instanceof ElementStage<?, ?, ?>) {
             if (primary) {
                 Builder.addRowType(new PrimaryRepositoryFieldImpl(type, parentField.id() + "_key", parentClazz));
             } else {
                 Builder.addRowType(new RepositoryFieldImpl(type, parentField.id() + "_value", parentClazz));
             }
-        } else if (stage instanceof SubStage<?> subStage) {
+        } else if (stage instanceof SubStage<?, ?> subStage) {
             if (subStage instanceof AbstractVirtualSubStage<?>) {
                 for (var field : new RepositoryObjectClassImpl<>(type).fields()) {
                     if (primary) {
