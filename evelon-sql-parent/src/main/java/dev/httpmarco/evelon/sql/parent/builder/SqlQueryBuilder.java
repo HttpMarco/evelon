@@ -20,7 +20,7 @@ import java.util.List;
 public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlModel, HikariConnection> {
 
     private static final String TABLE_CREATION_QUERY = "CREATE TABLE IF NOT EXISTS %s(%s);";
-    private static final String VALUE_CREATION_QUERY = "INSERT INTO %s(%s) VALUES(%s);";
+    private static final String VALUE_CREATION_QUERY = "INSERT INTO %s(%s) VALUES (%s);";
 
     // table initialize options
     private final List<RepositoryField<?>> rowTypes = new ArrayList<>();
@@ -70,13 +70,11 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     }
 
     private String buildTableInitializeQuery() {
-
         // append foreign key types (default: h2 implementation)
         var parameters = new ArrayList<>(primaryLinking.stream().map(it -> it.id() + " " + SqlType.find(it.clazz().clazz())).toList());
 
         // add all default values
         parameters.addAll(rowTypes.stream().map(it -> it.id() + " " + SqlType.find(it.clazz().clazz())).toList());
-
 
         if (rowTypes.stream().anyMatch(it -> it instanceof PrimaryRepositoryFieldImpl)) {
             parameters.add("PRIMARY KEY (" + collectTypes(false) + ")");
@@ -95,8 +93,9 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
     private String buildValueCreationQuery() {
         var parameterValueQuery = new ArrayList<String>();
-        for (var type : rowTypes) {
-            queryArguments.add("test");
+
+        for (int i = 0; i < rowTypes.size(); i++) {
+            queryArguments.add(values().get(i));
             parameterValueQuery.add("?");
         }
         return VALUE_CREATION_QUERY.formatted(id(), collectTypes(true), String.join(", ", parameterValueQuery));

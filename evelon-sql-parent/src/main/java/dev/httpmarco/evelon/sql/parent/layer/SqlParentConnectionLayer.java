@@ -5,6 +5,7 @@ import dev.httpmarco.evelon.common.builder.BuilderType;
 import dev.httpmarco.evelon.common.credentials.Credentials;
 import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
 import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
+import dev.httpmarco.evelon.common.model.SubStage;
 import dev.httpmarco.evelon.common.query.intern.DataQuery;
 import dev.httpmarco.evelon.common.query.SortedOrder;
 import dev.httpmarco.evelon.common.query.response.QueryResponse;
@@ -49,14 +50,17 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
     public <T> void initializeRepository(Repository<T> repository) {
         var builder = SqlQueryBuilder.emptyInstance(repository.name(), model, BuilderType.INITIALIZE);
         model().findStage(repository.clazz().clazz()).asSubStage().initialize(repository.name(), this.model, null, repository.clazz().asObjectClass(), builder);
-        builder.push(connection);
+        builder.push(connection).close();
     }
 
     @Override
     public QueryResponse create(DataQuery<Object> query, Object value) {
         var response = new QueryResponse();
         var builder = SqlQueryBuilder.emptyInstance(query.repository().name(), model, BuilderType.CREATION);
-        model.findStage(value.getClass()).asSubStage().create(query.repository().name(), this.model, null, query.repository().clazz().asObjectClass(), builder);
+
+        SubStage<Object, SqlQueryBuilder> stage = (SubStage<Object, SqlQueryBuilder>) model.findStage(value.getClass()).asSubStage();
+        stage.create(value, query.repository().name(), this.model, null, query.repository().clazz().asObjectClass(), builder);
+
         response.append(builder.push(connection));
         return response.close();
     }

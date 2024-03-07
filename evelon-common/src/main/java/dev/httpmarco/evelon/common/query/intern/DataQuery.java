@@ -20,10 +20,10 @@ public class DataQuery<T> implements Query<T> {
     private final List<Filter<?, ?>> filters = new ArrayList<>();
 
     public QueryResponse create(T value) {
-        var response = new QueryResponse();
+        var response = QueryResponse.empty();
         for (var layer : repository.layers()) {
             response.append(layer.create(this, value));
         }
-        return response;
+        return response.close();
     }
 }
