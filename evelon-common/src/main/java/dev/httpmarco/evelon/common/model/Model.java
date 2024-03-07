@@ -2,7 +2,6 @@ package dev.httpmarco.evelon.common.model;
 
 import dev.httpmarco.evelon.common.builder.Builder;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
@@ -22,10 +21,10 @@ public abstract class Model<B extends Builder<?, ?>> {
     public abstract void applyPlatformStages();
 
     public Stage<B> findStage(RepositoryField field) {
-        return stages.stream().filter(stage -> stage.isElement(field.fieldType())).findFirst().orElse(null);
+        return stages.stream().filter(stage -> stage.isElement(field.fieldType())).findFirst().orElseThrow();
     }
 
     public Stage<B> findStage(Class<?> clazz) {
-        return stages.stream().filter(stage -> stage.isElement(clazz)).findFirst().orElse(null);
+        return stages.stream().filter(stage -> stage.isElement(clazz)).findFirst().orElseThrow();
     }
 }
