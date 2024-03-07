@@ -21,11 +21,6 @@ public abstract class Model<B extends Builder<B, ?>> {
     public abstract void applyPlatformStages();
 
     @SuppressWarnings("unchecked")
-    public <T> Stage<T, B> findStage(RepositoryField<T> field) {
-        return (Stage<T, B>) stages.stream().filter(stage -> stage.isElement(field.fieldType())).findFirst().orElseThrow();
-    }
-
-    @SuppressWarnings("unchecked")
     public <T> Stage<T, B> findStage(Class<T> clazz) {
         return (Stage<T, B>) stages.stream().filter(stage -> stage.isElement(clazz)).findFirst().orElseThrow();
     }
