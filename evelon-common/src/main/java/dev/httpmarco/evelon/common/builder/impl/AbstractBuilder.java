@@ -15,14 +15,14 @@ import java.util.List;
 @Accessors(fluent = true)
 @Getter(AccessLevel.PUBLIC)
 @AllArgsConstructor
-public abstract class AbstractBuilder<T extends Builder<?, A>, M extends Model<?>, A> implements Builder<T, A> {
+public abstract class AbstractBuilder<B extends Builder<B, A>, M extends Model<?>, A> implements Builder<B, A> {
 
     // general parameters
     private final String id;
     private final M model;
 
-    private @Nullable T parent;
-    private final List<T> children = new ArrayList<>();
+    private @Nullable B parent;
+    private final List<B> children = new ArrayList<>();
 
     private final BuilderType type;
 
