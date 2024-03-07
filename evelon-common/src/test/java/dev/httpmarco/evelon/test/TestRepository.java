@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.test;
 
+@SuppressWarnings("ClassCanBeRecord")
 public class TestRepository {
 
     private final String name;

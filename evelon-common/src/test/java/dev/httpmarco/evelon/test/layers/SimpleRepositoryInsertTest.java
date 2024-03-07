@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class SimpleRepositoryInsertTest {
 
     @Test
-    public void SimpleRepositoryInsertTest() {
+    public void handle() {
 
         Repository<TestRepository> repository = RepositoryBuilder.of(TestRepository.class)
                 .withLocalStorage()
