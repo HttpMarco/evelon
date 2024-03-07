@@ -7,21 +7,12 @@ import dev.httpmarco.evelon.sql.parent.exception.UnknownSqlTypeException;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
-public final class SqlParentParameterStage extends AbstractSimpleParameterStage<SqlQueryBuilder, SqlType> {
+public final class SqlParentParameterStage extends AbstractSimpleParameterStage<SqlQueryBuilder> {
 
     @Contract(pure = true)
     @Override
     public @Nullable Object serializeElement(Object element) {
         //todo
         return null;
-    }
-
-    @Override
-    public SqlType classBuilderType(Class<?> element) {
-        var type = SqlType.find(element);
-        if (type == SqlType.UNKNOWN) {
-            throw new UnknownSqlTypeException(element);
-        }
-        return type;
     }
 }
