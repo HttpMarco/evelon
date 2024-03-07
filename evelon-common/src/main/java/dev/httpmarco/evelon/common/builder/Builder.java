@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.common.builder;
 
+import dev.httpmarco.evelon.common.query.response.QueryResponse;
 import dev.httpmarco.evelon.common.repository.field.PrimaryRepositoryFieldImpl;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,6 +16,6 @@ public interface Builder<B extends Builder<B, A>, A> {
 
     B subBuilder(String subId);
 
-    void push(A arg);
+    QueryResponse push(A arg);
 
 }

@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.sql.parent.builder;
 
 import dev.httpmarco.evelon.common.builder.BuilderType;
 import dev.httpmarco.evelon.common.builder.impl.AbstractBuilder;
+import dev.httpmarco.evelon.common.query.response.QueryResponse;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
 import dev.httpmarco.evelon.common.repository.field.ForeignLinkingRepositoryFieldImpl;
 import dev.httpmarco.evelon.common.repository.field.PrimaryRepositoryFieldImpl;
@@ -26,7 +27,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     private final List<ForeignLinkingRepositoryFieldImpl<?>> primaryLinking = new ArrayList<>();
 
     // value options
-    // todo
+    private final List<Object> queryArguments = new ArrayList<>();
 
     // filter options
     // todo
@@ -56,21 +57,16 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     }
 
     @Override
-    public void push(HikariConnection connection) {
+    public QueryResponse push(HikariConnection connection) {
         var transmitter = connection.transmitter();
-        switch (type()) {
-            case INITIALIZE:
-                transmitter.executeUpdate(buildTableInitializeQuery());
-                break;
-            case CREATION:
-                transmitter.executeUpdate(buildValueCreationQuery());
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + type());
-        }
+        var response = switch (type()) {
+            case INITIALIZE -> transmitter.executeUpdate(buildTableInitializeQuery());
+            case CREATION -> transmitter.executeUpdate(buildValueCreationQuery(), queryArguments);
+        };
         for (var child : this.children()) {
-            child.push(connection);
+            response.append(child.push(connection));
         }
+        return response;
     }
 
     private String buildTableInitializeQuery() {
@@ -98,11 +94,15 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     }
 
     private String buildValueCreationQuery() {
-        // todo
-        return VALUE_CREATION_QUERY.formatted(id(), collectTypes(true), "");
+        var parameterValueQuery = new ArrayList<String>();
+        for (var type : rowTypes) {
+            queryArguments.add("test");
+            parameterValueQuery.add("?");
+        }
+        return VALUE_CREATION_QUERY.formatted(id(), collectTypes(true), String.join(", ", parameterValueQuery));
     }
 
     private String collectTypes(boolean withPrimaries) {
-        return String.join(", ", rowTypes.stream().filter(it ->  withPrimaries || it instanceof PrimaryRepositoryFieldImpl).map(RepositoryField::id).toList());
+        return String.join(", ", rowTypes.stream().filter(it -> withPrimaries || it instanceof PrimaryRepositoryFieldImpl).map(RepositoryField::id).toList());
     }
 }

@@ -1,11 +1,14 @@
 package dev.httpmarco.evelon.sql.parent.connection;
 
 import dev.httpmarco.evelon.common.Evelon;
+import dev.httpmarco.evelon.common.query.response.QueryResponse;
+import dev.httpmarco.evelon.common.query.response.ResponseType;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -13,15 +16,21 @@ public final class HikariConnectionTransmitter {
 
     private HikariConnection hikariConnection;
 
-    public void executeUpdate(final String query, Object... arguments) {
-        this.transferPreparedStatement(PreparedStatement::executeUpdate, query, arguments);
+    public QueryResponse executeUpdate(final String query, List<Object> arguments) {
+        return this.transferPreparedStatement(PreparedStatement::executeUpdate, query, arguments.toArray());
     }
 
-    public void executeQuery(final String query, Object... arguments) {
-        this.transferPreparedStatement(PreparedStatement::executeQuery, query, arguments);
+    public QueryResponse executeUpdate(final String query, Object... arguments) {
+        return this.transferPreparedStatement(PreparedStatement::executeUpdate, query, arguments);
     }
 
-    public void transferPreparedStatement(StatementTransmitter statementTransmitter, String query, Object @NotNull ... arguments) {
+
+    public QueryResponse executeQuery(final String query, Object... arguments) {
+        return this.transferPreparedStatement(PreparedStatement::executeQuery, query, arguments);
+    }
+
+    public QueryResponse transferPreparedStatement(StatementTransmitter statementTransmitter, String query, Object @NotNull ... arguments) {
+        var response = new QueryResponse();
         Evelon.LOGGER.info("Executing query: {}", query);
         try (var connection = hikariConnection.getConnection(); var statement = connection.prepareStatement(query)) {
             for (int i = 0; i < arguments.length; i++) {
@@ -29,7 +38,8 @@ public final class HikariConnectionTransmitter {
             }
             statementTransmitter.result(statement);
         } catch (SQLException exception) {
-            Evelon.LOGGER.error("Error while executing update: {}", query, exception);
+            response.response(ResponseType.EXCEPTIONAL);
         }
+        return response;
     }
 }
