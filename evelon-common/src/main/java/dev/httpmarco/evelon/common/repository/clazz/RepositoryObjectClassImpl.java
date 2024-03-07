@@ -11,12 +11,12 @@ import java.util.Arrays;
 
 @Getter
 @Accessors(fluent = true)
-public class RepositoryObjectClassImpl<C> extends RepositoryClassImpl<C> implements RepositoryObjectClass<C> {
+public class RepositoryObjectClassImpl<T> extends RepositoryClassImpl<T> implements RepositoryObjectClass<T> {
 
-    private final RepositoryField[] fields;
-    private final PrimaryRepositoryFieldImpl[] primaryFields;
+    private final RepositoryField<?>[] fields;
+    private final PrimaryRepositoryFieldImpl<?>[] primaryFields;
 
-    public RepositoryObjectClassImpl(Class<C> clazz) {
+    public RepositoryObjectClassImpl(Class<T> clazz) {
         super(clazz);
 
         this.fields = Arrays.stream(clazz.getDeclaredFields())
@@ -30,7 +30,7 @@ public class RepositoryObjectClassImpl<C> extends RepositoryClassImpl<C> impleme
 
 
     @Override
-    public Class<C> clazz() {
+    public Class<T> clazz() {
         return super.clazz();
     }
 }

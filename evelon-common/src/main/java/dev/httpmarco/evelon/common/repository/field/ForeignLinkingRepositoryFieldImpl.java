@@ -4,13 +4,13 @@ import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
 
 import java.lang.reflect.Field;
 
-public class ForeignLinkingRepositoryFieldImpl extends RepositoryFieldImpl {
+public class ForeignLinkingRepositoryFieldImpl<T> extends RepositoryFieldImpl<T> {
 
     public ForeignLinkingRepositoryFieldImpl(Field field, RepositoryObjectClass<?> parentClass) {
         super(field, parentClass);
     }
 
-    public ForeignLinkingRepositoryFieldImpl(Class<?> fieldType, String id, RepositoryObjectClass<?> parentClass) {
+    public ForeignLinkingRepositoryFieldImpl(Class<T> fieldType, String id, RepositoryObjectClass<?> parentClass) {
         super(fieldType, id, parentClass);
     }
 }

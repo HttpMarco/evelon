@@ -7,8 +7,8 @@ import lombok.experimental.Accessors;
 @Getter
 @Accessors(fluent = true)
 @RequiredArgsConstructor
-public class RepositoryClassImpl<C> implements RepositoryClass<C> {
+public class RepositoryClassImpl<T> implements RepositoryClass<T> {
 
-    private final Class<C> clazz;
+    private final Class<T> clazz;
 
 }

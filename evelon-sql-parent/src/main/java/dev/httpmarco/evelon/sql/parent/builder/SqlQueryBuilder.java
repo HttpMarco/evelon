@@ -23,7 +23,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
     // table initialize options
     private final List<RepositoryField<?>> rowTypes = new ArrayList<>();
-    private final List<ForeignLinkingRepositoryFieldImpl> primaryLinking = new ArrayList<>();
+    private final List<ForeignLinkingRepositoryFieldImpl<?>> primaryLinking = new ArrayList<>();
 
     // value options
     // todo
@@ -39,12 +39,12 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
         return new SqlQueryBuilder(id, model, type, null);
     }
 
-    public void addRowType(RepositoryField<?> field) {
+    public <T> void addRowType(RepositoryField<T> field) {
         this.rowTypes.add(field);
     }
 
     @Override
-    public void linkPrimaries(PrimaryRepositoryFieldImpl... fields) {
+    public void linkPrimaries(PrimaryRepositoryFieldImpl<?>... fields) {
         this.primaryLinking.addAll(Arrays.asList(fields));
     }
 
@@ -63,7 +63,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
                 transmitter.executeUpdate(buildTableInitializeQuery());
                 break;
             case CREATION:
-                transmitter.executeUpdate(buildValueCreationQeury());
+                transmitter.executeUpdate(buildValueCreationQuery());
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + type());
@@ -97,7 +97,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
         return TABLE_CREATION_QUERY.formatted(id(), String.join(", ", parameters));
     }
 
-    private String buildValueCreationQeury() {
+    private String buildValueCreationQuery() {
         // todo
         return VALUE_CREATION_QUERY.formatted(id(), "", "");
     }
