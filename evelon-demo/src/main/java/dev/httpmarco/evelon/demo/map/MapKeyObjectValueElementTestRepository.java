@@ -1,6 +1,7 @@
-package dev.httpmarco.evelon.demo;
+package dev.httpmarco.evelon.demo.map;
 
 import dev.httpmarco.evelon.common.annotations.PrimaryKey;
+import dev.httpmarco.evelon.demo.HierarchyElement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -11,11 +12,11 @@ import java.util.Map;
 @Getter
 @Accessors(fluent = true)
 @AllArgsConstructor
-public final class MapBothElementTestRepository {
+public final class MapKeyObjectValueElementTestRepository {
 
     @PrimaryKey
     private final String mapName;
     private final int age;
-    private final Map<String, String> properties = new HashMap<>();
+    private final Map<HierarchyElement, String> properties = new HashMap<>();
 
 }
