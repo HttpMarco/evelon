@@ -8,6 +8,6 @@ public interface SubStage<T, B extends Builder<B, ?>> extends Stage<T, B> {
 
     void initialize(String stageId, Model<B> model, RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries);
 
-    void create(String stageId, Model<B> model, RepositoryField<T> ownField, RepositoryObjectClass<?> clazz, B queries);
+    void create(T value, String stageId, Model<B> model, RepositoryField<T> ownField, RepositoryObjectClass<?> clazz, B queries);
 
 }

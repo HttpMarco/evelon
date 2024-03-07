@@ -28,14 +28,15 @@ public abstract class AbstractVirtualSubStage<B extends Builder<B, ?>> implement
     }
 
     @Override
-    public void create(String stageId, Model<B> model, RepositoryField<Object> ownField, RepositoryObjectClass<?> clazz, B queries) {
+    public void create(Object value, String stageId, Model<B> model, RepositoryField<Object> ownField, RepositoryObjectClass<?> clazz, B queries) {
         for (var field : clazz.fields()) {
             permitOnStage(field, model,
                     subStage -> {
                         // todo
                     },
                     elementStage -> {
-                        appendParameter(queries, field);
+                        queries.appendValue((field.value(value)));
+                        this.appendParameter(queries, field);
                     }
             );
         }
