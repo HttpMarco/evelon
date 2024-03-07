@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.demo;
 
-import dev.httpmarco.evelon.demo.elements.HierarchyParentElement;
+import dev.httpmarco.evelon.common.annotations.PrimaryKey;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,8 +8,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public final class HierarchyTestRepository {
 
+    @PrimaryKey
     private String name;
     private int coins;
-    private HierarchyParentElement parent;
+    private HierarchyElement parent;
 
 }
