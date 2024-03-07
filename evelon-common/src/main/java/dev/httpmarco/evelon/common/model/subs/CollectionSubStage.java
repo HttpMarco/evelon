@@ -12,10 +12,10 @@ import dev.httpmarco.osgan.utils.exceptions.NotImplementedException;
 
 import java.util.Collection;
 
-public abstract class CollectionSubStage<R extends Builder<R, ?>> implements SubStage<Collection<?>, R> {
+public abstract class CollectionSubStage<B extends Builder<B, ?>> implements SubStage<Collection<?>, B> {
 
     @Override
-    public void initialize(String stageId, Model<?> model, RepositoryField ownField, RepositoryObjectClass<?> clazz, R queries) {
+    public void initialize(String stageId, Model<B> model, RepositoryField<Collection<?>> ownField, RepositoryObjectClass<?> clazz, B queries) {
         var collectionListType = Reflections.of(ownField.field()).generics();
 
         if (collectionListType.length != 1) {
@@ -28,16 +28,16 @@ public abstract class CollectionSubStage<R extends Builder<R, ?>> implements Sub
         queries.linkPrimaries(ownField.parentClass().asObjectClass().primaryFields());
 
         var stage = model.findStage(collectionType);
-        if (stage instanceof ElementStage<?, ?, ?>) {
+        if (stage.isSubElementStage()) {
             this.appendElementStage(queries, new RepositoryFieldImpl(collectionType, ownField.id(), clazz));
-        } else if (stage instanceof SubStage<?, ?> substage) {
+        } else if (stage.isSubStage()) {
             throw new NotImplementedException("Substages are not supported yet.");
             // todo: implementation
         } else throw new RuntimeException("This stage is not supported yet.");
     }
 
     @Override
-    public void create(String stageId, Model<?> model, RepositoryField ownField, RepositoryObjectClass<?> clazz, R queries) {
+    public void create(String stageId, Model<B> model, RepositoryField<Collection<?>> ownField, RepositoryObjectClass<?> clazz, B queries) {
         //todo
     }
 
@@ -52,6 +52,6 @@ public abstract class CollectionSubStage<R extends Builder<R, ?>> implements Sub
      * @param builder the builder
      * @param field   the class of the element
      */
-    public abstract void appendElementStage(R builder, RepositoryField field);
+    public abstract void appendElementStage(B builder, RepositoryField<?> field);
 
 }

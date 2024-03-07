@@ -6,6 +6,6 @@ public enum ResponseType {
 
     EXCEPTIONAL,
     SUCCESS,
-    NOT_TRIED;
+    NOT_TRIED
 
 }

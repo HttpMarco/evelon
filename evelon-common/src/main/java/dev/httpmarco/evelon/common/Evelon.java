@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 @Accessors(fluent = true)
 public class Evelon {
 
-    public static Logger LOGGER = LoggerFactory.getLogger(Evelon.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(Evelon.class);
 
     @Getter
     private final static Evelon instance = new Evelon();

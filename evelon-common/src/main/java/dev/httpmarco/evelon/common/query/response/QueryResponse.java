@@ -1,6 +1,5 @@
 package dev.httpmarco.evelon.common.query.response;
 
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
