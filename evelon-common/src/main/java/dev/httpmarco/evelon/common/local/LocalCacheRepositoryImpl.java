@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
 import dev.httpmarco.evelon.common.layers.EvelonLayer;
 import dev.httpmarco.evelon.common.query.SortedOrder;
 import dev.httpmarco.evelon.common.query.intern.DataQuery;
+import dev.httpmarco.evelon.common.query.response.QueryResponse;
 import dev.httpmarco.evelon.common.repository.RepositoryImpl;
 import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.Getter;
@@ -43,8 +44,10 @@ public class LocalCacheRepositoryImpl<T> extends RepositoryImpl<T> implements Lo
     }
 
     @Override
-    public void create(DataQuery<T> query, T value) {
+    public QueryResponse create(DataQuery<T> query, T value) {
         localData.add(LocalStorageEntry.of(value));
+        //todo
+        return null;
     }
 
     @Override
