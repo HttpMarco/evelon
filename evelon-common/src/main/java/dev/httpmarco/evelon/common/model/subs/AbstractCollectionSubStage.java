@@ -1,7 +1,6 @@
 package dev.httpmarco.evelon.common.model.subs;
 
 import dev.httpmarco.evelon.common.builder.Builder;
-import dev.httpmarco.evelon.common.model.ElementStage;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.SubStage;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
@@ -12,7 +11,7 @@ import dev.httpmarco.osgan.utils.exceptions.NotImplementedException;
 
 import java.util.Collection;
 
-public abstract class CollectionSubStage<B extends Builder<B, ?>> implements SubStage<Collection<?>, B> {
+public abstract class AbstractCollectionSubStage<B extends Builder<B, ?>> implements SubStage<Collection<?>, B> {
 
     @Override
     public void initialize(String stageId, Model<B> model, RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries) {
@@ -37,7 +36,7 @@ public abstract class CollectionSubStage<B extends Builder<B, ?>> implements Sub
     }
 
     @Override
-    public void create(String stageId, Model<B> model, RepositoryField<Collection<?>> ownField, RepositoryObjectClass<?> clazz, B queries) {
+    public void create(Collection<?> value, String stageId, Model<B> model, RepositoryField<Collection<?>> ownField, RepositoryObjectClass<?> clazz, B queries) {
         //todo
     }
 

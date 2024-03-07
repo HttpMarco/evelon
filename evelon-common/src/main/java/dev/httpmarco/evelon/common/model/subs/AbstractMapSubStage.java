@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public abstract class MapSubStage<B extends Builder<B, ?>> implements SubStage<Map<?, ?>, B> {
+public abstract class AbstractMapSubStage<B extends Builder<B, ?>> implements SubStage<Map<?, ?>, B> {
 
     @Override
     public void initialize(String stageId, Model<B> model, @NotNull RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries) {
@@ -33,7 +33,7 @@ public abstract class MapSubStage<B extends Builder<B, ?>> implements SubStage<M
     }
 
     @Override
-    public void create(String stageId, Model<B> model, RepositoryField<Map<?, ?>> ownField, RepositoryObjectClass<?> clazz, B queries) {
+    public void create(Map<?, ?> value, String stageId, Model<B> model, RepositoryField<Map<?, ?>> ownField, RepositoryObjectClass<?> clazz, B queries) {
         // todo
     }
 

@@ -1,10 +1,9 @@
 package dev.httpmarco.evelon.sql.parent.model;
 
-import dev.httpmarco.evelon.common.model.ElementStage;
 import dev.httpmarco.evelon.common.model.Stage;
 import dev.httpmarco.evelon.common.model.SubStage;
 import dev.httpmarco.evelon.common.model.subs.AbstractVirtualSubStage;
-import dev.httpmarco.evelon.common.model.subs.MapSubStage;
+import dev.httpmarco.evelon.common.model.subs.AbstractMapSubStage;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClassImpl;
@@ -13,7 +12,7 @@ import dev.httpmarco.evelon.common.repository.field.RepositoryFieldImpl;
 import dev.httpmarco.evelon.sql.parent.builder.SqlQueryBuilder;
 import dev.httpmarco.osgan.utils.exceptions.NotImplementedException;
 
-public final class SqlParentMapSubStage extends MapSubStage<SqlQueryBuilder> {
+public final class SqlParentAbstractMapSubStage extends AbstractMapSubStage<SqlQueryBuilder> {
 
     @Override
     public void initializeMapElement(boolean key, SqlQueryBuilder builder, Stage<?, SqlQueryBuilder> stage, RepositoryField<?> parentField, Class<?> type, RepositoryObjectClass<?> clazz) {
