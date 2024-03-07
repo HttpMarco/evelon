@@ -22,7 +22,7 @@ public abstract class AbstractVirtualSubStage<B extends Builder<B, ?>> implement
                             field.clazz().asObjectClass(),
                             queries.subBuilder(field.id())
                     ),
-                    elementStage -> initializeSubElement(queries, field)
+                    elementStage -> appendParameter(queries, field)
             );
         }
     }
@@ -32,16 +32,17 @@ public abstract class AbstractVirtualSubStage<B extends Builder<B, ?>> implement
         for (var field : clazz.fields()) {
             permitOnStage(field, model,
                     subStage -> {
-
+                        // todo
                     },
                     elementStage -> {
-
+                        appendParameter(queries, field);
                     }
             );
         }
     }
 
-    public abstract void initializeSubElement(B query, RepositoryField<?> field);
+
+    public abstract void appendParameter(B query, RepositoryField<?> field);
 
     @Override
     public boolean isElement(Class<?> type) {

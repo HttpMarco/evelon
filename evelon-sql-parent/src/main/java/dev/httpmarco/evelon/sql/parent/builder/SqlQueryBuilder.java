@@ -83,7 +83,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
 
         if (rowTypes.stream().anyMatch(it -> it instanceof PrimaryRepositoryFieldImpl)) {
-            parameters.add("PRIMARY KEY (" + String.join(", ", rowTypes.stream().filter(it -> it instanceof PrimaryRepositoryFieldImpl).map(RepositoryField::id).toList()) + ")");
+            parameters.add("PRIMARY KEY (" + collectTypes(false) + ")");
         }
 
         if (parent() != null && primaryLinking.isEmpty()) {
@@ -99,6 +99,10 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
     private String buildValueCreationQuery() {
         // todo
-        return VALUE_CREATION_QUERY.formatted(id(), "", "");
+        return VALUE_CREATION_QUERY.formatted(id(), collectTypes(true), "");
+    }
+
+    private String collectTypes(boolean withPrimaries) {
+        return String.join(", ", rowTypes.stream().filter(it ->  withPrimaries || it instanceof PrimaryRepositoryFieldImpl).map(RepositoryField::id).toList());
     }
 }
