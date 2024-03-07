@@ -54,8 +54,10 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
 
     @Override
     public QueryResponse create(DataQuery<Object> query, Object value) {
-        //todo
-        return null;
+        var response = new QueryResponse();
+        var builder = SqlQueryBuilder.emptyInstance(query.repository().name(), model, BuilderType.CREATION);
+        model.findStage(value.getClass()).asSubStage().create(query.repository().name(), this.model, null, query.repository().clazz().asObjectClass(), builder);
+        return response;
     }
 
     @Override
