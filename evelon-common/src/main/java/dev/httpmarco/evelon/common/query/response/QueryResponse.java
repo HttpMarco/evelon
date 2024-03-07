@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class QueryResponse {
 
+    private boolean closed = false;
     private ResponseType response = ResponseType.OPEN;
 
     private final long startTime = System.currentTimeMillis();
@@ -19,5 +20,25 @@ public class QueryResponse {
 
     public static QueryResponse empty() {
         return new QueryResponse();
+    }
+
+    public void append(QueryResponse response) {
+        if (closed) {
+            throw new IllegalStateException("QueryResponse already closed");
+        }
+
+        if (this.response == ResponseType.OPEN || this.response == ResponseType.SUCCESS) {
+            this.response = response.response;
+        }
+        this.modifiedElements += response.modifiedElements;
+    }
+
+    public QueryResponse close() {
+        if (closed) {
+            throw new IllegalStateException("QueryResponse already closed");
+        }
+        closed = true;
+        processTime = System.currentTimeMillis() - startTime;
+        return this;
     }
 }
