@@ -27,7 +27,7 @@ public final class SqlParentMapSubStage extends MapSubStage<SqlQueryBuilder> {
 
     private void initialize(SqlQueryBuilder Builder, Stage<?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> parentClazz, boolean primary) {
         if (stage instanceof ElementStage<?, ?, ?>) {
-            if(primary) {
+            if (primary) {
                 Builder.addRowType(new PrimaryRepositoryFieldImpl(type, parentField.id() + "_key", parentClazz));
             } else {
                 Builder.addRowType(new RepositoryFieldImpl(type, parentField.id() + "_value", parentClazz));
@@ -35,7 +35,7 @@ public final class SqlParentMapSubStage extends MapSubStage<SqlQueryBuilder> {
         } else if (stage instanceof SubStage<?> subStage) {
             if (subStage instanceof AbstractVirtualSubStage<?>) {
                 for (var field : new RepositoryObjectClassImpl<>(type).fields()) {
-                    if(primary) {
+                    if (primary) {
                         Builder.addRowType(new PrimaryRepositoryFieldImpl(field.field(), parentClazz));
                     } else {
                         Builder.addRowType(new RepositoryFieldImpl(field.field(), parentClazz));

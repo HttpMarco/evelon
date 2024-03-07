@@ -19,6 +19,7 @@ import java.util.List;
 public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlModel, HikariConnection> {
 
     private static final String TABLE_CREATION_QUERY = "CREATE TABLE IF NOT EXISTS %s(%s);";
+    private static final String VALUE_CREATION_QUERY = "INSERT INTO %s(%s) VALUES(%s);";
 
     // table initialize options
     private final List<RepositoryField> rowTypes = new ArrayList<>();
@@ -56,15 +57,19 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
     @Override
     public void push(HikariConnection connection) {
+        var transmitter = connection.transmitter();
         switch (type()) {
             case INITIALIZE:
-                connection.transmitter().executeUpdate(buildTableInitializeQuery());
-                for (var child : this.children()) {
-                    child.push(connection);
-                }
+                transmitter.executeUpdate(buildTableInitializeQuery());
+                break;
+            case CREATION:
+                transmitter.executeUpdate(buildValueCreationQeury());
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + type());
+        }
+        for (var child : this.children()) {
+            child.push(connection);
         }
     }
 
@@ -90,5 +95,10 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
         }
 
         return TABLE_CREATION_QUERY.formatted(id(), String.join(", ", parameters));
+    }
+
+    private String buildValueCreationQeury() {
+        // todo
+        return VALUE_CREATION_QUERY;
     }
 }
