@@ -5,6 +5,7 @@ import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.SubStage;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
+import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClassImpl;
 import dev.httpmarco.evelon.common.repository.field.RepositoryFieldImpl;
 import dev.httpmarco.osgan.reflections.Reflections;
 import dev.httpmarco.osgan.utils.exceptions.NotImplementedException;
@@ -21,12 +22,12 @@ public abstract class AbstractCollectionSubStage<B extends Builder<B, ?>> implem
             throw new IllegalStateException("Collection stage tpe has multiple elements. That is not a requirement of collections.");
         }
 
-        var collectionType = collectionListType[0];
+        var collectionType = new RepositoryObjectClassImpl<>(collectionListType[0]);
 
         // add foreign key linking
         queries.linkPrimaries(ownField.parentClass().asObjectClass().primaryFields());
 
-        var stage = model.findStage(collectionType);
+        var stage = collectionType.stageOf(model);
         if (stage.isElementStage()) {
             this.appendElementStage(queries, new RepositoryFieldImpl(collectionType, ownField.id(), clazz));
         } else if (stage.isSubStage()) {

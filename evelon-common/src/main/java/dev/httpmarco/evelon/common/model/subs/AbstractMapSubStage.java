@@ -5,6 +5,7 @@ import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.Stage;
 import dev.httpmarco.evelon.common.model.SubStage;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
+import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClassImpl;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
 import dev.httpmarco.osgan.reflections.Reflections;
@@ -28,8 +29,8 @@ public abstract class AbstractMapSubStage<B extends Builder<B, ?>> implements Su
         var keyType = new RepositoryClassImpl<>(mapTypes[0]);
         var valueType = new RepositoryClassImpl<>(mapTypes[1]);
 
-        this.initializeMapElement(true, queries, model.findStage(keyType.clazz()), ownField, keyType.clazz(), clazz);
-        this.initializeMapElement(false, queries, model.findStage(valueType.clazz()), ownField, valueType.clazz(), clazz);
+        this.initializeMapElement(true, queries, keyType.stageOf(model), ownField, keyType, clazz);
+        this.initializeMapElement(false, queries, valueType.stageOf(model), ownField, valueType, clazz);
     }
 
     @Override
@@ -37,7 +38,7 @@ public abstract class AbstractMapSubStage<B extends Builder<B, ?>> implements Su
         // todo
     }
 
-    public abstract void initializeMapElement(boolean key, B builder, Stage<?, B> stage, RepositoryField<?> parentField, Class<?> type, RepositoryObjectClass<?> clazz);
+    public abstract void initializeMapElement(boolean key, B builder, Stage<?, B> stage, RepositoryField<?> parentField, RepositoryClass<?> type, RepositoryObjectClass<?> clazz);
 
     @Override
     public boolean isElement(Class<?> type) {

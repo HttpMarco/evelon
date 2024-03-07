@@ -30,13 +30,6 @@ public interface RepositoryField<T> {
     RepositoryClass<?> parentClass();
 
     /**
-     * Returns the stage of the field
-     *
-     * @return The stage of field
-     */
-    <B extends Builder<B, ?>> Stage<T, B> stage(Model<B> model);
-
-    /**
      * Returns the class of the field
      *
      * @return The class of field

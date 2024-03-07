@@ -4,7 +4,6 @@ import dev.httpmarco.evelon.common.builder.BuilderType;
 import dev.httpmarco.evelon.common.builder.impl.AbstractBuilder;
 import dev.httpmarco.evelon.common.query.response.QueryResponse;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
-import dev.httpmarco.evelon.common.repository.field.ForeignLinkingRepositoryFieldImpl;
 import dev.httpmarco.evelon.common.repository.field.PrimaryRepositoryFieldImpl;
 import dev.httpmarco.evelon.sql.parent.SqlType;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
@@ -24,7 +23,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
     // table initialize options
     private final List<RepositoryField<?>> rowTypes = new ArrayList<>();
-    private final List<ForeignLinkingRepositoryFieldImpl<?>> primaryLinking = new ArrayList<>();
+    private final List<PrimaryRepositoryFieldImpl<?>> primaryLinking = new ArrayList<>();
 
     // value options
     private final List<Object> queryArguments = new ArrayList<>();

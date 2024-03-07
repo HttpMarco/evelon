@@ -51,7 +51,7 @@ public abstract class AbstractVirtualSubStage<B extends Builder<B, ?>> implement
     }
 
     private <T> void permitOnStage(RepositoryField<T> field, Model<B> model, Consumer<SubStage<T, B>> subStageHandling, Consumer<ElementStage<T, ?, B>> elementStageHandling) {
-        var stage = field.stage(model);
+        var stage = field.clazz().stageOf(model);
         if (stage.isSubStage()) {
             subStageHandling.accept(stage.asSubStage());
         } else if (stage.isElementStage()) {
