@@ -1,8 +1,11 @@
 package dev.httpmarco.evelon.common.layers;
 
 import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
+import dev.httpmarco.evelon.common.model.Model;
+import dev.httpmarco.evelon.common.query.Query;
 import dev.httpmarco.evelon.common.query.SortedOrder;
 import dev.httpmarco.evelon.common.query.intern.DataQuery;
+import dev.httpmarco.evelon.common.query.response.QueryResponse;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -21,7 +24,7 @@ public interface EvelonLayer<T> extends EvelonLayerSession {
      * @param query The DataQuery object representing the query for creating the data entry.
      * @param value The value of type T that will be associated with the data entry.
      */
-    void create(DataQuery<T> query, T value);
+    QueryResponse create(DataQuery<T> query, T value);
 
     /**
      * Creates a new entry in the data store if it does not already exist.

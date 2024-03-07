@@ -7,6 +7,7 @@ import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
 import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
 import dev.httpmarco.evelon.common.query.intern.DataQuery;
 import dev.httpmarco.evelon.common.query.SortedOrder;
+import dev.httpmarco.evelon.common.query.response.QueryResponse;
 import dev.httpmarco.evelon.common.repository.InitializeRepository;
 import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.sql.parent.builder.SqlQueryBuilder;
@@ -52,8 +53,9 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
     }
 
     @Override
-    public void create(DataQuery<Object> query, Object value) {
+    public QueryResponse create(DataQuery<Object> query, Object value) {
         //todo
+        return null;
     }
 
     @Override
