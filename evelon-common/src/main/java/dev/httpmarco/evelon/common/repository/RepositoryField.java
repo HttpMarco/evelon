@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.common.repository;
 
+import dev.httpmarco.evelon.common.builder.Builder;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.Stage;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
@@ -32,7 +33,7 @@ public interface RepositoryField<T> {
      *
      * @return The stage of field
      */
-    Stage<T, ?> stage(Model<?> model);
+    <B extends Builder<B, ?>> Stage<T, B> stage(Model<B> model);
 
     /**
      * Returns the class of the field

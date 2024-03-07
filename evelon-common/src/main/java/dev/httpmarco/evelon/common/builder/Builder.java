@@ -5,15 +5,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public interface Builder<T extends Builder<?, A>, A> {
+public interface Builder<B extends Builder<B, A>, A> {
 
-    @Nullable T parent();
+    @Nullable B parent();
 
-    List<T> children();
+    List<B> children();
 
     void linkPrimaries(PrimaryRepositoryFieldImpl... fields);
 
-    T subBuilder(String subId);
+    B subBuilder(String subId);
 
     void push(A arg);
 

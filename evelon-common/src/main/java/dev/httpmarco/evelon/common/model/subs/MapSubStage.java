@@ -14,7 +14,7 @@ import java.util.Map;
 public abstract class MapSubStage<B extends Builder<B, ?>> implements SubStage<Map<?, ?>, B> {
 
     @Override
-    public void initialize(String stageId, Model<?> model, RepositoryField ownField, RepositoryObjectClass<?> clazz, B queries) {
+    public void initialize(String stageId, Model<B> model, RepositoryField<Map<?, ?>> ownField, RepositoryObjectClass<?> clazz, B queries) {
         var mapTypes = Reflections.of(ownField.field()).generics();
 
         if (mapTypes.length != 2) {
@@ -32,13 +32,13 @@ public abstract class MapSubStage<B extends Builder<B, ?>> implements SubStage<M
     }
 
     @Override
-    public void create(String stageId, Model<?> model, RepositoryField ownField, RepositoryObjectClass<?> clazz, B queries) {
+    public void create(String stageId, Model<B> model, RepositoryField<Map<?, ?>> ownField, RepositoryObjectClass<?> clazz, B queries) {
         // todo
     }
 
-    public abstract void initializeKey(B Builder, Stage<?, ?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> clazz);
+    public abstract void initializeKey(B Builder, Stage<?, ?> stage, RepositoryField<Map<?, ?>> parentField, Class<?> type, RepositoryObjectClass<?> clazz);
 
-    public abstract void initializeValue(B Builder, Stage<?, ?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> clazz);
+    public abstract void initializeValue(B Builder, Stage<?, ?> stage, RepositoryField<Map<?, ?>> parentField, Class<?> type, RepositoryObjectClass<?> clazz);
 
     @Override
     public boolean isElement(Class<?> type) {

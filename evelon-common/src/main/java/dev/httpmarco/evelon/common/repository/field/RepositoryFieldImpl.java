@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.common.repository.field;
 
+import dev.httpmarco.evelon.common.builder.Builder;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.Stage;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClassImpl;
@@ -41,7 +42,7 @@ public class RepositoryFieldImpl<T> implements RepositoryField<T> {
     }
 
     @Override
-    public Stage<T, ?> stage(Model<?> model) {
-        return (Stage<T, ?>) model.findStage(this.fieldType);
+    public <B extends Builder<B, ?>> Stage<T, B> stage(Model<B> model) {
+        return model.findStage(this.fieldType);
     }
 }
