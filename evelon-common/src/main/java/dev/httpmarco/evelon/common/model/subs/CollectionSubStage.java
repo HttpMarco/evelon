@@ -37,6 +37,11 @@ public abstract class CollectionSubStage<R extends Builder<R, ?>> implements Sub
     }
 
     @Override
+    public void create(String stageId, Model<?> model, RepositoryField ownField, RepositoryObjectClass<?> clazz, R queries) {
+        //todo
+    }
+
+    @Override
     public boolean isElement(Class<?> type) {
         return Collection.class.isAssignableFrom(type);
     }
@@ -45,7 +50,7 @@ public abstract class CollectionSubStage<R extends Builder<R, ?>> implements Sub
      * Append the element stage to the builder. Here we cant know the type of the element, so we need to pass the class
      *
      * @param builder the builder
-     * @param field the class of the element
+     * @param field   the class of the element
      */
     public abstract void appendElementStage(R builder, RepositoryField field);
 

@@ -20,6 +20,11 @@ public abstract class AbstractVirtualSubStage<R extends Builder<?, ?>> implement
         }
     }
 
+    @Override
+    public void create(String stageId, Model<?> model, RepositoryField ownField, RepositoryObjectClass<?> clazz, R queries) {
+        // todo
+    }
+
     public abstract void initializeSubElement(R query, RepositoryField field);
 
     @Override

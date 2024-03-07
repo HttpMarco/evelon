@@ -31,6 +31,11 @@ public abstract class MapSubStage<B extends Builder<B, ?>> implements SubStage<B
         this.initializeValue(queries, model.findStage(valueType.clazz()), ownField, valueType.clazz(), clazz);
     }
 
+    @Override
+    public void create(String stageId, Model<?> model, RepositoryField ownField, RepositoryObjectClass<?> clazz, B queries) {
+        // todo
+    }
+
     public abstract void initializeKey(B Builder, Stage<?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> clazz);
 
     public abstract void initializeValue(B Builder, Stage<?> stage, RepositoryField parentField, Class<?> type, RepositoryObjectClass<?> clazz);
