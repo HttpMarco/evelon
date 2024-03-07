@@ -24,6 +24,12 @@ public abstract class AbstractBuilder<B extends Builder<B, A>, M extends Model<B
     private @Nullable B parent;
     private final List<B> children = new ArrayList<>();
 
+    private final List<Object> values = new ArrayList<>();
+
     private final BuilderType type;
 
+    @Override
+    public void appendValue(Object value) {
+        this.values.add(value);
+    }
 }

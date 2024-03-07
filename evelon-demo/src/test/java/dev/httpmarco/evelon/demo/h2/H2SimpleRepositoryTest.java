@@ -17,6 +17,6 @@ public final class H2SimpleRepositoryTest {
 
     @Test
     void creation() {
-        assertEquals(ResponseType.SUCCESS, repository.query().create(new SimpleTestRepository("Alex", 200)).response());
+        assertEquals(ResponseType.SUCCESS, repository.query().create(new SimpleTestRepository(1, 200)).response());
     }
 }

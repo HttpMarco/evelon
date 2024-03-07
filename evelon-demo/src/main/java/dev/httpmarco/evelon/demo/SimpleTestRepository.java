@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 public final class SimpleTestRepository {
 
     @PrimaryKey
-    private String username;
+    private int username;
     private Integer money;
 
 }
