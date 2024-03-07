@@ -16,4 +16,10 @@ public interface SubStage<R extends Builder<?, ?>> extends Stage<R> {
         this.initialize(stageId, model, ownField, clazz, (R) queries);
     }
 
+    void create(String stageId, Model<?> model, RepositoryField ownField, RepositoryObjectClass<?> clazz, R queries);
+
+    @SuppressWarnings("unchecked")
+    default void createWithMapping(String stageId, Model<?> model, RepositoryField ownField, RepositoryObjectClass<?> clazz, Object queries) {
+        this.create(stageId, model, ownField, clazz, (R) queries);
+    }
 }
