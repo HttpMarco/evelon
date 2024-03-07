@@ -27,10 +27,4 @@ public class RepositoryObjectClassImpl<T> extends RepositoryClassImpl<T> impleme
                 .filter(repositoryField -> repositoryField instanceof PrimaryRepositoryFieldImpl)
                 .toArray(PrimaryRepositoryFieldImpl[]::new);
     }
-
-
-    @Override
-    public Class<T> clazz() {
-        return super.clazz();
-    }
 }
