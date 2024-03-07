@@ -9,6 +9,6 @@ public interface EvelonModelLayer<T> extends EvelonLayer<T> {
      *
      * @return The model.
      */
-    Model model();
+    Model<?> model();
 
 }
