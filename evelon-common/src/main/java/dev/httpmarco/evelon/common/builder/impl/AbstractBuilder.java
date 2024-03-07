@@ -15,7 +15,7 @@ import java.util.List;
 @Accessors(fluent = true)
 @Getter(AccessLevel.PUBLIC)
 @AllArgsConstructor
-public abstract class AbstractBuilder<B extends Builder<B, A>, M extends Model<?>, A> implements Builder<B, A> {
+public abstract class AbstractBuilder<B extends Builder<B, A>, M extends Model<B>, A> implements Builder<B, A> {
 
     // general parameters
     private final String id;

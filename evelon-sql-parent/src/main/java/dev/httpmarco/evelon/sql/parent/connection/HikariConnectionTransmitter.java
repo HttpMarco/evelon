@@ -30,7 +30,7 @@ public final class HikariConnectionTransmitter {
     }
 
     public QueryResponse transferPreparedStatement(StatementTransmitter statementTransmitter, String query, Object @NotNull ... arguments) {
-        var response = new QueryResponse();
+        var response = QueryResponse.empty();
         Evelon.LOGGER.info("Executing query: {}", query);
         try (var connection = hikariConnection.getConnection(); var statement = connection.prepareStatement(query)) {
             for (int i = 0; i < arguments.length; i++) {
@@ -38,7 +38,7 @@ public final class HikariConnectionTransmitter {
             }
             statementTransmitter.result(statement);
         } catch (SQLException exception) {
-            response.response(ResponseType.EXCEPTIONAL);
+            response.appendError(exception.getMessage());
         }
         return response;
     }

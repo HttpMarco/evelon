@@ -12,8 +12,8 @@ public final class SqlModel extends Model<SqlQueryBuilder> {
     @Override
     public void applyPlatformStages() {
         stages().add(new SqlParentParameterStage());
-        stages().add(new SqlParentCollectionSubStage());
-        stages().add(new SqlParentMapSubStage());
+        stages().add(new SqlParentAbstractCollectionSubStage());
+        stages().add(new SqlParentAbstractMapSubStage());
         stages().add(new SqlParentVirtualSubStage());
     }
 }
