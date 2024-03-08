@@ -42,7 +42,8 @@ public abstract class AbstractMapSubStage<B extends Builder<B, ?>> implements Su
     public abstract void initializeMapElement(Repository<?> repository, boolean key, B builder, Stage<?, B> stage, RepositoryField<?> parentField, RepositoryClass<?> type, RepositoryObjectClass<?> clazz);
 
     @Override
-    public boolean isElement(Class<?> type) {
-        return Map.class.isAssignableFrom(type);
+    public boolean isElement(RepositoryClass<?> clazz) {
+        return Map.class.isAssignableFrom(clazz.clazz());
     }
+
 }
