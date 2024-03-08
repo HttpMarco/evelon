@@ -6,6 +6,7 @@ import dev.httpmarco.evelon.common.repository.field.PrimaryRepositoryFieldImpl;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface Builder<B extends Builder<B, A>, A> {
 
@@ -15,7 +16,7 @@ public interface Builder<B extends Builder<B, A>, A> {
 
     void appendValue(Object value);
 
-    void linkPrimaries(PrimaryRepositoryFieldImpl<?>... fields);
+    void linkPrimaries(Set<PrimaryRepositoryFieldImpl<?>> fields);
 
     B subBuilder(String subId);
 

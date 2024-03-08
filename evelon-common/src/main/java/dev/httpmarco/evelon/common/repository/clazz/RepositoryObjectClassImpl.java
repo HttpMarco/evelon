@@ -9,25 +9,34 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Accessors(fluent = true)
 public class RepositoryObjectClassImpl<T> extends RepositoryClassImpl<T> implements RepositoryObjectClass<T> {
 
     private final RepositoryField<?>[] fields;
-    private final PrimaryRepositoryFieldImpl<?>[] primaryFields;
+    private final Set<PrimaryRepositoryFieldImpl<?>> primaryFields = new HashSet<>();
 
     public RepositoryObjectClassImpl(Repository<?> repository, Class<T> clazz) {
         super(clazz);
 
         this.fields = Arrays.stream(clazz.getDeclaredFields())
-                .map(field -> field.isAnnotationPresent(PrimaryKey.class) ?
-                        new PrimaryRepositoryFieldImpl(repository, field, this) :
-                        new RepositoryFieldImpl(repository, field, this))
-                .toArray(RepositoryField[]::new);
+                .map(field -> {
 
-        this.primaryFields = Arrays.stream(fields)
-                .filter(repositoryField -> repositoryField instanceof PrimaryRepositoryFieldImpl)
-                .toArray(PrimaryRepositoryFieldImpl[]::new);
+                    RepositoryField<?> repositoryField;
+
+                    if (field.isAnnotationPresent(PrimaryKey.class)) {
+                        var primaryRepositoryField = new PrimaryRepositoryFieldImpl<>(repository, field, this);
+                        primaryFields.add(primaryRepositoryField);
+                        repositoryField = primaryRepositoryField;
+                    } else {
+                        // todo check is object or not
+                        repositoryField = new RepositoryFieldImpl<>(repository, field, this);
+                    }
+
+                    return repositoryField;
+                }).toArray(RepositoryField[]::new);
     }
 }

@@ -39,7 +39,6 @@ public interface RepositoryField<T> {
      * Get not the normal repository class, but the java class
      * @return the java basic field
      */
-    @Deprecated
     Field field();
 
     /**

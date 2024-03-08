@@ -13,8 +13,8 @@ import dev.httpmarco.osgan.utils.exceptions.NotImplementedException;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlModel, HikariConnection> {
@@ -46,8 +46,8 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     }
 
     @Override
-    public void linkPrimaries(PrimaryRepositoryFieldImpl<?>... fields) {
-        this.primaryLinking.addAll(Arrays.asList(fields));
+    public void linkPrimaries(Set<PrimaryRepositoryFieldImpl<?>> fields) {
+        this.primaryLinking.addAll(fields);
     }
 
     @Override
