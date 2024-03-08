@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.common.builder.Builder;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.Stage;
 import dev.httpmarco.evelon.common.model.SubStage;
+import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClassImpl;
@@ -16,7 +17,7 @@ import java.util.Map;
 public abstract class AbstractMapSubStage<B extends Builder<B, ?>> implements SubStage<Map<?, ?>, B> {
 
     @Override
-    public void initialize(String stageId, Model<B> model, @NotNull RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries) {
+    public void initialize(Repository<?> repository, String stageId, Model<B> model, @NotNull RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries) {
         var mapTypes = Reflections.of(ownField.field()).generics();
 
         if (mapTypes.length != 2) {
@@ -29,8 +30,8 @@ public abstract class AbstractMapSubStage<B extends Builder<B, ?>> implements Su
         var keyType = new RepositoryClassImpl<>(mapTypes[0]);
         var valueType = new RepositoryClassImpl<>(mapTypes[1]);
 
-        this.initializeMapElement(true, queries, keyType.stageOf(model), ownField, keyType, clazz);
-        this.initializeMapElement(false, queries, valueType.stageOf(model), ownField, valueType, clazz);
+        this.initializeMapElement(repository, true, queries, keyType.stageOf(model), ownField, keyType, clazz);
+        this.initializeMapElement(repository, false, queries, valueType.stageOf(model), ownField, valueType, clazz);
     }
 
     @Override
@@ -38,7 +39,7 @@ public abstract class AbstractMapSubStage<B extends Builder<B, ?>> implements Su
         // todo
     }
 
-    public abstract void initializeMapElement(boolean key, B builder, Stage<?, B> stage, RepositoryField<?> parentField, RepositoryClass<?> type, RepositoryObjectClass<?> clazz);
+    public abstract void initializeMapElement(Repository<?> repository, boolean key, B builder, Stage<?, B> stage, RepositoryField<?> parentField, RepositoryClass<?> type, RepositoryObjectClass<?> clazz);
 
     @Override
     public boolean isElement(Class<?> type) {

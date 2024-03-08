@@ -19,7 +19,7 @@ public class RepositoryImpl<T> implements Repository<T> {
     private final List<EvelonLayer<T>> layers = new ArrayList<>();
 
     public RepositoryImpl(Class<T> clazz) {
-        this.clazz = new RepositoryObjectClassImpl<>(clazz);
+        this.clazz = new RepositoryObjectClassImpl<>(this, clazz);
     }
 
     @Override

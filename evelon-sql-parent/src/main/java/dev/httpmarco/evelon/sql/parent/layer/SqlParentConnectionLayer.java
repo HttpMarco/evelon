@@ -49,7 +49,7 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
     @Override
     public <T> void initializeRepository(Repository<T> repository) {
         var builder = SqlQueryBuilder.emptyInstance(repository.name(), model, BuilderType.INITIALIZE);
-        repository.clazz().stageOf(model).asSubStage().initialize(repository.name(), this.model, null, repository.clazz().asObjectClass(), builder);
+        repository.clazz().stageOf(model).asSubStage().initialize(repository, repository.name(), this.model, null, repository.clazz().asObjectClass(), builder);
         builder.push(connection).close();
     }
 

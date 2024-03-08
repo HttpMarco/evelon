@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.common.builder.Builder;
 import dev.httpmarco.evelon.common.model.ElementStage;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.SubStage;
+import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
 
@@ -12,10 +13,10 @@ import java.util.function.Consumer;
 public abstract class AbstractVirtualSubStage<B extends Builder<B, ?>> implements SubStage<Object, B> {
 
     @Override
-    public void initialize(String stageId, Model<B> model, RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries) {
+    public void initialize(Repository<?> repository, String stageId, Model<B> model, RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries) {
         for (var field : clazz.fields()) {
             permitOnStage(field, model,
-                    subStage -> subStage.initialize(
+                    subStage -> subStage.initialize(repository,
                             stageId + "_" + field.id(),
                             model,
                             field,
