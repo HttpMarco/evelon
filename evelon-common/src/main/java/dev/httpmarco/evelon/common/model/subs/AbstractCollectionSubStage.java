@@ -5,7 +5,6 @@ import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.SubStage;
 import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
-import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClassImpl;
 import dev.httpmarco.evelon.common.repository.field.RepositoryFieldImpl;
@@ -44,8 +43,8 @@ public abstract class AbstractCollectionSubStage<B extends Builder<B, ?>> implem
     }
 
     @Override
-    public boolean isElement(RepositoryClass<?> type) {
-        return Collection.class.isAssignableFrom(type.clazz());
+    public boolean isElement(Model<B> model, Class<?> clazz) {
+        return Collection.class.isAssignableFrom(clazz);
     }
 
     /**
