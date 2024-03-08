@@ -39,9 +39,13 @@ public final class H2SimpleRepositoryTest {
     @DisplayName("H2 - Hierarchy Repository Test")
     @Disabled
     class HierarchyTest {
-        private final Repository<HierarchyTestRepository> repository = RepositoryBuilder.of(HierarchyTestRepository.class)
-                .addAfter(H2SqlLayer.class)
-                .build();
+
+        private static Repository<HierarchyTestRepository> repository;
+
+        @BeforeAll
+        static void initialize() {
+            repository = RepositoryBuilder.of(HierarchyTestRepository.class).addAfter(H2SqlLayer.class).build();
+        }
 
         @Test
         void creation() {
