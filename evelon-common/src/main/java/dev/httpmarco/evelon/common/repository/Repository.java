@@ -11,8 +11,6 @@ public interface Repository<T> {
 
     RepositoryClass<T> clazz();
 
-    void addLayer(EvelonLayer<T> layer);
-
     List<EvelonLayer<T>> layers();
 
     List<EvelonModelLayer<T>> modelLayers();
