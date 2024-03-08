@@ -24,8 +24,9 @@ public class LocalCacheRepositoryImpl<T> extends RepositoryImpl<T> implements Lo
     private final LayerFilterHandler<?, ?> filterHandler = new LocalFilterHandler();
     private final List<LocalStorageEntry<T>> localData = new ArrayList<>();
 
-    public LocalCacheRepositoryImpl(Class<T> clazz) {
-        super(clazz);
+    public LocalCacheRepositoryImpl(List<EvelonLayer<T>> layers, Class<T> clazz) {
+        // todo add self local storage
+        super(layers, clazz);
     }
 
     @Override

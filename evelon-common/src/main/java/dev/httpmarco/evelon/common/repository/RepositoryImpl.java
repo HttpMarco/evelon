@@ -8,8 +8,6 @@ import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClassImpl;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -17,15 +15,11 @@ import java.util.List;
 public class RepositoryImpl<T> implements Repository<T> {
 
     private final RepositoryClass<T> clazz;
-    private final List<EvelonLayer<T>> layers = new ArrayList<>();
+    private final List<EvelonLayer<T>> layers;
 
-    public RepositoryImpl(Class<T> clazz) {
+    public RepositoryImpl(List<EvelonLayer<T>> layers, Class<T> clazz) {
+        this.layers = layers;
         this.clazz = new RepositoryObjectClassImpl<>(this, clazz);
-    }
-
-    @Override
-    public void addLayer(EvelonLayer<T> layer) {
-        layers.add(layer);
     }
 
     @Override

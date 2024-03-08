@@ -46,28 +46,33 @@ public class RepositoryBuilder<T> {
             var layer = Evelon.instance().layerPool().getLayer(layerClass);
         }
 
-        var repository = useLocalStorage ? new LocalCacheRepositoryImpl<>(clazz) : new RepositoryImpl<>(clazz);
+        var layers = new ArrayList<EvelonLayer<T>>();
         for (var layerClass : layerClasses) {
 
             var layer = Evelon.instance().layerPool().getLayer(layerClass);
             if (layer instanceof ConnectableEvelonLayer<?, ?, ?> connectableLayer) {
                 if (Evelon.instance().credentialsService().isPresent(connectableLayer)) {
-                    repository.addLayer(layer);
+                    layers.add(layer);
 
                     if (!layer.active()) {
                         layer.initialize();
                     }
 
-                    if (layer instanceof InitializeRepository initializeRepository) {
-                        initializeRepository.initializeRepository(repository);
-                    }
                 } else {
                     Evelon.LOGGER.warn("Credentials not found for layer: {} - {} (layer disabled)", layer.id(), layer.getClass().getSimpleName());
                 }
             } else {
-                repository.addLayer(layer);
+                layers.add(layer);
             }
         }
+        var repository = useLocalStorage ? new LocalCacheRepositoryImpl<>(layers, clazz) : new RepositoryImpl<>(layers, clazz);
+
+        for (var layer : repository.layers()) {
+            if (layer instanceof InitializeRepository initializeRepository) {
+                initializeRepository.initializeRepository(repository);
+            }
+        }
+
         return repository;
     }
 }

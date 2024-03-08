@@ -32,10 +32,8 @@ public class RepositoryObjectClassImpl<T> extends RepositoryClassImpl<T> impleme
                         primaryFields.add(primaryRepositoryField);
                         repositoryField = primaryRepositoryField;
                     } else {
-                        // todo check is object or not
                         repositoryField = new RepositoryFieldImpl<>(repository, field, this);
                     }
-
                     return repositoryField;
                 }).toArray(RepositoryField[]::new);
     }

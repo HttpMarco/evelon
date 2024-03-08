@@ -1,8 +1,11 @@
 package dev.httpmarco.evelon.common.repository.field;
 
+import dev.httpmarco.evelon.common.layers.EvelonModelLayer;
+import dev.httpmarco.evelon.common.model.subs.AbstractVirtualSubStage;
 import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClassImpl;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
+import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClassImpl;
 import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -11,6 +14,7 @@ import dev.httpmarco.evelon.common.repository.RepositoryField;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
+import java.util.Optional;
 
 @Getter
 @Accessors(fluent = true)
@@ -23,7 +27,8 @@ public class RepositoryFieldImpl<T> implements RepositoryField<T> {
     private final Repository<?> repository;
 
     private final RepositoryClass<T> clazz;
-    private final RepositoryObjectClass<?> parentClass;
+    private @Nullable
+    final RepositoryObjectClass<?> parentClass;
 
     @SuppressWarnings("unchecked")
     public RepositoryFieldImpl(Repository<?> repository, Field field, RepositoryObjectClass<?> parentClass) {
@@ -34,13 +39,20 @@ public class RepositoryFieldImpl<T> implements RepositoryField<T> {
         this(repository, id, null, clazz.clazz(), clazz, parentClass);
     }
 
-    public RepositoryFieldImpl(Repository<?> repository, String id, @Nullable Field field, Class<T> fieldType, @Nullable RepositoryClass<T> clazz, RepositoryObjectClass<?> parentClass) {
+    public RepositoryFieldImpl(Repository<?> repository, String id, @Nullable Field field, Class<T> fieldType, @Nullable RepositoryClass<T> clazz, @Nullable RepositoryObjectClass<?> parentClass) {
         this.id = id;
         this.field = field;
         this.fieldType = fieldType;
         this.repository = repository;
         this.parentClass = parentClass;
-        this.clazz = clazz != null ? clazz : new RepositoryClassImpl<>(this.fieldType);
+
+
+        var modelLayer = repository.modelLayers().stream().findFirst();
+        if (modelLayer.isPresent() && (modelLayer.get().model().findStage(fieldType) instanceof AbstractVirtualSubStage<?>)) {
+            this.clazz = new RepositoryObjectClassImpl<>(repository, fieldType);
+        } else {
+            this.clazz = clazz != null ? clazz : new RepositoryClassImpl<>(this.fieldType);
+        }
     }
 
     @Override

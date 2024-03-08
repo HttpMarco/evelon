@@ -2,13 +2,10 @@ package dev.httpmarco.evelon.common.repository.clazz;
 
 import dev.httpmarco.evelon.common.Evelon;
 import dev.httpmarco.evelon.common.builder.Builder;
-import dev.httpmarco.evelon.common.layers.EvelonLayer;
 import dev.httpmarco.evelon.common.layers.EvelonModelLayer;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.Stage;
-import dev.httpmarco.evelon.common.repository.Repository;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.util.HashMap;
@@ -32,7 +29,7 @@ public class RepositoryClassImpl<T> implements RepositoryClass<T> {
         // todo improvement
         for (var value : Evelon.instance().layerPool().cachedLayers().values()) {
             if (value instanceof EvelonModelLayer<?> modelLayer) {
-                stages.put(modelLayer.model(), modelLayer.model().findStage(this));
+                stages.put(modelLayer.model(), modelLayer.model().findStage(this.clazz));
             }
         }
     }
