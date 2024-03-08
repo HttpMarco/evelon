@@ -3,7 +3,6 @@ package dev.httpmarco.evelon.common.repository.field;
 import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClassImpl;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
-import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClassImpl;
 import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.Getter;
 import lombok.experimental.Accessors;

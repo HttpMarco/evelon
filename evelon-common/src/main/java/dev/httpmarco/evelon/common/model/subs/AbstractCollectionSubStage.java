@@ -38,7 +38,7 @@ public abstract class AbstractCollectionSubStage<B extends Builder<B, ?>> implem
     }
 
     @Override
-    public void create(Collection<?> value, String stageId, Model<B> model, RepositoryField<Collection<?>> ownField, RepositoryObjectClass<?> clazz, B queries) {
+    public void create(Collection<?> value, String stageId, Model<B> model, RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries) {
         //todo
     }
 

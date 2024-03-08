@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.common.repository;
 
 import dev.httpmarco.evelon.common.layers.EvelonLayer;
+import dev.httpmarco.evelon.common.layers.EvelonModelLayer;
 import dev.httpmarco.evelon.common.query.Query;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 
@@ -13,6 +14,8 @@ public interface Repository<T> {
     void addLayer(EvelonLayer<T> layer);
 
     List<EvelonLayer<T>> layers();
+
+    List<EvelonModelLayer<T>> modelLayers();
 
     Query<T> query();
 

@@ -24,10 +24,10 @@ public class RepositoryObjectClassImpl<T> extends RepositoryClassImpl<T> impleme
                 .map(field -> field.isAnnotationPresent(PrimaryKey.class) ?
                         new PrimaryRepositoryFieldImpl(repository, field, this) :
                         new RepositoryFieldImpl(repository, field, this))
-                .toArray(RepositoryField<?>[]::new);
+                .toArray(RepositoryField[]::new);
 
         this.primaryFields = Arrays.stream(fields)
                 .filter(repositoryField -> repositoryField instanceof PrimaryRepositoryFieldImpl)
-                .toArray(PrimaryRepositoryFieldImpl<?>[]::new);
+                .toArray(PrimaryRepositoryFieldImpl[]::new);
     }
 }

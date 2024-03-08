@@ -16,24 +16,27 @@ public abstract class AbstractVirtualSubStage<B extends Builder<B, ?>> implement
     public void initialize(Repository<?> repository, String stageId, Model<B> model, RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries) {
         for (var field : clazz.fields()) {
             permitOnStage(field, model,
-                    subStage -> subStage.initialize(repository,
-                            stageId + "_" + field.id(),
-                            model,
-                            field,
-                            field.clazz().asObjectClass(),
-                            queries.subBuilder(field.id())
-                    ),
+                    subStage -> {
+
+                        var builder = queries.subBuilder(field.id(), field.parentClass());
+                        var subStageId = stageId + "_" + field.id();
+
+                        subStage.initialize(repository, subStageId, model, field, field.clazz().asObjectClass(), builder);
+                    },
                     elementStage -> appendParameter(queries, field)
             );
         }
     }
 
     @Override
-    public void create(Object value, String stageId, Model<B> model, RepositoryField<Object> ownField, RepositoryObjectClass<?> clazz, B queries) {
+    public void create(Object value, String stageId, Model<B> model, RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries) {
         for (var field : clazz.fields()) {
             permitOnStage(field, model,
                     subStage -> {
-                        // todo
+                        var builder = queries.subBuilder(field.id(), field.parentClass());
+                        var subStageId = stageId + "_" + field.id();
+
+                        subStage.createMapping(field.value(value), subStageId, model, field, field.clazz().asObjectClass(), builder);
                     },
                     elementStage -> {
                         queries.appendValue((field.value(value)));

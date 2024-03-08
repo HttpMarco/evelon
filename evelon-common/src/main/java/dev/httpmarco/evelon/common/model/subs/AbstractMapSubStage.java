@@ -35,7 +35,7 @@ public abstract class AbstractMapSubStage<B extends Builder<B, ?>> implements Su
     }
 
     @Override
-    public void create(Map<?, ?> value, String stageId, Model<B> model, RepositoryField<Map<?, ?>> ownField, RepositoryObjectClass<?> clazz, B queries) {
+    public void create(Map<?, ?> value, String stageId, Model<B> model, RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries) {
         // todo
     }
 

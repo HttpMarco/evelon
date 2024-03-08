@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.common.repository;
 
 import dev.httpmarco.evelon.common.layers.EvelonLayer;
+import dev.httpmarco.evelon.common.layers.EvelonModelLayer;
 import dev.httpmarco.evelon.common.query.Query;
 import dev.httpmarco.evelon.common.query.intern.DataQuery;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
@@ -25,6 +26,11 @@ public class RepositoryImpl<T> implements Repository<T> {
     @Override
     public void addLayer(EvelonLayer<T> layer) {
         layers.add(layer);
+    }
+
+    @Override
+    public List<EvelonModelLayer<T>> modelLayers() {
+        return layers.stream().filter(it -> it instanceof EvelonModelLayer<?>).map(it -> (EvelonModelLayer<T>) it).toList();
     }
 
     @Override
