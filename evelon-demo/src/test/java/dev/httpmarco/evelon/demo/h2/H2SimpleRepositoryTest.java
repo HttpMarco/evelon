@@ -36,7 +36,6 @@ public final class H2SimpleRepositoryTest {
     }
 
     @Nested
-    @Disabled
     @DisplayName("H2 - Hierarchy Repository Test")
     class HierarchyTest {
 
