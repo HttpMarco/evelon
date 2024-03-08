@@ -36,8 +36,8 @@ public final class H2SimpleRepositoryTest {
     }
 
     @Nested
-    @DisplayName("H2 - Hierarchy Repository Test")
     @Disabled
+    @DisplayName("H2 - Hierarchy Repository Test")
     class HierarchyTest {
 
         private static Repository<HierarchyTestRepository> repository;
@@ -49,11 +49,12 @@ public final class H2SimpleRepositoryTest {
 
         @Test
         void creation() {
-            assertEquals(ResponseType.SUCCESS, repository.query().create(
-                    new HierarchyTestRepository("Alex", 200,
-                            new HierarchyElement("xyz-1", 220)
-                    )
-            ).response());
+            assertEquals(ResponseType.SUCCESS, repository.query().create(new HierarchyTestRepository("Alex", 200, new HierarchyElement("xyz-1", 220))).response());
+        }
+
+        @Test
+        void deleteAll() {
+            assertEquals(ResponseType.SUCCESS, repository.query().deleteAll().response());
         }
     }
 }
