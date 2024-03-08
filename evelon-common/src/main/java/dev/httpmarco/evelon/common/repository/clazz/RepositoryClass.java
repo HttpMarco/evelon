@@ -24,6 +24,6 @@ public interface RepositoryClass<T> {
         if (this instanceof RepositoryObjectClass<T> objectClass) {
             return objectClass;
         }
-        throw new RuntimeException("RepositoryClass is not an object class: " + this.getClass().getSimpleName());
+        throw new RuntimeException("RepositoryClass is not an object class: " + clazz().getSimpleName());
     }
 }
