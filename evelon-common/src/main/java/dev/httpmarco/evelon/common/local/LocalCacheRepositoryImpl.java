@@ -46,8 +46,7 @@ public class LocalCacheRepositoryImpl<T> extends RepositoryImpl<T> implements Lo
     @Override
     public QueryResponse create(DataQuery<T> query, T value) {
         localData.add(LocalStorageEntry.of(value));
-        //todo
-        return null;
+        return QueryResponse.empty().close();
     }
 
     @Override
@@ -58,8 +57,9 @@ public class LocalCacheRepositoryImpl<T> extends RepositoryImpl<T> implements Lo
     }
 
     @Override
-    public void deleteAll(DataQuery<T> query) {
+    public QueryResponse deleteAll(DataQuery<T> query) {
         this.applyFilters(query).forEach(t -> localData().removeIf(entry -> entry.value().equals(t)));
+        return QueryResponse.empty().close();
     }
 
     @Override

@@ -71,8 +71,11 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
     }
 
     @Override
-    public void deleteAll(DataQuery<Object> query) {
-        //todo
+    public QueryResponse deleteAll(DataQuery<Object> query) {
+        var response = new QueryResponse();
+        var builder = SqlQueryBuilder.emptyInstance(query.repository().name(), model, BuilderType.DELETION);
+        response.append(builder.push(connection).close());
+        return response.close();
     }
 
     @Override

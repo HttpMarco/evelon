@@ -37,7 +37,7 @@ public interface EvelonLayer<T> extends EvelonLayerSession {
      *
      * @param query The DataQuery object representing the query for deleting data entries.
      */
-    void deleteAll(DataQuery<T> query);
+    QueryResponse deleteAll(DataQuery<T> query);
 
     /**
      * Deletes data entries based on the specified query.

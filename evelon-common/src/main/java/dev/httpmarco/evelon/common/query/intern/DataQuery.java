@@ -26,4 +26,13 @@ public class DataQuery<T> implements Query<T> {
         }
         return response.close();
     }
+
+    @Override
+    public QueryResponse deleteAll() {
+        var response = QueryResponse.empty();
+        for (var layer : repository.layers()) {
+            response.append(layer.deleteAll(this));
+        }
+        return response.close();
+    }
 }

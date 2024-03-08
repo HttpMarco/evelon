@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.common.builder.BuilderType;
 import dev.httpmarco.evelon.common.builder.impl.AbstractBuilder;
 import dev.httpmarco.evelon.common.query.response.QueryResponse;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
+import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.common.repository.field.PrimaryRepositoryFieldImpl;
 import dev.httpmarco.evelon.sql.parent.SqlType;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
@@ -20,6 +21,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
     private static final String TABLE_CREATION_QUERY = "CREATE TABLE IF NOT EXISTS %s(%s);";
     private static final String VALUE_CREATION_QUERY = "INSERT INTO %s(%s) VALUES (%s);";
+    private static final String VALUE_DELETION_QUERY = "DELETE FROM %s;";
 
     // table initialize options
     private final List<RepositoryField<?>> rowTypes = new ArrayList<>();
@@ -50,8 +52,16 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
     @Override
     public SqlQueryBuilder subBuilder(String subId) {
-        SqlQueryBuilder builder = new SqlQueryBuilder(id() + "_" + subId, model(), type(), this);
+        var builder = new SqlQueryBuilder(id() + "_" + subId, model(), type(), this);
         this.children().add(builder);
+        return builder;
+    }
+
+    @Override
+    public SqlQueryBuilder subBuilder(String subId, RepositoryClass<?> parent) {
+        var builder = new SqlQueryBuilder(id() + "_" + subId, model(), type(), this);
+        this.children().add(builder);
+        builder.linkPrimaries(parent.asObjectClass().primaryFields());
         return builder;
     }
 
@@ -61,6 +71,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
         var response = switch (type()) {
             case INITIALIZE -> transmitter.executeUpdate(buildTableInitializeQuery());
             case CREATION -> transmitter.executeUpdate(buildValueCreationQuery(), queryArguments);
+            case DELETION -> transmitter.executeUpdate(buildValueDeleteQuery());
         };
         for (var child : this.children()) {
             response.append(child.push(connection));
@@ -80,6 +91,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
         }
 
         if (parent() != null && primaryLinking.isEmpty()) {
+            System.err.println(parent().getClass().getSimpleName());
             // todo: need object ids to link
             throw new NotImplementedException("Cannot link primary keys without parent");
         } else {
@@ -93,11 +105,20 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     private String buildValueCreationQuery() {
         var parameterValueQuery = new ArrayList<String>();
 
-        for (int i = 0; i < rowTypes.size(); i++) {
+        for (var i = 0; i < rowTypes.size(); i++) {
             queryArguments.add(values().get(i));
             parameterValueQuery.add("?");
         }
+
+        for (var repositoryField : primaryLinking) {
+            parameterValueQuery.add("?");
+        }
+
         return VALUE_CREATION_QUERY.formatted(id(), collectTypes(true), String.join(", ", parameterValueQuery));
+    }
+
+    private String buildValueDeleteQuery() {
+        return VALUE_DELETION_QUERY.formatted(id());
     }
 
     private String collectTypes(boolean withPrimaries) {

@@ -6,6 +6,8 @@ public enum BuilderType {
     INITIALIZE,
 
     // add new value in repo
-    CREATION
+    CREATION,
+
+    DELETION
 
 }
