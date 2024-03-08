@@ -27,9 +27,6 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     private final List<RepositoryField<?>> rowTypes = new ArrayList<>();
     private final List<PrimaryRepositoryFieldImpl<?>> primaryLinking = new ArrayList<>();
 
-    // value options
-    private final List<Object> queryArguments = new ArrayList<>();
-
     // filter options
     // todo
 
@@ -70,7 +67,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
         var transmitter = connection.transmitter();
         var response = switch (type()) {
             case INITIALIZE -> transmitter.executeUpdate(buildTableInitializeQuery());
-            case CREATION -> transmitter.executeUpdate(buildValueCreationQuery(), queryArguments);
+            case CREATION -> transmitter.executeUpdate(buildValueCreationQuery(), values());
             case DELETION -> transmitter.executeUpdate(buildValueDeleteQuery());
         };
         for (var child : this.children()) {
@@ -106,15 +103,20 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
         var parameterValueQuery = new ArrayList<String>();
 
         for (var i = 0; i < rowTypes.size(); i++) {
-            queryArguments.add(values().get(i));
             parameterValueQuery.add("?");
         }
-
+        // todo better way
         for (var repositoryField : primaryLinking) {
             parameterValueQuery.add("?");
         }
 
-        return VALUE_CREATION_QUERY.formatted(id(), collectTypes(true), String.join(", ", parameterValueQuery));
+        String collectTypes = collectTypes(true);
+        // todo better way
+        if(!primaryLinking.isEmpty()) {
+            collectTypes += ", " + String.join(", ", primaryLinking.stream().map(RepositoryField::id).toList());
+        }
+
+        return VALUE_CREATION_QUERY.formatted(id(), collectTypes, String.join(", ", parameterValueQuery));
     }
 
     private String buildValueDeleteQuery() {
