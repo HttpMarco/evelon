@@ -32,7 +32,7 @@ public class RepositoryClassImpl<T> implements RepositoryClass<T> {
         // todo improvement
         for (var value : Evelon.instance().layerPool().cachedLayers().values()) {
             if (value instanceof EvelonModelLayer<?> modelLayer) {
-                stages.put(modelLayer.model(), modelLayer.model().findStage(clazz));
+                stages.put(modelLayer.model(), modelLayer.model().findStage(this));
             }
         }
     }
