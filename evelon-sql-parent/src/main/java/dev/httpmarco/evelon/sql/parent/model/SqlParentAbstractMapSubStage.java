@@ -20,17 +20,17 @@ public final class SqlParentAbstractMapSubStage extends AbstractMapSubStage<SqlQ
     public void initializeMapElement(Repository<?> repository, boolean key, SqlQueryBuilder builder, Stage<?, SqlQueryBuilder> stage, RepositoryField<?> parentField, RepositoryClass<?> clazz, RepositoryObjectClass<?> parentClass) {
         if (stage.isElementStage()) {
             if (key) {
-                builder.addRowType(new PrimaryRepositoryFieldImpl(repository, clazz, parentField.id() + "_key", parentClass));
+                builder.addRowType(new PrimaryRepositoryFieldImpl<>(repository, clazz, parentField.id() + "_key", parentClass));
             } else {
-                builder.addRowType(new RepositoryFieldImpl(repository, clazz, parentField.id() + "_value", parentClass));
+                builder.addRowType(new RepositoryFieldImpl<>(repository, clazz, parentField.id() + "_value", parentClass));
             }
         } else if (stage instanceof SubStage<?, ?> subStage) {
             if (subStage instanceof AbstractVirtualSubStage<?>) {
                 for (var field : new RepositoryObjectClassImpl<>(repository, clazz.clazz()).fields()) {
                     if (key) {
-                        builder.addRowType(new PrimaryRepositoryFieldImpl(repository, field.field(), parentClass));
+                        builder.addRowType(new PrimaryRepositoryFieldImpl<>(repository, field.field(), parentClass));
                     } else {
-                        builder.addRowType(new RepositoryFieldImpl(repository, field.field(), parentClass));
+                        builder.addRowType(new RepositoryFieldImpl<>(repository, field.field(), parentClass));
                     }
                 }
             } else {

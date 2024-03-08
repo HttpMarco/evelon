@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 public final class SqlParentAbstractCollectionSubStage extends AbstractCollectionSubStage<SqlQueryBuilder> {
 
     @Override
-    public void appendElementStage(@NotNull SqlQueryBuilder builder, RepositoryField field) {
+    public void appendElementStage(@NotNull SqlQueryBuilder builder, RepositoryField<?> field) {
         builder.addRowType(field);
     }
 }

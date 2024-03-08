@@ -8,11 +8,11 @@ import java.lang.reflect.Field;
 
 public final class PrimaryRepositoryFieldImpl<T> extends RepositoryFieldImpl<T> {
 
-    public PrimaryRepositoryFieldImpl(Repository<T> repository, Field field, RepositoryObjectClass<?> parentClass) {
+    public PrimaryRepositoryFieldImpl(Repository<?> repository, Field field, RepositoryObjectClass<?> parentClass) {
         super(repository, field, parentClass);
     }
 
-    public PrimaryRepositoryFieldImpl(Repository<T> repository, RepositoryClass<T> clazz, String id, RepositoryObjectClass<?> parentClass) {
+    public PrimaryRepositoryFieldImpl(Repository<?> repository, RepositoryClass<T> clazz, String id, RepositoryObjectClass<?> parentClass) {
         super(repository, clazz, id, parentClass);
     }
 }
