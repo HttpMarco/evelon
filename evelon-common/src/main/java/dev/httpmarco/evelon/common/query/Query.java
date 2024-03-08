@@ -6,4 +6,6 @@ public interface Query<T> {
 
     QueryResponse create(T value);
 
+    QueryResponse deleteAll();
+
 }
