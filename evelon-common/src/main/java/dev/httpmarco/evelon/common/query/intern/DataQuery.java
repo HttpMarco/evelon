@@ -35,4 +35,25 @@ public class DataQuery<T> implements Query<T> {
         }
         return response.close();
     }
+
+    @Override
+    public T findFirst() {
+        for (var layer : repository.layers()) {
+            if (layer.exists(this)) {
+                //todo
+                return null;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean exists() {
+        for (var layer : repository.layers()) {
+            if (layer.exists(this)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

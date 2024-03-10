@@ -118,7 +118,7 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
 
     @Override
     public boolean exists(DataQuery<Object> query) {
-        //todo
+        // todo add filters
         return false;
     }
 

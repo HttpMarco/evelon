@@ -8,4 +8,8 @@ public interface Query<T> {
 
     QueryResponse deleteAll();
 
+    T findFirst();
+
+    boolean exists();
+
 }
