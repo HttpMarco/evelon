@@ -15,7 +15,7 @@ jUnit = "5.10.2"
 h2 = "2.2.224"
 
 # logging
-log4j = "2.23.0"
+log4j = "2.23.1"
 slf4j = "2.0.12"
 
 # plugins
