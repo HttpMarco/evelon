@@ -1,7 +1,7 @@
 package dev.httpmarco.evelon.sql.parent.builder;
 
 import dev.httpmarco.evelon.common.builder.BuilderTransformer;
-import dev.httpmarco.evelon.common.builder.BuilderType;
+import dev.httpmarco.evelon.common.builder.BuildProcess;
 import dev.httpmarco.evelon.common.builder.impl.AbstractBuilder;
 import dev.httpmarco.evelon.common.query.response.QueryResponse;
 import dev.httpmarco.evelon.common.query.response.UpdateResponse;
@@ -28,7 +28,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
     private static final String TABLE_CREATION_QUERY = "CREATE TABLE IF NOT EXISTS %s(%s);";
     private static final String VALUE_CREATION_QUERY = "INSERT INTO %s(%s) VALUES (%s);";
-    private static final String VALUE_EXISTS_QUERY = "SELECT * FROM %s;";
+    private static final String VALUE_FINDING_QUERY = "SELECT %s FROM %s;";
     private static final String VALUE_DELETION_QUERY = "DELETE FROM %s;";
 
     // table initialize options
@@ -42,12 +42,12 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     // filter options
     // todo
 
-    public SqlQueryBuilder(String id, SqlModel model, BuilderType type, SqlQueryBuilder parent) {
-        super(id, model, parent, type);
+    public SqlQueryBuilder(String id, SqlModel model, BuildProcess type, SqlQueryBuilder parent, HikariConnection connection) {
+        super(id, model, parent, type, connection);
     }
 
-    public static SqlQueryBuilder emptyInstance(String id, SqlModel model, BuilderType type) {
-        return new SqlQueryBuilder(id, model, type, null);
+    public static SqlQueryBuilder emptyInstance(String id, SqlModel model, BuildProcess type, HikariConnection connection) {
+        return new SqlQueryBuilder(id, model, type, null, connection);
     }
 
     public <T> void addRowType(RepositoryField<T> field) {
@@ -61,39 +61,38 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
     @Override
     public SqlQueryBuilder subBuilder(String subId) {
-        var builder = new SqlQueryBuilder(id() + "_" + subId, model(), type(), this);
+        var builder = new SqlQueryBuilder(id() + "_" + subId, model(), type(), this, executor());
         this.children().add(builder);
         return builder;
     }
 
     @Override
     public SqlQueryBuilder subBuilder(String subId, RepositoryClass<?> parent) {
-        var builder = new SqlQueryBuilder(id() + "_" + subId, model(), type(), this);
+        var builder = new SqlQueryBuilder(id() + "_" + subId, model(), type(), this, executor());
         this.children().add(builder);
         builder.linkPrimaries(parent.asObjectClass().primaryFields());
         return builder;
     }
 
     @Override
-    public UpdateResponse update(HikariConnection connection) {
-        var transmitter = connection.transmitter();
+    public UpdateResponse update() {
         var response = switch (type()) {
-            case INITIALIZE -> transmitter.executeUpdate(buildTableInitializeQuery());
-            case CREATION -> transmitter.executeUpdate(buildValueCreationQuery(), values());
-            case DELETION -> transmitter.executeUpdate(buildValueDeleteQuery());
+            case INITIALIZE -> executor().transmitter().executeUpdate(buildTableInitializeQuery(), type());
+            case CREATION -> executor().transmitter().executeUpdate(buildValueCreationQuery(), type(), values().toArray());
+            case DELETION -> executor().transmitter().executeUpdate(buildValueDeleteQuery(), type());
             default -> throw new UnsupportedOperationException("Unsupported update builder type: " + type());
         };
         for (var child : this.children()) {
-            response.append(child.update(connection));
+            response.append(child.update());
         }
         return response;
     }
 
     @Override
-    public <T> @NotNull QueryResponse<T> query(HikariConnection connection, BuilderTransformer<ResultSet, T> function, T defaultValue) {
-        var transmitter = connection.transmitter();
+    public <T> @NotNull QueryResponse<T> query(BuilderTransformer<ResultSet, T> function, T defaultValue) {
+        var transmitter = executor().transmitter();
         return switch (type()) {
-            case EXISTS -> transmitter.executeQuery(buildValueExistsQuery(), function, defaultValue);
+            case FINDING, EXISTS -> transmitter.executeQuery(buildValueFindingQuery(), function, defaultValue, type());
             default -> throw new UnsupportedOperationException("Unsupported update builder type: " + type());
         };
     }
@@ -124,11 +123,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     private String buildValueCreationQuery() {
         var parameterValueQuery = new ArrayList<String>();
 
-        for (var i = 0; i < rowTypes.size(); i++) {
-            parameterValueQuery.add("?");
-        }
-        // todo better way
-        for (var repositoryField : primaryLinking) {
+        for (var i = 0; i < (rowTypes.size() + primaryLinking.size()); i++) {
             parameterValueQuery.add("?");
         }
 
@@ -145,8 +140,11 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
         return VALUE_DELETION_QUERY.formatted(id());
     }
 
-    private String buildValueExistsQuery() {
-        return VALUE_EXISTS_QUERY.formatted(id());
+    private String buildValueFindingQuery() {
+        if (rowTypes.isEmpty()) {
+            return VALUE_FINDING_QUERY.formatted("*", id());
+        }
+        return VALUE_FINDING_QUERY.formatted(String.join(", ", rowTypes.stream().map(RepositoryField::id).toList()), id());
     }
 
     private String collectTypes(boolean withPrimaries) {
