@@ -1,6 +1,5 @@
 package dev.httpmarco.evelon.common.repository.field;
 
-import dev.httpmarco.evelon.common.layers.EvelonModelLayer;
 import dev.httpmarco.evelon.common.model.subs.AbstractVirtualSubStage;
 import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClassImpl;
@@ -14,7 +13,6 @@ import dev.httpmarco.evelon.common.repository.RepositoryField;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
-import java.util.Optional;
 
 @Getter
 @Accessors(fluent = true)
