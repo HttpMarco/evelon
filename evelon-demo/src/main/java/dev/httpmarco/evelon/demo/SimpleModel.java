@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @Getter
 @AllArgsConstructor
-public final class SimpleTestRepository {
+public final class SimpleModel {
 
     @PrimaryKey
     private int username;
