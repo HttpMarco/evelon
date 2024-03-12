@@ -46,4 +46,9 @@ public abstract class AbstractMapSubStage<B extends Builder<B, ?, ?>> implements
         return Map.class.isAssignableFrom(clazz);
     }
 
+    @Override
+    public Map<?, ?> construct(Model<B> model, RepositoryClass<?> clazz, B builder) {
+        // todo
+        return Map.of();
+    }
 }
