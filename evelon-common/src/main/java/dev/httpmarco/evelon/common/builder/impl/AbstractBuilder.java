@@ -10,7 +10,9 @@ import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Accessors(fluent = true)
 @Getter(AccessLevel.PUBLIC)
@@ -22,12 +24,24 @@ public abstract class AbstractBuilder<B extends Builder<B, E, D>, M extends Mode
     private final M model;
     private @Nullable B parent;
     private final List<B> children = new ArrayList<>();
-    private final List<Object> values = new ArrayList<>();
     private final BuildProcess type;
     private final E executor;
 
+    private final Map<String, Object> values = new HashMap<>();
+
     @Override
-    public void appendValue(Object value) {
-        this.values.add(value);
+    public void appendValue(String key, Object value) {
+        this.values.put(key, value);
+
+    }
+
+    @Override
+    public List<Object> values() {
+        return this.values.values().stream().toList();
+    }
+
+    @Override
+    public Map<String, Object> valuesMap() {
+        return this.values;
     }
 }

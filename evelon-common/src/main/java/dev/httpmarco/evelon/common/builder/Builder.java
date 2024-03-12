@@ -7,6 +7,7 @@ import dev.httpmarco.evelon.common.repository.field.PrimaryRepositoryFieldImpl;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface Builder<B extends Builder<B, E, D>, E, D> {
@@ -27,7 +28,19 @@ public interface Builder<B extends Builder<B, E, D>, E, D> {
     /**
      * Add a new value in query
      */
-    void appendValue(Object value);
+    void appendValue(String key, Object value);
+
+    /**
+     * get all values with the key
+     * @return Map with key and value of values
+     */
+    Map<String, Object> valuesMap();
+
+    /**
+     * Get all values
+     * @return list with all values
+     */
+    List<Object> values();
 
     /**
      * Add the primaries from parent
