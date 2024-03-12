@@ -11,7 +11,7 @@ import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public final class H2SimpleRepositoryTest {
+public final class H2DatabaseTest {
 
     @Nested
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -57,6 +57,7 @@ public final class H2SimpleRepositoryTest {
     }
 
     @Nested
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     @DisplayName("H2 - Hierarchy Repository Test")
     class HierarchyTest {
 
@@ -68,11 +69,13 @@ public final class H2SimpleRepositoryTest {
         }
 
         @Test
+        @Order(1)
         void creation() {
             assertEquals(ResponseType.SUCCESS, repository.query().create(new HierarchyTestRepository("Alex", 200, new HierarchyElement("xyz-1", 220))).response());
         }
 
         @Test
+        @Order(5)
         void deleteAll() {
             assertEquals(ResponseType.SUCCESS, repository.query().deleteAll().response());
         }
