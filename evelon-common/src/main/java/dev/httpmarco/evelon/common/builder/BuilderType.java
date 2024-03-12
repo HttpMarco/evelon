@@ -7,7 +7,7 @@ public enum BuilderType {
 
     // add new value in repo
     CREATION,
-
-    DELETION
+    DELETION,
+    EXISTS,
 
 }
