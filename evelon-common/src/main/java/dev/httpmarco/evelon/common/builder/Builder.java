@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Set;
 
-public interface Builder<B extends Builder<B, A, D>, A, D> {
+public interface Builder<B extends Builder<B, E, D>, E, D> {
 
     /**
      * Get the parent if exists
@@ -51,19 +51,17 @@ public interface Builder<B extends Builder<B, A, D>, A, D> {
 
     /**
      * Send update query to database interface
-     * @param arg the argument to update
      * @return the result
      */
-    UpdateResponse update(A arg);
+    UpdateResponse update();
 
     /**
      *
-     * @param arg the argument to query
      * @param function data transformer
      * @param defaultValue if an exception occurs
      * @return the result info
      * @param <T> Type of value
      */
-    <T> QueryResponse<T> query(A arg, BuilderTransformer<D, T> function, T defaultValue);
+    <T> QueryResponse<T> query(BuilderTransformer<D, T> function, T defaultValue);
 
 }

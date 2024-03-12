@@ -15,7 +15,7 @@ import java.util.List;
 @Accessors(fluent = true)
 @Getter(AccessLevel.PUBLIC)
 @AllArgsConstructor
-public abstract class AbstractBuilder<B extends Builder<B, A, D>, M extends Model<B>, A, D> implements Builder<B, A, D> {
+public abstract class AbstractBuilder<B extends Builder<B, E, D>, M extends Model<B>, E, D> implements Builder<B, E, D> {
 
     // general parameters
     private final String id;
@@ -24,6 +24,7 @@ public abstract class AbstractBuilder<B extends Builder<B, A, D>, M extends Mode
     private final List<B> children = new ArrayList<>();
     private final List<Object> values = new ArrayList<>();
     private final BuilderType type;
+    private final E executor;
 
     @Override
     public void appendValue(Object value) {
