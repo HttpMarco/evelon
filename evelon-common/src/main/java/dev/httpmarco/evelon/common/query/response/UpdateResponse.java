@@ -5,16 +5,14 @@ import lombok.experimental.Accessors;
 
 @Getter
 @Accessors(fluent = true)
-public final class UpdateResponse extends ResponseResult {
+public final class UpdateResponse extends ResponseResult<UpdateResponse> {
 
     // only success information
     private int modifiedElements = 0;
 
     @Override
-    public void append(ResponseResult response) {
+    public void append(UpdateResponse response) {
         super.append(response);
-        if (response instanceof UpdateResponse updateResponse) {
-            this.modifiedElements += updateResponse.modifiedElements;
-        }
+        this.modifiedElements += response.modifiedElements;
     }
 }

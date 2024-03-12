@@ -1,12 +1,12 @@
 package dev.httpmarco.evelon.common.query;
 
-import dev.httpmarco.evelon.common.query.response.QueryResponse;
+import dev.httpmarco.evelon.common.query.response.UpdateResponse;
 
 public interface Query<T> {
 
-    QueryResponse create(T value);
+    UpdateResponse create(T value);
 
-    QueryResponse deleteAll();
+    UpdateResponse deleteAll();
 
     T findFirst();
 

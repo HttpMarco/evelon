@@ -5,10 +5,10 @@ import dev.httpmarco.evelon.common.builder.BuilderType;
 import dev.httpmarco.evelon.common.credentials.Credentials;
 import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
 import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
-import dev.httpmarco.evelon.common.model.SubStage;
 import dev.httpmarco.evelon.common.query.intern.DataQuery;
 import dev.httpmarco.evelon.common.query.SortedOrder;
 import dev.httpmarco.evelon.common.query.response.QueryResponse;
+import dev.httpmarco.evelon.common.query.response.UpdateResponse;
 import dev.httpmarco.evelon.common.repository.InitializeRepository;
 import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.sql.parent.builder.SqlQueryBuilder;
@@ -18,6 +18,7 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -50,18 +51,18 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
     public <T> void initializeRepository(Repository<T> repository) {
         var builder = SqlQueryBuilder.emptyInstance(repository.name(), model, BuilderType.INITIALIZE);
         repository.clazz().stageOf(model).asSubStage().initialize(repository, repository.name(), this.model, null, repository.clazz().asObjectClass(), builder);
-        builder.push(connection).close();
+        builder.update(connection).close();
     }
 
     @Override
-    public QueryResponse create(DataQuery<Object> query, Object value) {
-        var response = new QueryResponse();
+    public UpdateResponse create(DataQuery<Object> query, Object value) {
+        var response = new UpdateResponse();
         var builder = SqlQueryBuilder.emptyInstance(query.repository().name(), model, BuilderType.CREATION);
 
         var stage = query.repository().clazz().stageOf(model).asSubStage();
         stage.create(value, query.repository().name(), this.model, null, query.repository().clazz().asObjectClass(), builder);
 
-        response.append(builder.push(connection));
+        response.append(builder.update(connection));
         return response.close();
     }
 
@@ -71,10 +72,10 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
     }
 
     @Override
-    public QueryResponse deleteAll(DataQuery<Object> query) {
-        var response = new QueryResponse();
+    public UpdateResponse deleteAll(DataQuery<Object> query) {
+        var response = new UpdateResponse();
         var builder = SqlQueryBuilder.emptyInstance(query.repository().name(), model, BuilderType.DELETION);
-        response.append(builder.push(connection).close());
+        response.append(builder.update(connection).close());
         return response.close();
     }
 
@@ -111,15 +112,15 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
     }
 
     @Override
-    public Object find(DataQuery<Object> query) {
+    public QueryResponse<Object> findFirst(DataQuery<Object> query) {
         //todo
         return null;
     }
 
     @Override
-    public boolean exists(DataQuery<Object> query) {
-        // todo add filters
-        return false;
+    public QueryResponse<Boolean> exists(DataQuery<Object> query) {
+        var builder = SqlQueryBuilder.emptyInstance(query.repository().name(), model, BuilderType.EXISTS);
+        return builder.query(connection, ResultSet::next, false).close();
     }
 
     @Override

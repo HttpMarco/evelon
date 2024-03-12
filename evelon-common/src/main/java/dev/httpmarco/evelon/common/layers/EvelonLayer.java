@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
 import dev.httpmarco.evelon.common.query.SortedOrder;
 import dev.httpmarco.evelon.common.query.intern.DataQuery;
 import dev.httpmarco.evelon.common.query.response.QueryResponse;
+import dev.httpmarco.evelon.common.query.response.UpdateResponse;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -22,7 +23,7 @@ public interface EvelonLayer<T> extends EvelonLayerSession {
      * @param query The DataQuery object representing the query for creating the data entry.
      * @param value The value of type T that will be associated with the data entry.
      */
-    QueryResponse create(DataQuery<T> query, T value);
+    UpdateResponse create(DataQuery<T> query, T value);
 
     /**
      * Creates a new entry in the data store if it does not already exist.
@@ -37,7 +38,7 @@ public interface EvelonLayer<T> extends EvelonLayerSession {
      *
      * @param query The DataQuery object representing the query for deleting data entries.
      */
-    QueryResponse deleteAll(DataQuery<T> query);
+    UpdateResponse deleteAll(DataQuery<T> query);
 
     /**
      * Deletes data entries based on the specified query.
@@ -95,7 +96,7 @@ public interface EvelonLayer<T> extends EvelonLayerSession {
      * @param query The DataQuery object representing the query for finding a data entry.
      * @return The data entry that matches the query, or null if no match is found.
      */
-    T find(DataQuery<T> query);
+    QueryResponse<T> findFirst(DataQuery<T> query);
 
     /**
      * Checks if any data entries exist based on the specified query.
@@ -103,7 +104,7 @@ public interface EvelonLayer<T> extends EvelonLayerSession {
      * @param query The DataQuery object representing the query for checking the existence of data entries.
      * @return True if at least one data entry exists, otherwise false.
      */
-    boolean exists(DataQuery<T> query);
+    QueryResponse<Boolean> exists(DataQuery<T> query);
 
     /**
      * Counts the number of data entries based on the specified query.

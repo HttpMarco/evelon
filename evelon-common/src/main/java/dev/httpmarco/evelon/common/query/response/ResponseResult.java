@@ -9,22 +9,18 @@ import java.util.List;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class ResponseResult {
+public class ResponseResult<R extends ResponseResult<?>> {
 
     private ResponseType response = ResponseType.OPEN;
     private final long startTime = System.currentTimeMillis();
     private long processTime = -1;
     private final List<String> errorLog = new ArrayList<>();
 
-    public static UpdateResponse empty() {
-        return new UpdateResponse();
-    }
-
-    public void append(ResponseResult response) {
+    public void append(R response) {
         if (this.response == ResponseType.OPEN || this.response == ResponseType.SUCCESS) {
-            this.response = response.response;
+            this.response = response.response();
         }
-        this.errorLog.addAll(response.errorLog);
+        this.errorLog.addAll(response.errorLog());
     }
 
     public void appendError(String error) {
@@ -32,7 +28,7 @@ public abstract class ResponseResult {
         errorLog.add(error);
     }
 
-    public ResponseResult close() {
+    public R close() {
         processTime = System.currentTimeMillis() - startTime;
 
         if (response != ResponseType.SUCCESS && response != ResponseType.OPEN) {
@@ -45,7 +41,7 @@ public abstract class ResponseResult {
         if (response == ResponseType.OPEN) {
             response = ResponseType.SUCCESS;
         }
-        return this;
+        return (R) this;
     }
 
 }
