@@ -20,12 +20,9 @@ public abstract class AbstractBuilder<B extends Builder<B, A, D>, M extends Mode
     // general parameters
     private final String id;
     private final M model;
-
     private @Nullable B parent;
     private final List<B> children = new ArrayList<>();
-
     private final List<Object> values = new ArrayList<>();
-
     private final BuilderType type;
 
     @Override
