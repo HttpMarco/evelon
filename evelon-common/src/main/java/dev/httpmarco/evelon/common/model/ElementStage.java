@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.common.model;
 
 import dev.httpmarco.evelon.common.builder.Builder;
+import dev.httpmarco.evelon.common.repository.RepositoryField;
 
 /**
  *
@@ -11,6 +12,6 @@ import dev.httpmarco.evelon.common.builder.Builder;
 
 public interface ElementStage<T, E, B extends Builder<B, ?, ?>> extends Stage<T, B> {
 
-    E serializeElement(T element);
+    T construct(Model<B> model, RepositoryField<?> clazz, B builder);
 
 }
