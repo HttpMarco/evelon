@@ -1,7 +1,7 @@
 package dev.httpmarco.evelon.common.builder.impl;
 
 import dev.httpmarco.evelon.common.builder.Builder;
-import dev.httpmarco.evelon.common.builder.BuilderType;
+import dev.httpmarco.evelon.common.builder.BuildProcess;
 import dev.httpmarco.evelon.common.model.Model;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,7 +23,7 @@ public abstract class AbstractBuilder<B extends Builder<B, E, D>, M extends Mode
     private @Nullable B parent;
     private final List<B> children = new ArrayList<>();
     private final List<Object> values = new ArrayList<>();
-    private final BuilderType type;
+    private final BuildProcess type;
     private final E executor;
 
     @Override

@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.common.builder;
 
-public enum BuilderType {
+public enum BuildProcess {
 
     // pre initialize of repository
     INITIALIZE,
