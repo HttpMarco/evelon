@@ -5,6 +5,7 @@ import dev.httpmarco.evelon.common.layers.EvelonLayer;
 import dev.httpmarco.evelon.common.query.SortedOrder;
 import dev.httpmarco.evelon.common.query.intern.DataQuery;
 import dev.httpmarco.evelon.common.query.response.QueryResponse;
+import dev.httpmarco.evelon.common.query.response.UpdateResponse;
 import dev.httpmarco.evelon.common.repository.RepositoryImpl;
 import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.Getter;
@@ -45,22 +46,22 @@ public class LocalCacheRepositoryImpl<T> extends RepositoryImpl<T> implements Lo
     }
 
     @Override
-    public QueryResponse create(DataQuery<T> query, T value) {
+    public UpdateResponse create(DataQuery<T> query, T value) {
         localData.add(LocalStorageEntry.of(value));
-        return QueryResponse.empty().close();
+        return new UpdateResponse().close();
     }
 
     @Override
     public void createIfNotExists(DataQuery<T> query, T value) {
-        if (!this.exists(query)) {
+        if (!this.exists(query).result()) {
             this.create(query, value);
         }
     }
 
     @Override
-    public QueryResponse deleteAll(DataQuery<T> query) {
+    public UpdateResponse deleteAll(DataQuery<T> query) {
         this.applyFilters(query).forEach(t -> localData().removeIf(entry -> entry.value().equals(t)));
-        return QueryResponse.empty().close();
+        return new UpdateResponse().close();
     }
 
     @Override
@@ -95,13 +96,13 @@ public class LocalCacheRepositoryImpl<T> extends RepositoryImpl<T> implements Lo
     }
 
     @Override
-    public T find(DataQuery<T> query) {
-        return this.applyFilters(query).findAny().orElse(null);
+    public QueryResponse<T> findFirst(DataQuery<T> query) {
+        return new QueryResponse<T>().result(this.applyFilters(query).findAny().orElse(null));
     }
 
     @Override
-    public boolean exists(DataQuery<T> query) {
-        return this.applyFilters(query).findAny().isPresent();
+    public QueryResponse<Boolean> exists(DataQuery<T> query) {
+        return new QueryResponse<Boolean>().result(this.applyFilters(query).findAny().isPresent());
     }
 
     @Override
@@ -140,7 +141,7 @@ public class LocalCacheRepositoryImpl<T> extends RepositoryImpl<T> implements Lo
 
     @Override
     public <E> E collectSingle(DataQuery<T> query, String id, Class<E> clazz) {
-        return Reflections.of(clazz).withValue(find(query)).value(id);
+        return Reflections.of(clazz).withValue(findFirst(query)).value(id);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.sql.parent.connection;
 
 import dev.httpmarco.evelon.common.Evelon;
+import dev.httpmarco.evelon.common.builder.BuilderTransformer;
 import dev.httpmarco.evelon.common.query.response.QueryResponse;
 import dev.httpmarco.evelon.common.query.response.ResponseResult;
 import dev.httpmarco.evelon.common.query.response.UpdateResponse;
@@ -30,22 +31,19 @@ public final class HikariConnectionTransmitter {
     }
 
 
-    public <T> @NotNull QueryResponse<T> executeQuery(final String query, HikariConnectionFunction<ResultSet, T> function, T defaultValue, Object... arguments) {
+    public <T> @NotNull QueryResponse<T> executeQuery(final String query, BuilderTransformer<ResultSet, T> function, Object defaultValue, Object... arguments) {
         return this.transferPreparedStatement(it -> new QueryResponse<T>().result(function.apply(it.executeQuery())), query, arguments);
     }
 
-    @SuppressWarnings("unchecked")
-    private <R extends ResponseResult> @NotNull R transferPreparedStatement(HikariConnectionFunction<PreparedStatement, R> function, String query, Object @NotNull ... arguments) {
-        var response = new ResponseResult();
+    private <R extends ResponseResult<?>> @NotNull R transferPreparedStatement(HikariConnectionFunction<PreparedStatement, R> function, String query, Object @NotNull ... arguments) {
         Evelon.LOGGER.info("Executing query: {}", query);
         try (var connection = hikariConnection.getConnection(); var statement = connection.prepareStatement(query)) {
             for (int i = 0; i < arguments.length; i++) {
                 statement.setString(i + 1, Objects.toString(arguments[i]));
             }
-            response.append(function.apply(statement));
+            return function.apply(statement);
         } catch (SQLException exception) {
-            response.appendError(exception.getMessage());
+            throw new RuntimeException(exception);
         }
-        return (R) response;
     }
 }

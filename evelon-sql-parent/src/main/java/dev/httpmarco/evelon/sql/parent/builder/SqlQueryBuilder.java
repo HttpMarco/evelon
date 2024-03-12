@@ -1,8 +1,10 @@
 package dev.httpmarco.evelon.sql.parent.builder;
 
+import dev.httpmarco.evelon.common.builder.BuilderTransformer;
 import dev.httpmarco.evelon.common.builder.BuilderType;
 import dev.httpmarco.evelon.common.builder.impl.AbstractBuilder;
 import dev.httpmarco.evelon.common.query.response.QueryResponse;
+import dev.httpmarco.evelon.common.query.response.UpdateResponse;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.common.repository.field.PrimaryRepositoryFieldImpl;
@@ -11,22 +13,32 @@ import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.model.SqlModel;
 import dev.httpmarco.osgan.utils.exceptions.NotImplementedException;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @Getter
-public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlModel, HikariConnection> {
+public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlModel, HikariConnection, ResultSet> {
 
     private static final String TABLE_CREATION_QUERY = "CREATE TABLE IF NOT EXISTS %s(%s);";
     private static final String VALUE_CREATION_QUERY = "INSERT INTO %s(%s) VALUES (%s);";
+    private static final String VALUE_EXISTS_QUERY = "SELECT * FROM %s;";
     private static final String VALUE_DELETION_QUERY = "DELETE FROM %s;";
 
     // table initialize options
     private final List<RepositoryField<?>> rowTypes = new ArrayList<>();
     private final List<PrimaryRepositoryFieldImpl<?>> primaryLinking = new ArrayList<>();
 
+    @Setter
+    @Nullable
+    @Accessors(fluent = true)
+    private Object defaultValue;
     // filter options
     // todo
 
@@ -63,17 +75,27 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     }
 
     @Override
-    public QueryResponse push(HikariConnection connection) {
+    public UpdateResponse update(HikariConnection connection) {
         var transmitter = connection.transmitter();
         var response = switch (type()) {
             case INITIALIZE -> transmitter.executeUpdate(buildTableInitializeQuery());
             case CREATION -> transmitter.executeUpdate(buildValueCreationQuery(), values());
             case DELETION -> transmitter.executeUpdate(buildValueDeleteQuery());
+            default -> throw new UnsupportedOperationException("Unsupported update builder type: " + type());
         };
         for (var child : this.children()) {
-            response.append(child.push(connection));
+            response.append(child.update(connection));
         }
         return response;
+    }
+
+    @Override
+    public <T> @NotNull QueryResponse<T> query(HikariConnection connection, BuilderTransformer<ResultSet, T> function, T defaultValue) {
+        var transmitter = connection.transmitter();
+        return switch (type()) {
+            case EXISTS -> transmitter.executeQuery(buildValueExistsQuery(), function, defaultValue);
+            default -> throw new UnsupportedOperationException("Unsupported update builder type: " + type());
+        };
     }
 
     private String buildTableInitializeQuery() {
@@ -112,7 +134,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
         String collectTypes = collectTypes(true);
         // todo better way
-        if(!primaryLinking.isEmpty()) {
+        if (!primaryLinking.isEmpty()) {
             collectTypes += ", " + String.join(", ", primaryLinking.stream().map(RepositoryField::id).toList());
         }
 
@@ -121,6 +143,10 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
     private String buildValueDeleteQuery() {
         return VALUE_DELETION_QUERY.formatted(id());
+    }
+
+    private String buildValueExistsQuery() {
+        return VALUE_EXISTS_QUERY.formatted(id());
     }
 
     private String collectTypes(boolean withPrimaries) {
