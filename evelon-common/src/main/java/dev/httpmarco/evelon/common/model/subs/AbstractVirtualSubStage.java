@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
-public abstract class AbstractVirtualSubStage<B extends Builder<B, ?>> implements SubStage<Object, B> {
+public abstract class AbstractVirtualSubStage<B extends Builder<B, ?, ?>> implements SubStage<Object, B> {
 
     @Override
     public void initialize(Repository<?> repository, String stageId, Model<B> model, RepositoryField<?> ownField, @NotNull RepositoryObjectClass<?> clazz, B queries) {

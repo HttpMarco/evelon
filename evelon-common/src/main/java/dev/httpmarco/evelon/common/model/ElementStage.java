@@ -9,7 +9,7 @@ import dev.httpmarco.evelon.common.builder.Builder;
  * @param <B> Specific Builder Type
  */
 
-public interface ElementStage<T, E, B extends Builder<B, ?>> extends Stage<T, B> {
+public interface ElementStage<T, E, B extends Builder<B, ?, ?>> extends Stage<T, B> {
 
     E serializeElement(T element);
 

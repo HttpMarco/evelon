@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class Model<B extends Builder<B, ?>> {
+public abstract class Model<B extends Builder<B, ?, ?>> {
 
     private final List<Stage<?, B>> stages = new ArrayList<>();
 

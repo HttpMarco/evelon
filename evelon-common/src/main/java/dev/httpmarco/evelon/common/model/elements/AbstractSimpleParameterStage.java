@@ -5,7 +5,7 @@ import dev.httpmarco.evelon.common.model.ElementStage;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.osgan.utils.Utils;
 
-public abstract class AbstractSimpleParameterStage<B extends Builder<B, ?>> implements ElementStage<Object, Object, B> {
+public abstract class AbstractSimpleParameterStage<B extends Builder<B, ?, ?>> implements ElementStage<Object, Object, B> {
 
     @Override
     public boolean isElement(Model<B> model, Class<?> clazz) {

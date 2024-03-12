@@ -6,7 +6,7 @@ import dev.httpmarco.evelon.common.builder.Builder;
  * @param <T> Class type
  * @param <B> Specific builder type
  */
-public interface Stage<T, B extends Builder<B, ?>> {
+public interface Stage<T, B extends Builder<B, ?, ?>> {
 
     boolean isElement(Model<B> model, Class<?> type);
 

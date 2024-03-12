@@ -13,7 +13,7 @@ import dev.httpmarco.osgan.utils.exceptions.NotImplementedException;
 
 import java.util.Collection;
 
-public abstract class AbstractCollectionSubStage<B extends Builder<B, ?>> implements SubStage<Collection<?>, B> {
+public abstract class AbstractCollectionSubStage<B extends Builder<B, ?, ?>> implements SubStage<Collection<?>, B> {
 
     @Override
     public void initialize(Repository<?> repository, String stageId, Model<B> model, RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries) {

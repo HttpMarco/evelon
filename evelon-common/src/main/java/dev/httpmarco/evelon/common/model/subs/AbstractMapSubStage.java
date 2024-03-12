@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public abstract class AbstractMapSubStage<B extends Builder<B, ?>> implements SubStage<Map<?, ?>, B> {
+public abstract class AbstractMapSubStage<B extends Builder<B, ?, ?>> implements SubStage<Map<?, ?>, B> {
 
     @Override
     public void initialize(Repository<?> repository, String stageId, Model<B> model, @NotNull RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries) {

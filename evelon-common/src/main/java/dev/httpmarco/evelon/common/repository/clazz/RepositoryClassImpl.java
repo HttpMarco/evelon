@@ -19,7 +19,7 @@ public class RepositoryClassImpl<T> implements RepositoryClass<T> {
     private final Map<Model<?>, Stage<T, ?>> stages = new HashMap<>();
 
     @Override
-    public <B extends Builder<B, ?>> Stage<T, B> stageOf(Model<B> model) {
+    public <B extends Builder<B, ?, ?>> Stage<T, B> stageOf(Model<B> model) {
         return (Stage<T, B>) stages.get(model);
     }
 
