@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.common.model;
 
 import dev.httpmarco.evelon.common.builder.Builder;
+import dev.httpmarco.evelon.common.repository.RepositoryField;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 
 /**
@@ -10,8 +11,6 @@ import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 public interface Stage<T, B extends Builder<B, ?, ?>> {
 
     boolean isElement(Model<B> model, Class<?> type);
-
-    T construct(Model<B> model, RepositoryClass<?> clazz, B builder);
 
     default boolean isSubStage() {
         return this instanceof SubStage<T, B>;
