@@ -9,10 +9,7 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Accessors(fluent = true)
 @Getter(AccessLevel.PUBLIC)
@@ -27,7 +24,7 @@ public abstract class AbstractBuilder<B extends Builder<B, E, D>, M extends Mode
     private final BuildProcess type;
     private final E executor;
 
-    private final Map<String, Object> values = new HashMap<>();
+    private final Map<String, Object> values = new LinkedHashMap<>();
 
     @Override
     public void appendValue(String key, Object value) {
