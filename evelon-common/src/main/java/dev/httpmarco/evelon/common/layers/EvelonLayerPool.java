@@ -43,6 +43,9 @@ public final class EvelonLayerPool {
         if (allocatedLayer instanceof ConnectableEvelonLayer<?, ?, ?> connectableLayer) {
             Evelon.instance().credentialsService().addCredentials(connectableLayer);
         }
+
+        allocatedLayer.initialize();
+
         cachedLayers.put(layerClass, allocatedLayer);
     }
 }

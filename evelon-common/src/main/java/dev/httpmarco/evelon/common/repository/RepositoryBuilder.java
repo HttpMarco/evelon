@@ -53,11 +53,6 @@ public class RepositoryBuilder<T> {
             if (layer instanceof ConnectableEvelonLayer<?, ?, ?> connectableLayer) {
                 if (Evelon.instance().credentialsService().isPresent(connectableLayer)) {
                     layers.add(layer);
-
-                    if (!layer.active()) {
-                        layer.initialize();
-                    }
-
                 } else {
                     Evelon.LOGGER.warn("Credentials not found for layer: {} - {} (layer disabled)", layer.id(), layer.getClass().getSimpleName());
                 }
