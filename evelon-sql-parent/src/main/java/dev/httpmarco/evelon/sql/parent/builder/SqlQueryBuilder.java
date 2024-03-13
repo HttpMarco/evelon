@@ -114,7 +114,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
             throw new NotImplementedException("Cannot link primary keys without parent");
         } else {
             // add foreign key linking
-            parameters.addAll(primaryLinking.stream().map(it -> "foreign key (" + it.id() + ") references " + parent().id() + "(" + it.id() + ")").toList());
+            parameters.addAll(primaryLinking.stream().map(it -> "foreign key (" + it.id() + ") references " + parent().id() + "(" + it.id() + ")  ON DELETE CASCADE").toList());
         }
 
         return TABLE_CREATION_QUERY.formatted(id(), String.join(", ", parameters));
