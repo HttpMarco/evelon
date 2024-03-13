@@ -3,7 +3,7 @@ package dev.httpmarco.evelon.common.repository;
 import dev.httpmarco.evelon.common.Evelon;
 import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
 import dev.httpmarco.evelon.common.layers.EvelonLayer;
-import dev.httpmarco.evelon.common.local.LocalCacheRepositoryImpl;
+import dev.httpmarco.evelon.common.local.LocalCacheRepository;
 import dev.httpmarco.evelon.common.local.LocalStorageBuilder;
 import lombok.RequiredArgsConstructor;
 
@@ -65,7 +65,7 @@ public class RepositoryBuilder<T> {
                 layers.add(layer);
             }
         }
-        var repository = useLocalStorage ? new LocalCacheRepositoryImpl<>(layers, clazz) : new RepositoryImpl<>(layers, clazz);
+        var repository = useLocalStorage ? new LocalCacheRepository<>(layers, clazz) : new RepositoryImpl<>(layers, clazz);
 
         for (var layer : repository.layers()) {
             if (layer instanceof InitializeRepository initializeRepository) {
