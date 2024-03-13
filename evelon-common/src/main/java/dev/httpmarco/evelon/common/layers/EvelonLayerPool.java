@@ -1,7 +1,6 @@
 package dev.httpmarco.evelon.common.layers;
 
 import dev.httpmarco.evelon.common.Evelon;
-import dev.httpmarco.evelon.common.exceptions.LayerNotInClassloaderException;
 import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -21,7 +20,7 @@ public final class EvelonLayerPool {
         if (!cachedLayers.containsKey(layerClass)) {
             // check if layer is real in class loader (not only api use)
             if (!this.checkRequirementOfLayerInitialize(layerClass)) {
-                throw new LayerNotInClassloaderException(layerClass);
+                throw new UnsupportedOperationException("The layer " + layerClass.getName() + " is not in classpath!");
             }
             this.initializeLayer(layerClass);
         }
