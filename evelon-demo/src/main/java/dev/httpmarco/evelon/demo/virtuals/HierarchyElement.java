@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.demo;
+package dev.httpmarco.evelon.demo.virtuals;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
