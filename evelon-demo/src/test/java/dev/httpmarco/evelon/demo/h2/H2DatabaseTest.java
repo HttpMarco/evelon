@@ -56,9 +56,14 @@ public final class H2DatabaseTest {
         @Order(4)
         void filtering() {
             // create another filtering entry
-            assertEquals(ResponseType.SUCCESS, REPOSITORY.query().create(new SimpleModel(12,222)).response());
+            assertEquals(ResponseType.SUCCESS, REPOSITORY.query().create(new SimpleModel(12, 222)).response());
 
-            // match filter todo
+            // match filter
+            var filteredModel = REPOSITORY.query().filter().match("username", 12).findFirst();
+
+            assertNotNull(filteredModel);
+            assertEquals(MODEL, filteredModel);
+
             // none match filter todo
             // max filter todo
             // min filter todo
