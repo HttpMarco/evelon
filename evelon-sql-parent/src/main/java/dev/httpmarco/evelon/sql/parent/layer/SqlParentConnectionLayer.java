@@ -13,6 +13,7 @@ import dev.httpmarco.evelon.common.repository.InitializeRepository;
 import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.sql.parent.builder.SqlQueryBuilder;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
+import dev.httpmarco.evelon.sql.parent.filtering.SqlFilterHandler;
 import dev.httpmarco.evelon.sql.parent.model.SqlModel;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -28,8 +29,10 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
 
     private final String id;
     private boolean active = false;
-    private final SqlModel model = new SqlModel();
     private final HikariConnection connection;
+
+    private final SqlModel model = new SqlModel();
+    private final SqlFilterHandler filterHandler = new SqlFilterHandler();
 
     public SqlParentConnectionLayer(String id, ProtocolDriver<? extends Credentials> driver) {
         this.id = id;
@@ -175,12 +178,6 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
 
     @Override
     public Object min(Query<Object> query, String id) {
-        //todo
-        return null;
-    }
-
-    @Override
-    public LayerFilterHandler<?, ?> filterHandler() {
         //todo
         return null;
     }
