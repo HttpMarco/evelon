@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.common.layers;
 
-import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
+import dev.httpmarco.evelon.common.filtering.LayerFilterHandler;
 import dev.httpmarco.evelon.common.model.Model;
 import lombok.Getter;
 import lombok.experimental.Accessors;

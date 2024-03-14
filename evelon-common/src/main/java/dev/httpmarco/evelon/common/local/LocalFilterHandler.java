@@ -1,8 +1,8 @@
 package dev.httpmarco.evelon.common.local;
 
-import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
-import dev.httpmarco.evelon.common.local.filters.*;
-import dev.httpmarco.evelon.common.filters.Filter;
+import dev.httpmarco.evelon.common.filtering.LayerFilterHandler;
+import dev.httpmarco.evelon.common.local.filtering.*;
+import dev.httpmarco.evelon.common.filtering.Filter;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;

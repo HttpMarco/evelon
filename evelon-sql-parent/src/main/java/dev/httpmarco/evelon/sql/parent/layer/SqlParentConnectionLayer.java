@@ -3,7 +3,7 @@ package dev.httpmarco.evelon.sql.parent.layer;
 import dev.httpmarco.evelon.common.Evelon;
 import dev.httpmarco.evelon.common.builder.BuildProcess;
 import dev.httpmarco.evelon.common.credentials.Credentials;
-import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
+import dev.httpmarco.evelon.common.filtering.LayerFilterHandler;
 import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
 import dev.httpmarco.evelon.common.query.intern.DataQuery;
 import dev.httpmarco.evelon.common.query.SortedOrder;

@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.common.local;
 
-import dev.httpmarco.evelon.common.filters.LayerFilterHandler;
+import dev.httpmarco.evelon.common.filtering.LayerFilterHandler;
 import dev.httpmarco.evelon.common.layers.EvelonLayer;
 import dev.httpmarco.evelon.common.query.SortedOrder;
 import dev.httpmarco.evelon.common.query.intern.DataQuery;

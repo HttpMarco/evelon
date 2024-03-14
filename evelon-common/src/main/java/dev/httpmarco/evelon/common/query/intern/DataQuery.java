@@ -6,7 +6,7 @@ import dev.httpmarco.evelon.common.query.response.UpdateResponse;
 import dev.httpmarco.evelon.common.repository.Repository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import dev.httpmarco.evelon.common.filters.Filter;
+import dev.httpmarco.evelon.common.filtering.Filter;
 import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
