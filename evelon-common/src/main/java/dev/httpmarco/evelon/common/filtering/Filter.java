@@ -11,10 +11,11 @@ import lombok.experimental.Accessors;
 public abstract class Filter<T, R> {
 
     private String id;
+    private R value;
 
-    abstract T filter(Repository<?> repository, R requiredType);
+    public abstract T filter(Repository<?> repository, R requiredType);
 
-    boolean requirementCheck(Class<?> clazz) {
+    public boolean requirementCheck(Class<?> clazz) {
         return true;
     }
 }
