@@ -48,8 +48,7 @@ public final class H2DatabaseTest {
             var model = REPOSITORY.query().findFirst();
 
             assertNotNull(model);
-            assertEquals(MODEL.username(), model.username());
-            assertEquals(MODEL.money(), model.money());
+            assertEquals(MODEL, model);
         }
 
         @Test
@@ -59,7 +58,7 @@ public final class H2DatabaseTest {
             assertEquals(ResponseType.SUCCESS, REPOSITORY.query().create(new SimpleModel(12, 222)).response());
 
             // match filter
-            var filteredModel = REPOSITORY.query().filter().match("username", 12).findFirst();
+            var filteredModel = REPOSITORY.query().filter().match("username", 1).findFirst();
 
             assertNotNull(filteredModel);
             assertEquals(MODEL, filteredModel);
