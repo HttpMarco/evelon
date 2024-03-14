@@ -1,6 +1,6 @@
-package dev.httpmarco.evelon.common.local.filters;
+package dev.httpmarco.evelon.common.local.filtering;
 
-import dev.httpmarco.evelon.common.filters.impl.AbstractDateFilter;
+import dev.httpmarco.evelon.common.filtering.common.AbstractDateFilter;
 import dev.httpmarco.evelon.common.repository.Repository;
 
 import java.util.Date;

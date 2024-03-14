@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.common.filters;
+package dev.httpmarco.evelon.common.filtering;
 
 import dev.httpmarco.evelon.common.repository.Repository;
 

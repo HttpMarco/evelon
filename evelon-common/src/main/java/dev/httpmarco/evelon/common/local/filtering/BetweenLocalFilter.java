@@ -1,6 +1,6 @@
-package dev.httpmarco.evelon.common.local.filters;
+package dev.httpmarco.evelon.common.local.filtering;
 
-import dev.httpmarco.evelon.common.filters.impl.AbstractNumberFilter;
+import dev.httpmarco.evelon.common.filtering.common.AbstractNumberFilter;
 import dev.httpmarco.evelon.common.repository.Repository;
 
 public final class BetweenLocalFilter extends AbstractNumberFilter<Boolean> {

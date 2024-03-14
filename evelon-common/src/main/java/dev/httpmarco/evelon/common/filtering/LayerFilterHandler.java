@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.common.filters;
+package dev.httpmarco.evelon.common.filtering;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;

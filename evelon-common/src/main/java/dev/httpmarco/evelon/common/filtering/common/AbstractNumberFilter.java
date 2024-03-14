@@ -1,9 +1,9 @@
-package dev.httpmarco.evelon.common.filters.impl;
+package dev.httpmarco.evelon.common.filtering.common;
 
 import dev.httpmarco.osgan.utils.types.NumberUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import dev.httpmarco.evelon.common.filters.Filter;
+import dev.httpmarco.evelon.common.filtering.Filter;
 import lombok.experimental.Accessors;
 
 @Getter

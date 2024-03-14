@@ -1,8 +1,8 @@
-package dev.httpmarco.evelon.common.filters.impl;
+package dev.httpmarco.evelon.common.filtering.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import dev.httpmarco.evelon.common.filters.Filter;
+import dev.httpmarco.evelon.common.filtering.Filter;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
