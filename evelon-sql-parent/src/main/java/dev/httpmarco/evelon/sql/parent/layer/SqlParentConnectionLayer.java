@@ -5,7 +5,7 @@ import dev.httpmarco.evelon.common.builder.BuildProcess;
 import dev.httpmarco.evelon.common.credentials.Credentials;
 import dev.httpmarco.evelon.common.filtering.LayerFilterHandler;
 import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
-import dev.httpmarco.evelon.common.query.intern.DataQuery;
+import dev.httpmarco.evelon.common.query.Query;
 import dev.httpmarco.evelon.common.query.SortedOrder;
 import dev.httpmarco.evelon.common.query.response.QueryResponse;
 import dev.httpmarco.evelon.common.query.response.UpdateResponse;
@@ -55,7 +55,7 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
     }
 
     @Override
-    public UpdateResponse create(DataQuery<Object> query, Object value) {
+    public UpdateResponse create(Query<Object> query, Object value) {
         var response = new UpdateResponse();
         var builder = SqlQueryBuilder.emptyInstance(query.repository().name(), model, BuildProcess.CREATION, connection);
 
@@ -67,12 +67,12 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
     }
 
     @Override
-    public void createIfNotExists(DataQuery<Object> query, Object value) {
+    public void createIfNotExists(Query<Object> query, Object value) {
         //todo
     }
 
     @Override
-    public UpdateResponse deleteAll(DataQuery<Object> query) {
+    public UpdateResponse deleteAll(Query<Object> query) {
         var response = new UpdateResponse();
         var builder = newBuilder(query, BuildProcess.DELETION);
         response.append(builder.update().close());
@@ -80,39 +80,39 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
     }
 
     @Override
-    public void delete(DataQuery<Object> query, Object value) {
+    public void delete(Query<Object> query, Object value) {
         //todo
     }
 
     @Override
-    public void update(DataQuery<Object> query, Object value) {
+    public void update(Query<Object> query, Object value) {
         //todo
     }
 
     @Override
-    public void updateIf(DataQuery<Object> query, Object value, Predicate<Object> predicate) {
+    public void updateIf(Query<Object> query, Object value, Predicate<Object> predicate) {
         //todo
     }
 
     @Override
-    public void upsert(DataQuery<Object> query, Object value) {
+    public void upsert(Query<Object> query, Object value) {
         //todo
     }
 
     @Override
-    public List<Object> findAll(DataQuery<Object> query) {
-        //todo
-        return null;
-    }
-
-    @Override
-    public List<Object> findAll(DataQuery<Object> query, int limit) {
+    public List<Object> findAll(Query<Object> query) {
         //todo
         return null;
     }
 
     @Override
-    public QueryResponse<Object> findFirst(DataQuery<Object> query) {
+    public List<Object> findAll(Query<Object> query, int limit) {
+        //todo
+        return null;
+    }
+
+    @Override
+    public QueryResponse<Object> findFirst(Query<Object> query) {
         var response = new QueryResponse<>();
         var builder = newBuilder(query, BuildProcess.FINDING);
         var stage = query.repository().clazz().stageOf(model).asSubStage();
@@ -120,61 +120,61 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
     }
 
     @Override
-    public QueryResponse<Boolean> exists(DataQuery<Object> query) {
+    public QueryResponse<Boolean> exists(Query<Object> query) {
         var builder = newBuilder(query, BuildProcess.EXISTS);
         return builder.query(ResultSet::next, false).close();
     }
 
     @Override
-    public long count(DataQuery<Object> query) {
+    public long count(Query<Object> query) {
         //todo
         return 0;
     }
 
     @Override
-    public long sum(DataQuery<Object> query, String id) {
+    public long sum(Query<Object> query, String id) {
         //todo
         return 0;
     }
 
     @Override
-    public double avg(DataQuery<Object> query, String id) {
+    public double avg(Query<Object> query, String id) {
         //todo
         return 0;
     }
 
     @Override
-    public List<Object> order(DataQuery<Object> query, String id, int limit, SortedOrder order) {
+    public List<Object> order(Query<Object> query, String id, int limit, SortedOrder order) {
         //todo
         return null;
     }
 
     @Override
-    public <E> List<E> collect(DataQuery<Object> query, String id, Class<E> clazz) {
+    public <E> List<E> collect(Query<Object> query, String id, Class<E> clazz) {
         //todo
         return null;
     }
 
     @Override
-    public <E> List<E> collect(DataQuery<Object> query, String id, int limit, Class<E> clazz) {
+    public <E> List<E> collect(Query<Object> query, String id, int limit, Class<E> clazz) {
         //todo
         return null;
     }
 
     @Override
-    public <E> E collectSingle(DataQuery<Object> query, String id, Class<E> clazz) {
+    public <E> E collectSingle(Query<Object> query, String id, Class<E> clazz) {
         //todo
         return null;
     }
 
     @Override
-    public Object max(DataQuery<Object> query, String id) {
+    public Object max(Query<Object> query, String id) {
         //todo
         return null;
     }
 
     @Override
-    public Object min(DataQuery<Object> query, String id) {
+    public Object min(Query<Object> query, String id) {
         //todo
         return null;
     }
@@ -185,7 +185,7 @@ public abstract class SqlParentConnectionLayer implements ConnectableEvelonLayer
         return null;
     }
 
-    private SqlQueryBuilder newBuilder(DataQuery<?> query, BuildProcess type) {
+    private SqlQueryBuilder newBuilder(Query<?> query, BuildProcess type) {
         return SqlQueryBuilder.emptyInstance(query.repository().name(), model, type, connection);
     }
 }

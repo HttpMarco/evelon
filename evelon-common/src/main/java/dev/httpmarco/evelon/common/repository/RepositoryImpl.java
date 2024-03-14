@@ -4,7 +4,6 @@ import dev.httpmarco.evelon.common.annotations.Entity;
 import dev.httpmarco.evelon.common.layers.EvelonLayer;
 import dev.httpmarco.evelon.common.layers.EvelonModelLayer;
 import dev.httpmarco.evelon.common.query.Query;
-import dev.httpmarco.evelon.common.query.intern.DataQuery;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClassImpl;
 import lombok.Getter;
@@ -38,7 +37,7 @@ public class RepositoryImpl<T> implements Repository<T> {
 
     @Override
     public Query<T> query() {
-        return new DataQuery<>(this);
+        return new Query<>(this);
     }
 
     public Query<T> queryLayer(Class<EvelonLayer<?>> layer) {
