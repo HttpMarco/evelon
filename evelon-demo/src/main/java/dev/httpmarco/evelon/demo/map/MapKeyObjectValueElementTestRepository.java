@@ -1,7 +1,7 @@
 package dev.httpmarco.evelon.demo.map;
 
 import dev.httpmarco.evelon.common.annotations.PrimaryKey;
-import dev.httpmarco.evelon.demo.HierarchyElement;
+import dev.httpmarco.evelon.demo.virtuals.HierarchyElement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;

@@ -10,6 +10,7 @@ import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.common.repository.field.PrimaryRepositoryFieldImpl;
 import dev.httpmarco.evelon.sql.parent.SqlType;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
+import dev.httpmarco.evelon.sql.parent.connection.HikariConnectionTransmitter;
 import dev.httpmarco.evelon.sql.parent.model.SqlModel;
 import dev.httpmarco.osgan.utils.exceptions.NotImplementedException;
 import lombok.Getter;
@@ -39,8 +40,6 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     @Nullable
     @Accessors(fluent = true)
     private Object defaultValue;
-    // filter options
-    // todo
 
     public SqlQueryBuilder(String id, SqlModel model, BuildProcess type, SqlQueryBuilder parent, HikariConnection connection) {
         super(id, model, parent, type, connection);
@@ -68,18 +67,18 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
 
     @Override
     public SqlQueryBuilder subBuilder(String subId, RepositoryClass<?> parent) {
-        var builder = new SqlQueryBuilder(id() + "_" + subId, model(), type(), this, executor());
-        this.children().add(builder);
+        var builder = this.subBuilder(subId);
         builder.linkPrimaries(parent.asObjectClass().primaryFields());
         return builder;
     }
 
     @Override
     public UpdateResponse update() {
+        final var transmitter = executor().transmitter();
         var response = switch (type()) {
-            case INITIALIZE -> executor().transmitter().executeUpdate(buildTableInitializeQuery(), type());
-            case CREATION -> executor().transmitter().executeUpdate(buildValueCreationQuery(), type(), values().toArray());
-            case DELETION -> executor().transmitter().executeUpdate(buildValueDeleteQuery(), type());
+            case INITIALIZE -> transmitter.executeUpdate(buildTableInitializeQuery(), type());
+            case CREATION -> transmitter.executeUpdate(buildValueCreationQuery(), type(), values().toArray());
+            case DELETION -> transmitter.executeUpdate(buildValueDeleteQuery(), type());
             default -> throw new UnsupportedOperationException("Unsupported update builder type: " + type());
         };
         for (var child : this.children()) {
@@ -114,7 +113,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
             throw new NotImplementedException("Cannot link primary keys without parent");
         } else {
             // add foreign key linking
-            parameters.addAll(primaryLinking.stream().map(it -> "foreign key (" + it.id() + ") references " + parent().id() + "(" + it.id() + ")").toList());
+            parameters.addAll(primaryLinking.stream().map(it -> "foreign key (" + it.id() + ") references " + parent().id() + "(" + it.id() + ")  ON DELETE CASCADE").toList());
         }
 
         return TABLE_CREATION_QUERY.formatted(id(), String.join(", ", parameters));
@@ -123,7 +122,7 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
     private String buildValueCreationQuery() {
         var parameterValueQuery = new ArrayList<String>();
 
-        for (var i = 0; i < (rowTypes.size() + primaryLinking.size()); i++) {
+        for (var i = 0; i < amountOfFields(); i++) {
             parameterValueQuery.add("?");
         }
 
@@ -144,10 +143,20 @@ public final class SqlQueryBuilder extends AbstractBuilder<SqlQueryBuilder, SqlM
         if (rowTypes.isEmpty()) {
             return VALUE_FINDING_QUERY.formatted("*", id());
         }
+
         return VALUE_FINDING_QUERY.formatted(String.join(", ", rowTypes.stream().map(RepositoryField::id).toList()), id());
     }
 
     private String collectTypes(boolean withPrimaries) {
         return String.join(", ", rowTypes.stream().filter(it -> withPrimaries || it instanceof PrimaryRepositoryFieldImpl).map(RepositoryField::id).toList());
     }
+
+    /**
+     * Calculates the amount of fields in a specific table
+     * @return the amount of fields
+     */
+    private int amountOfFields() {
+        return rowTypes.size() + primaryLinking.size();
+    }
+
 }

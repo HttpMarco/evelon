@@ -19,13 +19,13 @@ import java.util.stream.Stream;
 
 @Getter
 @Accessors(fluent = true)
-public class LocalCacheRepository<T> extends RepositoryImpl<T> implements EvelonLayer<T> {
+public class LocalCacheRepositoryImpl<T> extends RepositoryImpl<T> implements EvelonLayer<T> {
 
     private final String id = "LOCAL";
     private final LayerFilterHandler<?, ?> filterHandler = new LocalFilterHandler();
     private final List<LocalStorageEntry<T>> localData = new ArrayList<>();
 
-    public LocalCacheRepository(List<EvelonLayer<T>> layers, Class<T> clazz) {
+    public LocalCacheRepositoryImpl(List<EvelonLayer<T>> layers, Class<T> clazz) {
         // todo add self local storage
         super(layers, clazz);
     }

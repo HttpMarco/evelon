@@ -67,23 +67,28 @@ public abstract class AbstractVirtualSubStage<B extends Builder<B, ?, ?>> implem
         var object = reflections.allocate();
         reflections.withValue(object);
 
+        // virtual substage can only be used on object classes
+        var objectClass = clazz.asObjectClass();
+
+        var elementFields = Arrays.stream(objectClass.fields()).filter(it -> it.clazz().stageOf(model).isElementStage()).toArray(RepositoryField<?>[]::new);
+
         // read all data from database
-        for (var field : clazz.asObjectClass().fields()) {
+        for (var field : elementFields) {
             appendParameter(builder, field);
         }
 
         // convert data to objects
-        transformData(builder, clazz.asObjectClass().fields());
+        transformData(builder, elementFields);
 
         // overwrite all fields with data
-        for (var field : clazz.asObjectClass().fields()) {
+        for (var field : objectClass.fields()) {
             permitOnStage(field, model,
                     it -> {
-                    }, // todo
-                    it -> {
-                        // manipulate field with reflections
-                        reflections.modify(field.field(), it.construct(model, field, builder));
-                    }
+                        var subBuilder = builder.subBuilder(field.id());
+                        subBuilder.linkPrimaries(objectClass.primaryFields());
+                        reflections.modify(field.field(), it.construct(model, field.clazz(), subBuilder));
+                    },
+                    it -> reflections.modify(field.field(), it.construct(model, field, builder))
             );
         }
         return object;

@@ -1,18 +1,17 @@
-package dev.httpmarco.evelon.demo;
+package dev.httpmarco.evelon.demo.virtuals;
 
 import dev.httpmarco.evelon.common.annotations.PrimaryKey;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
-import java.util.List;
-
-@Getter
 @Accessors(fluent = true)
+@Getter
 @AllArgsConstructor
-public final class SimpleListTestRepository {
+public final class SimpleModel {
 
     @PrimaryKey
-    private int idPerson;
-    private List<String> usernames;
+    private int username;
+    private Integer money;
+
 }

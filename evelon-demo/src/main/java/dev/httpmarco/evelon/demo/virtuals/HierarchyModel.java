@@ -1,17 +1,18 @@
-package dev.httpmarco.evelon.demo;
+package dev.httpmarco.evelon.demo.virtuals;
 
 import dev.httpmarco.evelon.common.annotations.PrimaryKey;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
-@Accessors(fluent = true)
 @Getter
+@Accessors(fluent = true)
 @AllArgsConstructor
-public final class SimpleModel {
+public final class HierarchyModel {
 
     @PrimaryKey
-    private int username;
-    private Integer money;
+    private String name;
+    private int coins;
+    private HierarchyElement children;
 
 }
