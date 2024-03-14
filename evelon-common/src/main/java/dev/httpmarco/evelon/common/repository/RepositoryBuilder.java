@@ -4,7 +4,6 @@ import dev.httpmarco.evelon.common.Evelon;
 import dev.httpmarco.evelon.common.layers.ConnectableEvelonLayer;
 import dev.httpmarco.evelon.common.layers.EvelonLayer;
 import dev.httpmarco.evelon.common.local.LocalCacheRepositoryImpl;
-import dev.httpmarco.evelon.common.local.LocalStorageBuilder;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -27,10 +26,6 @@ public class RepositoryBuilder<T> {
 
     public static <R> RepositoryBuilder<R> of(Class<R> clazz) {
         return new RepositoryBuilder<>(clazz);
-    }
-
-    public LocalStorageBuilder<T> withLocalStorage() {
-        return new LocalStorageBuilder<>(this.clazz, this.layerClasses);
     }
 
     @SuppressWarnings("unchecked")
