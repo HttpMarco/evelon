@@ -1,18 +1,18 @@
 package dev.httpmarco.evelon.common.filtering.common;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import dev.httpmarco.evelon.common.filtering.Filter;
-import lombok.experimental.Accessors;
 
 import java.util.Date;
 
-@Getter
-@Accessors(fluent = true)
-@AllArgsConstructor
-public abstract class AbstractDateFilter<T> implements Filter<T, Date> {
+public abstract class AbstractDateFilter<T> extends Filter<T, Date> {
 
-    private final String id;
-    private final Date value;
+    public AbstractDateFilter(String id, Date value) {
+        super(id, value);
+    }
 
+    @Override
+    public boolean requirementCheck(Class<?> clazz) {
+        // todo
+        return super.requirementCheck(clazz);
+    }
 }
