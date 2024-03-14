@@ -54,6 +54,19 @@ public final class H2DatabaseTest {
 
         @Test
         @Order(4)
+        void filtering() {
+            // create another filtering entry
+            assertEquals(ResponseType.SUCCESS, REPOSITORY.query().create(new SimpleModel(12,222)).response());
+
+            // match filter todo
+            // none match filter todo
+            // max filter todo
+            // min filter todo
+
+        }
+
+        @Test
+        @Order(5)
         void deleteAll() {
             assertEquals(ResponseType.SUCCESS, REPOSITORY.query().deleteAll().response());
         }
