@@ -1,14 +1,20 @@
 package dev.httpmarco.evelon.common.filtering;
 
 import dev.httpmarco.evelon.common.repository.Repository;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 
-public interface Filter<T, R> {
+@AllArgsConstructor
+@Accessors(fluent = true)
+@Getter
+public abstract class Filter<T, R> {
 
-    String id();
+    private String id;
 
-    T filter(Repository<?> repository, R requiredType);
+    abstract T filter(Repository<?> repository, R requiredType);
 
-    default boolean requirementCheck(Class<?> clazz) {
+    boolean requirementCheck(Class<?> clazz) {
         return true;
     }
 }
