@@ -20,7 +20,7 @@ public class Query<T> {
 
     @Getter
     private final Repository<T> repository;
-    protected final Map<Model<?>, Filter<?, ?>> filters = new LinkedHashMap<>();
+    protected final Map<Model, Filter<?, ?>> filters = new LinkedHashMap<>();
 
     /**
      * Create a specific value on all layers

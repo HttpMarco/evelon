@@ -1,7 +1,6 @@
 package dev.httpmarco.evelon.common.repository.clazz;
 
 import dev.httpmarco.evelon.common.Evelon;
-import dev.httpmarco.evelon.common.builder.Builder;
 import dev.httpmarco.evelon.common.layers.EvelonModelLayer;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.Stage;
@@ -16,11 +15,11 @@ import java.util.Map;
 public class RepositoryClassImpl<T> implements RepositoryClass<T> {
 
     private final Class<T> clazz;
-    private final Map<Model<?>, Stage<T, ?>> stages = new HashMap<>();
+    private final Map<Model, Stage<T>> stages = new HashMap<>();
 
     @Override
-    public <B extends Builder<B, ?, ?>> Stage<T, B> stageOf(Model<B> model) {
-        return (Stage<T, B>) stages.get(model);
+    public Stage<T> stageOf(Model model) {
+        return stages.get(model);
     }
 
     public RepositoryClassImpl(Class<T> clazz) {
