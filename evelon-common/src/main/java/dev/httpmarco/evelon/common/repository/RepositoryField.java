@@ -23,6 +23,9 @@ public interface RepositoryField<T> {
      */
     RepositoryClass<?> parentClass();
 
+    //todo
+    boolean isPrimary();
+
     /**
      * Returns the class of the field
      * @return The class of field

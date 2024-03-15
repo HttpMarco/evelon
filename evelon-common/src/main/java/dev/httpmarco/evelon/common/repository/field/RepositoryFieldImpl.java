@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.common.repository.field;
 
+import dev.httpmarco.evelon.common.annotations.PrimaryKey;
 import dev.httpmarco.evelon.common.model.subs.AbstractVirtualSubStage;
 import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClassImpl;
@@ -24,6 +25,8 @@ public class RepositoryFieldImpl<T> implements RepositoryField<T> {
 
     private final Repository<?> repository;
 
+    private final boolean primary;
+
     private final RepositoryClass<T> clazz;
     private @Nullable
     final RepositoryObjectClass<?> parentClass;
@@ -33,20 +36,17 @@ public class RepositoryFieldImpl<T> implements RepositoryField<T> {
         this(repository, field.getName(), field, (Class<T>) field.getType(), null, parentClass);
     }
 
-    public RepositoryFieldImpl(Repository<?> repository, RepositoryClass<T> clazz, String id, RepositoryObjectClass<?> parentClass) {
-        this(repository, id, null, clazz.clazz(), clazz, parentClass);
-    }
-
     public RepositoryFieldImpl(Repository<?> repository, String id, @Nullable Field field, Class<T> fieldType, @Nullable RepositoryClass<T> clazz, @Nullable RepositoryObjectClass<?> parentClass) {
         this.id = id;
         this.field = field;
+        this.primary = field != null && field.isAnnotationPresent(PrimaryKey.class);
         this.fieldType = fieldType;
         this.repository = repository;
         this.parentClass = parentClass;
 
 
         var modelLayer = repository.modelLayers().stream().findFirst();
-        if (modelLayer.isPresent() && (modelLayer.get().model().findStage(fieldType) instanceof AbstractVirtualSubStage<?>)) {
+        if (modelLayer.isPresent() && (modelLayer.get().model().findStage(fieldType) instanceof AbstractVirtualSubStage)) {
             this.clazz = new RepositoryObjectClassImpl<>(repository, fieldType);
         } else {
             this.clazz = clazz != null ? clazz : new RepositoryClassImpl<>(this.fieldType);
@@ -57,5 +57,11 @@ public class RepositoryFieldImpl<T> implements RepositoryField<T> {
     @SuppressWarnings("unchecked")
     public T value(Object parent) {
         return (T) Reflections.of(parent).value(field);
+    }
+
+
+    @Override
+    public boolean isPrimary() {
+        return primary;
     }
 }
