@@ -1,9 +1,7 @@
 package dev.httpmarco.evelon.common.repository.clazz;
 
-import dev.httpmarco.evelon.common.annotations.PrimaryKey;
 import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
-import dev.httpmarco.evelon.common.repository.field.PrimaryRepositoryFieldImpl;
 import dev.httpmarco.evelon.common.repository.field.RepositoryFieldImpl;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -17,24 +15,11 @@ import java.util.Set;
 public class RepositoryObjectClassImpl<T> extends RepositoryClassImpl<T> implements RepositoryObjectClass<T> {
 
     private final RepositoryField<?>[] fields;
-    private final Set<PrimaryRepositoryFieldImpl<?>> primaryFields = new HashSet<>();
+    private final Set<RepositoryField<?>> primaryFields = new HashSet<>();
 
     public RepositoryObjectClassImpl(Repository<?> repository, Class<T> clazz) {
         super(clazz);
 
-        this.fields = Arrays.stream(clazz.getDeclaredFields())
-                .map(field -> {
-
-                    RepositoryField<?> repositoryField;
-
-                    if (field.isAnnotationPresent(PrimaryKey.class)) {
-                        var primaryRepositoryField = new PrimaryRepositoryFieldImpl<>(repository, field, this);
-                        primaryFields.add(primaryRepositoryField);
-                        repositoryField = primaryRepositoryField;
-                    } else {
-                        repositoryField = new RepositoryFieldImpl<>(repository, field, this);
-                    }
-                    return repositoryField;
-                }).toArray(RepositoryField[]::new);
+        this.fields = Arrays.stream(clazz.getDeclaredFields()).map(field -> new RepositoryFieldImpl<>(repository, field, this)).toArray(RepositoryField[]::new);
     }
 }
