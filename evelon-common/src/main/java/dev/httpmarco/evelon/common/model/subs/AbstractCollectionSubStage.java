@@ -1,24 +1,23 @@
 package dev.httpmarco.evelon.common.model.subs;
 
-import dev.httpmarco.evelon.common.builder.Builder;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.SubStage;
+import dev.httpmarco.evelon.common.process.impl.ConstructProcess;
+import dev.httpmarco.evelon.common.process.impl.CreateProcess;
+import dev.httpmarco.evelon.common.process.impl.InitializeProcess;
 import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClassImpl;
-import dev.httpmarco.evelon.common.repository.field.RepositoryFieldImpl;
 import dev.httpmarco.osgan.reflections.Reflections;
-import dev.httpmarco.osgan.utils.exceptions.NotImplementedException;
-
 import java.util.Collection;
 import java.util.List;
 
-public abstract class AbstractCollectionSubStage<B extends Builder<B, ?, ?>> implements SubStage<Collection<?>, B> {
+public abstract class AbstractCollectionSubStage implements SubStage<Collection<?>> {
 
     @Override
-    public void initialize(Repository<?> repository, String stageId, Model<B> model, RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries) {
+    public void initialize(Repository<?> repository, String stageId, Model model, RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, InitializeProcess queries) {
         var collectionListType = Reflections.of(ownField.field()).generics();
 
         if (collectionListType.length != 1) {
@@ -27,6 +26,8 @@ public abstract class AbstractCollectionSubStage<B extends Builder<B, ?, ?>> imp
 
         var collectionType = new RepositoryObjectClassImpl<>(repository, collectionListType[0]);
 
+        //todo
+        /*
         // add foreign key linking
         queries.linkPrimaries(ownField.parentClass().asObjectClass().primaryFields());
 
@@ -37,21 +38,23 @@ public abstract class AbstractCollectionSubStage<B extends Builder<B, ?, ?>> imp
             throw new NotImplementedException("Substages are not supported yet.");
             // todo: implementation
         } else throw new RuntimeException("This stage is not supported yet.");
+
+         */
     }
 
     @Override
-    public void create(Collection<?> value, String stageId, Model<B> model, RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries) {
+    public void create(Collection<?> value, String stageId, Model model, RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, CreateProcess queries) {
         //todo
     }
 
     @Override
-    public Collection<?> construct(Model<B> model, RepositoryClass<?> clazz, B builder) {
+    public Collection<?> construct(Model model, RepositoryClass<?> clazz, ConstructProcess builder) {
         // todo
         return List.of();
     }
 
     @Override
-    public boolean isElement(Model<B> model, Class<?> clazz) {
+    public boolean isElement(Model model, Class<?> clazz) {
         return Collection.class.isAssignableFrom(clazz);
     }
 
@@ -61,6 +64,7 @@ public abstract class AbstractCollectionSubStage<B extends Builder<B, ?, ?>> imp
      * @param builder the builder
      * @param field   the class of the element
      */
-    public abstract void appendElementStage(B builder, RepositoryField<?> field);
+    //todo
+   // public abstract void appendElementStage(B builder, RepositoryField<?> field);
 
 }

@@ -1,9 +1,11 @@
 package dev.httpmarco.evelon.common.model.subs;
 
-import dev.httpmarco.evelon.common.builder.Builder;
 import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.model.Stage;
 import dev.httpmarco.evelon.common.model.SubStage;
+import dev.httpmarco.evelon.common.process.impl.ConstructProcess;
+import dev.httpmarco.evelon.common.process.impl.CreateProcess;
+import dev.httpmarco.evelon.common.process.impl.InitializeProcess;
 import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
@@ -14,10 +16,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public abstract class AbstractMapSubStage<B extends Builder<B, ?, ?>> implements SubStage<Map<?, ?>, B> {
+public abstract class AbstractMapSubStage implements SubStage<Map<?, ?>> {
 
     @Override
-    public void initialize(Repository<?> repository, String stageId, Model<B> model, @NotNull RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries) {
+    public void initialize(Repository<?> repository, String stageId, Model model, @NotNull RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, InitializeProcess queries) {
         var mapTypes = Reflections.of(ownField.field()).generics();
 
         if (mapTypes.length != 2) {
@@ -25,7 +27,8 @@ public abstract class AbstractMapSubStage<B extends Builder<B, ?, ?>> implements
         }
 
         // add foreign key linking
-        queries.linkPrimaries(ownField.parentClass().asObjectClass().primaryFields());
+        //todo
+        // queries.linkPrimaries(ownField.parentClass().asObjectClass().primaryFields());
 
         var keyType = new RepositoryClassImpl<>(mapTypes[0]);
         var valueType = new RepositoryClassImpl<>(mapTypes[1]);
@@ -35,19 +38,19 @@ public abstract class AbstractMapSubStage<B extends Builder<B, ?, ?>> implements
     }
 
     @Override
-    public void create(Map<?, ?> value, String stageId, Model<B> model, RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, B queries) {
+    public void create(Map<?, ?> value, String stageId, Model model, RepositoryField<?> ownField, RepositoryObjectClass<?> clazz, CreateProcess queries) {
         // todo
     }
 
-    public abstract void initializeMapElement(Repository<?> repository, boolean key, B builder, Stage<?, B> stage, RepositoryField<?> parentField, RepositoryClass<?> type, RepositoryObjectClass<?> clazz);
+    public abstract void initializeMapElement(Repository<?> repository, boolean key, InitializeProcess process, Stage<?> stage, RepositoryField<?> parentField, RepositoryClass<?> type, RepositoryObjectClass<?> clazz);
 
     @Override
-    public boolean isElement(Model<B> model, Class<?> clazz) {
+    public boolean isElement(Model model, Class<?> clazz) {
         return Map.class.isAssignableFrom(clazz);
     }
 
     @Override
-    public Map<?, ?> construct(Model<B> model, RepositoryClass<?> clazz, B builder) {
+    public Map<?, ?> construct(Model model, RepositoryClass<?> clazz, ConstructProcess builder) {
         // todo
         return Map.of();
     }

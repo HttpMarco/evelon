@@ -1,24 +1,25 @@
 package dev.httpmarco.evelon.common.model.subs;
 
-import dev.httpmarco.evelon.common.builder.Builder;
 import dev.httpmarco.evelon.common.model.ElementStage;
 import dev.httpmarco.evelon.common.model.Model;
-import dev.httpmarco.evelon.common.model.Stage;
 import dev.httpmarco.evelon.common.model.SubStage;
+import dev.httpmarco.evelon.common.process.impl.ConstructProcess;
+import dev.httpmarco.evelon.common.process.impl.CreateProcess;
+import dev.httpmarco.evelon.common.process.impl.InitializeProcess;
 import dev.httpmarco.evelon.common.repository.Repository;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
 import dev.httpmarco.evelon.common.repository.clazz.RepositoryObjectClass;
 import dev.httpmarco.osgan.reflections.Reflections;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
 import java.util.function.Consumer;
 
-public abstract class AbstractVirtualSubStage<B extends Builder<B, ?, ?>> implements SubStage<Object, B> {
+public abstract class AbstractVirtualSubStage implements SubStage<Object> {
 
     @Override
-    public void initialize(Repository<?> repository, String stageId, Model<B> model, RepositoryField<?> ownField, @NotNull RepositoryObjectClass<?> clazz, B queries) {
+    public void initialize(Repository<?> repository, String stageId, Model model, RepositoryField<?> ownField, @NotNull RepositoryObjectClass<?> clazz, InitializeProcess queries) {
+       /*
         for (var field : clazz.fields()) {
             permitOnStage(field, model,
                     it -> {
@@ -32,10 +33,13 @@ public abstract class AbstractVirtualSubStage<B extends Builder<B, ?, ?>> implem
                     it -> appendParameter(queries, field)
             );
         }
+
+        */
     }
 
     @Override
-    public void create(Object value, String stageId, Model<B> model, RepositoryField<?> ownField, @NotNull RepositoryObjectClass<?> clazz, B queries) {
+    public void create(Object value, String stageId, Model model, RepositoryField<?> ownField, @NotNull RepositoryObjectClass<?> clazz, CreateProcess queries) {
+        /*
         for (var field : clazz.fields()) {
             permitOnStage(field, model,
                     it -> {
@@ -59,10 +63,12 @@ public abstract class AbstractVirtualSubStage<B extends Builder<B, ?, ?>> implem
                     }
             );
         }
+
+         */
     }
 
     @Override
-    public Object construct(Model<B> model, RepositoryClass<?> clazz, B builder) {
+    public Object construct(Model model, RepositoryClass<?> clazz, ConstructProcess builder) {
         Reflections<?> reflections = Reflections.of(clazz.clazz());
         var object = reflections.allocate();
         reflections.withValue(object);
@@ -72,6 +78,7 @@ public abstract class AbstractVirtualSubStage<B extends Builder<B, ?, ?>> implem
 
         var elementFields = Arrays.stream(objectClass.fields()).filter(it -> it.clazz().stageOf(model).isElementStage()).toArray(RepositoryField<?>[]::new);
 
+        /*
         // read all data from database
         for (var field : elementFields) {
             appendParameter(builder, field);
@@ -91,20 +98,22 @@ public abstract class AbstractVirtualSubStage<B extends Builder<B, ?, ?>> implem
                     it -> reflections.modify(field.field(), it.construct(model, field, builder))
             );
         }
+
+         */
         return object;
     }
 
-    public abstract void appendParameter(B builder, RepositoryField<?> field);
+  //  public abstract void appendParameter(B builder, RepositoryField<?> field);
 
-    public abstract void transformData(B builder, RepositoryField<?>... requiredFields);
+//    public abstract void transformData(B builder, RepositoryField<?>... requiredFields);
 
     @Override
-    public boolean isElement(Model<B> model, Class<?> type) {
+    public boolean isElement(Model model, Class<?> type) {
         return Arrays.stream(type.getDeclaredFields()).allMatch(it -> {
             var stage = model.findStage(it.getType());
 
             // check if sub elements are allowed to consume
-            if (stage instanceof AbstractVirtualSubStage<?>) {
+            if (stage instanceof AbstractVirtualSubStage) {
                 return stage.isElement(model, it.getType());
             } else {
                 return true;
@@ -121,7 +130,7 @@ public abstract class AbstractVirtualSubStage<B extends Builder<B, ?, ?>> implem
      * @param elementStageHandling describe handling of element stage
      * @param <T>                  type of field type
      */
-    private <T> void permitOnStage(@NotNull RepositoryField<T> field, Model<B> model, Consumer<SubStage<T, B>> subStageHandling, Consumer<ElementStage<T, ?, B>> elementStageHandling) {
+    private <T> void permitOnStage(@NotNull RepositoryField<T> field, Model model, Consumer<SubStage<T>> subStageHandling, Consumer<ElementStage<T, ?>> elementStageHandling) {
         var stage = field.clazz().stageOf(model);
         if (stage.isSubStage()) {
             subStageHandling.accept(stage.asSubStage());
