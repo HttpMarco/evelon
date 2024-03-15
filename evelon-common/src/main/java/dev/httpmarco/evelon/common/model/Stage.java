@@ -1,30 +1,25 @@
 package dev.httpmarco.evelon.common.model;
 
-import dev.httpmarco.evelon.common.builder.Builder;
-import dev.httpmarco.evelon.common.repository.RepositoryField;
-import dev.httpmarco.evelon.common.repository.clazz.RepositoryClass;
-
 /**
  * @param <T> Class type
- * @param <B> Specific builder type
  */
-public interface Stage<T, B extends Builder<B, ?, ?>> {
+public interface Stage<T> {
 
-    boolean isElement(Model<B> model, Class<?> type);
+    boolean isElement(Model model, Class<?> type);
 
     default boolean isSubStage() {
-        return this instanceof SubStage<T, B>;
+        return this instanceof SubStage<T>;
     }
 
-    default SubStage<T, B> asSubStage() {
-        return (SubStage<T, B>) this;
+    default SubStage<T> asSubStage() {
+        return (SubStage<T>) this;
     }
 
     default boolean isElementStage() {
-        return this instanceof ElementStage<T, ?, B>;
+        return this instanceof ElementStage<T, ?>;
     }
 
-    default ElementStage<T, ?, B> asElementStage() {
-        return (ElementStage<T, ?, B>) this;
+    default ElementStage<T, ?> asElementStage() {
+        return (ElementStage<T, ?>) this;
     }
 }
