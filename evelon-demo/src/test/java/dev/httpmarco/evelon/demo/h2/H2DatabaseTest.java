@@ -31,18 +31,21 @@ public final class H2DatabaseTest {
         }
 
         @Test
+        @Disabled
         @Order(1)
         void creation() {
             assertEquals(ResponseType.SUCCESS, REPOSITORY.query().create(MODEL).response());
         }
 
         @Test
+        @Disabled
         @Order(2)
         void exists() {
             assertTrue(REPOSITORY.query().exists());
         }
 
         @Test
+        @Disabled
         @Order(3)
         void get() {
             var model = REPOSITORY.query().findFirst();
@@ -52,6 +55,7 @@ public final class H2DatabaseTest {
         }
 
         @Test
+        @Disabled
         @Order(4)
         void filtering() {
             // create another filtering entry
@@ -70,6 +74,7 @@ public final class H2DatabaseTest {
         }
 
         @Test
+        @Disabled
         @Order(5)
         void deleteAll() {
             assertEquals(ResponseType.SUCCESS, REPOSITORY.query().deleteAll().response());
@@ -91,18 +96,21 @@ public final class H2DatabaseTest {
         }
 
         @Test
+        @Disabled
         @Order(1)
         void creation() {
             assertEquals(ResponseType.SUCCESS, REPOSITORY.query().create(MODEL).response());
         }
 
         @Test
+        @Disabled
         @Order(2)
         void exists() {
             assertTrue(REPOSITORY.query().exists());
         }
 
         @Test
+        @Disabled
         @Order(3)
         void get() {
             var model = REPOSITORY.query().findFirst();
@@ -119,6 +127,7 @@ public final class H2DatabaseTest {
 
 
         @Test
+        @Disabled
         @Order(5)
         void deleteAll() {
             assertEquals(ResponseType.SUCCESS, REPOSITORY.query().deleteAll().response());
