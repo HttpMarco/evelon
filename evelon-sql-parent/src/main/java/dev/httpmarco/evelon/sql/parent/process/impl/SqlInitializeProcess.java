@@ -4,7 +4,6 @@ import dev.httpmarco.evelon.common.model.Model;
 import dev.httpmarco.evelon.common.process.Build;
 import dev.httpmarco.evelon.common.process.impl.InitializeProcess;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
-import dev.httpmarco.evelon.sql.parent.SqlType;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnectionTransmitter;
 
 public class SqlInitializeProcess extends InitializeProcess<StringBuilder> {
@@ -22,10 +21,13 @@ public class SqlInitializeProcess extends InitializeProcess<StringBuilder> {
         this.transmitter.executeUpdate(SQL_QUERY.formatted(id(), queryContext().toString()), this);
     }
 
+    /*
     @Override
     public void appendQuery(RepositoryField<?> field) {
         queryContext().append(field.id()).append(" ").append(SqlType.find(field.fieldType()));
     }
+
+     */
 
     @Override
     public void betweenElement() {

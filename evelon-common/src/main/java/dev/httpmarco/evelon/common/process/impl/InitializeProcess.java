@@ -1,6 +1,8 @@
 package dev.httpmarco.evelon.common.process.impl;
 
+import dev.httpmarco.evelon.common.model.ElementStage;
 import dev.httpmarco.evelon.common.model.Model;
+import dev.httpmarco.evelon.common.model.Stage;
 import dev.httpmarco.evelon.common.process.Build;
 import dev.httpmarco.evelon.common.process.Process;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
@@ -30,7 +32,16 @@ public abstract class InitializeProcess<Q> extends Process<Q> {
 
             if (applyRow(build().model(), row)) {
                 this.preElement();
-                this.appendQuery(row);
+
+                var stage = row.clazz().stageOf(build().model());
+
+                //todo: implement stage
+                /*
+                if(stage instanceof ElementStage<?,?>) {
+                    ((ElementStage<?, ?>) stage).construct(build().model(), row, this);
+                }
+
+                 */
 
                 if (i < rows.size() - 1) {
                     this.betweenElement();
@@ -43,8 +54,6 @@ public abstract class InitializeProcess<Q> extends Process<Q> {
         this.postQuery();
         execute();
     }
-
-    public abstract void appendQuery(RepositoryField<?> field);
 
     public void postElement() {
     }
