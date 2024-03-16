@@ -130,7 +130,7 @@ public abstract class AbstractVirtualSubStage implements SubStage<Object> {
      * @param elementStageHandling describe handling of element stage
      * @param <T>                  type of field type
      */
-    private <T> void permitOnStage(@NotNull RepositoryField<T> field, Model model, Consumer<SubStage<T>> subStageHandling, Consumer<ElementStage<T, ?>> elementStageHandling) {
+    private <T> void permitOnStage(@NotNull RepositoryField<T> field, Model model, Consumer<SubStage<T>> subStageHandling, Consumer<ElementStage<T>> elementStageHandling) {
         var stage = field.clazz().stageOf(model);
         if (stage.isSubStage()) {
             subStageHandling.accept(stage.asSubStage());

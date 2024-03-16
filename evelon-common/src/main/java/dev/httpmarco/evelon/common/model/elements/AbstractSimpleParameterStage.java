@@ -6,7 +6,7 @@ import dev.httpmarco.evelon.common.process.impl.ConstructProcess;
 import dev.httpmarco.evelon.common.repository.RepositoryField;
 import dev.httpmarco.osgan.utils.Utils;
 
-public class AbstractSimpleParameterStage implements ElementStage<Object, Object> {
+public class AbstractSimpleParameterStage implements ElementStage<Object> {
 
     @Override
     public boolean isElement(Model model, Class<?> clazz) {

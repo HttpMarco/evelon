@@ -6,10 +6,9 @@ import dev.httpmarco.evelon.common.repository.RepositoryField;
 /**
  *
  * @param <T> Type of class
- * @param <E> Serialized Type
  */
 
-public interface ElementStage<T, E> extends Stage<T> {
+public interface ElementStage<T> extends Stage<T> {
 
     T construct(Model model, RepositoryField<?> clazz, ConstructProcess builder);
 

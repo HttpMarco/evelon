@@ -16,10 +16,10 @@ public interface Stage<T> {
     }
 
     default boolean isElementStage() {
-        return this instanceof ElementStage<T, ?>;
+        return this instanceof ElementStage<T>;
     }
 
-    default ElementStage<T, ?> asElementStage() {
-        return (ElementStage<T, ?>) this;
+    default ElementStage<T> asElementStage() {
+        return (ElementStage<T>) this;
     }
 }
