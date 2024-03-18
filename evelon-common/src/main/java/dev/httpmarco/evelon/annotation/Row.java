@@ -9,8 +9,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Row {
 
+    /**
+     * @return a custom field name
+     */
     String name() default "";
 
+    /**
+     * @return if the field is not used in the repository
+     */
     boolean ignore() default false;
 
 }
