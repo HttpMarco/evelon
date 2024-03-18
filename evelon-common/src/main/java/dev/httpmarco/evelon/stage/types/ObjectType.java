@@ -11,9 +11,14 @@ import java.util.Arrays;
  */
 public final class ObjectType extends Stage.Type {
 
+    private static final String JAVA_PACKAGE_NAME = "java.";
+
     @Override
     public boolean isType(@NotNull Class<?> clazz) {
         // we only accept fields that are of a type that is a stage type
-        return Arrays.stream(clazz.getDeclaredFields()).allMatch(it -> Evelon.instance().stageService().typeOf(it.getType()) != null);
+        // we are not allowed that field parameters
+        return Arrays.stream(clazz.getDeclaredFields()).allMatch(it -> Evelon.instance().stageService().typeOf(it.getType()) != null &&
+                (it.getClass().getPackageName().startsWith(JAVA_PACKAGE_NAME) && Arrays.stream(it.getClass().getDeclaredFields())
+                        .allMatch(f -> f.getClass().getPackageName().startsWith(JAVA_PACKAGE_NAME))));
     }
 }
