@@ -5,6 +5,9 @@ import dev.httpmarco.evelon.annotation.Entity;
 import dev.httpmarco.evelon.stage.types.ObjectType;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,10 +30,11 @@ public final class RepositoryBuilder<T> {
      * @return the repository class
      * @param <C> the type of the class
      */
-    private <C> RepositoryClass<C> scanClass(Class<C> clazz) {
+    @Contract("_ -> new")
+    private <C> @NotNull RepositoryClass<C> scanClass(Class<C> clazz) {
         var type = Evelon.instance().stageService().typeOf(clazz);
         if (type instanceof ObjectType) {
-            return new RepositoryObjectClass<C>(clazz, type, scanObjectFields(clazz));
+            return new RepositoryObjectClass<>(clazz, type, scanObjectFields(clazz));
         }
         return new RepositoryClass<>(clazz, type);
     }
@@ -40,7 +44,7 @@ public final class RepositoryBuilder<T> {
      * @param clazz the object with fields
      * @return set of fields
      */
-    private Set<RepositoryObjectClass.ObjectField<?>> scanObjectFields(Class<?> clazz) {
+    private Set<RepositoryObjectClass.ObjectField<?>> scanObjectFields(@NotNull Class<?> clazz) {
         return Arrays.stream(clazz.getDeclaredFields()).map(it -> new RepositoryObjectClass.ObjectField<>(it.getType(), scanClass(it.getType()).type(), it)).collect(Collectors.toSet());
     }
 
@@ -48,7 +52,7 @@ public final class RepositoryBuilder<T> {
      * Get the name of the repository and prove the name conventions
      * @return the name
      */
-    private String name() {
+    private @NotNull String name() {
         if(clazz.isAnnotationPresent(Entity.class)) {
             var name = clazz.getAnnotation(Entity.class).name();
             if(!name.isBlank()) {
@@ -62,7 +66,8 @@ public final class RepositoryBuilder<T> {
      * Build the repository
      * @return the repository
      */
-    public Repository<T> build() {
+    @Contract(" -> new")
+    public @NotNull Repository<T> build() {
         // todo: add layers and init them
         return new Repository<>(name(), scanClass(clazz));
     }
