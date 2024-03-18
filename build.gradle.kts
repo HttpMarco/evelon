@@ -13,9 +13,10 @@ allprojects {
 
     dependencies {
         "compileOnly"(rootProject.libs.bundles.utils)
+        "implementation"(rootProject.libs.bundles.osgan)
+
         "annotationProcessor"(rootProject.libs.lombok)
         "compileOnly"(rootProject.libs.gson)
-        "implementation"(rootProject.libs.bundles.osgan)
     }
 
     tasks.withType<JavaCompile>().configureEach {

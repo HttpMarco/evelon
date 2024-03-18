@@ -18,9 +18,6 @@ h2 = "2.2.224"
 log4j = "2.23.1"
 slf4j = "2.0.12"
 
-# plugins
-nexusPublish = "1.3.0"
-
 [libraries]
 
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
@@ -43,11 +40,6 @@ h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
 # logging
 slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
 log4j = { group = "org.apache.logging.log4j", name = "log4j-slf4j2-impl", version.ref = "log4j" }
-
-
-[plugins]
-
-nexusPublish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexusPublish" }
 
 [bundles]
 
