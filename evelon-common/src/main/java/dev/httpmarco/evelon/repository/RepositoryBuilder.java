@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.repository;
 
 import dev.httpmarco.evelon.Evelon;
+import dev.httpmarco.evelon.annotation.Entity;
 import dev.httpmarco.evelon.stage.types.ObjectType;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -44,11 +45,25 @@ public final class RepositoryBuilder<T> {
     }
 
     /**
+     * Get the name of the repository and prove the name conventions
+     * @return the name
+     */
+    private String name() {
+        if(clazz.isAnnotationPresent(Entity.class)) {
+            var name = clazz.getAnnotation(Entity.class).name();
+            if(!name.isBlank()) {
+                return name;
+            }
+        }
+        return clazz.getSimpleName();
+    }
+
+    /**
      * Build the repository
      * @return the repository
      */
     public Repository<T> build() {
         // todo: add layers and init them
-        return new Repository<>(null, scanClass(clazz));
+        return new Repository<>(name(), scanClass(clazz));
     }
 }
