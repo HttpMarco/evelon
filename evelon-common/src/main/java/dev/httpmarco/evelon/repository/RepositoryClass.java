@@ -10,6 +10,8 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class RepositoryClass<T> {
 
+    // subordinate repository
+    private Repository<?> repository;
     // original class of the repository class
     private Class<T> originalClass;
     // detected stage of the class

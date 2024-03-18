@@ -27,39 +27,43 @@ public final class RepositoryBuilder<T> {
 
     /**
      * Scan all fields of the class and build the repository class
+     *
      * @param clazz the class to scan
+     * @param repository the repository
+     * @param <C>   the type of the class
      * @return the repository class
-     * @param <C> the type of the class
      */
-    @Contract("_ -> new")
-    private <C> @NotNull RepositoryClass<C> scanClass(Class<C> clazz) {
+    private <C> @NotNull RepositoryClass<C> scanClass(Repository<T> repository, Class<C> clazz) {
         var type = Evelon.instance().stageService().typeOf(clazz);
         if (type instanceof ObjectType) {
-            return new RepositoryObjectClass<>(clazz, type, scanObjectFields(clazz));
+            return new RepositoryObjectClass<>(repository, clazz, type, scanObjectFields(repository, clazz));
         }
-        return new RepositoryClass<>(clazz, type);
+        return new RepositoryClass<>(repository, clazz, type);
     }
 
     /**
      * Collect all fields of the object class
+     *
      * @param clazz the object with fields
+     * @param repository the repository
      * @return set of fields
      */
-    private Set<RepositoryObjectClass.ObjectField<?>> scanObjectFields(@NotNull Class<?> clazz) {
+    private Set<RepositoryObjectClass.ObjectField<?>> scanObjectFields(Repository<T> repository, @NotNull Class<?> clazz) {
         return Arrays.stream(clazz.getDeclaredFields())
                 .filter(it -> !it.isAnnotationPresent(Row.class) || !it.getDeclaredAnnotation(Row.class).ignore())
-                .map(it -> new RepositoryObjectClass.ObjectField<>(it.getType(), scanClass(it.getType()).type(), it))
+                .map(it -> new RepositoryObjectClass.ObjectField<>(repository, it.getType(), scanClass(repository, it.getType()).type(), it))
                 .collect(Collectors.toSet());
     }
 
     /**
      * Get the name of the repository and prove the name conventions
+     *
      * @return the name
      */
     private @NotNull String name() {
-        if(clazz.isAnnotationPresent(Entity.class)) {
+        if (clazz.isAnnotationPresent(Entity.class)) {
             var name = clazz.getAnnotation(Entity.class).name();
-            if(!name.isBlank()) {
+            if (!name.isBlank()) {
                 return name;
             }
         }
@@ -68,11 +72,14 @@ public final class RepositoryBuilder<T> {
 
     /**
      * Build the repository
+     *
      * @return the repository
      */
     @Contract(" -> new")
     public @NotNull Repository<T> build() {
+        var repository = new Repository<T>(name());
         // todo: add layers and init them
-        return new Repository<>(name(), scanClass(clazz));
+        scanClass(repository, clazz);
+        return repository;
     }
 }

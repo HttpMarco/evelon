@@ -17,8 +17,8 @@ public final class RepositoryObjectClass<T> extends RepositoryClass<T> {
     // all fields of object class
     private final Set<ObjectField<?>> fields;
 
-    public RepositoryObjectClass(Class<T> originalClass, Stage.Type type, Set<ObjectField<?>> fields) {
-        super(originalClass, type);
+    public RepositoryObjectClass(Repository<?> repository, Class<T> originalClass, Stage.Type type, Set<ObjectField<?>> fields) {
+        super(repository, originalClass, type);
         this.fields = fields;
 
         // set parent after initialize
@@ -43,8 +43,8 @@ public final class RepositoryObjectClass<T> extends RepositoryClass<T> {
         @Setter
         private RepositoryObjectClass<?> parent;
 
-        public ObjectField(Class<T> originalClass, Stage.Type type, Field field) {
-            super(originalClass, type);
+        public ObjectField(Repository<?> repository, Class<T> originalClass, Stage.Type type, Field field) {
+            super(repository, originalClass, type);
             this.field = field;
 
             this.primary = field.isAnnotationPresent(PrimaryKey.class);
