@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Repository class, which is used to store the data
@@ -28,7 +30,8 @@ public final class Repository<T> {
      * @param <T> repo value type
      * @return the new builder of repo
      */
-    public static <T> RepositoryBuilder<T> create(Class<T> clazz) {
+    @Contract("_ -> new")
+    public static <T> @NotNull RepositoryBuilder<T> create(Class<T> clazz) {
         return new RepositoryBuilder<>(clazz);
     }
 }

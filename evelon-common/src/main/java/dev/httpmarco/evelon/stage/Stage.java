@@ -1,5 +1,7 @@
 package dev.httpmarco.evelon.stage;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Represents a de-/serialization stage for a specific type
  */
@@ -12,7 +14,7 @@ public class Stage {
          * @param clazz the clazz of variable
          * @return if the variable is of the type this stage
          */
-        public abstract boolean isType(Class<?> clazz);
+        public abstract boolean isType(@NotNull Class<?> clazz);
 
     }
 }

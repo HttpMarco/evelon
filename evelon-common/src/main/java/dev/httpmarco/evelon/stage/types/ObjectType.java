@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.stage.types;
 
 import dev.httpmarco.evelon.Evelon;
 import dev.httpmarco.evelon.stage.Stage;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -11,7 +12,7 @@ import java.util.Arrays;
 public final class ObjectType extends Stage.Type {
 
     @Override
-    public boolean isType(Class<?> clazz) {
+    public boolean isType(@NotNull Class<?> clazz) {
         // we only accept fields that are of a type that is a stage type
         return Arrays.stream(clazz.getDeclaredFields()).allMatch(it -> Evelon.instance().stageService().typeOf(it.getType()) != null);
     }

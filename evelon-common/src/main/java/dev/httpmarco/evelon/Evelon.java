@@ -20,7 +20,4 @@ public class Evelon {
     // the single point of access to the stage service
     private final StageService stageService = new StageService();
 
-
-
-
 }

@@ -6,6 +6,7 @@ import dev.httpmarco.evelon.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.util.Set;
@@ -17,7 +18,7 @@ public final class RepositoryObjectClass<T> extends RepositoryClass<T> {
     // all fields of object class
     private final Set<ObjectField<?>> fields;
 
-    public RepositoryObjectClass(Repository<?> repository, Class<T> originalClass, Stage.Type type, Set<ObjectField<?>> fields) {
+    public RepositoryObjectClass(Repository<?> repository, Class<T> originalClass, Stage.Type type, @NotNull Set<ObjectField<?>> fields) {
         super(repository, originalClass, type);
         this.fields = fields;
 
@@ -43,7 +44,7 @@ public final class RepositoryObjectClass<T> extends RepositoryClass<T> {
         @Setter
         private RepositoryObjectClass<?> parent;
 
-        public ObjectField(Repository<?> repository, Class<T> originalClass, Stage.Type type, Field field) {
+        public ObjectField(Repository<?> repository, Class<T> originalClass, Stage.Type type, @NotNull Field field) {
             super(repository, originalClass, type);
             this.field = field;
 
