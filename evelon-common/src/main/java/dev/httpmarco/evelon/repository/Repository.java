@@ -15,13 +15,16 @@ import org.jetbrains.annotations.NotNull;
  */
 @Getter
 @Accessors(fluent = true)
-@Setter(AccessLevel.PACKAGE)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public final class Repository<T> {
 
     // main name of the repository. Can be modified by the @Repository annotation
     private final String name;
+
+    // clazz need the repository to be created, also we need to wait for the class
+    @Setter(AccessLevel.PACKAGE)
     private RepositoryClass<T> clazz;
+
     // todo list of current layers
 
     /**
