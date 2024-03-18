@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.repository;
 
+import dev.httpmarco.evelon.annotation.Row;
 import dev.httpmarco.evelon.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,11 +25,15 @@ public final class RepositoryObjectClass<T> extends RepositoryClass<T> {
     }
 
     // special class for object fields
-    @Getter @Accessors(fluent = true)
+    @Getter
+    @Accessors(fluent = true)
     public static class ObjectField<T> extends RepositoryClass<T> {
 
         // field of the object
         private final Field field;
+
+        // field names can be modified with @Row annotation
+        private final String id;
 
         // can not be set in constructor, because it is not initialized yet
         @Setter
@@ -37,6 +42,12 @@ public final class RepositoryObjectClass<T> extends RepositoryClass<T> {
         public ObjectField(Class<T> originalClass, Stage.Type type, Field field) {
             super(originalClass, type);
             this.field = field;
+
+            if (field.isAnnotationPresent(Row.class)) {
+                this.id = field.getAnnotation(Row.class).name();
+            } else {
+                this.id = field.getName();
+            }
         }
     }
 }

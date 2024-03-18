@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.repository;
 
 import dev.httpmarco.evelon.Evelon;
 import dev.httpmarco.evelon.annotation.Entity;
+import dev.httpmarco.evelon.annotation.Row;
 import dev.httpmarco.evelon.stage.types.ObjectType;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,10 @@ public final class RepositoryBuilder<T> {
      * @return set of fields
      */
     private Set<RepositoryObjectClass.ObjectField<?>> scanObjectFields(@NotNull Class<?> clazz) {
-        return Arrays.stream(clazz.getDeclaredFields()).map(it -> new RepositoryObjectClass.ObjectField<>(it.getType(), scanClass(it.getType()).type(), it)).collect(Collectors.toSet());
+        return Arrays.stream(clazz.getDeclaredFields())
+                .filter(it -> !it.isAnnotationPresent(Row.class) || !it.getDeclaredAnnotation(Row.class).ignore())
+                .map(it -> new RepositoryObjectClass.ObjectField<>(it.getType(), scanClass(it.getType()).type(), it))
+                .collect(Collectors.toSet());
     }
 
     /**
