@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
  * This class is a stage type that is used to represent a type that is a parameter
  * or a primitive type.
  */
-public class ParameterType extends Stage.Type {
+public final class ParameterType extends Stage.Type {
 
     @Override
     public boolean isType(@NotNull Class<?> clazz) {

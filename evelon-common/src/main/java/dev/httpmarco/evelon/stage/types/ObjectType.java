@@ -8,7 +8,7 @@ import java.util.Arrays;
 /**
  * This class is a stage type that is used to represent a type that is an object.
  */
-public class ObjectType extends Stage.Type {
+public final class ObjectType extends Stage.Type {
 
     @Override
     public boolean isType(Class<?> clazz) {
