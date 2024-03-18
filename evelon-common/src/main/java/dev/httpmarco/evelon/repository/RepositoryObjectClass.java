@@ -26,6 +26,20 @@ public final class RepositoryObjectClass<T> extends RepositoryClass<T> {
         fields.forEach(it -> it.parent(this));
     }
 
+    /**
+     * @return true if object class has no fields
+     */
+    public boolean isEmpty() {
+        return fields.isEmpty();
+    }
+
+    /**
+     * @return true if object class has primaries
+     */
+    public boolean hasPrimary() {
+        return fields.stream().anyMatch(ObjectField::primary);
+    }
+
     // special class for object fields
     @Getter
     @Accessors(fluent = true)
@@ -47,14 +61,8 @@ public final class RepositoryObjectClass<T> extends RepositoryClass<T> {
         public ObjectField(Repository<?> repository, Class<T> originalClass, Stage.Type type, @NotNull Field field) {
             super(repository, originalClass, type);
             this.field = field;
-
             this.primary = field.isAnnotationPresent(PrimaryKey.class);
-
-            if (field.isAnnotationPresent(Row.class)) {
-                this.id = field.getAnnotation(Row.class).name();
-            } else {
-                this.id = field.getName();
-            }
+            this.id = field.isAnnotationPresent(Row.class) ? field.getAnnotation(Row.class).name() : field.getName();
         }
     }
 }
