@@ -11,10 +11,10 @@ import lombok.experimental.Accessors;
 public class RepositoryClass<T> {
 
     // subordinate repository
-    private Repository<?> repository;
+    private final Repository<?> repository;
     // original class of the repository class
-    private Class<T> originalClass;
+    private final Class<T> originalClass;
     // detected stage of the class
-    private Stage.Type type;
+    private final Stage.Type type;
 
 }
