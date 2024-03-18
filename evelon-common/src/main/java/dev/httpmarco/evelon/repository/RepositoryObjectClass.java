@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.repository;
 
+import dev.httpmarco.evelon.annotation.PrimaryKey;
 import dev.httpmarco.evelon.annotation.Row;
 import dev.httpmarco.evelon.stage.Stage;
 import lombok.Getter;
@@ -35,6 +36,9 @@ public final class RepositoryObjectClass<T> extends RepositoryClass<T> {
         // field names can be modified with @Row annotation
         private final String id;
 
+        // if field has annotation @PrimaryKey
+        private final boolean primary;
+
         // can not be set in constructor, because it is not initialized yet
         @Setter
         private RepositoryObjectClass<?> parent;
@@ -42,6 +46,8 @@ public final class RepositoryObjectClass<T> extends RepositoryClass<T> {
         public ObjectField(Class<T> originalClass, Stage.Type type, Field field) {
             super(originalClass, type);
             this.field = field;
+
+            this.primary = field.isAnnotationPresent(PrimaryKey.class);
 
             if (field.isAnnotationPresent(Row.class)) {
                 this.id = field.getAnnotation(Row.class).name();
