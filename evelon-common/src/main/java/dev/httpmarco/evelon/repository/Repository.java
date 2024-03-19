@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.repository;
 
+import dev.httpmarco.evelon.layer.Layer;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import java.util.Set;
 
 /**
  * Repository class, which is used to store the data
@@ -25,7 +27,8 @@ public final class Repository<T> {
     @Setter(AccessLevel.PACKAGE)
     private RepositoryClass<T> clazz;
 
-    // todo list of current layers
+    // repository ordered layers
+    private final Set<Layer> layers;
 
     /**
      * Single point, which is used to create new builder of repo
@@ -37,4 +40,5 @@ public final class Repository<T> {
     public static <T> @NotNull RepositoryBuilder<T> create(Class<T> clazz) {
         return new RepositoryBuilder<>(clazz);
     }
+
 }
