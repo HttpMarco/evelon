@@ -4,7 +4,7 @@ import dev.httpmarco.evelon.Evelon;
 import dev.httpmarco.evelon.annotation.Entity;
 import dev.httpmarco.evelon.annotation.Row;
 import dev.httpmarco.evelon.layer.Layer;
-import dev.httpmarco.evelon.stage.types.ObjectType;
+import dev.httpmarco.evelon.stage.Type;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.Contract;
@@ -38,10 +38,12 @@ public final class RepositoryBuilder<T> {
      * @return the repository class
      */
     private <C> @NotNull RepositoryClass<C> scanClass(Repository<T> repository, Class<C> clazz) {
-        var type = Evelon.instance().stageService().typeOf(clazz);
-        if (type instanceof ObjectType) {
+        var type = Type.typeOf(clazz);
+
+        if (type == Type.OBJECT) {
             return new RepositoryObjectClass<>(repository, clazz, type, scanObjectFields(repository, clazz));
         }
+
         return new RepositoryClass<>(repository, clazz, type);
     }
 

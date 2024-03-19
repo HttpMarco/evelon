@@ -2,7 +2,7 @@ package dev.httpmarco.evelon.repository;
 
 import dev.httpmarco.evelon.annotation.PrimaryKey;
 import dev.httpmarco.evelon.annotation.Row;
-import dev.httpmarco.evelon.stage.Stage;
+import dev.httpmarco.evelon.stage.Type;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -18,7 +18,7 @@ public final class RepositoryObjectClass<T> extends RepositoryClass<T> {
     // all fields of object class
     private final Set<ObjectField<?>> fields;
 
-    public RepositoryObjectClass(Repository<?> repository, Class<T> originalClass, Stage.Type type, @NotNull Set<ObjectField<?>> fields) {
+    public RepositoryObjectClass(Repository<?> repository, Class<T> originalClass, Type type, @NotNull Set<ObjectField<?>> fields) {
         super(repository, originalClass, type);
         this.fields = fields;
 
@@ -58,7 +58,7 @@ public final class RepositoryObjectClass<T> extends RepositoryClass<T> {
         @Setter
         private RepositoryObjectClass<?> parent;
 
-        public ObjectField(Repository<?> repository, Class<T> originalClass, Stage.Type type, @NotNull Field field) {
+        public ObjectField(Repository<?> repository, Class<T> originalClass, Type type, @NotNull Field field) {
             super(repository, originalClass, type);
             this.field = field;
             this.primary = field.isAnnotationPresent(PrimaryKey.class);
