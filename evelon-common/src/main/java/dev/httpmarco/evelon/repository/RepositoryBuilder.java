@@ -3,13 +3,14 @@ package dev.httpmarco.evelon.repository;
 import dev.httpmarco.evelon.Evelon;
 import dev.httpmarco.evelon.annotation.Entity;
 import dev.httpmarco.evelon.annotation.Row;
+import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.stage.types.ObjectType;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,12 +26,15 @@ public final class RepositoryBuilder<T> {
     // class of the repository
     private final Class<T> clazz;
 
+    // all collect layers in the right order
+    private final Set<Layer> layers = new LinkedHashSet<>();
+
     /**
      * Scan all fields of the class and build the repository class
      *
-     * @param clazz the class to scan
+     * @param clazz      the class to scan
      * @param repository the repository
-     * @param <C>   the type of the class
+     * @param <C>        the type of the class
      * @return the repository class
      */
     private <C> @NotNull RepositoryClass<C> scanClass(Repository<T> repository, Class<C> clazz) {
@@ -44,7 +48,7 @@ public final class RepositoryBuilder<T> {
     /**
      * Collect all fields of the object class
      *
-     * @param clazz the object with fields
+     * @param clazz      the object with fields
      * @param repository the repository
      * @return set of fields
      */
@@ -53,6 +57,17 @@ public final class RepositoryBuilder<T> {
                 .filter(it -> !it.isAnnotationPresent(Row.class) || !it.getDeclaredAnnotation(Row.class).ignore())
                 .map(it -> new RepositoryObjectClass.ObjectField<>(repository, it.getType(), scanClass(repository, it.getType()).type(), it))
                 .collect(Collectors.toSet());
+    }
+
+    /**
+     * Add a layer to the repository query
+     *
+     * @param layer the layer class to add
+     * @return the builder
+     */
+    public RepositoryBuilder<T> layer(Class<? extends Layer> layer) {
+        this.layers.add(Evelon.instance().layerService().find(layer));
+        return this;
     }
 
     /**
@@ -77,9 +92,8 @@ public final class RepositoryBuilder<T> {
      */
     @Contract(" -> new")
     public @NotNull Repository<T> build() {
-        var repository = new Repository<T>(name());
-        // todo: add layers and init them
-        scanClass(repository, clazz);
+        var repository = new Repository<T>(name(), layers);
+        repository.clazz(scanClass(repository, clazz));
         return repository;
     }
 }
