@@ -1,7 +1,7 @@
 dependencies {
     implementation(project(":evelon-common"))
+    testImplementation(project(":evelon-sql-h2"))
     testImplementation(project(":evelon-common"))
-    testRuntimeOnly(project(":evelon-common"))
 
     testImplementation(platform("org.junit:junit-bom:5.10.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
