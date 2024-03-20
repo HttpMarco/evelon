@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.layer;
 
-import dev.httpmarco.evelon.process.common.InitializeProcess;
+import dev.httpmarco.evelon.query.response.UpdateResponse;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.stage.Stage;
 import dev.httpmarco.evelon.stage.Type;
@@ -37,4 +37,7 @@ public abstract class Layer {
 
     // default initialize method
     public abstract void initialize(Repository<?> repository);
+
+    public abstract UpdateResponse create(Repository<?> repository, Object value);
+
 }

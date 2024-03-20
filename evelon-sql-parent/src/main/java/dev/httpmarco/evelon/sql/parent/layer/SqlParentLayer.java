@@ -3,6 +3,7 @@ package dev.httpmarco.evelon.sql.parent.layer;
 import dev.httpmarco.evelon.Evelon;
 import dev.httpmarco.evelon.credentials.Credentials;
 import dev.httpmarco.evelon.layer.ConnectableLayer;
+import dev.httpmarco.evelon.query.response.UpdateResponse;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.sql.parent.layer.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.layer.credentials.AbstractSqlCredentials;
@@ -41,5 +42,10 @@ public abstract class SqlParentLayer extends ConnectableLayer<Connection> {
     @Override
     public void close() {
         this.connection.close();
+    }
+
+    @Override
+    public UpdateResponse create(Repository<?> repository, Object value) {
+        return null;
     }
 }
