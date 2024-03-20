@@ -2,16 +2,11 @@ package dev.httpmarco.evelon.layer;
 
 import dev.httpmarco.evelon.credentials.Credentials;
 
-public interface LayerConnection<R extends Credentials, T> {
+public interface LayerConnection<T> {
 
     void close();
 
-    void connect(R credentials);
-
-    @SuppressWarnings("unchecked")
-    default void connectWithMapping(Object credentials) {
-        this.connect((R) credentials);
-    }
+    void connect(Credentials credentials);
 
     boolean isConnected();
 
