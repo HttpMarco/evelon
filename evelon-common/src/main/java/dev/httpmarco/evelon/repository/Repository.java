@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.repository;
 
 import dev.httpmarco.evelon.layer.Layer;
+import dev.httpmarco.evelon.query.Query;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -41,4 +42,11 @@ public final class Repository<T> {
         return new RepositoryBuilder<>(clazz);
     }
 
+    /**
+     * Create new query action
+     * @return new query
+     */
+    public Query<T> query() {
+        return new Query<>(this);
+    }
 }
