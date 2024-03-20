@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -96,6 +97,9 @@ public final class RepositoryBuilder<T> {
     public @NotNull Repository<T> build() {
         var repository = new Repository<T>(name(), layers);
         repository.clazz(scanClass(repository, clazz));
+        for (var layer : repository.layers()) {
+            layer.initialize(repository);
+        }
         return repository;
     }
 }
