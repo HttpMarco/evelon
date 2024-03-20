@@ -3,10 +3,7 @@ package dev.httpmarco.evelon.stage;
 import dev.httpmarco.osgan.utils.Utils;
 import lombok.AllArgsConstructor;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 @AllArgsConstructor
@@ -26,8 +23,7 @@ public enum Type {
     });
 
     // memory need a long time to load this -> we cache it
-    private static final Set<Type> TYPES = new HashSet<>(List.of(Type.values()));
-
+    public static final List<Type> TYPES = Arrays.stream(values()).toList();
     private final Predicate<Class<?>> type;
 
     public static Type typeOf(Class<?> type) {
