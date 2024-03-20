@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 
 import java.sql.Connection;
 
-public final class HikariConnection<R extends Credentials> implements LayerConnection<R, Connection> {
+public final class HikariConnection implements LayerConnection<Connection> {
 
     private HikariDataSource dataSource;
 
