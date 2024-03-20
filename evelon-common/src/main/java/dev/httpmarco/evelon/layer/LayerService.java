@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.layer;
 
+import dev.httpmarco.evelon.Evelon;
 import dev.httpmarco.osgan.reflections.Reflections;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,7 +19,13 @@ public final class LayerService {
      * @return the layer
      */
     private Layer registerLayer(Class<? extends Layer> layerClass) {
-        var layer = new Reflections<>(layerClass).allocate();
+        var layer = new Reflections<>(layerClass).newInstanceWithNoArgs();
+
+        if (layer instanceof ConnectableLayer<?, ?> connectableLayer) {
+            Evelon.instance().credentialsService().addCredentials(connectableLayer);
+            connectableLayer.initialize();
+        }
+
         this.layers.add(layer);
         return layer;
     }
