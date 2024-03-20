@@ -3,7 +3,6 @@ package dev.httpmarco.evelon.sql.parent.layer;
 import dev.httpmarco.evelon.Evelon;
 import dev.httpmarco.evelon.credentials.Credentials;
 import dev.httpmarco.evelon.layer.ConnectableLayer;
-import dev.httpmarco.evelon.layer.LayerConnection;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.sql.parent.layer.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.layer.credentials.AbstractSqlCredentials;
@@ -17,7 +16,7 @@ import java.sql.Connection;
 @Accessors(fluent = true)
 public abstract class SqlParentLayer extends ConnectableLayer<Connection> {
 
-    private LayerConnection<Connection> connection;
+    private HikariConnection connection;
 
     public SqlParentLayer(ProtocolDriver<? extends Credentials> driver, Credentials templateCredentials) {
         super(templateCredentials);
@@ -36,7 +35,7 @@ public abstract class SqlParentLayer extends ConnectableLayer<Connection> {
 
     @Override
     public void initialize(Repository<?> repository) {
-        new SqlInitializeProcess(repository.name(), repository).run();
+        new SqlInitializeProcess(this.connection.transmitter(), repository.name(), repository).run();
     }
 
     @Override
