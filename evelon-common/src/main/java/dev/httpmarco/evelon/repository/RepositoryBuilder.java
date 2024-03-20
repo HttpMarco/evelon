@@ -40,11 +40,9 @@ public final class RepositoryBuilder<T> {
      */
     private <C> @NotNull RepositoryClass<C> scanClass(Repository<T> repository, Class<C> clazz) {
         var type = Type.typeOf(clazz);
-
-        if (type == Type.OBJECT) {
+       if (type == Type.OBJECT) {
             return new RepositoryObjectClass<>(repository, clazz, type, scanObjectFields(repository, clazz));
         }
-
         return new RepositoryClass<>(repository, clazz, type);
     }
 
