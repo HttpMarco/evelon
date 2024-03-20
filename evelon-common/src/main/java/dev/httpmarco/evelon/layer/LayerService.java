@@ -21,7 +21,7 @@ public final class LayerService {
     private Layer registerLayer(Class<? extends Layer> layerClass) {
         var layer = new Reflections<>(layerClass).newInstanceWithNoArgs();
 
-        if (layer instanceof ConnectableLayer<?, ?> connectableLayer) {
+        if (layer instanceof ConnectableLayer<?> connectableLayer) {
             Evelon.instance().credentialsService().addCredentials(connectableLayer);
             connectableLayer.initialize();
         }

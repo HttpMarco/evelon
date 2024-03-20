@@ -10,13 +10,13 @@ import lombok.experimental.Accessors;
 @Getter
 @Accessors(fluent = true)
 @RequiredArgsConstructor
-public abstract class ConnectableLayer<R extends Credentials, C> extends Layer {
+public abstract class ConnectableLayer<C> extends Layer {
 
     @Setter
     private boolean active = false;
     private final Credentials templateCredentials;
 
-    public abstract LayerConnection<R, C> connection();
+    public abstract LayerConnection<C> connection();
 
 
     /**

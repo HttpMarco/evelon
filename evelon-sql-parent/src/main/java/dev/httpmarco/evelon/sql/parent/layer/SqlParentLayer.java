@@ -13,7 +13,7 @@ import java.sql.Connection;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class SqlParentLayer extends ConnectableLayer<AbstractSqlCredentials, Connection> {
+public abstract class SqlParentLayer extends ConnectableLayer<Connection> {
 
     private LayerConnection<Connection> connection;
 
