@@ -8,7 +8,7 @@ import dev.httpmarco.evelon.stage.SubStage;
 import dev.httpmarco.evelon.stage.Type;
 import dev.httpmarco.osgan.utils.validate.Check;
 
-public class InitializeProcess extends Process {
+public abstract class InitializeProcess extends Process<InitializeProcess> implements Process.UpdateProcess {
 
     public InitializeProcess(String id, Repository<?> repository) {
         super(id, repository);
@@ -19,11 +19,14 @@ public class InitializeProcess extends Process {
         var repository = meta().repository();
         var type = repository.clazz().type();
 
-        Check.stateCondition(type != Type.OBJECT, "The repository type is not an object");
+        Check.stateCondition(type != Type.OBJECT, "The repository type is not an object type: " + type);
 
         for (Layer layer : repository.layers()) {
             // initialize the layer
-            ((SubStage) layer.stage(type)).initialize((RepositoryObjectClass<?>) repository.clazz(), this);
+            ((SubStage) layer.stage(type)).initialize(layer, (RepositoryObjectClass<?>) repository.clazz(), this);
         }
+
+        this.pushUpdate();
+        // todo accept children
     }
 }
