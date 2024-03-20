@@ -6,7 +6,7 @@ hikari = "5.1.0"
 
 # utils
 annotations = "24.1.0"
-lombok = "1.18.30"
+lombok = "1.18.32"
 
 # testing
 jUnit = "5.10.2"
