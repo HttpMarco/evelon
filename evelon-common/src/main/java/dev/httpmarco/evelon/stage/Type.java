@@ -21,7 +21,9 @@ public enum Type {
         return Arrays.stream(it.getDeclaredFields()).allMatch(s -> typeOf(s.getType()) != null &&
                 (s.getClass().getPackageName().startsWith("java.") && Arrays.stream(s.getClass().getDeclaredFields())
                         .allMatch(f -> f.getClass().getPackageName().startsWith("java."))));
-    });
+    }),
+
+    UNKNOWN(it -> true);
 
     // memory need a long time to load this -> we cache it
     private static final Set<Type> TYPES = new HashSet<>(List.of(Type.values()));
