@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.stage.common;
 
+import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.process.common.InitializeProcess;
 import dev.httpmarco.evelon.repository.RepositoryObjectClass;
 import dev.httpmarco.evelon.stage.SubStage;
@@ -13,10 +14,12 @@ public final class ObjectSubStage implements SubStage {
     }
 
     @Override
-    public void initialize(RepositoryObjectClass<?> clazz, InitializeProcess process) {
+    public void initialize(Layer layer, RepositoryObjectClass<?> clazz, InitializeProcess process) {
         for (var field : clazz.fields()) {
             if (field.type() == Type.OBJECT) {
-                // todo sub process
+                // todo: implement
+                //   ((SubStage) layer.stage(field.type())).initialize(layer, (RepositoryObjectClass<?>) field, process.subProcess(field.id());
+                //   field.type()
             } else if (field.type() == Type.PARAMETER) {
                 process.affectedRows().add(field);
             }

@@ -26,7 +26,6 @@ public abstract class InitializeProcess extends Process<InitializeProcess> imple
             ((SubStage) layer.stage(type)).initialize(layer, (RepositoryObjectClass<?>) repository.clazz(), this);
         }
 
-        this.pushUpdate();
-        // todo accept children
+        this.execute();
     }
 }
