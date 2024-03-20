@@ -11,17 +11,17 @@ public class CredentialsService {
             Path.of("credentials.json"),
             new CredentialsTypeAdapter());
 
-    public void addCredentials(ConnectableLayer layer) {
+    public void addCredentials(ConnectableLayer<? extends Credentials, ?> layer) {
         if (config.value().credentials().stream().noneMatch(it -> it.id().equals(layer.templateCredentials().id()))) {
             this.config.append(list -> list.credentials().add(layer.templateCredentials()));
         }
     }
 
-    public boolean isPresent(ConnectableLayer layer) {
+    public boolean isPresent(ConnectableLayer<? extends Credentials, ?> layer) {
         return config.value().credentials().stream().anyMatch(it -> it.enabled() && it.id().equals(layer.templateCredentials().id()));
     }
 
-    public Credentials credentials(ConnectableLayer layer) {
-        return config.value().credentials().stream().filter(it -> it.id().equals(layer.templateCredentials().id())).findFirst().orElseThrow();
+    public <T extends Credentials> T credentials(ConnectableLayer<T, ?> layer) {
+        return (T) config.value().credentials().stream().filter(it -> it.id().equals(layer.templateCredentials().id())).findFirst().orElseThrow();
     }
 }
