@@ -4,7 +4,6 @@ import dev.httpmarco.evelon.process.common.InitializeProcess;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.stage.Stage;
 import dev.httpmarco.evelon.stage.Type;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
@@ -13,7 +12,6 @@ import java.util.Map;
 
 @Getter
 @Accessors(fluent = true)
-@AllArgsConstructor
 public abstract class Layer {
 
     // every layer has different stages, because different serialize methods
@@ -29,7 +27,7 @@ public abstract class Layer {
     }
 
     // default initialize method
-    void initialize(Repository<?> repository){
+    public void initialize(Repository<?> repository){
         new InitializeProcess(repository.name(), repository).run();
     }
 }
