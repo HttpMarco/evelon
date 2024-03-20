@@ -4,6 +4,8 @@ import dev.httpmarco.evelon.process.common.InitializeProcess;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.stage.Stage;
 import dev.httpmarco.evelon.stage.Type;
+import dev.httpmarco.evelon.stage.common.ObjectSubStage;
+import dev.httpmarco.evelon.stage.common.ParameterStage;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
@@ -17,8 +19,15 @@ public abstract class Layer {
     // every layer has different stages, because different serialize methods
     private final Map<Type, Stage> stages = new HashMap<>();
 
+    public Layer() {
+        // todo: remove
+        stages.put(Type.PARAMETER, new ParameterStage());
+        stages.put(Type.OBJECT, new ObjectSubStage());
+    }
+
     /**
      * Find the specific layer stage
+     *
      * @param type of class or field
      * @return the current stage
      */
@@ -27,7 +36,5 @@ public abstract class Layer {
     }
 
     // default initialize method
-    public void initialize(Repository<?> repository){
-        new InitializeProcess(repository.name(), repository).run();
-    }
+    public abstract void initialize(Repository<?> repository);
 }
