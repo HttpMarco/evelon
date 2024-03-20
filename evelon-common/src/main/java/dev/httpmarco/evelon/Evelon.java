@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon;
 
+import dev.httpmarco.evelon.credentials.CredentialsService;
 import dev.httpmarco.evelon.layer.LayerService;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -19,5 +20,8 @@ public class Evelon {
 
     // layer service control all different database layers
     private final LayerService layerService = new LayerService();
+
+    // all credentials are managed by this service
+    private final CredentialsService credentialsService = new CredentialsService();
 
 }
