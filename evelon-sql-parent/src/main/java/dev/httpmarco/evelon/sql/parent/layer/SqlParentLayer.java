@@ -4,8 +4,10 @@ import dev.httpmarco.evelon.Evelon;
 import dev.httpmarco.evelon.credentials.Credentials;
 import dev.httpmarco.evelon.layer.ConnectableLayer;
 import dev.httpmarco.evelon.layer.LayerConnection;
+import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.sql.parent.layer.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.layer.credentials.AbstractSqlCredentials;
+import dev.httpmarco.evelon.sql.parent.layer.process.SqlInitializeProcess;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
@@ -30,6 +32,11 @@ public abstract class SqlParentLayer extends ConnectableLayer<Connection> {
     public void initialize() {
         active(true);
         this.connection.connect(Evelon.instance().credentialsService().credentials(this));
+    }
+
+    @Override
+    public void initialize(Repository<?> repository) {
+        new SqlInitializeProcess(repository.name(), repository).run();
     }
 
     @Override
