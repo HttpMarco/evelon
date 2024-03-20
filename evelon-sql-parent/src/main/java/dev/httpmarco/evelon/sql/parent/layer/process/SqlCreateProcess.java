@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.sql.parent.layer.process;
 
 import dev.httpmarco.evelon.process.common.CreateProcess;
+import dev.httpmarco.evelon.query.response.UpdateResponse;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.sql.parent.layer.connection.HikariConnectionTransmitter;
 
@@ -15,7 +16,8 @@ public class SqlCreateProcess extends CreateProcess {
     }
 
     @Override
-    public void pushUpdate() {
-
+    public UpdateResponse pushCreate(Object value) {
+        UpdateResponse response = new UpdateResponse();
+        return response;
     }
 }

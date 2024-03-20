@@ -7,6 +7,7 @@ import dev.httpmarco.evelon.query.response.UpdateResponse;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.sql.parent.layer.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.layer.credentials.AbstractSqlCredentials;
+import dev.httpmarco.evelon.sql.parent.layer.process.SqlCreateProcess;
 import dev.httpmarco.evelon.sql.parent.layer.process.SqlInitializeProcess;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -36,7 +37,7 @@ public abstract class SqlParentLayer extends ConnectableLayer<Connection> {
 
     @Override
     public void initialize(Repository<?> repository) {
-        new SqlInitializeProcess(this.connection.transmitter(), repository.name(), repository).run();
+        new SqlInitializeProcess(this.connection.transmitter(), repository.name(), repository).pushInitialize();
     }
 
     @Override
@@ -46,6 +47,6 @@ public abstract class SqlParentLayer extends ConnectableLayer<Connection> {
 
     @Override
     public UpdateResponse create(Repository<?> repository, Object value) {
-        return null;
+        return new SqlCreateProcess(this.connection.transmitter(), repository.name(), repository).pushCreate(value);
     }
 }

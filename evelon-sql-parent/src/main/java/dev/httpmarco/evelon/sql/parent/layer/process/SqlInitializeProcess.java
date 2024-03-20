@@ -19,8 +19,7 @@ public class SqlInitializeProcess extends InitializeProcess {
     }
 
     @Override
-    public void pushUpdate() {
-
+    public void pushInitialize() {
         var queryTableParameter = new ArrayList<>(affectedRows()
                 .stream()
                 .map(it -> ((RepositoryObjectClass.ObjectField<?>) it))

@@ -8,7 +8,7 @@ import dev.httpmarco.evelon.stage.SubStage;
 import dev.httpmarco.evelon.stage.Type;
 import dev.httpmarco.osgan.utils.validate.Check;
 
-public abstract class InitializeProcess extends Process<InitializeProcess> implements Process.UpdateProcess {
+public abstract class InitializeProcess extends Process<InitializeProcess> {
 
     public InitializeProcess(String id, Repository<?> repository) {
         super(id, repository);
@@ -25,7 +25,8 @@ public abstract class InitializeProcess extends Process<InitializeProcess> imple
             // initialize the layer
             ((SubStage) layer.stage(type)).initialize(layer, (RepositoryObjectClass<?>) repository.clazz(), this);
         }
-
-        this.execute();
     }
+
+    public abstract void pushInitialize();
+
 }
