@@ -1,7 +1,6 @@
 package dev.httpmarco.evelon.stage.common;
 
-import dev.httpmarco.evelon.layer.Layer;
-import dev.httpmarco.evelon.process.common.InitializeProcess;
+import dev.httpmarco.evelon.process.Process;
 import dev.httpmarco.evelon.repository.RepositoryObjectClass;
 import dev.httpmarco.evelon.stage.SubStage;
 import dev.httpmarco.evelon.stage.Type;
@@ -14,7 +13,7 @@ public final class ObjectSubStage implements SubStage {
     }
 
     @Override
-    public void initialize(Layer layer, RepositoryObjectClass<?> clazz, InitializeProcess process) {
+    public void attachAffectedRows(Process process, RepositoryObjectClass<?> clazz) {
         for (var field : clazz.fields()) {
             if (field.type() == Type.OBJECT) {
                 // todo: implement
