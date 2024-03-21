@@ -34,5 +34,15 @@ public final class H2DatabaseTest {
             assertEquals(ResponseType.SUCCESS, response.response());
             assertEquals(1, response.modifiedElements());
         }
+
+        @Test
+        @Order(10)
+        void deletion() {
+            var response = REPOSITORY.query().deleteAll();
+
+            assertNotNull(response);
+            assertEquals(ResponseType.SUCCESS, response.response());
+            assertEquals(1, response.modifiedElements());
+        }
     }
 }
