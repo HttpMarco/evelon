@@ -20,6 +20,7 @@ public class SqlCreateProcess extends CreateProcess {
     public UpdateResponse pushCreate(Object value) {
         UpdateResponse response = new UpdateResponse();
 
+        //todo with sql args
         response.append(transmitter.executeUpdate(TABLE_CREATE_QUERY.formatted(id(), String.join(", ", affectedRows().
                 stream()
                 .map(it -> ((RepositoryObjectClass.ObjectField<?>) it).id())
