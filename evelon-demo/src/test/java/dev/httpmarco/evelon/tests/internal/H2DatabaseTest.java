@@ -36,6 +36,17 @@ public final class H2DatabaseTest {
         }
 
         @Test
+        @Order(2)
+        void construct() {
+            var response = REPOSITORY.query().findAll();
+
+            assertNotNull(response);
+            assertEquals(ResponseType.SUCCESS, response.response());
+            assertEquals(1, response.result().size());
+            assertEquals(MODEL, response.result().get(0));
+        }
+
+        @Test
         @Order(10)
         void deletion() {
             var response = REPOSITORY.query().deleteAll();
