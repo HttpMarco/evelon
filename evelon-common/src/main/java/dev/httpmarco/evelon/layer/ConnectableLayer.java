@@ -3,7 +3,6 @@ package dev.httpmarco.evelon.layer;
 import dev.httpmarco.evelon.credentials.Credentials;
 import dev.httpmarco.evelon.filtering.LayerFilterHandler;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 

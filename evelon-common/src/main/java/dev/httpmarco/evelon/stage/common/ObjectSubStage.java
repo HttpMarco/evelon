@@ -13,7 +13,7 @@ public final class ObjectSubStage implements SubStage {
     }
 
     @Override
-    public void attachAffectedRows(Process process, RepositoryObjectClass<?> clazz) {
+    public void attachAffectedRows(Process<?> process, RepositoryObjectClass<?> clazz) {
         for (var field : clazz.fields()) {
             if (field.type() == Type.OBJECT) {
                 // todo: implement

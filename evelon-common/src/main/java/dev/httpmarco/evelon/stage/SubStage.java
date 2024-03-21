@@ -5,5 +5,5 @@ import dev.httpmarco.evelon.repository.RepositoryObjectClass;
 
 public interface SubStage extends Stage {
 
-    void attachAffectedRows(Process process, RepositoryObjectClass<?> clazz);
+    void attachAffectedRows(Process<?> process, RepositoryObjectClass<?> clazz);
 }

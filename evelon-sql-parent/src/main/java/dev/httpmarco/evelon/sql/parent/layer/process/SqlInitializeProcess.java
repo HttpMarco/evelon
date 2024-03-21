@@ -2,7 +2,6 @@ package dev.httpmarco.evelon.sql.parent.layer.process;
 
 import dev.httpmarco.evelon.process.common.InitializeProcess;
 import dev.httpmarco.evelon.query.Query;
-import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.repository.RepositoryObjectClass;
 import dev.httpmarco.evelon.sql.parent.layer.SqlType;
 import dev.httpmarco.evelon.sql.parent.layer.connection.HikariConnectionTransmitter;

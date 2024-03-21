@@ -18,7 +18,7 @@ public final class HikariConnectionTransmitter {
 
     private HikariConnection hikariConnection;
 
-    public @NotNull UpdateResponse executeUpdate(final String query, Process process, Object... arguments) {
+    public @NotNull UpdateResponse executeUpdate(final String query, Process<?> process, Object... arguments) {
         return this.transferPreparedStatement(it -> {
             var response = new UpdateResponse();
             response.modifiedElements(it.executeUpdate());
