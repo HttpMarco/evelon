@@ -20,8 +20,9 @@ public final class HikariConnectionTransmitter {
 
     public @NotNull UpdateResponse executeUpdate(final String query, Process process, Object... arguments) {
         return this.transferPreparedStatement(it -> {
-            it.executeUpdate();
-            return new UpdateResponse();
+            var response = new UpdateResponse();
+            response.modifiedElements(it.executeUpdate());
+            return response;
         }, query, process, arguments);
     }
 
@@ -31,7 +32,7 @@ public final class HikariConnectionTransmitter {
     }
 
     private <R extends ResponseResult<?>> @NotNull R transferPreparedStatement(HikariConnectionFunction<PreparedStatement, R> function, String query, Process process, @NotNull Object... arguments) {
-        Evelon.LOGGER.info("Executing query {}: {}", process, query);
+        Evelon.LOGGER.info("Executing query {}: {}", process.getClass().getSimpleName(), query);
         try (var connection = hikariConnection.getConnection(); var statement = connection.prepareStatement(query)) {
             for (int i = 0; i < arguments.length; i++) {
                 statement.setString(i + 1, Objects.toString(arguments[i]));

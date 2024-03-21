@@ -3,6 +3,7 @@ package dev.httpmarco.evelon.sql.parent.layer.process;
 import dev.httpmarco.evelon.process.common.CreateProcess;
 import dev.httpmarco.evelon.query.response.UpdateResponse;
 import dev.httpmarco.evelon.repository.Repository;
+import dev.httpmarco.evelon.repository.RepositoryObjectClass;
 import dev.httpmarco.evelon.sql.parent.layer.connection.HikariConnectionTransmitter;
 
 public class SqlCreateProcess extends CreateProcess {
@@ -18,6 +19,13 @@ public class SqlCreateProcess extends CreateProcess {
     @Override
     public UpdateResponse pushCreate(Object value) {
         UpdateResponse response = new UpdateResponse();
-        return response;
+
+        response.append(transmitter.executeUpdate(TABLE_CREATE_QUERY.formatted(id(), String.join(", ", affectedRows().
+                stream()
+                .map(it -> ((RepositoryObjectClass.ObjectField<?>) it).id())
+                .toList()), String.join(", ",
+                affectedRows().stream().map(it -> ((RepositoryObjectClass.ObjectField<?>) it).fieldValue(value).toString()).toList())), this));
+
+        return response.close();
     }
 }
