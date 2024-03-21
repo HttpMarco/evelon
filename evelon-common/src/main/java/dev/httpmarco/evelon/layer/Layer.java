@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.layer;
 
+import dev.httpmarco.evelon.filtering.LayerFilterHandler;
 import dev.httpmarco.evelon.query.response.QueryResponse;
 import dev.httpmarco.evelon.query.response.UpdateResponse;
 import dev.httpmarco.evelon.repository.Repository;
@@ -20,11 +21,13 @@ public abstract class Layer {
 
     // every layer has different stages, because different serialize methods
     private final Map<Type, Stage> stages = new HashMap<>();
+    private final LayerFilterHandler<?, ?> filterHandler;
 
-    public Layer() {
+    public Layer(LayerFilterHandler<?, ?> filterHandler) {
         // todo: remove
         stages.put(Type.PARAMETER, new ParameterStage());
         stages.put(Type.OBJECT, new ObjectSubStage());
+        this.filterHandler = filterHandler;
     }
 
     /**

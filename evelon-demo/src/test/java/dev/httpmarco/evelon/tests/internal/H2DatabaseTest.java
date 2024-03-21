@@ -46,14 +46,24 @@ public final class H2DatabaseTest {
         }
 
         @Test
-        @Order(2)
+        @Order(3)
         void exists() {
             var response = REPOSITORY.query().exists();
-
-            assertNotNull(response);
-            assertTrue(response.result());
+            assertTrue(response);
         }
 
+        @Test
+        @DisplayName("filtering (match)")
+        @Order(4)
+        void filteringMatch() {
+            // create test model for filtering
+            REPOSITORY.query().create(new SimpleObjectModel(2, 220));
+
+            var response = REPOSITORY.query().filter().match("username", 1).findAll();
+
+            assertEquals(1, response.result().size());
+            assertEquals(MODEL, response.result().get(0));
+        }
 
         @Test
         @Order(10)
@@ -62,7 +72,7 @@ public final class H2DatabaseTest {
 
             assertNotNull(response);
             assertEquals(ResponseType.SUCCESS, response.response());
-            assertEquals(1, response.modifiedElements());
+            assertTrue(response.modifiedElements() > 1);
         }
     }
 }

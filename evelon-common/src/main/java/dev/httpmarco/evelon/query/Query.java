@@ -1,13 +1,22 @@
 package dev.httpmarco.evelon.query;
 
+import dev.httpmarco.evelon.filtering.Filter;
+import dev.httpmarco.evelon.filtering.FilterQuery;
 import dev.httpmarco.evelon.query.response.QueryResponse;
 import dev.httpmarco.evelon.query.response.UpdateResponse;
 import dev.httpmarco.evelon.repository.Repository;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Getter
+@Accessors(fluent = true)
 public class Query<T> {
 
     private final Repository<T> repository;
@@ -30,10 +39,13 @@ public class Query<T> {
         return response.close();
     }
 
-    public QueryResponse<Boolean> exists() {
+    public boolean exists() {
         var response = new QueryResponse<Boolean>();
         response.result(repository.layers().stream().anyMatch(layer -> layer.exists(repository).result()));
-        return response.close();
+        return response.close().result();
     }
 
+    public FilterQuery<T> filter() {
+        return new FilterQuery<>(repository);
+    }
 }
