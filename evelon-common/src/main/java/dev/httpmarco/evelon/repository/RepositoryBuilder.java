@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.Evelon;
 import dev.httpmarco.evelon.annotation.Entity;
 import dev.httpmarco.evelon.annotation.Row;
 import dev.httpmarco.evelon.layer.Layer;
+import dev.httpmarco.evelon.query.Query;
 import dev.httpmarco.evelon.stage.Type;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -96,7 +97,7 @@ public final class RepositoryBuilder<T> {
         var repository = new Repository<T>(name(), layers);
         repository.clazz(scanClass(repository, clazz));
         for (var layer : repository.layers()) {
-            layer.initialize(repository);
+            layer.initialize(new Query<>(repository));
         }
         return repository;
     }
