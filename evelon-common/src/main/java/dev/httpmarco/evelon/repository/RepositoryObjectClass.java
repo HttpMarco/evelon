@@ -3,6 +3,7 @@ package dev.httpmarco.evelon.repository;
 import dev.httpmarco.evelon.annotation.PrimaryKey;
 import dev.httpmarco.evelon.annotation.Row;
 import dev.httpmarco.evelon.stage.Type;
+import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -23,7 +24,7 @@ public final class RepositoryObjectClass<T> extends RepositoryClass<T> {
         this.fields = fields;
 
         // set parent after initialize
-        fields.forEach(it -> it.parent(this));
+        this.fields.forEach(it -> it.parent(this));
     }
 
     /**
@@ -63,6 +64,10 @@ public final class RepositoryObjectClass<T> extends RepositoryClass<T> {
             this.field = field;
             this.primary = field.isAnnotationPresent(PrimaryKey.class);
             this.id = field.isAnnotationPresent(Row.class) ? field.getAnnotation(Row.class).name() : field.getName();
+        }
+
+        public Object fieldValue(Object parent) {
+            return new Reflections<>(this.parent.originalClass()).withValue(parent).value(this.field);
         }
     }
 }
