@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.layer;
 
+import dev.httpmarco.evelon.query.response.QueryResponse;
 import dev.httpmarco.evelon.query.response.UpdateResponse;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.stage.Stage;
@@ -10,6 +11,7 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -41,5 +43,7 @@ public abstract class Layer {
     public abstract UpdateResponse create(Repository<?> repository, Object value);
 
     public abstract UpdateResponse deleteAll(Repository<?> repository);
+
+    public abstract <T> QueryResponse<List<T>> findAll(Repository<T> repository);
 
 }

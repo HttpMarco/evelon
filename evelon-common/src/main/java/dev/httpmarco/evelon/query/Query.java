@@ -1,8 +1,11 @@
 package dev.httpmarco.evelon.query;
 
+import dev.httpmarco.evelon.query.response.QueryResponse;
 import dev.httpmarco.evelon.query.response.UpdateResponse;
 import dev.httpmarco.evelon.repository.Repository;
 import lombok.AllArgsConstructor;
+
+import java.util.List;
 
 @AllArgsConstructor
 public class Query<T> {
@@ -18,6 +21,12 @@ public class Query<T> {
     public UpdateResponse deleteAll() {
         var response = new UpdateResponse();
         repository.layers().forEach(layer -> response.append(layer.deleteAll(repository)));
+        return response.close();
+    }
+
+    public QueryResponse<List<T>> findAll() {
+        var response = new QueryResponse<List<T>>();
+        repository.layers().forEach(layer -> response.append(layer.findAll(repository)));
         return response.close();
     }
 
