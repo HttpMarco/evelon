@@ -15,4 +15,8 @@ public final class UpdateResponse extends ResponseResult<UpdateResponse> {
         super.append(response);
         this.modifiedElements += response.modifiedElements;
     }
+
+    public void modifiedElements(int amount) {
+        this.modifiedElements += amount;
+    }
 }
