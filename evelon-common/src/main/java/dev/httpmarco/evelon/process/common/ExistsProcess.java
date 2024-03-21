@@ -4,7 +4,7 @@ import dev.httpmarco.evelon.process.Process;
 import dev.httpmarco.evelon.query.Query;
 import dev.httpmarco.evelon.query.response.QueryResponse;
 
-@Deprecated
+@Deprecated //todo
 public abstract class ExistsProcess<T> extends Process<T> {
 
     public ExistsProcess(String id, Query<T> query) {

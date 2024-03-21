@@ -4,7 +4,7 @@ import dev.httpmarco.evelon.process.Process;
 import dev.httpmarco.evelon.query.Query;
 import dev.httpmarco.evelon.query.response.UpdateResponse;
 
-@Deprecated
+@Deprecated //todo
 public abstract class DeleteProcess<T> extends Process<T> {
 
     public DeleteProcess(String id, Query<T> query) {

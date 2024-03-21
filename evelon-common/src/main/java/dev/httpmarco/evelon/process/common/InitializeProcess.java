@@ -3,7 +3,7 @@ package dev.httpmarco.evelon.process.common;
 import dev.httpmarco.evelon.process.Process;
 import dev.httpmarco.evelon.query.Query;
 
-@Deprecated
+@Deprecated //todo
 public abstract class InitializeProcess<T> extends Process<T> {
 
     public InitializeProcess(String id, Query<T> query) {
