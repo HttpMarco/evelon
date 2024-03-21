@@ -28,7 +28,11 @@ public final class H2DatabaseTest {
         @Test
         @Order(1)
         void creation() {
-            assertEquals(ResponseType.SUCCESS, REPOSITORY.query().create(MODEL).response());
+            var response = REPOSITORY.query().create(MODEL);
+
+            assertNotNull(response);
+            assertEquals(ResponseType.SUCCESS, response.response());
+            assertEquals(1, response.modifiedElements());
         }
     }
 }
