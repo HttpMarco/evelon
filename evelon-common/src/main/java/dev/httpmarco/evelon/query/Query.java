@@ -12,6 +12,13 @@ public class Query<T> {
     public UpdateResponse create(T value) {
         var response = new UpdateResponse();
         repository.layers().forEach(layer -> response.append(layer.create(repository, value)));
-        return response;
+        return response.close();
     }
+
+    public UpdateResponse deleteAll() {
+        var response = new UpdateResponse();
+        repository.layers().forEach(layer -> response.append(layer.deleteAll(repository)));
+        return response.close();
+    }
+
 }

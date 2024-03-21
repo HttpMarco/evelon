@@ -40,4 +40,6 @@ public abstract class Layer {
 
     public abstract UpdateResponse create(Repository<?> repository, Object value);
 
+    public abstract UpdateResponse deleteAll(Repository<?> repository);
+
 }

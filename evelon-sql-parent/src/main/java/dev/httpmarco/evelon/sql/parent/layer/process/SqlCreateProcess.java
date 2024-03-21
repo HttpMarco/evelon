@@ -8,7 +8,7 @@ import dev.httpmarco.evelon.sql.parent.layer.connection.HikariConnectionTransmit
 
 public class SqlCreateProcess extends CreateProcess {
 
-    private static final String TABLE_CREATE_QUERY = "INSERT INTO %s(%s) VALUES(%s);";
+    private static final String TABLE_CREATE_QUERY = "INSERT INTO %s(%s) VALUES (%s);";
     private final HikariConnectionTransmitter transmitter;
 
     public SqlCreateProcess(HikariConnectionTransmitter transmitter, String id, Repository<?> repository) {
@@ -26,6 +26,6 @@ public class SqlCreateProcess extends CreateProcess {
                 .toList()), String.join(", ",
                 affectedRows().stream().map(it -> ((RepositoryObjectClass.ObjectField<?>) it).fieldValue(value).toString()).toList())), this));
 
-        return response.close();
+        return response;
     }
 }
