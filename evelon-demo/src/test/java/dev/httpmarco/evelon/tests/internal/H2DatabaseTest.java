@@ -6,8 +6,7 @@ import dev.httpmarco.evelon.sql.h2.H2Layer;
 import dev.httpmarco.evelon.tests.SimpleObjectModel;
 import org.junit.jupiter.api.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public final class H2DatabaseTest {
 
@@ -45,6 +44,16 @@ public final class H2DatabaseTest {
             assertEquals(1, response.result().size());
             assertEquals(MODEL, response.result().get(0));
         }
+
+        @Test
+        @Order(2)
+        void exists() {
+            var response = REPOSITORY.query().exists();
+
+            assertNotNull(response);
+            assertTrue(response.result());
+        }
+
 
         @Test
         @Order(10)
