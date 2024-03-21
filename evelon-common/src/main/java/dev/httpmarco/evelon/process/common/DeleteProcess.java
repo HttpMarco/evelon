@@ -1,13 +1,14 @@
 package dev.httpmarco.evelon.process.common;
 
 import dev.httpmarco.evelon.process.Process;
+import dev.httpmarco.evelon.query.Query;
 import dev.httpmarco.evelon.query.response.UpdateResponse;
-import dev.httpmarco.evelon.repository.Repository;
 
-public abstract class DeleteProcess extends Process {
+@Deprecated
+public abstract class DeleteProcess<T> extends Process<T> {
 
-    public DeleteProcess(String id, Repository<?> repository) {
-        super(id, repository, false);
+    public DeleteProcess(String id, Query<T> query) {
+        super(id, query, false);
     }
 
     public abstract UpdateResponse pushDelete();

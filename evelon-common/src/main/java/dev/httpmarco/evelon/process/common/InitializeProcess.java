@@ -1,12 +1,13 @@
 package dev.httpmarco.evelon.process.common;
 
 import dev.httpmarco.evelon.process.Process;
-import dev.httpmarco.evelon.repository.Repository;
+import dev.httpmarco.evelon.query.Query;
 
-public abstract class InitializeProcess extends Process {
+@Deprecated
+public abstract class InitializeProcess<T> extends Process<T> {
 
-    public InitializeProcess(String id, Repository<?> repository) {
-        super(id, repository, true);
+    public InitializeProcess(String id, Query<T> query) {
+        super(id, query, true);
     }
 
     public abstract void pushInitialize();

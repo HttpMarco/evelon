@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.process;
 
+import dev.httpmarco.evelon.query.Query;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.repository.RepositoryClass;
 import dev.httpmarco.evelon.repository.RepositoryObjectClass;
@@ -16,16 +17,20 @@ import java.util.Set;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class Process {
+public abstract class Process<T> {
 
     @Setter
     private String id;
-    private final ProcessMeta meta;
+
+    private final Repository<T> repository;
+    private final Query<T> query;
+
     private final Set<RepositoryClass<?>> affectedRows = new LinkedHashSet<>();
 
-    public Process(String id, Repository<?> repository, boolean mustPrepare) {
+    public Process(String id, Query<T> query, boolean mustPrepare) {
         this.id = id;
-        this.meta = new ProcessMeta(repository);
+        this.query = query;
+        this.repository = this.query.repository();
 
         if (mustPrepare) {
             this.prepare();
@@ -33,12 +38,12 @@ public abstract class Process {
     }
 
     public void prepare() {
-        var type = meta().repository().clazz().type();
+        var type = this.repository.clazz().type();
 
         Check.stateCondition(type != Type.OBJECT, "The repository type is not an object type: " + type);
 
-        for (var layer : meta().repository().layers()) {
-            ((SubStage) layer.stage(type)).attachAffectedRows(this, (RepositoryObjectClass<?>) meta().repository().clazz());
+        for (var layer : repository.layers()) {
+            ((SubStage) layer.stage(type)).attachAffectedRows(this, (RepositoryObjectClass<?>) repository.clazz());
         }
     }
 }
