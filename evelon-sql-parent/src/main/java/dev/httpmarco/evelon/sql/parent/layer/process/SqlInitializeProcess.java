@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.sql.parent.layer.process;
 
 import dev.httpmarco.evelon.process.common.InitializeProcess;
+import dev.httpmarco.evelon.query.Query;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.repository.RepositoryObjectClass;
 import dev.httpmarco.evelon.sql.parent.layer.SqlType;
@@ -8,13 +9,13 @@ import dev.httpmarco.evelon.sql.parent.layer.connection.HikariConnectionTransmit
 
 import java.util.ArrayList;
 
-public class SqlInitializeProcess extends InitializeProcess {
+public class SqlInitializeProcess<T> extends InitializeProcess<T> {
 
     private static final String TABLE_CREATE_QUERY = "CREATE TABLE IF NOT EXISTS %s(%s);";
     private final HikariConnectionTransmitter transmitter;
 
-    public SqlInitializeProcess(HikariConnectionTransmitter transmitter, String id, Repository<?> repository) {
-        super(id, repository);
+    public SqlInitializeProcess(HikariConnectionTransmitter transmitter, String id, Query<T> query) {
+        super(id, query);
         this.transmitter = transmitter;
     }
 
