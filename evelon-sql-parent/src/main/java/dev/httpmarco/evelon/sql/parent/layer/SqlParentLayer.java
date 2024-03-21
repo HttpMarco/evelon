@@ -61,6 +61,6 @@ public abstract class SqlParentLayer extends ConnectableLayer<Connection> {
 
     @Override
     public <T> QueryResponse<List<T>> findAll(Repository<T> repository) {
-        return new SqlConstructProcess<>(repository.name(), repository, -1).queryConstruct();
+        return new SqlConstructProcess<>(this.connection.transmitter(), repository.clazz(), repository.name(), repository, -1).queryConstruct();
     }
 }
