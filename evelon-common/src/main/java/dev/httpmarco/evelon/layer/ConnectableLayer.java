@@ -1,7 +1,6 @@
 package dev.httpmarco.evelon.layer;
 
 import dev.httpmarco.evelon.credentials.Credentials;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
