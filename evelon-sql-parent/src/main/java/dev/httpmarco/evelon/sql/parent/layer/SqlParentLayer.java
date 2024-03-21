@@ -8,6 +8,7 @@ import dev.httpmarco.evelon.query.response.UpdateResponse;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.sql.parent.layer.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.layer.credentials.AbstractSqlCredentials;
+import dev.httpmarco.evelon.sql.parent.layer.filtering.SqlFilterHandler;
 import dev.httpmarco.evelon.sql.parent.layer.process.*;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -22,12 +23,8 @@ public abstract class SqlParentLayer extends ConnectableLayer<Connection> {
     private HikariConnection connection;
 
     public SqlParentLayer(ProtocolDriver<? extends Credentials> driver, Credentials templateCredentials) {
-        super(templateCredentials);
+        super(new SqlFilterHandler(), templateCredentials);
         this.connection = new HikariConnection(driver);
-    }
-
-    public SqlParentLayer(String id) {
-        super(new AbstractSqlCredentials(id, "127.0.0.1", "root", "secret"));
     }
 
     @Override
