@@ -24,11 +24,13 @@ public abstract class Process {
     private final ProcessMeta meta;
     private final Set<RepositoryClass<?>> affectedRows = new LinkedHashSet<>();
 
-    public Process(String id, Repository<?> repository) {
+    public Process(String id, Repository<?> repository, boolean mustPrepare) {
         this.id = id;
         this.meta = new ProcessMeta(repository);
 
-        this.prepare();
+        if (mustPrepare) {
+            this.prepare();
+        }
     }
 
     public void prepare() {

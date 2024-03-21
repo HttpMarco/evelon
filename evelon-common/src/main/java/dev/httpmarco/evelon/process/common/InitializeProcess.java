@@ -6,7 +6,7 @@ import dev.httpmarco.evelon.repository.Repository;
 public abstract class InitializeProcess extends Process {
 
     public InitializeProcess(String id, Repository<?> repository) {
-        super(id, repository);
+        super(id, repository, true);
     }
 
     public abstract void pushInitialize();

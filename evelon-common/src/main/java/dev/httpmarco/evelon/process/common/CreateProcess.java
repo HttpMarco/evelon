@@ -7,7 +7,7 @@ import dev.httpmarco.evelon.repository.Repository;
 public abstract class CreateProcess extends Process {
 
     public CreateProcess(String id, Repository<?> repository) {
-        super(id, repository);
+        super(id, repository, true);
     }
 
     public abstract UpdateResponse pushCreate(Object value);
