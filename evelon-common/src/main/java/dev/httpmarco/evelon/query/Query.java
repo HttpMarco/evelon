@@ -30,4 +30,10 @@ public class Query<T> {
         return response.close();
     }
 
+    public QueryResponse<Boolean> exists() {
+        var response = new QueryResponse<Boolean>();
+        response.result(repository.layers().stream().anyMatch(layer -> layer.exists(repository).result()));
+        return response.close();
+    }
+
 }

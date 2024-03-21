@@ -46,4 +46,6 @@ public abstract class Layer {
 
     public abstract <T> QueryResponse<List<T>> findAll(Repository<T> repository);
 
+    public abstract QueryResponse<Boolean> exists(Repository<?> repository);
+
 }
