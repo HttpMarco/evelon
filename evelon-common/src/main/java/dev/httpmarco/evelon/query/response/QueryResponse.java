@@ -13,4 +13,11 @@ public final class QueryResponse<T> extends ResponseResult<QueryResponse<T>> {
         this.result = result;
         return this;
     }
+
+
+    @Override
+    public void append(QueryResponse<T> response) {
+        super.append(response);
+        this.result = response.result;
+    }
 }
