@@ -16,7 +16,8 @@ public final class H2DatabaseTest {
     class SimpleTest {
 
         private static Repository<SimpleObjectModel> REPOSITORY;
-        private static final SimpleObjectModel MODEL = new SimpleObjectModel(1, 200);
+        private static final SimpleObjectModel MODEL = new SimpleObjectModel(1, "Street2");
+        private static final SimpleObjectModel FILTER_MODEL = new SimpleObjectModel(2, "Street1");
 
         @Test
         @Order(0)
@@ -28,10 +29,16 @@ public final class H2DatabaseTest {
         @Order(1)
         void creation() {
             var response = REPOSITORY.query().create(MODEL);
+            var response2 = REPOSITORY.query().create(FILTER_MODEL);
 
             assertNotNull(response);
+            assertNotNull(response2);
+
             assertEquals(ResponseType.SUCCESS, response.response());
             assertEquals(1, response.modifiedElements());
+
+            assertEquals(ResponseType.SUCCESS, response2.response());
+            assertEquals(1, response2.modifiedElements());
         }
 
         @Test
@@ -41,7 +48,7 @@ public final class H2DatabaseTest {
 
             assertNotNull(response);
             assertEquals(ResponseType.SUCCESS, response.response());
-            assertEquals(1, response.result().size());
+            assertEquals(2, response.result().size());
             assertEquals(MODEL, response.result().get(0));
         }
 
@@ -56,13 +63,27 @@ public final class H2DatabaseTest {
         @DisplayName("filtering (match)")
         @Order(4)
         void filteringMatch() {
-            // create test model for filtering
-            REPOSITORY.query().create(new SimpleObjectModel(2, 220));
-
             var response = REPOSITORY.query().filter().match("username", 1).findAll();
-
             assertEquals(1, response.result().size());
             assertEquals(MODEL, response.result().get(0));
+        }
+
+        @Test
+        @DisplayName("filtering (none-match)")
+        @Order(5)
+        void filteringNoneMatch() {
+            var response = REPOSITORY.query().filter().noneMatch("address", "Street2").findAll();
+
+            assertEquals(1, response.result().size());
+            assertEquals(FILTER_MODEL, response.result().get(0));
+        }
+
+        @Test
+        @DisplayName("filtering (like)")
+        @Order(6)
+        void filteringLike() {
+            var response = REPOSITORY.query().filter().like("address", "Street").findAll();
+            assertEquals(2, response.result().size());
         }
 
         @Test
