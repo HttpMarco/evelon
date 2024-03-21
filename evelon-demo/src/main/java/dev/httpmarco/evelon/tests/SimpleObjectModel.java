@@ -14,6 +14,6 @@ public final class SimpleObjectModel {
 
     @PrimaryKey
     private int username;
-    private Integer money;
+    private String address;
 
 }
