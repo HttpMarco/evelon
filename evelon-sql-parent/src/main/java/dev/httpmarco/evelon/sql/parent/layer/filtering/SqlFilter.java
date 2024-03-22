@@ -21,7 +21,7 @@ public abstract class SqlFilter<R> extends Filter<String, R> {
         public String filter(Repository<?> repository, Object requiredType) {
             if (requiredType instanceof String) {
                 return id() + " = '" + value() + "'";
-            }else {
+            } else {
                 return id() + " = " + value();
             }
         }
@@ -35,6 +35,7 @@ public abstract class SqlFilter<R> extends Filter<String, R> {
 
         @Override
         public String filter(Repository<?> repository, Object requiredType) {
+            //todo
             if (value() instanceof String) {
                 return id() + " != '" + value() + "'";
             } else {
@@ -62,5 +63,4 @@ public abstract class SqlFilter<R> extends Filter<String, R> {
         }
         return " WHERE " + String.join(" AND ", filters.stream().map(it -> it.filter(repository, null).toString()).toList());
     }
-
 }

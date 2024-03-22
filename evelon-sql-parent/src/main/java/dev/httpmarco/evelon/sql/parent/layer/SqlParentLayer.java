@@ -19,7 +19,7 @@ import java.util.List;
 @Accessors(fluent = true)
 public abstract class SqlParentLayer extends ConnectableLayer<Connection> {
 
-    private HikariConnection connection;
+    private final HikariConnection connection;
 
     public SqlParentLayer(ProtocolDriver<? extends Credentials> driver, Credentials templateCredentials) {
         super(new SqlFilterHandler(), templateCredentials);
@@ -44,12 +44,12 @@ public abstract class SqlParentLayer extends ConnectableLayer<Connection> {
 
     @Override
     public <T> UpdateResponse create(Query<T> query, Object value) {
-        return new SqlCreateProcess<>(this.connection.transmitter(), query.repository().name(), query).pushCreate(value);
+        return new SqlCreateProcess<>(query.repository().name(), query, this.connection.transmitter()).pushCreation(value);
     }
 
     @Override
     public <T> UpdateResponse deleteAll(Query<T> query) {
-        return new SqlDeleteProcess<>(this.connection.transmitter(), query.repository().name(), query).pushDelete();
+        return new SqlDeleteProcess<>(query.repository().name(), query, this.connection.transmitter()).pushDeletion();
     }
 
     @Override
@@ -59,6 +59,6 @@ public abstract class SqlParentLayer extends ConnectableLayer<Connection> {
 
     @Override
     public <T> QueryResponse<Boolean> exists(Query<T> query) {
-        return new SqlExistsProcess<>(this.connection.transmitter(), query.repository().name(), query).queryExists();
+        return new SqlExistsProcess<>(query.repository().name(), query, this.connection.transmitter()).queryExists();
     }
 }
