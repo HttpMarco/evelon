@@ -1,12 +1,13 @@
-package dev.httpmarco.evelon.sql.parent.layer.process;
+package dev.httpmarco.evelon.sql.parent.layer.process.common;
 
 import dev.httpmarco.evelon.process.Process;
 import dev.httpmarco.evelon.query.Query;
 import dev.httpmarco.evelon.query.response.UpdateResponse;
 import dev.httpmarco.evelon.repository.RepositoryObjectClass;
 import dev.httpmarco.evelon.sql.parent.layer.connection.HikariConnectionTransmitter;
+import dev.httpmarco.evelon.sql.parent.layer.process.HikariProcess;
 
-public class SqlCreateProcess<T> extends HikariProcess<T> implements Process.Create {
+public final class SqlCreateProcess<T> extends HikariProcess<T> implements Process.Create {
 
     private static final String TABLE_CREATE_QUERY = "INSERT INTO %s(%s) VALUES (%s);";
 

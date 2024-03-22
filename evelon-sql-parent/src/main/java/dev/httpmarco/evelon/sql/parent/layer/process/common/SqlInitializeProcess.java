@@ -1,14 +1,15 @@
-package dev.httpmarco.evelon.sql.parent.layer.process;
+package dev.httpmarco.evelon.sql.parent.layer.process.common;
 
 import dev.httpmarco.evelon.process.Process;
 import dev.httpmarco.evelon.query.Query;
 import dev.httpmarco.evelon.repository.RepositoryObjectClass;
 import dev.httpmarco.evelon.sql.parent.layer.SqlType;
 import dev.httpmarco.evelon.sql.parent.layer.connection.HikariConnectionTransmitter;
+import dev.httpmarco.evelon.sql.parent.layer.process.HikariProcess;
 
 import java.util.ArrayList;
 
-public class SqlInitializeProcess<T> extends HikariProcess<T> implements Process.Initialize {
+public final class SqlInitializeProcess<T> extends HikariProcess<T> implements Process.Initialize {
 
     private static final String TABLE_CREATE_QUERY = "CREATE TABLE IF NOT EXISTS %s(%s);";
 

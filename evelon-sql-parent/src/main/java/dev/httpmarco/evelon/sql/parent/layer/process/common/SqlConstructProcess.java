@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.sql.parent.layer.process;
+package dev.httpmarco.evelon.sql.parent.layer.process.common;
 
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.process.common.ConstructProcess;
@@ -12,7 +12,7 @@ import dev.httpmarco.osgan.reflections.Reflections;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqlConstructProcess<T> extends ConstructProcess<T> {
+public final class SqlConstructProcess<T> extends ConstructProcess<T> {
 
     private final HikariConnectionTransmitter transmitter;
     // todo limit parameter
