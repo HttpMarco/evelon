@@ -8,7 +8,7 @@ import dev.httpmarco.evelon.query.response.QueryResponse;
 import dev.httpmarco.evelon.query.response.UpdateResponse;
 import dev.httpmarco.evelon.sql.parent.layer.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.layer.filtering.SqlFilterHandler;
-import dev.httpmarco.evelon.sql.parent.layer.process.*;
+import dev.httpmarco.evelon.sql.parent.layer.process.common.*;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 

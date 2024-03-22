@@ -62,6 +62,10 @@ public abstract class Process<T> {
         UpdateResponse pushDeletion();
     }
 
+    public interface Update {
+        UpdateResponse pushUpdate();
+    }
+
     public interface Create {
         UpdateResponse pushCreation(Object value);
     }

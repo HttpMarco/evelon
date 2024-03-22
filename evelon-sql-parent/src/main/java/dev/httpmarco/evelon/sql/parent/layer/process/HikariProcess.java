@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 
 @Getter
 @Accessors(fluent = true)
-class HikariProcess<T> extends Process<T> {
+public class HikariProcess<T> extends Process<T> {
 
     private final HikariConnectionTransmitter transmitter;
 
