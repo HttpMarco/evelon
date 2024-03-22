@@ -1,6 +1,8 @@
 package dev.httpmarco.evelon.process;
 
 import dev.httpmarco.evelon.query.Query;
+import dev.httpmarco.evelon.query.response.QueryResponse;
+import dev.httpmarco.evelon.query.response.UpdateResponse;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.repository.RepositoryClass;
 import dev.httpmarco.evelon.repository.RepositoryObjectClass;
@@ -45,5 +47,22 @@ public abstract class Process<T> {
         for (var layer : repository.layers()) {
             ((SubStage) layer.stage(type)).attachAffectedRows(this, (RepositoryObjectClass<?>) repository.clazz());
         }
+    }
+
+
+    public interface Initialize {
+        void pushInitialize();
+    }
+
+    public interface Exists {
+        QueryResponse<Boolean> queryExists();
+    }
+
+    public interface Delete {
+        UpdateResponse pushDeletion();
+    }
+
+    public interface Create {
+        UpdateResponse pushCreation(Object value);
     }
 }

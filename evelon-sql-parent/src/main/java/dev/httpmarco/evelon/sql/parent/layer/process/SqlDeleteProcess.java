@@ -1,25 +1,21 @@
 package dev.httpmarco.evelon.sql.parent.layer.process;
 
-import dev.httpmarco.evelon.process.common.DeleteProcess;
+import dev.httpmarco.evelon.process.Process;
 import dev.httpmarco.evelon.query.Query;
 import dev.httpmarco.evelon.query.response.UpdateResponse;
 import dev.httpmarco.evelon.sql.parent.layer.connection.HikariConnectionTransmitter;
 
-public class SqlDeleteProcess<T> extends DeleteProcess<T> {
+public class SqlDeleteProcess<T> extends HikariProcess<T> implements Process.Delete {
 
     //todo where filters
     private static final String VALUE_DELETION = "DELETE FROM %s;";
-    private final HikariConnectionTransmitter transmitter;
 
-    public SqlDeleteProcess(HikariConnectionTransmitter transmitter, String id, Query<T> query) {
-        super(id, query);
-        this.transmitter = transmitter;
+    public SqlDeleteProcess(String id, Query<T> query, HikariConnectionTransmitter transmitter) {
+        super(id, query, false, transmitter);
     }
 
     @Override
-    public UpdateResponse pushDelete() {
-        var response = new UpdateResponse();
-        response.append(transmitter.executeUpdate(VALUE_DELETION.formatted(id()), this));
-        return response;
+    public UpdateResponse pushDeletion() {
+        return transmitter().executeUpdate(VALUE_DELETION.formatted(id()), this);
     }
 }

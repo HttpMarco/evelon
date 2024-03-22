@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.sql.parent.layer.process;
 
-import dev.httpmarco.evelon.process.common.InitializeProcess;
+import dev.httpmarco.evelon.process.Process;
 import dev.httpmarco.evelon.query.Query;
 import dev.httpmarco.evelon.repository.RepositoryObjectClass;
 import dev.httpmarco.evelon.sql.parent.layer.SqlType;
@@ -8,14 +8,12 @@ import dev.httpmarco.evelon.sql.parent.layer.connection.HikariConnectionTransmit
 
 import java.util.ArrayList;
 
-public class SqlInitializeProcess<T> extends InitializeProcess<T> {
+public class SqlInitializeProcess<T> extends HikariProcess<T> implements Process.Initialize {
 
     private static final String TABLE_CREATE_QUERY = "CREATE TABLE IF NOT EXISTS %s(%s);";
-    private final HikariConnectionTransmitter transmitter;
 
     public SqlInitializeProcess(HikariConnectionTransmitter transmitter, String id, Query<T> query) {
-        super(id, query);
-        this.transmitter = transmitter;
+        super(id, query, true, transmitter);
     }
 
     @Override
@@ -36,6 +34,6 @@ public class SqlInitializeProcess<T> extends InitializeProcess<T> {
             queryTableParameter.add("PRIMARY KEY (%s)".formatted(String.join(", ", primaryKeyList)));
         }
 
-        this.transmitter.executeUpdate(TABLE_CREATE_QUERY.formatted(id(), String.join(", ", queryTableParameter)), this);
+        transmitter().executeUpdate(TABLE_CREATE_QUERY.formatted(id(), String.join(", ", queryTableParameter)), this);
     }
 }
