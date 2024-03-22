@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.sql.parent.layer;
 
-import dev.httpmarco.evelon.common.credentials.Credentials;
+import dev.httpmarco.evelon.credentials.Credentials;
 
 public interface ProtocolDriver<D extends Credentials> {
 
@@ -12,5 +12,4 @@ public interface ProtocolDriver<D extends Credentials> {
     default String jdbcStringWithMapping(Credentials credentials) {
         return this.jdbcString((D) credentials);
     }
-
 }
