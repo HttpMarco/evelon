@@ -60,6 +60,49 @@ public final class H2DatabaseTest {
         }
 
         @Test
+        @Disabled
+        @Order(3)
+        void count() {
+
+        }
+
+        @Test
+        @Disabled
+        @Order(3)
+        void sum() {
+
+        }
+
+        @Test
+        @Disabled
+        @Order(3)
+        void average() {
+
+        }
+
+
+        @Test
+        @Disabled
+        @Order(3)
+        void createIfNotExists() {
+
+        }
+
+        @Test
+        @Disabled
+        @Order(3)
+        void update() {
+
+        }
+
+        @Test
+        @Disabled
+        @Order(3)
+        void upsert() {
+
+        }
+
+        @Test
         @DisplayName("filtering (match)")
         @Order(4)
         void filteringMatch() {
@@ -87,8 +130,70 @@ public final class H2DatabaseTest {
         }
 
         @Test
+        @DisplayName("filtering (minimum value)")
+        @Disabled
+        @Order(7)
+        void min() {
+
+        }
+
+        @Test
+        @DisplayName("filtering (maximum value)")
+        @Disabled
+        @Order(8)
+        void max() {
+
+        }
+
+        @Test
+        @DisplayName("filtering (between value)")
+        @Disabled
+        @Order(9)
+        void between() {
+
+        }
+
+        @Test
+        @DisplayName("filtering (same date)")
+        @Disabled
         @Order(10)
-        void deletion() {
+        void sameDate() {
+
+        }
+
+        @Test
+        @DisplayName("filtering (between time)")
+        @Disabled
+        @Order(11)
+        void betweenTime() {
+
+        }
+
+
+        @Test
+        @DisplayName("filtering (same time)")
+        @Disabled
+        @Order(12)
+        void sameTime() {
+
+        }
+
+        @Test
+        @Disabled
+        @Order(3)
+        void order() {
+        }
+
+
+        @Test
+        @Disabled
+        @Order(13)
+        void delete() {
+        }
+
+        @Test
+        @Order(13)
+        void deletionAll() {
             var response = REPOSITORY.query().deleteAll();
 
             assertNotNull(response);
