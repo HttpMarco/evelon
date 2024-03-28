@@ -13,6 +13,7 @@ jUnit = "5.10.2"
 
 # protocl drivers
 h2 = "2.2.224"
+mariadb = "3.3.3"
 
 # logging
 log4j = "2.23.1"
@@ -36,6 +37,7 @@ jUnit = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref =
 
 # protocl drivers
 h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
+mariadb = { group = "org.mariadb.jdbc", name = "mariadb-java-client", version.ref = "mariadb" }
 
 # logging
 slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
