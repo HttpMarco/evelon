@@ -8,27 +8,20 @@ import dev.httpmarco.evelon.stage.Stage;
 import dev.httpmarco.evelon.stage.Type;
 import dev.httpmarco.evelon.stage.common.ObjectSubStage;
 import dev.httpmarco.evelon.stage.common.ParameterStage;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Getter
 @Accessors(fluent = true)
+@AllArgsConstructor
 public abstract class Layer {
 
     // every layer has different stages, because different serialize methods
-    private final Map<Type, Stage> stages = new HashMap<>();
+    private final Map<Type, Stage> stages = Map.of(Type.PARAMETER, new ParameterStage(), Type.OBJECT, new ObjectSubStage());
     private final LayerFilterHandler<?, ?> filterHandler;
-
-    public Layer(LayerFilterHandler<?, ?> filterHandler) {
-        // todo: remove
-        stages.put(Type.PARAMETER, new ParameterStage());
-        stages.put(Type.OBJECT, new ObjectSubStage());
-        this.filterHandler = filterHandler;
-    }
 
     /**
      * Find the specific layer stage
@@ -52,5 +45,7 @@ public abstract class Layer {
     public abstract <T> QueryResponse<Boolean> exists(Query<T> query);
 
     public abstract <T> UpdateResponse update(Query<T> query, T value);
+
+    public abstract <T> QueryResponse<Long> count(Query<T> query);
 
 }
