@@ -4,7 +4,7 @@ import dev.httpmarco.evelon.credentials.Credentials;
 
 public interface ProtocolDriver<D extends Credentials> {
 
-    void onInitialize();
+    default void onInitialize(){};
 
     String jdbcString(D credentials);
 
