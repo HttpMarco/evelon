@@ -61,21 +61,21 @@ public final class H2DatabaseTest {
 
         @Test
         @Disabled
-        @Order(3)
+        @Order(4)
         void count() {
 
         }
 
         @Test
         @Disabled
-        @Order(3)
+        @Order(5)
         void sum() {
 
         }
 
         @Test
         @Disabled
-        @Order(3)
+        @Order(6)
         void average() {
 
         }
@@ -83,28 +83,33 @@ public final class H2DatabaseTest {
 
         @Test
         @Disabled
-        @Order(3)
+        @Order(7)
         void createIfNotExists() {
 
         }
 
         @Test
         @Disabled
-        @Order(3)
-        void update() {
-
-        }
-
-        @Test
-        @Disabled
-        @Order(3)
+        @Order(8)
         void upsert() {
 
         }
 
         @Test
+        @Order(9)
+        void update() {
+            MODEL.address("Street-1");
+            var response = REPOSITORY.query().filter().match("username", 1).update(MODEL);
+
+            assertNotNull(response);
+            assertEquals(ResponseType.SUCCESS, response.response());
+            assertEquals(1, response.modifiedElements());
+
+        }
+
+        @Test
         @DisplayName("filtering (match)")
-        @Order(4)
+        @Order(10)
         void filteringMatch() {
             var response = REPOSITORY.query().filter().match("username", 1).findAll();
             assertEquals(1, response.result().size());
@@ -113,9 +118,9 @@ public final class H2DatabaseTest {
 
         @Test
         @DisplayName("filtering (none-match)")
-        @Order(5)
+        @Order(11)
         void filteringNoneMatch() {
-            var response = REPOSITORY.query().filter().noneMatch("address", "Street2").findAll();
+            var response = REPOSITORY.query().filter().noneMatch("address", "Street-1").findAll();
 
             assertEquals(1, response.result().size());
             assertEquals(FILTER_MODEL, response.result().get(0));
@@ -123,7 +128,7 @@ public final class H2DatabaseTest {
 
         @Test
         @DisplayName("filtering (like)")
-        @Order(6)
+        @Order(12)
         void filteringLike() {
             var response = REPOSITORY.query().filter().like("address", "Street").findAll();
             assertEquals(2, response.result().size());
@@ -132,7 +137,7 @@ public final class H2DatabaseTest {
         @Test
         @DisplayName("filtering (minimum value)")
         @Disabled
-        @Order(7)
+        @Order(13)
         void min() {
 
         }
@@ -140,7 +145,7 @@ public final class H2DatabaseTest {
         @Test
         @DisplayName("filtering (maximum value)")
         @Disabled
-        @Order(8)
+        @Order(14)
         void max() {
 
         }
@@ -148,7 +153,7 @@ public final class H2DatabaseTest {
         @Test
         @DisplayName("filtering (between value)")
         @Disabled
-        @Order(9)
+        @Order(15)
         void between() {
 
         }
@@ -156,7 +161,7 @@ public final class H2DatabaseTest {
         @Test
         @DisplayName("filtering (same date)")
         @Disabled
-        @Order(10)
+        @Order(16)
         void sameDate() {
 
         }
@@ -164,7 +169,7 @@ public final class H2DatabaseTest {
         @Test
         @DisplayName("filtering (between time)")
         @Disabled
-        @Order(11)
+        @Order(17)
         void betweenTime() {
 
         }
@@ -173,26 +178,26 @@ public final class H2DatabaseTest {
         @Test
         @DisplayName("filtering (same time)")
         @Disabled
-        @Order(12)
+        @Order(18)
         void sameTime() {
 
         }
 
         @Test
         @Disabled
-        @Order(3)
+        @Order(19)
         void order() {
         }
 
 
         @Test
         @Disabled
-        @Order(13)
+        @Order(20)
         void delete() {
         }
 
         @Test
-        @Order(13)
+        @Order(21)
         void deletionAll() {
             var response = REPOSITORY.query().deleteAll();
 
