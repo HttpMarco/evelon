@@ -60,10 +60,13 @@ public final class H2DatabaseTest {
         }
 
         @Test
-        @Disabled
         @Order(4)
         void count() {
+            var response = REPOSITORY.query().filter().match("username", 1).count();
 
+            assertNotNull(response);
+            assertEquals(ResponseType.SUCCESS, response.response());
+            assertEquals(1, response.result());
         }
 
         @Test
