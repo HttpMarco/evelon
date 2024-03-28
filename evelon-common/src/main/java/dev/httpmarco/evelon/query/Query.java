@@ -34,6 +34,12 @@ public class Query<T> {
         return response.close();
     }
 
+    public UpdateResponse update(T value) {
+        var response = new UpdateResponse();
+        repository.layers().forEach(layer -> response.append(layer.update(this, value)));
+        return response.close();
+    }
+
     public QueryResponse<List<T>> findAll() {
         var response = new QueryResponse<List<T>>();
         repository.layers().forEach(layer -> response.append(layer.findAll(this)));

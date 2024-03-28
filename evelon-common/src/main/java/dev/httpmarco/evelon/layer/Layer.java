@@ -51,4 +51,6 @@ public abstract class Layer {
 
     public abstract <T> QueryResponse<Boolean> exists(Query<T> query);
 
+    public abstract <T> UpdateResponse update(Query<T> query, T value);
+
 }

@@ -61,4 +61,9 @@ public abstract class SqlParentLayer extends ConnectableLayer<Connection> {
     public <T> QueryResponse<Boolean> exists(Query<T> query) {
         return new SqlExistsProcess<>(query.repository().name(), query, this.connection.transmitter()).queryExists();
     }
+
+    @Override
+    public <T> UpdateResponse update(Query<T> query, T value) {
+        return new SqlUpdateProcess<>(query.repository().name(), query, this.connection.transmitter()).pushUpdate(value, this);
+    }
 }

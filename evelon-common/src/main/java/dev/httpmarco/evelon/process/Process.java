@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.process;
 
+import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.query.Query;
 import dev.httpmarco.evelon.query.response.QueryResponse;
 import dev.httpmarco.evelon.query.response.UpdateResponse;
@@ -63,7 +64,7 @@ public abstract class Process<T> {
     }
 
     public interface Update {
-        UpdateResponse pushUpdate();
+        UpdateResponse pushUpdate(Object value, Layer layer);
     }
 
     public interface Create {
