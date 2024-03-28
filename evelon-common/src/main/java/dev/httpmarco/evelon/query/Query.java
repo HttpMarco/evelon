@@ -42,7 +42,15 @@ public class Query<T> {
 
     public QueryResponse<List<T>> findAll() {
         var response = new QueryResponse<List<T>>();
+        //todo find a better way for layer collection
         repository.layers().forEach(layer -> response.append(layer.findAll(this)));
+        return response.close();
+    }
+
+    public QueryResponse<Long> count() {
+        var response = new QueryResponse<Long>();
+        //todo find a better way for layer collection
+        repository.layers().forEach(layer -> response.append(layer.count(this)));
         return response.close();
     }
 

@@ -66,4 +66,9 @@ public abstract class SqlParentLayer extends ConnectableLayer<Connection> {
     public <T> UpdateResponse update(Query<T> query, T value) {
         return new SqlUpdateProcess<>(query.repository().name(), query, this.connection.transmitter()).pushUpdate(value, this);
     }
+
+    @Override
+    public <T> QueryResponse<Long> count(Query<T> query) {
+        return new SqlCountProcess<>(query.repository().name(), query, this.connection.transmitter()).queryCount(this);
+    }
 }

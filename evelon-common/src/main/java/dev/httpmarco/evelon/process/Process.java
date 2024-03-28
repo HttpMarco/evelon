@@ -70,4 +70,8 @@ public abstract class Process<T> {
     public interface Create {
         UpdateResponse pushCreation(Object value);
     }
+
+    public interface Count {
+        QueryResponse<Long> queryCount(Layer layer);
+    }
 }
