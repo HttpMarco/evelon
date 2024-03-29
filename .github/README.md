@@ -19,10 +19,3 @@ straightforward synchronization process between them.
 | <div align="center"> <img  heigth="17px" width="17px" src="https://static-00.iconduck.com/assets.00/redis-plain-wordmark-icon-512x511-8n4kzl0q.png"></div>                              | redis      | -                 | -.-.-            | no          |
 | <div align="center"> <img  heigth="17px" width="17px" src="https://upload.wikimedia.org/wikipedia/en/3/3a/ArangoDB_Logo.png"></div>                                                     | arangodb   | -                 | -.-.-            | no          |
 | <div align="center"> <img  heigth="17px" width="17px" src="https://www.scylladb.com/wp-content/uploads/scylla-headset.png"></div>                                                       | scylladb   | -                 | -.-.-            | no          |
-
-### Analyze tools:
-
-- [ ] check created/remove fields
-- [ ] enum list update
-- [ ] primaries & foreign keys check
-- [ ] nullable value check 
