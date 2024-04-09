@@ -1,13 +1,20 @@
 package dev.httpmarco.evelon.repository;
 
+import dev.httpmarco.evelon.layer.Layer;
+import dev.httpmarco.evelon.layer.LayerService;
 import dev.httpmarco.evelon.repository.entries.RepositoryObjectEntry;
 import dev.httpmarco.evelon.repository.exception.RepositoryTypeNotAllowedException;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public final class RepositoryBuilder<T> {
 
     private final Class<T> clazz;
+    private final Set<Layer> layers = new LinkedHashSet<>();
+
     private String id;
 
     @Contract(pure = true)
@@ -18,6 +25,11 @@ public final class RepositoryBuilder<T> {
 
     public RepositoryBuilder<T> withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    public RepositoryBuilder<T> withLayer(Class<? extends Layer> layer) {
+        this.layers.add(LayerService.layerOf(layer));
         return this;
     }
 
