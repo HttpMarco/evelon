@@ -8,6 +8,7 @@ import lombok.SneakyThrows;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Set;
 
 public final class LayerConnectionCredentialsService {
 
@@ -21,7 +22,7 @@ public final class LayerConnectionCredentialsService {
     @SneakyThrows
     private static void createConfigurationFile() {
         // Create if the not exists
-        Files.newByteChannel(CONFIGURATION_PATH, StandardOpenOption.CREATE).close();
+        Files.newByteChannel(CONFIGURATION_PATH, Set.of(StandardOpenOption.CREATE, StandardOpenOption.WRITE)).close();
     }
 
     @SuppressWarnings("unchecked")
@@ -33,7 +34,6 @@ public final class LayerConnectionCredentialsService {
             var credentialsAsJsonObject = credentials.getAsJsonObject();
             if (credentialsAsJsonObject.get("id").getAsString().equals(connectableLayer.id())) {
                 if(!credentialsAsJsonObject.get("active").getAsBoolean()) {
-
                     continue;
                 }
                 connectableLayer.connect((C) CREDENTIALS_GSON.fromJson(credentials, connectableLayer.templateCredentials().getClass()));
