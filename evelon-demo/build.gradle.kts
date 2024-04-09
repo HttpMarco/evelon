@@ -1,4 +1,5 @@
 dependencies {
+    testImplementation(libs.gson)
     testRuntimeOnly(project(":evelon-common"))
     testImplementation(project(":evelon-common"))
     testImplementation(platform("org.junit:junit-bom:5.10.2"))
