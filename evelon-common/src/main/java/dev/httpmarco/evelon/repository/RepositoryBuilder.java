@@ -11,7 +11,7 @@ public final class RepositoryBuilder<T> {
     private String id;
 
     @Contract(pure = true)
-    public RepositoryBuilder(@NotNull Class<T> clazz) {
+    RepositoryBuilder(@NotNull Class<T> clazz) {
         this.clazz = clazz;
         this.id = clazz.getSimpleName();
     }
