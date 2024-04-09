@@ -1,17 +1,24 @@
 package dev.httpmarco.evelon.repository.entries;
 
 import dev.httpmarco.evelon.repository.RepositoryEntry;
+import lombok.Getter;
+import lombok.experimental.Accessors;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 
+@Getter
+@Accessors(fluent = true)
 public class RepositoryMapEntry extends RepositoryEntry {
 
-    private RepositoryEntry keyEntry;
-    private RepositoryEntry valueEntry;
+    private final RepositoryEntry keyEntry;
+    private final RepositoryEntry valueEntry;
 
-    public RepositoryMapEntry(String id, Field field) {
+    public RepositoryMapEntry(String id, @NotNull Field field) {
         super(id, field.getType());
 
         // todo read
+        this.keyEntry = new RepositoryEntry(id + "_key", null);
+        this.valueEntry = new RepositoryEntry(id + "_value", null);
     }
 }
