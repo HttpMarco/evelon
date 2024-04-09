@@ -1,7 +1,15 @@
 [versions]
+# utils
+lombok = "1.18.30"
+annotations = "24.1.0"
 
 [libraries]
+#utils
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
+annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
+
 
 [plugins]
 
 [bundles]
+utils = ["lombok", "annotations"]
