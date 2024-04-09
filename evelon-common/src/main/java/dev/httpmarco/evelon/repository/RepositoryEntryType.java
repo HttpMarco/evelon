@@ -32,7 +32,7 @@ public enum RepositoryEntryType {
     });
 
     // we reduce enum values loading to a set of values
-    public static final Set<RepositoryEntryType> ENTRY_TYPES = Arrays.stream(RepositoryEntryType.values()).skip(UNDEFINED.ordinal()).collect(Collectors.toSet());
+    public static final List<RepositoryEntryType> ENTRY_TYPES = Arrays.stream(values()).toList();
 
     private final EntryAccessPredicate accessPredicate;
     private final EntryGeneration generation;
