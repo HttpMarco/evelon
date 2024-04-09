@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.layer;
 
 import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
 import dev.httpmarco.evelon.layer.connection.credentials.LayerConnectionCredentials;
+import dev.httpmarco.evelon.layer.connection.credentials.LayerConnectionCredentialsService;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,10 @@ public final class LayerService {
     @Contract(pure = true)
     @SneakyThrows
     private static <T extends Layer> @NotNull T createLayer(Class<T> layer) {
-        return layer.getConstructor().newInstance();
+        var instance = layer.getConstructor().newInstance();
+        if(instance instanceof ConnectableLayer<?,?> connectableLayer) {
+            LayerConnectionCredentialsService.appendCredentials(connectableLayer);
+        }
+        return instance;
     }
 }
