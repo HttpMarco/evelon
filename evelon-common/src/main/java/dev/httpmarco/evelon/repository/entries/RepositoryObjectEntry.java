@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.repository.entries;
 
+import dev.httpmarco.evelon.annotations.Row;
 import dev.httpmarco.evelon.repository.RepositoryEntry;
 import dev.httpmarco.evelon.repository.RepositoryEntryType;
 
@@ -15,7 +16,20 @@ public final class RepositoryObjectEntry extends RepositoryEntry {
 
         // todo read all superclass fields with osgan
         for (var field : clazz.getDeclaredFields()) {
-            this.entries.add(RepositoryEntryType.scan(field.getType()).generation().generate(field.getName(), field.getType(), field));
+            var fieldId = field.getName();
+
+            if (field.isAnnotationPresent(Row.class)) {
+                var row = field.getDeclaredAnnotation(Row.class);
+
+                if (row.ignore()) {
+                    continue;
+                }
+
+                if (!row.id().isEmpty()) {
+                    fieldId = row.id();
+                }
+            }
+            this.entries.add(RepositoryEntryType.scan(field.getType()).generation().generate(fieldId, field.getType(), field));
         }
     }
 }
