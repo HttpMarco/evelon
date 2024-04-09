@@ -8,6 +8,9 @@ allprojects {
         mavenCentral()
     }
 
+    dependencies {
+        "implementation"(rootProject.libs.bundles.utils)
+    }
 
     tasks.withType<JavaCompile>().configureEach {
         sourceCompatibility = JavaVersion.VERSION_17.toString()
