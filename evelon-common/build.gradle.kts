@@ -1,3 +1,3 @@
 dependencies {
-    implementation(libs.bundles.utils)
+    implementation(libs.gson)
 }

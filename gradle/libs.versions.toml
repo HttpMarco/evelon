@@ -3,13 +3,26 @@
 lombok = "1.18.30"
 annotations = "24.1.0"
 
+# configuration
+gson = "2.10.1"
+
+# logging
+log4j = "2.23.1"
+slf4j = "2.0.12"
+
 [libraries]
-#utils
+# utils
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
 annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
 
+# configuration
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+
+# logging
+slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
+log4j = { group = "org.apache.logging.log4j", name = "log4j-slf4j2-impl", version.ref = "log4j" }
 
 [plugins]
 
 [bundles]
-utils = ["lombok", "annotations"]
+utils = ["lombok", "annotations", "slf4j", "log4j"]
