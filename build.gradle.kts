@@ -9,6 +9,7 @@ allprojects {
     }
 
     dependencies {
+        "annotationProcessor"(rootProject.libs.lombok)
         "implementation"(rootProject.libs.bundles.utils)
     }
 
