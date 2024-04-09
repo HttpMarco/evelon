@@ -7,8 +7,6 @@ import dev.httpmarco.evelon.repository.exception.UnsupportedEntryTypeException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,7 +25,7 @@ public enum RepositoryEntryType {
 
     COLLECTION(Collection.class::isAssignableFrom, (id, clazz, field) -> new RepositoryCollectionEntry(id, field)),
 
-    OBJECT(it -> Arrays.stream(it.getDeclaredFields()).noneMatch(Field::isSynthetic), (id, clazz, field) -> new RepositoryObjectEntry(id, clazz)),
+    OBJECT(it -> !it.isSynthetic(), (id, clazz, field) -> new RepositoryObjectEntry(id, clazz)),
 
     UNDEFINED(it -> true, (id, it, field) -> {
         throw new UnsupportedEntryTypeException(it);
