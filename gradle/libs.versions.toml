@@ -12,6 +12,7 @@ slf4j = "2.0.12"
 
 # database
 hikari = "5.1.0"
+h2 = "2.2.224"
 
 [libraries]
 # utils
@@ -27,6 +28,7 @@ log4j = { group = "org.apache.logging.log4j", name = "log4j-slf4j2-impl", versio
 
 # database
 hikari = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari" }
+h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
 
 [plugins]
 
