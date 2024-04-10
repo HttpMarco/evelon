@@ -37,9 +37,9 @@ public final class LayerConnectionCredentialsService {
                 continue;
             }
             var credentialsAsJsonObject = credentials.getAsJsonObject();
-            System.err.println(credentialsAsJsonObject.get("id").getAsString());
             if (credentialsAsJsonObject.get("id").getAsString().equalsIgnoreCase(connectableLayer.id())) {
                 if (!credentialsAsJsonObject.get("active").getAsBoolean()) {
+                    Evelon.LOGGER.warn("Repository use " + connectableLayer.id() + ", but session is inactive.");
                     return;
                 }
                 connectableLayer.connection().connect(CREDENTIALS_GSON.fromJson(credentials, connectableLayer.templateCredentials().getClass()));
