@@ -25,22 +25,30 @@ public final class LayerConnectionCredentialsService {
         Files.newByteChannel(CONFIGURATION_PATH, Set.of(StandardOpenOption.CREATE, StandardOpenOption.WRITE)).close();
     }
 
+    @SneakyThrows
     @SuppressWarnings("unchecked")
     public static <C extends LayerConnectionCredentials> void appendCredentials(ConnectableLayer<C, ?> connectableLayer) {
-        for (var credentials : readCredentialsContext()) {
+        var elements = readCredentialsContext();
+        if(elements == null) {
+            elements = new JsonArray();
+        }
+
+        for (var credentials : elements) {
             if (!credentials.isJsonObject()) {
                 continue;
             }
             var credentialsAsJsonObject = credentials.getAsJsonObject();
-            if (credentialsAsJsonObject.get("id").getAsString().equals(connectableLayer.id())) {
-                if(!credentialsAsJsonObject.get("active").getAsBoolean()) {
-                    continue;
+            System.err.println(credentialsAsJsonObject.get("id").getAsString());
+            if (credentialsAsJsonObject.get("id").getAsString().equalsIgnoreCase(connectableLayer.id())) {
+                if (!credentialsAsJsonObject.get("active").getAsBoolean()) {
+                    return;
                 }
                 connectableLayer.connect((C) CREDENTIALS_GSON.fromJson(credentials, connectableLayer.templateCredentials().getClass()));
                 return;
             }
         }
-        Evelon.LOGGER.warn("Cannot open layer " + connectableLayer.id() + ", because credentials are missing!");
+        elements.add(CREDENTIALS_GSON.toJsonTree(connectableLayer.templateCredentials()));
+        Files.writeString(CONFIGURATION_PATH, CREDENTIALS_GSON.toJson(elements));
     }
 
     @SneakyThrows
