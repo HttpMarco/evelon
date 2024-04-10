@@ -3,7 +3,7 @@
 This application provides seamless object mapping between a local application and a database, along with a
 straightforward synchronization process between them.
 
-| icon                                                                                                                                                                                    | database   | layer id          | required version | implemented |
+| icon                                                                                                                                                                                    | database   | abstractLayer id          | required version | implemented |
 |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|-------------------|------------------|-------------|
 | <div align="center"> -</div>                                                                                                                                                            | cache      | LocalStorageLayer | -.-.-            | yes         |
 | <div align="center"> <img  heigth="17px" width="17px" src="https://upload.wikimedia.org/wikipedia/de/d/dd/MySQL_logo.svg"></div>                                                        | mysql      | -                 | -.-.-            | no          |

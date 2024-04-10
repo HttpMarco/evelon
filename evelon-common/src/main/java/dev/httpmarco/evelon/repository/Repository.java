@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.repository;
 
+import dev.httpmarco.evelon.layer.AbstractLayer;
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.repository.entries.RepositoryObjectEntry;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.Set;
 public final class Repository<T> {
 
     private final RepositoryObjectEntry entry;
-    private final Set<Layer> layers;
+    private final Set<Layer<?>> abstractLayers;
 
     @Contract(value = "_ -> new", pure = true)
     public static <R> @NotNull RepositoryBuilder<R> build(Class<R> clazz) {

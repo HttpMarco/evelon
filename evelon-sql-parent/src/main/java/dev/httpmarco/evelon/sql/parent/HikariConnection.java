@@ -3,7 +3,7 @@ package dev.httpmarco.evelon.sql.parent;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import dev.httpmarco.evelon.layer.connection.Connection;
-import dev.httpmarco.evelon.layer.connection.ConnectionCredentials;
+import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,10 +11,10 @@ import org.jetbrains.annotations.Nullable;
 public final class HikariConnection implements Connection<HikariDataSource> {
 
     private @Nullable HikariDataSource dataSource;
-    private final ProtocolDriver<? extends ConnectionCredentials> protocolDriver;
+    private final ProtocolDriver<? extends ConnectionAuthentication> protocolDriver;
 
     @Override
-    public void connect(ConnectionCredentials credentials) {
+    public void connect(ConnectionAuthentication credentials) {
         var config = new HikariConfig();
 
         config.addDataSourceProperty("cachePrepStmts", "true");

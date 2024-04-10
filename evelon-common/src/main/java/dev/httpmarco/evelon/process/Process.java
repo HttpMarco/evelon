@@ -1,14 +1,11 @@
 package dev.httpmarco.evelon.process;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.experimental.Accessors;
+import dev.httpmarco.evelon.layer.Layer;
+import dev.httpmarco.evelon.repository.Repository;
+import dev.httpmarco.evelon.repository.RepositoryEntry;
 
-@Getter
-@Accessors(fluent = true)
-@AllArgsConstructor
-public abstract class Process<Q> {
+public interface Process<Q> {
 
-    protected Q base;
+    Q run(Layer<Q> abstractLayer, Repository<?> repository, RepositoryEntry entry);
 
 }

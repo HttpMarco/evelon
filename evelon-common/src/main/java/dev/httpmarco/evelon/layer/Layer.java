@@ -1,14 +1,11 @@
 package dev.httpmarco.evelon.layer;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.experimental.Accessors;
+import dev.httpmarco.evelon.process.ProcessRunner;
 
-@Accessors(fluent = true)
-@Getter
-@AllArgsConstructor
-public abstract class Layer  {
+public interface Layer<Q> {
 
-    private String id;
+    String id();
+
+    ProcessRunner<Q> runner();
 
 }

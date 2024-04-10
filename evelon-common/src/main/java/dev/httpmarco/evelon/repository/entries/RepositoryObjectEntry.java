@@ -12,7 +12,7 @@ public final class RepositoryObjectEntry extends RepositoryEntry {
     private final Set<RepositoryEntry> entries = new HashSet<>();
 
     public RepositoryObjectEntry(String id, Class<?> clazz) {
-        super(id, clazz);
+        super(id, clazz, RepositoryEntryType.OBJECT);
 
         // todo read all superclass fields with osgan
         for (var field : clazz.getDeclaredFields()) {
@@ -29,7 +29,7 @@ public final class RepositoryObjectEntry extends RepositoryEntry {
                     fieldId = row.id();
                 }
             }
-            this.entries.add(RepositoryEntryType.scan(field.getType()).generation().generate(fieldId, field.getType(), field));
+            this.entries.add(RepositoryEntryType.generate(fieldId, field));
         }
     }
 }

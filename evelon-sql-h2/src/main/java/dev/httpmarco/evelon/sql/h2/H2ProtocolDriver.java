@@ -5,7 +5,7 @@ import org.h2.Driver;
 
 import java.nio.file.Path;
 
-public final class H2ProtocolDriver implements ProtocolDriverLoader<H2ConnectionCredentials> {
+public final class H2ProtocolDriver implements ProtocolDriverLoader<H2ConnectionAuthentication> {
 
     @Override
     public void initialize() {
@@ -13,7 +13,7 @@ public final class H2ProtocolDriver implements ProtocolDriverLoader<H2Connection
     }
 
     @Override
-    public String jdbcUrl(H2ConnectionCredentials credentials) {
+    public String jdbcUrl(H2ConnectionAuthentication credentials) {
         return "jdbc:h2:" + Path.of(credentials.path()).toAbsolutePath();
     }
 }

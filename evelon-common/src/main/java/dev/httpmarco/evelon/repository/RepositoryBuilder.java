@@ -1,7 +1,8 @@
 package dev.httpmarco.evelon.repository;
 
-import dev.httpmarco.evelon.layer.AbstractPreppedLayer;
+import dev.httpmarco.evelon.layer.AbstractLayer;
 import dev.httpmarco.evelon.layer.Layer;
+import dev.httpmarco.evelon.layer.PreppedLayer;
 import dev.httpmarco.evelon.layer.LayerService;
 import dev.httpmarco.evelon.repository.entries.RepositoryObjectEntry;
 import dev.httpmarco.evelon.repository.exception.RepositoryTypeNotAllowedException;
@@ -14,7 +15,7 @@ import java.util.Set;
 public final class RepositoryBuilder<T> {
 
     private final Class<T> clazz;
-    private final Set<Layer> layers = new LinkedHashSet<>();
+    private final Set<Layer<?>> abstractLayers = new LinkedHashSet<>();
 
     private String id;
 
@@ -29,8 +30,8 @@ public final class RepositoryBuilder<T> {
         return this;
     }
 
-    public RepositoryBuilder<T> withLayer(Class<? extends Layer<?>> layer) {
-        this.layers.add(LayerService.layerOf(layer));
+    public RepositoryBuilder<T> withLayer(Class<? extends AbstractLayer<?>> layer) {
+        this.abstractLayers.add(LayerService.layerOf(layer));
         return this;
     }
 
@@ -39,11 +40,11 @@ public final class RepositoryBuilder<T> {
         var entry = RepositoryEntryType.generate(id, clazz);
 
         if (entry instanceof RepositoryObjectEntry objectEntry) {
-            var repository = new Repository<T>(objectEntry, layers);
+            var repository = new Repository<T>(objectEntry, abstractLayers);
             // check all layers are ready to be used
-            for (var layer : layers) {
+            for (var layer : abstractLayers) {
                 // some layers need to be prepped before the object is returned
-                if (layer instanceof AbstractPreppedLayer<?> preppedLayer) {
+                if (layer instanceof PreppedLayer<?> preppedLayer) {
                     preppedLayer.prepped(repository);
                 }
             }

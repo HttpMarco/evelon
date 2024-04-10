@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Set;
 
-public final class ConnectionCredentialsService {
+public final class ConnectionAuthenticationService {
 
     private static final Gson CREDENTIALS_GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path CONFIGURATION_PATH = Path.of("evelon-connection-credentials.json");
@@ -25,7 +25,7 @@ public final class ConnectionCredentialsService {
     }
 
     @SneakyThrows
-    public static <C extends ConnectionCredentials> void appendCredentials(ConnectableLayer<?, C, ?> connectableLayer) {
+    public static <C extends ConnectionAuthentication> void appendCredentials(ConnectableLayer<?, C, ?> connectableLayer) {
         var elements = readCredentialsContext();
         if(elements == null) {
             elements = new JsonArray();

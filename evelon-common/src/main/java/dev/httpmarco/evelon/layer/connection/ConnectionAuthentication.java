@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Accessors(fluent = true)
 @AllArgsConstructor
-public abstract class ConnectionCredentials {
+public abstract class ConnectionAuthentication {
 
     private String id;
     private boolean active;

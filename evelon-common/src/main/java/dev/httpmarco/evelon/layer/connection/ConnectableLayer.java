@@ -1,22 +1,22 @@
 package dev.httpmarco.evelon.layer.connection;
 
-import dev.httpmarco.evelon.layer.AbstractPreppedLayer;
-import dev.httpmarco.evelon.process.ProcessRunner;
+import dev.httpmarco.evelon.layer.AbstractLayer;
+import dev.httpmarco.evelon.layer.PreppedLayer;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class ConnectableLayer<Q, CRE extends ConnectionCredentials, CON extends Connection<?>> extends AbstractPreppedLayer<Q> {
+public abstract class ConnectableLayer<Q, A extends ConnectionAuthentication, C extends Connection<?>> extends AbstractLayer<Q> implements PreppedLayer<Q> {
 
-    private final CRE templateCredentials;
+    private final A templateCredentials;
 
-    public ConnectableLayer(@NotNull CRE templateCredentials, ProcessRunner<Q> runner) {
-        super(templateCredentials.id(), runner);
+    public ConnectableLayer(@NotNull A templateCredentials) {
+        super(templateCredentials.id());
         this.templateCredentials = templateCredentials;
     }
 
-    public abstract CON connection();
+    public abstract C connection();
 
 }
