@@ -9,10 +9,14 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public abstract class HikariParentConnectionLayer<CRE extends LayerConnectionCredentials> extends ConnectableLayer<CRE, HikariConnection> {
 
-    private final HikariConnection connection = new HikariConnection();
+    private final HikariConnection connection;
 
     public HikariParentConnectionLayer(CRE templateCredentials) {
         super(templateCredentials);
+        this.connection = new HikariConnection(protocol());
     }
 
+    public ProtocolDriver<CRE> protocol() {
+        return LayerConnectionCredentials::id;
+    }
 }

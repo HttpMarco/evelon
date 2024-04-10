@@ -4,11 +4,14 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import dev.httpmarco.evelon.layer.connection.Connection;
 import dev.httpmarco.evelon.layer.connection.credentials.LayerConnectionCredentials;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.Nullable;
 
+@RequiredArgsConstructor
 public final class HikariConnection implements Connection<HikariDataSource> {
 
     private @Nullable HikariDataSource dataSource;
+    private final ProtocolDriver<? extends LayerConnectionCredentials> protocolDriver;
 
     @Override
     public void connect(LayerConnectionCredentials credentials) {
@@ -30,8 +33,11 @@ public final class HikariConnection implements Connection<HikariDataSource> {
         config.setConnectionTimeout(10_000);
         config.setValidationTimeout(10_000);
 
-        // todo
-        // config.setJdbcUrl("jdbc:" + protocolDriver.jdbcStringWithMapping(credentials));
+        if (protocolDriver instanceof ProtocolDriverLoader loader) {
+            loader.initialize();
+        }
+
+        config.setJdbcUrl(protocolDriver.jdbcUrlBinding(credentials));
         this.dataSource = new HikariDataSource(config);
     }
 
