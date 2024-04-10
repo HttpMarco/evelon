@@ -5,7 +5,7 @@ import dev.httpmarco.evelon.repository.entries.RepositoryObjectEntry;
 import dev.httpmarco.evelon.stage.AbstractStage;
 import dev.httpmarco.evelon.stage.SubStage;
 
-public class RepositoryObjectEntryStage extends AbstractStage<RepositoryObjectEntry> implements SubStage<RepositoryObjectEntry> {
+public final class RepositoryObjectEntryStage extends AbstractStage<RepositoryObjectEntry> implements SubStage<RepositoryObjectEntry> {
 
     public RepositoryObjectEntryStage(RepositoryEntryType entryType) {
         super(entryType);

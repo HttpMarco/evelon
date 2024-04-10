@@ -1,8 +1,8 @@
 package dev.httpmarco.evelon.sql.parent;
 
-import dev.httpmarco.evelon.layer.connection.credentials.LayerConnectionCredentials;
+import dev.httpmarco.evelon.layer.connection.ConnectionCredentials;
 
-public interface ProtocolDriverLoader<CRE extends LayerConnectionCredentials> extends ProtocolDriver<CRE> {
+public interface ProtocolDriverLoader<CRE extends ConnectionCredentials> extends ProtocolDriver<CRE> {
 
     void initialize();
 

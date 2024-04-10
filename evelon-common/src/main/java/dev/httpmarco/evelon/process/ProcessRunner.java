@@ -5,7 +5,7 @@ import java.util.function.Function;
 /**
  * Runner for apply different database languages
  *
- * @param <Q>   element type
+ * @param <Q> element type
  */
 public abstract class ProcessRunner<Q> {
 
@@ -14,7 +14,5 @@ public abstract class ProcessRunner<Q> {
     }
 
     protected abstract void update(Q query);
-
-    public abstract Q emptyBase();
 
 }

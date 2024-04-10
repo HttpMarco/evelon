@@ -1,7 +1,7 @@
 package dev.httpmarco.evelon.sql.parent;
 
 import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
-import dev.httpmarco.evelon.layer.connection.credentials.LayerConnectionCredentials;
+import dev.httpmarco.evelon.layer.connection.ConnectionCredentials;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.sql.parent.process.HikariPreppedProcess;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class HikariParentConnectionLayer<CRE extends LayerConnectionCredentials> extends ConnectableLayer<String, CRE, HikariConnection> {
+public abstract class HikariParentConnectionLayer<CRE extends ConnectionCredentials> extends ConnectableLayer<String, CRE, HikariConnection> {
 
     private final HikariConnection connection;
 
@@ -20,7 +20,7 @@ public abstract class HikariParentConnectionLayer<CRE extends LayerConnectionCre
     }
 
     public ProtocolDriver<CRE> protocol() {
-        return LayerConnectionCredentials::id;
+        return ConnectionCredentials::id;
     }
 
     /**

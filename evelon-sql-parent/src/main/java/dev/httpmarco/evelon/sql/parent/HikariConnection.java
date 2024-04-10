@@ -3,7 +3,7 @@ package dev.httpmarco.evelon.sql.parent;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import dev.httpmarco.evelon.layer.connection.Connection;
-import dev.httpmarco.evelon.layer.connection.credentials.LayerConnectionCredentials;
+import dev.httpmarco.evelon.layer.connection.ConnectionCredentials;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,10 +11,10 @@ import org.jetbrains.annotations.Nullable;
 public final class HikariConnection implements Connection<HikariDataSource> {
 
     private @Nullable HikariDataSource dataSource;
-    private final ProtocolDriver<? extends LayerConnectionCredentials> protocolDriver;
+    private final ProtocolDriver<? extends ConnectionCredentials> protocolDriver;
 
     @Override
-    public void connect(LayerConnectionCredentials credentials) {
+    public void connect(ConnectionCredentials credentials) {
         var config = new HikariConfig();
 
         config.addDataSourceProperty("cachePrepStmts", "true");
@@ -33,7 +33,7 @@ public final class HikariConnection implements Connection<HikariDataSource> {
         config.setConnectionTimeout(10_000);
         config.setValidationTimeout(10_000);
 
-        if (protocolDriver instanceof ProtocolDriverLoader loader) {
+        if (protocolDriver instanceof ProtocolDriverLoader<?> loader) {
             loader.initialize();
         }
 

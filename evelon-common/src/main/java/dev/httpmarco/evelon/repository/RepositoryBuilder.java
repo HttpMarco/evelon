@@ -29,7 +29,7 @@ public final class RepositoryBuilder<T> {
         return this;
     }
 
-    public RepositoryBuilder<T> withLayer(Class<? extends Layer> layer) {
+    public RepositoryBuilder<T> withLayer(Class<? extends Layer<?>> layer) {
         this.layers.add(LayerService.layerOf(layer));
         return this;
     }
@@ -43,7 +43,7 @@ public final class RepositoryBuilder<T> {
             // check all layers are ready to be used
             for (var layer : layers) {
                 // some layers need to be prepped before the object is returned
-                if (layer instanceof AbstractPreppedLayer preppedLayer) {
+                if (layer instanceof AbstractPreppedLayer<?> preppedLayer) {
                     preppedLayer.prepped(repository);
                 }
             }

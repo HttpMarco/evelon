@@ -11,9 +11,9 @@ public final class RepositoryCollectionEntry extends RepositoryEntry {
     private final RepositoryEntry componentEntry;
 
     public RepositoryCollectionEntry(String id, @NotNull Field field) {
-        super(id, field.getType());
+        super(id, field.getType(), RepositoryEntryType.COLLECTION);
 
         //todo
-        this.componentEntry = RepositoryEntryType.scan(null).generation().generate(field.getName() + "_value", null, null);
+        this.componentEntry = RepositoryEntryType.generate(field.getName() + "_value", (Class<?>) null);
     }
 }
