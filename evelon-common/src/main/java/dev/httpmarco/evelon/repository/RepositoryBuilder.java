@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.repository;
 
+import dev.httpmarco.evelon.layer.AbstractPreppedLayer;
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.layer.LayerService;
 import dev.httpmarco.evelon.repository.entries.RepositoryObjectEntry;
@@ -38,6 +39,13 @@ public final class RepositoryBuilder<T> {
         var entry = RepositoryEntryType.scan(clazz).generation().generate(id, clazz, null);
 
         if (entry instanceof RepositoryObjectEntry objectEntry) {
+            // check all layers are ready to be used
+            for (var layer : layers) {
+                // some layers need to be prepped before the object is returned
+                if (layer instanceof AbstractPreppedLayer preppedLayer) {
+                    preppedLayer.prepped();
+                }
+            }
             return new Repository<>(objectEntry);
         }
         throw new RepositoryTypeNotAllowedException();
