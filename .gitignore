@@ -13,8 +13,10 @@ target/
 *.iml
 *.ipr
 
+
 database.h2.mv.db*
 credentials.json*
+evelon-connection-credentials.json*
 database.h2.trace.db*
 
 ### Eclipse ###
