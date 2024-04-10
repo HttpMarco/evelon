@@ -2,17 +2,20 @@ package dev.httpmarco.evelon.layer.connection;
 
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.layer.connection.credentials.LayerConnectionCredentials;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 
-public interface ConnectableLayer<C extends LayerConnectionCredentials, CQ> extends Layer {
+@Getter
+@Accessors(fluent = true)
+public abstract class ConnectableLayer<CRE extends LayerConnectionCredentials, CON extends Connection<?>> extends Layer {
 
-    void connect(C credentials);
+    private final CRE templateCredentials;
 
-    boolean isConnected();
+    public ConnectableLayer(CRE templateCredentials) {
+        super(templateCredentials.id());
+        this.templateCredentials = templateCredentials;
+    }
 
-    void close();
-
-    CQ connection();
-
-    C templateCredentials();
+    public abstract CON connection();
 
 }

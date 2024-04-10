@@ -1,7 +1,14 @@
 package dev.httpmarco.evelon.layer;
 
-public interface Layer {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 
-    String id();
+@Getter
+@Accessors(fluent = true)
+@AllArgsConstructor
+public class Layer  {
+
+    private final String id;
 
 }
