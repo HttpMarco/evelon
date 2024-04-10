@@ -1,10 +1,10 @@
 package dev.httpmarco.evelon.sql.h2;
 
-import dev.httpmarco.evelon.sql.parent.SqlParentConnectionLayer;
+import dev.httpmarco.evelon.sql.parent.HikariParentConnectionLayer;
 
-public class H2Layer extends SqlParentConnectionLayer<H2LayerConnectionCredentials> {
+public class H2Layer extends HikariParentConnectionLayer<H2LayerConnectionCredentials> {
 
     public H2Layer() {
-        super("H2", new H2LayerConnectionCredentials());
+        super(new H2LayerConnectionCredentials());
     }
 }
