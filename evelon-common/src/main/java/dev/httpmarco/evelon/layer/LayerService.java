@@ -1,7 +1,6 @@
 package dev.httpmarco.evelon.layer;
 
 import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
-import dev.httpmarco.evelon.layer.connection.credentials.LayerConnectionCredentials;
 import dev.httpmarco.evelon.layer.connection.credentials.LayerConnectionCredentialsService;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.Contract;
