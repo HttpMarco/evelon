@@ -10,10 +10,7 @@ import lombok.experimental.Accessors;
 
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.stream.Collectors;
 
-@Getter
-@Accessors(fluent = true)
 @AllArgsConstructor
 public enum RepositoryEntryType {
 
@@ -27,11 +24,7 @@ public enum RepositoryEntryType {
 
     COLLECTION(Collection.class::isAssignableFrom, (id, clazz, field, type) -> new RepositoryCollectionEntry(id, field)),
 
-    OBJECT(it -> !it.isSynthetic(), (id, clazz, field, type) -> new RepositoryObjectEntry(id, clazz)),
-
-    UNDEFINED(it -> true, (id, it, field, type) -> {
-        throw new UnsupportedEntryTypeException(it);
-    });
+    OBJECT(it -> !it.isSynthetic(), (id, clazz, field, type) -> new RepositoryObjectEntry(id, clazz));
 
     // we reduce enum values loading to a set of values
     public static final List<RepositoryEntryType> ENTRY_TYPES = Arrays.stream(values()).toList();
@@ -40,18 +33,13 @@ public enum RepositoryEntryType {
     private final EntryGeneration generation;
 
     private static RepositoryEntry generate(String id, Field field, Class<?> clazz) {
-        var type = ENTRY_TYPES.stream()
-                .filter(it -> it.accessPredicate.test(clazz))
-                .findFirst()
-                .orElse(UNDEFINED);
-
-        return type.generation().generate(id, clazz, field, type);
+        var type = ENTRY_TYPES.stream().filter(it -> it.accessPredicate.test(clazz)).findFirst().orElseThrow();
+        return type.generation.generate(id, clazz, field, type);
     }
 
     public static RepositoryEntry generate(String id, Class<?> clazz) {
         return generate(id, null, clazz);
     }
-
 
     public static RepositoryEntry generate(String id, Field field) {
         return generate(id, field, field.getType());
