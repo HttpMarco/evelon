@@ -19,4 +19,10 @@ public abstract class HikariParentConnectionLayer<CRE extends LayerConnectionCre
     public ProtocolDriver<CRE> protocol() {
         return LayerConnectionCredentials::id;
     }
+
+    @Override
+    public void prepped() {
+        System.err.println("HikariParentConnectionLayer.prepped");
+        // todo start initialize processing
+    }
 }
