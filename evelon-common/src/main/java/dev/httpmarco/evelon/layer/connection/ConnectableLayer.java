@@ -1,13 +1,13 @@
 package dev.httpmarco.evelon.layer.connection;
 
-import dev.httpmarco.evelon.layer.Layer;
+import dev.httpmarco.evelon.layer.AbstractPreppedLayer;
 import dev.httpmarco.evelon.layer.connection.credentials.LayerConnectionCredentials;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class ConnectableLayer<CRE extends LayerConnectionCredentials, CON extends Connection<?>> extends Layer {
+public abstract class ConnectableLayer<CRE extends LayerConnectionCredentials, CON extends Connection<?>> extends AbstractPreppedLayer {
 
     private final CRE templateCredentials;
 

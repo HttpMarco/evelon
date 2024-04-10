@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
-@Getter
 @Accessors(fluent = true)
+@Getter
 @AllArgsConstructor
-public class Layer  {
+public abstract class Layer  {
 
-    private final String id;
+    private String id;
 
 }
