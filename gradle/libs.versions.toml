@@ -10,6 +10,9 @@ gson = "2.10.1"
 log4j = "2.23.1"
 slf4j = "2.0.12"
 
+# database
+hikari = "5.1.0"
+
 [libraries]
 # utils
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
@@ -21,6 +24,9 @@ gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 # logging
 slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
 log4j = { group = "org.apache.logging.log4j", name = "log4j-slf4j2-impl", version.ref = "log4j" }
+
+# database
+hikari = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari" }
 
 [plugins]
 
