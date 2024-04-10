@@ -36,17 +36,18 @@ public final class RepositoryBuilder<T> {
 
     @Contract(" -> new")
     public @NotNull Repository<T> build() {
-        var entry = RepositoryEntryType.scan(clazz).generation().generate(id, clazz, null);
+        var entry = RepositoryEntryType.generate(id, clazz);
 
         if (entry instanceof RepositoryObjectEntry objectEntry) {
+            var repository = new Repository<T>(objectEntry, layers);
             // check all layers are ready to be used
             for (var layer : layers) {
                 // some layers need to be prepped before the object is returned
                 if (layer instanceof AbstractPreppedLayer preppedLayer) {
-                    preppedLayer.prepped();
+                    preppedLayer.prepped(repository);
                 }
             }
-            return new Repository<>(objectEntry);
+            return repository;
         }
         throw new RepositoryTypeNotAllowedException();
     }
