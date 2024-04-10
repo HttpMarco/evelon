@@ -2,7 +2,7 @@ package dev.httpmarco.evelon.layer.connection;
 
 import dev.httpmarco.evelon.layer.connection.credentials.LayerConnectionCredentials;
 
-public interface Connection<CO> {
+public interface Connection<CON> {
 
     void connect(LayerConnectionCredentials credentials);
 
@@ -10,6 +10,6 @@ public interface Connection<CO> {
 
     void close();
 
-    CO connection();
+    CON connection();
 
 }
