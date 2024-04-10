@@ -6,7 +6,7 @@ import dev.httpmarco.evelon.process.ProcessRunner;
 
 public final class HikariLayerProcessRunner extends ProcessRunner<String> {
 
-    public HikariLayerProcessRunner(Layer layer) {
+    public HikariLayerProcessRunner(Layer<String> layer) {
         super(layer);
     }
 

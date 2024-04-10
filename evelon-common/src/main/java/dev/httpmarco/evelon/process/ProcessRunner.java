@@ -16,7 +16,7 @@ public abstract class ProcessRunner<Q> {
     private final Layer<Q> layer;
 
     public void update(Repository<?> repository, ProcessResolver<Q> resolver) {
-        this.update(resolver.render().run(layer, repository, repository.entry()));
+        this.update(resolver.render().run(repository.entry().stage().get(layer), repository, repository.entry()));
     }
 
     protected abstract void update(Q query);
