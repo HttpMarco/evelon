@@ -26,7 +26,6 @@ public final class LayerConnectionCredentialsService {
     }
 
     @SneakyThrows
-    @SuppressWarnings("unchecked")
     public static <C extends LayerConnectionCredentials> void appendCredentials(ConnectableLayer<C, ?> connectableLayer) {
         var elements = readCredentialsContext();
         if(elements == null) {
@@ -43,7 +42,7 @@ public final class LayerConnectionCredentialsService {
                 if (!credentialsAsJsonObject.get("active").getAsBoolean()) {
                     return;
                 }
-                connectableLayer.connect((C) CREDENTIALS_GSON.fromJson(credentials, connectableLayer.templateCredentials().getClass()));
+                connectableLayer.connection().connect(CREDENTIALS_GSON.fromJson(credentials, connectableLayer.templateCredentials().getClass()));
                 return;
             }
         }
