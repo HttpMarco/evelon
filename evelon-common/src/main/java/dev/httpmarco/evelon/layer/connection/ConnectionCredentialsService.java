@@ -1,8 +1,7 @@
-package dev.httpmarco.evelon.layer.connection.credentials;
+package dev.httpmarco.evelon.layer.connection;
 
 import com.google.gson.*;
 import dev.httpmarco.evelon.Evelon;
-import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
 import lombok.SneakyThrows;
 
 import java.nio.file.Files;
@@ -10,7 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Set;
 
-public final class LayerConnectionCredentialsService {
+public final class ConnectionCredentialsService {
 
     private static final Gson CREDENTIALS_GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path CONFIGURATION_PATH = Path.of("evelon-connection-credentials.json");
@@ -26,7 +25,7 @@ public final class LayerConnectionCredentialsService {
     }
 
     @SneakyThrows
-    public static <C extends LayerConnectionCredentials> void appendCredentials(ConnectableLayer<C, ?> connectableLayer) {
+    public static <C extends ConnectionCredentials> void appendCredentials(ConnectableLayer<?, C, ?> connectableLayer) {
         var elements = readCredentialsContext();
         if(elements == null) {
             elements = new JsonArray();
