@@ -2,13 +2,13 @@ package dev.httpmarco.evelon.sql.parent;
 
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
 
-public interface ProtocolDriver<CRE extends ConnectionAuthentication> {
+public interface ProtocolDriver<A extends ConnectionAuthentication> {
 
-    String jdbcUrl(CRE credentials);
+    String jdbcUrl(A credentials);
 
     @SuppressWarnings("unchecked")
     default String jdbcUrlBinding(ConnectionAuthentication credentials) {
-        return this.jdbcUrl((CRE) credentials);
+        return this.jdbcUrl((A) credentials);
     }
 
 }

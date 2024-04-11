@@ -3,10 +3,7 @@ package dev.httpmarco.evelon.repository;
 import dev.httpmarco.evelon.repository.entries.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.repository.entries.RepositoryMapEntry;
 import dev.httpmarco.evelon.repository.entries.RepositoryObjectEntry;
-import dev.httpmarco.evelon.repository.exception.UnsupportedEntryTypeException;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.experimental.Accessors;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -27,21 +24,21 @@ public enum RepositoryEntryType {
     OBJECT(it -> !it.isSynthetic(), (id, clazz, field, type) -> new RepositoryObjectEntry(id, clazz));
 
     // we reduce enum values loading to a set of values
-    public static final List<RepositoryEntryType> ENTRY_TYPES = Arrays.stream(values()).toList();
+    private static final List<RepositoryEntryType> ENTRY_TYPES = Arrays.stream(values()).toList();
 
-    private final EntryAccessPredicate accessPredicate;
+    private final EntryAccess accessPredicate;
     private final EntryGeneration generation;
 
-    private static RepositoryEntry generate(String id, Field field, Class<?> clazz) {
+    private static RepositoryEntry find(String id, Field field, Class<?> clazz) {
         var type = ENTRY_TYPES.stream().filter(it -> it.accessPredicate.test(clazz)).findFirst().orElseThrow();
         return type.generation.generate(id, clazz, field, type);
     }
 
-    public static RepositoryEntry generate(String id, Class<?> clazz) {
-        return generate(id, null, clazz);
+    public static RepositoryEntry find(String id, Class<?> clazz) {
+        return find(id, null, clazz);
     }
 
-    public static RepositoryEntry generate(String id, Field field) {
-        return generate(id, field, field.getType());
+    public static RepositoryEntry find(String id, Field field) {
+        return find(id, field, field.getType());
     }
 }

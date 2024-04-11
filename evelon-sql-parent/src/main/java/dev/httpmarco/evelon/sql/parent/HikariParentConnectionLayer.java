@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentication> extends ConnectableLayer<String, A, HikariConnection> {
+public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentication> extends ConnectableLayer<A, HikariConnection> {
 
     private final HikariConnection connection;
 
@@ -32,5 +32,4 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
     public void prepped(@NotNull Repository<?> repository) {
         //todo
     }
-
 }

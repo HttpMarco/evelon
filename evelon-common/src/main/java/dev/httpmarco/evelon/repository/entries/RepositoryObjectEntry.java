@@ -29,7 +29,7 @@ public final class RepositoryObjectEntry extends RepositoryEntry {
                     fieldId = row.id();
                 }
             }
-            this.entries.add(RepositoryEntryType.generate(fieldId, field));
+            this.entries.add(RepositoryEntryType.find(fieldId, field));
         }
     }
 }

@@ -36,7 +36,7 @@ public final class RepositoryBuilder<T> {
 
     @Contract(" -> new")
     public @NotNull Repository<T> build() {
-        var entry = RepositoryEntryType.generate(id, clazz);
+        var entry = RepositoryEntryType.find(id, clazz);
 
         if (entry instanceof RepositoryObjectEntry objectEntry) {
             var repository = new Repository<T>(objectEntry, abstractLayers);
