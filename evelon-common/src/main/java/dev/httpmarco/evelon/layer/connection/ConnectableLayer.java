@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 @Accessors(fluent = true)
 public abstract class ConnectableLayer<C extends Connection<?>> extends PreppedLayer {
 
-    public ConnectableLayer(@NotNull ConnectionAuthentication authentication, ProcessRunner runner) {
-        super(authentication.id(), runner);
+    public ConnectableLayer(@NotNull ConnectionAuthentication authentication) {
+        super(authentication.id());
 
         ConnectionAuthenticationService.appendCredentials(this, authentication);
     }

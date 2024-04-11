@@ -2,8 +2,8 @@ package dev.httpmarco.evelon.repository;
 
 import java.lang.reflect.Field;
 
-public interface EntryGeneration {
+interface EntryGeneration {
 
-    RepositoryEntry generate(String id, Class<?> clazz, Field field, RepositoryEntryType type);
+    RepositoryEntry generate(String id, Class<?> clazz, RepositoryEntryType type, Field field);
 
 }

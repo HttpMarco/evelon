@@ -19,7 +19,7 @@ public final class RepositoryMapEntry extends RepositoryEntry {
         super(id, field.getType(), RepositoryEntryType.MAP);
 
         // todo read
-        this.keyEntry = new RepositoryEntry(id + "_key", null, RepositoryEntryType.PARAMETER);
-        this.valueEntry = new RepositoryEntry(id + "_value", null, RepositoryEntryType.PARAMETER);
+        this.keyEntry = new RepositoryEntry(id + "_key", null, null);
+        this.valueEntry = new RepositoryEntry(id + "_value", null, null);
     }
 }

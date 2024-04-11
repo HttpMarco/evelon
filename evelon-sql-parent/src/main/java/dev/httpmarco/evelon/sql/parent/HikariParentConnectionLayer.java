@@ -3,6 +3,7 @@ package dev.httpmarco.evelon.sql.parent;
 import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
 import dev.httpmarco.evelon.repository.Repository;
+import dev.httpmarco.evelon.repository.RepositoryEntryType;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
@@ -14,9 +15,12 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
     private final HikariConnection connection;
 
     public HikariParentConnectionLayer(A templateCredentials) {
-        super(templateCredentials, new HikariProcessRunner());
+        super(templateCredentials);
 
         this.connection = new HikariConnection(protocol());
+
+        // add default type handler
+        this.appendStage(RepositoryEntryType.OBJECT, new SqlObjectSubStage());
     }
 
     public ProtocolDriver<A> protocol() {
@@ -30,6 +34,6 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
      */
     @Override
     public void prepped(@NotNull Repository<?> repository) {
-        runner().apply(new PreppedProcess());
+        runner().apply(new PreppedProcess(), repository);
     }
 }

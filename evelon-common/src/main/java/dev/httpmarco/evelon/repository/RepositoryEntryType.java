@@ -11,16 +11,9 @@ import java.util.*;
 @AllArgsConstructor
 public enum RepositoryEntryType {
 
-    PARAMETER(Class::isPrimitive, (id, clazz, field, type) -> new RepositoryEntry(id, clazz, type)),
-
-    ENUM(Class::isEnum, (id, clazz, field, type) -> new RepositoryEntry(id, clazz, type)),
-
-    UNIQUE_ID(it -> it.equals(java.util.UUID.class), (id, clazz, field, type) -> new RepositoryEntry(id, clazz, type)),
-
-    MAP(Map.class::isAssignableFrom, (id, clazz, field, type) -> new RepositoryMapEntry(id, field)),
-
-    COLLECTION(Collection.class::isAssignableFrom, (id, clazz, field, type) -> new RepositoryCollectionEntry(id, field)),
-
+    PARAMETER(it -> it.isEnum() || it.isPrimitive() || it.equals(UUID.class), (id, clazz, type, field) -> new RepositoryEntry(id, clazz, type)),
+    MAP(Map.class::isAssignableFrom, (id, clazz, type, field) -> new RepositoryMapEntry(id, field)),
+    COLLECTION(Collection.class::isAssignableFrom, (id, clazz, type, field) -> new RepositoryCollectionEntry(id, field)),
     OBJECT(it -> !it.isSynthetic(), (id, clazz, field, type) -> new RepositoryObjectEntry(id, clazz));
 
     // we reduce enum values loading to a set of values
@@ -31,7 +24,7 @@ public enum RepositoryEntryType {
 
     private static RepositoryEntry find(String id, Field field, Class<?> clazz) {
         var type = ENTRY_TYPES.stream().filter(it -> it.accessPredicate.test(clazz)).findFirst().orElseThrow();
-        return type.generation.generate(id, clazz, field, type);
+        return type.generation.generate(id, clazz, type, field);
     }
 
     public static RepositoryEntry find(String id, Class<?> clazz) {
