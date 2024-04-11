@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.sql.parent;
+package dev.httpmarco.evelon.sql.parent.driver;
 
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
 

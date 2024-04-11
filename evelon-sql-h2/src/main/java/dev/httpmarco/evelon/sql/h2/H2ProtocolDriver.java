@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.sql.h2;
 
-import dev.httpmarco.evelon.sql.parent.ProtocolDriverLoader;
+import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriverLoader;
 import org.h2.Driver;
 
 import java.nio.file.Path;

@@ -1,12 +1,10 @@
-package dev.httpmarco.evelon.sql.parent;
+package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.process.Process;
 import dev.httpmarco.evelon.repository.Repository;
 
 public final class PreppedProcess implements Process {
-
-    private static final String CREATE_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS %S();";
 
     @Override
     public void run(Repository<?> repository, Layer layer) {
@@ -16,6 +14,6 @@ public final class PreppedProcess implements Process {
             throw new UnsupportedOperationException("Cannot create table for non-substage");
         }
 
-        stage.asSubStage().initialize(repository.entry());
+        stage.asSubStage().initialize(repository.entry(), layer);
     }
 }

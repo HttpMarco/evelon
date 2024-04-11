@@ -4,6 +4,11 @@ import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.repository.RepositoryEntryType;
+import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
+import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriver;
+import dev.httpmarco.evelon.sql.parent.process.PreppedProcess;
+import dev.httpmarco.evelon.sql.parent.stages.SqlAbstractObjectSubStage;
+import dev.httpmarco.evelon.stages.subs.AbstractParameterStage;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +25,8 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
         this.connection = new HikariConnection(protocol());
 
         // add default type handler
-        this.appendStage(RepositoryEntryType.OBJECT, new SqlObjectSubStage());
+        this.appendStage(RepositoryEntryType.OBJECT, new SqlAbstractObjectSubStage())
+                .appendStage(RepositoryEntryType.PARAMETER, new AbstractParameterStage());
     }
 
     public ProtocolDriver<A> protocol() {

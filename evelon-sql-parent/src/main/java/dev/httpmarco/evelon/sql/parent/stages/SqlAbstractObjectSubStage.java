@@ -1,11 +1,11 @@
-package dev.httpmarco.evelon.sql.parent;
+package dev.httpmarco.evelon.sql.parent.stages;
 
 import dev.httpmarco.evelon.repository.RepositoryEntry;
-import dev.httpmarco.evelon.stages.subs.ObjectSubStage;
+import dev.httpmarco.evelon.stages.subs.AbstractObjectSubStage;
 
 import java.util.List;
 
-public final class SqlObjectSubStage extends ObjectSubStage<String> {
+public final class SqlAbstractObjectSubStage extends AbstractObjectSubStage<String> {
 
     @Override
     public String transform(RepositoryEntry entry) {
