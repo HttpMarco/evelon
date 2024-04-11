@@ -8,6 +8,10 @@ allprojects {
         mavenCentral()
     }
 
+    dependencies {
+        "annotationProcessor"(rootProject.libs.lombok)
+        "implementation"(rootProject.libs.bundles.utils)
+    }
 
     tasks.withType<JavaCompile>().configureEach {
         sourceCompatibility = JavaVersion.VERSION_17.toString()
