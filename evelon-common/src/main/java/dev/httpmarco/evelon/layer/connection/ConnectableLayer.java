@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.layer.connection;
 
 import dev.httpmarco.evelon.layer.PreppedLayer;
+import dev.httpmarco.evelon.process.ProcessRunner;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
@@ -9,13 +10,10 @@ import org.jetbrains.annotations.NotNull;
 @Accessors(fluent = true)
 public abstract class ConnectableLayer<C extends Connection<?>> extends PreppedLayer {
 
-    private final ConnectionAuthentication templateCredentials;
+    public ConnectableLayer(@NotNull ConnectionAuthentication authentication, ProcessRunner runner) {
+        super(authentication.id(), runner);
 
-    public ConnectableLayer(@NotNull ConnectionAuthentication templateCredentials) {
-        super(templateCredentials.id());
-        this.templateCredentials = templateCredentials;
-
-        ConnectionAuthenticationService.appendCredentials(this);
+        ConnectionAuthenticationService.appendCredentials(this, authentication);
     }
 
     public abstract C connection();

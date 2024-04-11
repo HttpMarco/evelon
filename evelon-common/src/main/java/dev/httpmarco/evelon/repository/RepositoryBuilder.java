@@ -14,7 +14,7 @@ import java.util.Set;
 public final class RepositoryBuilder<T> {
 
     private final Class<T> clazz;
-    private final Set<Layer> abstractLayers = new LinkedHashSet<>();
+    private final Set<Layer> layers = new LinkedHashSet<>();
 
     private String id;
 
@@ -30,18 +30,16 @@ public final class RepositoryBuilder<T> {
     }
 
     public RepositoryBuilder<T> withLayer(Class<? extends Layer> layer) {
-        this.abstractLayers.add(LayerService.layerOf(layer));
+        this.layers.add(LayerService.layerOf(layer));
         return this;
     }
 
     @Contract(" -> new")
     public @NotNull Repository<T> build() {
-        var entry = RepositoryEntryType.find(id, clazz);
-
-        if (entry instanceof RepositoryObjectEntry objectEntry) {
-            var repository = new Repository<T>(objectEntry, abstractLayers);
+        if (RepositoryEntryType.find(id, clazz) instanceof RepositoryObjectEntry objectEntry) {
+            var repository = new Repository<T>(objectEntry, this.layers);
             // check all layers are ready to be used
-            for (var layer : abstractLayers) {
+            for (var layer : this.layers) {
                 // some layers need to be prepped before the object is returned
                 if (layer instanceof PreppedLayer preppedLayer) {
                     preppedLayer.prepped(repository);

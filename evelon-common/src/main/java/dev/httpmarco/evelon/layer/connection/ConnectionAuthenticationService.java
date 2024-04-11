@@ -25,7 +25,7 @@ public final class ConnectionAuthenticationService {
         Files.newByteChannel(CONFIGURATION_PATH, Set.of(StandardOpenOption.CREATE, StandardOpenOption.WRITE)).close();
     }
 
-    public static void appendCredentials(ConnectableLayer<?> connectableLayer) {
+    public static void appendCredentials(ConnectableLayer<?> connectableLayer, ConnectionAuthentication authentication) {
         var elements = readCredentialsContext();
         for (var credentials : elements) {
             if (!credentials.isJsonObject()) {
@@ -39,10 +39,10 @@ public final class ConnectionAuthenticationService {
                 Evelon.LOGGER.warn("Repository use {}, but session is inactive.", connectableLayer.id());
                 return;
             }
-            connectableLayer.connection().connect(CREDENTIALS_GSON.fromJson(credentials, connectableLayer.templateCredentials().getClass()));
+            connectableLayer.connection().connect(CREDENTIALS_GSON.fromJson(credentials, authentication.getClass()));
             return;
         }
-        elements.add(CREDENTIALS_GSON.toJsonTree(connectableLayer.templateCredentials()));
+        elements.add(CREDENTIALS_GSON.toJsonTree(authentication));
         updateCredentialsContext(elements);
     }
 
