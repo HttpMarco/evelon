@@ -11,15 +11,15 @@ import java.util.Map;
 
 public final class LayerService {
 
-    private static final Map<Class<? extends AbstractLayer<?>>, AbstractLayer<?>> layers = new HashMap<>();
+    private static final Map<Class<? extends Layer>, Layer> layers = new HashMap<>();
 
-    public static AbstractLayer<?> layerOf(Class<? extends AbstractLayer<?>> layer) {
+    public static Layer layerOf(Class<? extends Layer> layer) {
         return layers.computeIfAbsent(layer, LayerService::createLayer);
     }
 
     @Contract(pure = true)
     @SneakyThrows
-    private static <T extends AbstractLayer<?>> @NotNull T createLayer(Class<T> layer) {
+    private static <T extends Layer> @NotNull T createLayer(Class<T> layer) {
         var instance = layer.getConstructor().newInstance();
         if (instance instanceof ConnectableLayer<?, ?, ?> connectableLayer) {
             ConnectionAuthenticationService.appendCredentials(connectableLayer);

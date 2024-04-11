@@ -3,7 +3,6 @@ package dev.httpmarco.evelon.sql.parent;
 import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
 import dev.httpmarco.evelon.repository.Repository;
-import dev.httpmarco.evelon.sql.parent.process.HikariPreppedProcess;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
@@ -13,13 +12,11 @@ import org.jetbrains.annotations.NotNull;
 public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentication> extends ConnectableLayer<String, A, HikariConnection> {
 
     private final HikariConnection connection;
-    private final HikariLayerProcessRunner runner;
 
     public HikariParentConnectionLayer(A templateCredentials) {
         super(templateCredentials);
 
         this.connection = new HikariConnection(protocol());
-        this.runner = new HikariLayerProcessRunner();
     }
 
     public ProtocolDriver<A> protocol() {
@@ -33,7 +30,7 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
      */
     @Override
     public void prepped(@NotNull Repository<?> repository) {
-        runner().update(repository, HikariPreppedProcess::new);
+        //todo
     }
 
 }

@@ -16,7 +16,7 @@ import java.util.Set;
 public final class Repository<T> {
 
     private final RepositoryObjectEntry entry;
-    private final Set<Layer<?>> abstractLayers;
+    private final Set<Layer> abstractLayers;
 
     @Contract(value = "_ -> new", pure = true)
     public static <R> @NotNull RepositoryBuilder<R> build(Class<R> clazz) {

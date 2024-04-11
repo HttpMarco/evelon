@@ -19,7 +19,7 @@ public final class H2DatabaseTest {
         @Test
         @Order(0)
         void initialize() {
-            assertNotNull(REPOSITORY = Repository.build(SimpleModel.class).withLayer(H2Layer.class).build());
+            assertNotNull(REPOSITORY = Repository.build(SimpleModel.class).withId("persons").withLayer(H2Layer.class).build());
         }
     }
 }

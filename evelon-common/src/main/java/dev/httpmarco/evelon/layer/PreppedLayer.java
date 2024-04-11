@@ -2,8 +2,12 @@ package dev.httpmarco.evelon.layer;
 
 import dev.httpmarco.evelon.repository.Repository;
 
-public interface PreppedLayer<Q> extends Layer<Q> {
+public abstract class PreppedLayer extends Layer {
 
-    void prepped(Repository<?> repository);
+    public PreppedLayer(String id) {
+        super(id);
+    }
+
+    public abstract void prepped(Repository<?> repository);
 
 }
