@@ -1,6 +1,5 @@
 package dev.httpmarco.evelon.repository;
 
-import dev.httpmarco.evelon.layer.AbstractLayer;
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.repository.entries.RepositoryObjectEntry;
 import lombok.AllArgsConstructor;

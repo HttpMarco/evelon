@@ -27,23 +27,23 @@ public final class ConnectionAuthenticationService {
     @SneakyThrows
     public static <C extends ConnectionAuthentication> void appendCredentials(ConnectableLayer<?, C, ?> connectableLayer) {
         var elements = readCredentialsContext();
-        if(elements == null) {
+        if (elements == null) {
             elements = new JsonArray();
         }
-
         for (var credentials : elements) {
             if (!credentials.isJsonObject()) {
                 continue;
             }
             var credentialsAsJsonObject = credentials.getAsJsonObject();
             if (credentialsAsJsonObject.get("id").getAsString().equalsIgnoreCase(connectableLayer.id())) {
-                if (!credentialsAsJsonObject.get("active").getAsBoolean()) {
-                    Evelon.LOGGER.warn("Repository use " + connectableLayer.id() + ", but session is inactive.");
-                    return;
-                }
-                connectableLayer.connection().connect(CREDENTIALS_GSON.fromJson(credentials, connectableLayer.templateCredentials().getClass()));
+                continue;
+            }
+            if (!credentialsAsJsonObject.get("active").getAsBoolean()) {
+                Evelon.LOGGER.warn("Repository use {}, but session is inactive.", connectableLayer.id());
                 return;
             }
+            connectableLayer.connection().connect(CREDENTIALS_GSON.fromJson(credentials, connectableLayer.templateCredentials().getClass()));
+            return;
         }
         elements.add(CREDENTIALS_GSON.toJsonTree(connectableLayer.templateCredentials()));
         Files.writeString(CONFIGURATION_PATH, CREDENTIALS_GSON.toJson(elements));

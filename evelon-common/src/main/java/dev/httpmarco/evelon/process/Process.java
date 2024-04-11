@@ -1,6 +1,5 @@
 package dev.httpmarco.evelon.process;
 
-import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.repository.RepositoryEntry;
 import dev.httpmarco.evelon.stage.Stage;
