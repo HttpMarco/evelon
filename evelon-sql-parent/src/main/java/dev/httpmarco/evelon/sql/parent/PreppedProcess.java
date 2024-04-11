@@ -16,6 +16,6 @@ public final class PreppedProcess implements Process {
             throw new UnsupportedOperationException("Cannot create table for non-substage");
         }
 
-        System.err.println(CREATE_TABLE_QUERY + stage.asSubStage().getClass().getName());
+        stage.asSubStage().initialize(repository.entry());
     }
 }

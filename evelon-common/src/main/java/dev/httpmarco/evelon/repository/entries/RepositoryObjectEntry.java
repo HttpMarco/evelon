@@ -3,12 +3,14 @@ package dev.httpmarco.evelon.repository.entries;
 import dev.httpmarco.evelon.annotations.Row;
 import dev.httpmarco.evelon.repository.RepositoryEntry;
 import dev.httpmarco.evelon.repository.RepositoryEntryType;
+import lombok.Getter;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public final class RepositoryObjectEntry extends RepositoryEntry {
 
+    @Getter
     private final Set<RepositoryEntry> entries = new HashSet<>();
 
     public RepositoryObjectEntry(String id, Class<?> clazz) {

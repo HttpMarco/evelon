@@ -1,4 +1,12 @@
 package dev.httpmarco.evelon.stages;
 
-public interface SubStage extends Stage{
+import dev.httpmarco.evelon.repository.RepositoryEntry;
+
+import java.util.Set;
+
+public interface SubStage<E extends RepositoryEntry> extends Stage {
+
+
+    Set<RepositoryEntry> childrenEntries(E repositoryEntry);
+
 }
