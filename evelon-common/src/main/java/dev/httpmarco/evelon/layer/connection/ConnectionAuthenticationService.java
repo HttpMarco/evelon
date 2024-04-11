@@ -3,6 +3,7 @@ package dev.httpmarco.evelon.layer.connection;
 import com.google.gson.*;
 import dev.httpmarco.evelon.Evelon;
 import lombok.SneakyThrows;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,12 +25,8 @@ public final class ConnectionAuthenticationService {
         Files.newByteChannel(CONFIGURATION_PATH, Set.of(StandardOpenOption.CREATE, StandardOpenOption.WRITE)).close();
     }
 
-    @SneakyThrows
-    public static <C extends ConnectionAuthentication> void appendCredentials(ConnectableLayer<?, C, ?> connectableLayer) {
+    public static void appendCredentials(ConnectableLayer<?> connectableLayer) {
         var elements = readCredentialsContext();
-        if (elements == null) {
-            elements = new JsonArray();
-        }
         for (var credentials : elements) {
             if (!credentials.isJsonObject()) {
                 continue;
@@ -46,11 +43,20 @@ public final class ConnectionAuthenticationService {
             return;
         }
         elements.add(CREDENTIALS_GSON.toJsonTree(connectableLayer.templateCredentials()));
-        Files.writeString(CONFIGURATION_PATH, CREDENTIALS_GSON.toJson(elements));
+        updateCredentialsContext(elements);
     }
 
     @SneakyThrows
-    private static JsonArray readCredentialsContext() {
-        return CREDENTIALS_GSON.fromJson(Files.newBufferedReader(CONFIGURATION_PATH), JsonArray.class);
+    private static @NotNull JsonArray readCredentialsContext() {
+        var authenticationArray = CREDENTIALS_GSON.fromJson(Files.newBufferedReader(CONFIGURATION_PATH), JsonArray.class);
+        if (authenticationArray == null) {
+            return new JsonArray();
+        }
+        return authenticationArray;
+    }
+
+    @SneakyThrows
+    private static void updateCredentialsContext(JsonArray elements) {
+        Files.writeString(CONFIGURATION_PATH, CREDENTIALS_GSON.toJson(elements));
     }
 }

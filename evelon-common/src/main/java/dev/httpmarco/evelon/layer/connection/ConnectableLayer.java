@@ -7,13 +7,15 @@ import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class ConnectableLayer<A extends ConnectionAuthentication, C extends Connection<?>> extends PreppedLayer {
+public abstract class ConnectableLayer<C extends Connection<?>> extends PreppedLayer {
 
-    private final A templateCredentials;
+    private final ConnectionAuthentication templateCredentials;
 
-    public ConnectableLayer(@NotNull A templateCredentials) {
+    public ConnectableLayer(@NotNull ConnectionAuthentication templateCredentials) {
         super(templateCredentials.id());
         this.templateCredentials = templateCredentials;
+
+        ConnectionAuthenticationService.appendCredentials(this);
     }
 
     public abstract C connection();

@@ -1,7 +1,5 @@
 package dev.httpmarco.evelon.layer;
 
-import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
-import dev.httpmarco.evelon.layer.connection.ConnectionAuthenticationService;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -17,13 +15,9 @@ public final class LayerService {
         return layers.computeIfAbsent(layer, LayerService::createLayer);
     }
 
-    @Contract(pure = true)
     @SneakyThrows
-    private static <T extends Layer> @NotNull T createLayer(Class<T> layer) {
-        var instance = layer.getConstructor().newInstance();
-        if (instance instanceof ConnectableLayer<?, ?, ?> connectableLayer) {
-            ConnectionAuthenticationService.appendCredentials(connectableLayer);
-        }
-        return instance;
+    @Contract("_ -> !null")
+    private static <T extends Layer> @NotNull T createLayer(@NotNull Class<T> layer) {
+        return layer.getConstructor().newInstance();
     }
 }
