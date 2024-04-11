@@ -14,7 +14,7 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
     private final HikariConnection connection;
 
     public HikariParentConnectionLayer(A templateCredentials) {
-        super(templateCredentials);
+        super(templateCredentials, new HikariProcessRunner());
 
         this.connection = new HikariConnection(protocol());
     }
@@ -30,6 +30,6 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
      */
     @Override
     public void prepped(@NotNull Repository<?> repository) {
-        //todo
+        runner().apply(new PreppedProcess());
     }
 }
