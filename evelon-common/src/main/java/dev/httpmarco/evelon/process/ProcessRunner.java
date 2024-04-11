@@ -12,16 +12,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public abstract class ProcessRunner<Q> {
 
-    private final Layer<Q> layer;
-
-    /**
-     * Create an update process without results
-     * @param repository
-     * @param resolver
-     */
     public void update(Repository<?> repository, ProcessResolver<Q> resolver) {
         var render = resolver.render();
-        var query = render.run(repository.entry().stage(layer), repository, repository.entry());
+        var query = render.run(repository, repository.entry());
 
         this.update(query);
     }

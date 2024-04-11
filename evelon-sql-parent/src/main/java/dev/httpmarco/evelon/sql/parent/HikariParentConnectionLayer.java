@@ -19,7 +19,7 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
         super(templateCredentials);
 
         this.connection = new HikariConnection(protocol());
-        this.runner = new HikariLayerProcessRunner(this);
+        this.runner = new HikariLayerProcessRunner();
     }
 
     public ProtocolDriver<A> protocol() {
