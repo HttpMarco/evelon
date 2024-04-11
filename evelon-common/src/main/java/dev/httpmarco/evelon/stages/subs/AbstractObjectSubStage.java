@@ -13,7 +13,7 @@ public abstract class AbstractObjectSubStage<T> implements SubStage<RepositoryOb
 
     @Override
     public void initialize(RepositoryObjectEntry entry, Layer layer) {
-        System.err.println(bindItem(childrenEntries(entry).stream().filter(it -> {
+        System.err.println(bindItem(entry, childrenEntries(entry).stream().filter(it -> {
             var stage = layer.stageOf(it);
             if (stage.isSubStage()) {
                 stage.asSubStage().initialize((RepositoryObjectEntry) it, layer);
@@ -30,6 +30,6 @@ public abstract class AbstractObjectSubStage<T> implements SubStage<RepositoryOb
 
     public abstract T transform(RepositoryEntry entry);
 
-    public abstract T bindItem(List<T> transformedElements);
+    public abstract T bindItem(RepositoryObjectEntry owner, List<T> transformedElements);
 
 }
