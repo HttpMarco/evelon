@@ -8,9 +8,9 @@ import lombok.Getter;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
 public final class RepositoryObjectEntry extends RepositoryEntry {
 
-    @Getter
     private final Set<RepositoryEntry> entries = new HashSet<>();
 
     public RepositoryObjectEntry(String id, Class<?> clazz) {

@@ -3,6 +3,7 @@ package dev.httpmarco.evelon.sql.parent;
 import dev.httpmarco.evelon.repository.RepositoryEntry;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public enum SqlType {
 
@@ -25,7 +26,7 @@ public enum SqlType {
     MEDIUMTEXT,
     LONGTEXT,
     JSON,
-    UUID,
+    UUID(java.util.UUID.class),
 
     BINARY,
     VARBINARY,
