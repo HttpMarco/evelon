@@ -7,6 +7,7 @@ import dev.httpmarco.evelon.stages.Stage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +32,7 @@ public abstract class Layer {
         return this;
     }
 
-    public Stage stageOf(RepositoryEntry entry) {
+    public Stage stageOf(@NotNull RepositoryEntry entry) {
         return stages.get(entry.type());
     }
 

@@ -7,9 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 @Getter
 @Accessors(fluent = true)
 @RequiredArgsConstructor
@@ -21,13 +18,9 @@ public class RepositoryEntry {
     // current type of field
     private final RepositoryEntryType type;
     // the constants of the entry
-    private final Map<RepositoryConstant<?>, Object> constants = new ConcurrentHashMap<>();
+    private final RepositoryConstantPool constants = new RepositoryConstantPool();
 
     public Stage stage(@NotNull Layer layer) {
         return layer.stageOf(this);
-    }
-
-    public <T> void constant(RepositoryConstant<T> constant, T value) {
-        constants.put(constant, value);
     }
 }
