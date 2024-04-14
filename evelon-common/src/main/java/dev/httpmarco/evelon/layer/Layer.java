@@ -14,7 +14,7 @@ import java.util.Map;
 
 @AllArgsConstructor
 @Accessors(fluent = true)
-public abstract class Layer {
+public abstract class Layer<Q> {
 
     // general auth binding id
     @Getter
@@ -22,21 +22,20 @@ public abstract class Layer {
 
     // executor for every process
     @Getter
-    private final ProcessRunner runner = generateRunner();
+    private final ProcessRunner<Q> runner = generateRunner();
 
     // all stages for this layer mapped by their type
     private final Map<RepositoryEntryType, Stage> stages = new HashMap<>();
 
-    public Layer appendStage(RepositoryEntryType type, Stage stage) {
+    public void overwrite(RepositoryEntryType type, Stage stage) {
         stages.put(type, stage);
-        return this;
     }
 
     public Stage stageOf(@NotNull RepositoryEntry entry) {
         return stages.get(entry.type());
     }
 
-    public ProcessRunner generateRunner() {
-        return new ProcessRunner(this);
+    public ProcessRunner<Q> generateRunner() {
+        return new ProcessRunner<>(this);
     }
 }

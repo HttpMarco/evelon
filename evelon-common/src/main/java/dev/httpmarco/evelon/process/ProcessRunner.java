@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 @AllArgsConstructor
-public class ProcessRunner {
+public class ProcessRunner<Q> {
 
     private final Layer layer;
 
@@ -14,4 +14,11 @@ public class ProcessRunner {
         process.run(repository, layer);
     }
 
+    public void update(Q query) {
+
+    }
+
+    public void query(Q query) {
+
+    }
 }

@@ -3,7 +3,6 @@ package dev.httpmarco.evelon.sql.parent;
 import dev.httpmarco.evelon.repository.RepositoryEntry;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 public enum SqlType {
 
