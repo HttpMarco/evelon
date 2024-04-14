@@ -14,8 +14,4 @@ public final class HikariConnectionRunner extends ProcessRunner<String> {
         System.err.println("Update: " + query);
     }
 
-    @Override
-    public void query(String query) {
-        System.err.println("Query: " + query);
-    }
 }

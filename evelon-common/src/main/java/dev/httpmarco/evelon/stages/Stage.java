@@ -5,8 +5,6 @@ import dev.httpmarco.evelon.repository.entries.RepositoryObjectEntry;
 
 public interface Stage {
 
-    void initialize(RepositoryObjectEntry entry, Layer layer);
-
     default boolean isSubStage() {
         return this instanceof SubStage;
     }

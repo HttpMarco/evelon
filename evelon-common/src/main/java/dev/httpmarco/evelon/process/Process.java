@@ -2,9 +2,10 @@ package dev.httpmarco.evelon.process;
 
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.repository.Repository;
+import dev.httpmarco.evelon.repository.RepositoryEntry;
 
-public interface Process {
+public abstract class Process<Q> {
 
-    void run(Repository<?> repository, Layer<?> layer);
+    public abstract Q run(RepositoryEntry entry, Layer<?> layer);
 
 }

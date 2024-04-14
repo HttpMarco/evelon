@@ -7,6 +7,7 @@ import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.repository.RepositoryEntryType;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriver;
+import dev.httpmarco.evelon.sql.parent.process.HikariPreppedProcess;
 import dev.httpmarco.evelon.sql.parent.stages.SqlAbstractObjectSubStage;
 import dev.httpmarco.evelon.stages.subs.AbstractParameterStage;
 import lombok.Getter;
@@ -40,8 +41,7 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
      */
     @Override
     public void prepped(@NotNull Repository<?> repository) {
-        //todo
-        // runner();
+         runner().apply(new HikariPreppedProcess(), repository);
     }
 
     @Override

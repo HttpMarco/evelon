@@ -25,7 +25,7 @@ public final class ConnectionAuthenticationService {
         Files.newByteChannel(CONFIGURATION_PATH, Set.of(StandardOpenOption.CREATE, StandardOpenOption.WRITE)).close();
     }
 
-    public static void appendCredentials(ConnectableLayer<?> connectableLayer, ConnectionAuthentication authentication) {
+    public static void appendCredentials(ConnectableLayer<?, ?> connectableLayer, ConnectionAuthentication authentication) {
         var elements = readCredentialsContext();
         for (var credentials : elements) {
             if (!credentials.isJsonObject()) {

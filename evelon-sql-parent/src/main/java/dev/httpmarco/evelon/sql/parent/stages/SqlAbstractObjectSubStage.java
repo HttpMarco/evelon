@@ -11,8 +11,6 @@ import java.util.List;
 
 public final class SqlAbstractObjectSubStage extends AbstractObjectSubStage<String> {
 
-    private static final String TABLE_CREATE_QUERY = "CREATE TABLE IF NOT EXISTS %s(%s%s);";
-
     @Override
     public @NotNull String transform(@NotNull RepositoryEntry entry) {
         var type = SqlType.find(entry);
@@ -23,8 +21,8 @@ public final class SqlAbstractObjectSubStage extends AbstractObjectSubStage<Stri
     }
 
     @Override
-    public @NotNull String bindItem(RepositoryObjectEntry owner, List<String> transformedElements) {
+    public @NotNull String bindItem(List<String> transformedElements) {
         // todo add foreign keys
-        return TABLE_CREATE_QUERY.formatted(owner.id(), String.join(", ", transformedElements), "");
+        return String.join(", ", transformedElements);
     }
 }
