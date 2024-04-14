@@ -20,7 +20,7 @@ public class RepositoryEntry {
     // the constants of the entry
     private final RepositoryConstantPool constants = new RepositoryConstantPool();
 
-    public Stage stage(@NotNull Layer layer) {
+    public Stage stage(@NotNull Layer<?> layer) {
         return layer.stageOf(this);
     }
 }

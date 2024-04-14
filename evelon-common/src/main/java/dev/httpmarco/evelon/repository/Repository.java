@@ -1,7 +1,7 @@
 package dev.httpmarco.evelon.repository;
 
 import dev.httpmarco.evelon.layer.Layer;
-import dev.httpmarco.evelon.repository.entries.RepositoryObjectEntry;
+import dev.httpmarco.evelon.repository.external.RepositoryObjectEntry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;

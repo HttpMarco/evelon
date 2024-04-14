@@ -8,8 +8,8 @@ import dev.httpmarco.evelon.repository.RepositoryEntryType;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriver;
 import dev.httpmarco.evelon.sql.parent.process.HikariPreppedProcess;
-import dev.httpmarco.evelon.sql.parent.stages.SqlAbstractObjectSubStage;
-import dev.httpmarco.evelon.stages.subs.AbstractParameterStage;
+import dev.httpmarco.evelon.sql.parent.stages.SqlObjectSubStage;
+import dev.httpmarco.evelon.sql.parent.stages.SqlParameterStage;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
@@ -26,8 +26,8 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
         this.connection = new HikariConnection(protocol());
 
         // add default type handler
-        overwrite(RepositoryEntryType.OBJECT, new SqlAbstractObjectSubStage());
-        overwrite(RepositoryEntryType.PARAMETER, new AbstractParameterStage());
+        overwrite(RepositoryEntryType.OBJECT, new SqlObjectSubStage());
+        overwrite(RepositoryEntryType.PARAMETER, new SqlParameterStage());
     }
 
     public ProtocolDriver<A> protocol() {

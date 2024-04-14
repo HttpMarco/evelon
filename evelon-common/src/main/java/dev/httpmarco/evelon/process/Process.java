@@ -6,6 +6,6 @@ import dev.httpmarco.evelon.repository.RepositoryEntry;
 
 public abstract class Process<Q> {
 
-    public abstract Q run(RepositoryEntry entry, Layer<?> layer);
+    public abstract Q run(RepositoryEntry entry, Layer<Q> layer);
 
 }

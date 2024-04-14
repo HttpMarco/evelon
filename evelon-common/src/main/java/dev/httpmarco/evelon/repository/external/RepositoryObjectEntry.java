@@ -1,17 +1,12 @@
-package dev.httpmarco.evelon.repository.entries;
+package dev.httpmarco.evelon.repository.external;
 
 import dev.httpmarco.evelon.annotations.Row;
-import dev.httpmarco.evelon.repository.RepositoryEntry;
 import dev.httpmarco.evelon.repository.RepositoryEntryType;
+import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
 import lombok.Getter;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Getter
-public final class RepositoryObjectEntry extends RepositoryEntry {
-
-    private final Set<RepositoryEntry> entries = new HashSet<>();
+public final class RepositoryObjectEntry extends RepositoryExternalEntry {
 
     public RepositoryObjectEntry(String id, Class<?> clazz) {
         super(id, clazz, RepositoryEntryType.OBJECT);
@@ -31,7 +26,7 @@ public final class RepositoryObjectEntry extends RepositoryEntry {
                     fieldId = row.id();
                 }
             }
-            this.entries.add(RepositoryEntryType.find(fieldId, field));
+            children().add(RepositoryEntryType.find(fieldId, field));
         }
     }
 }

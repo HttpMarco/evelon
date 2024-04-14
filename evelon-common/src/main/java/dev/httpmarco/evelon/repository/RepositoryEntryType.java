@@ -1,8 +1,8 @@
 package dev.httpmarco.evelon.repository;
 
-import dev.httpmarco.evelon.repository.entries.RepositoryCollectionEntry;
-import dev.httpmarco.evelon.repository.entries.RepositoryMapEntry;
-import dev.httpmarco.evelon.repository.entries.RepositoryObjectEntry;
+import dev.httpmarco.evelon.repository.external.RepositoryCollectionEntry;
+import dev.httpmarco.evelon.repository.external.RepositoryMapEntry;
+import dev.httpmarco.evelon.repository.external.RepositoryObjectEntry;
 import lombok.AllArgsConstructor;
 
 import java.lang.reflect.Field;

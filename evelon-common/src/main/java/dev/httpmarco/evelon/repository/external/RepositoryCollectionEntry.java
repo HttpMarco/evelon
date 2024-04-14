@@ -1,12 +1,13 @@
-package dev.httpmarco.evelon.repository.entries;
+package dev.httpmarco.evelon.repository.external;
 
 import dev.httpmarco.evelon.repository.RepositoryEntry;
 import dev.httpmarco.evelon.repository.RepositoryEntryType;
+import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 
-public final class RepositoryCollectionEntry extends RepositoryEntry {
+public final class RepositoryCollectionEntry extends RepositoryExternalEntry {
 
     private final RepositoryEntry componentEntry;
 

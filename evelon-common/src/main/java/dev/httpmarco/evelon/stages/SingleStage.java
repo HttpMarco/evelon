@@ -1,7 +1,9 @@
 package dev.httpmarco.evelon.stages;
 
-public interface SingleStage extends Stage {
+import dev.httpmarco.evelon.repository.RepositoryEntry;
 
+public interface SingleStage<T> extends Stage {
 
+    T transform(RepositoryEntry entry);
 
 }

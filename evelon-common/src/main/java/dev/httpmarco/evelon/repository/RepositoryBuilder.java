@@ -3,7 +3,7 @@ package dev.httpmarco.evelon.repository;
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.layer.PreppedLayer;
 import dev.httpmarco.evelon.layer.LayerService;
-import dev.httpmarco.evelon.repository.entries.RepositoryObjectEntry;
+import dev.httpmarco.evelon.repository.external.RepositoryObjectEntry;
 import dev.httpmarco.evelon.repository.exception.RepositoryTypeNotAllowedException;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
