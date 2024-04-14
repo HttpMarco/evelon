@@ -5,6 +5,6 @@ import dev.httpmarco.evelon.repository.Repository;
 
 public interface Process {
 
-    void run(Repository<?> repository, Layer layer);
+    void run(Repository<?> repository, Layer<?> layer);
 
 }

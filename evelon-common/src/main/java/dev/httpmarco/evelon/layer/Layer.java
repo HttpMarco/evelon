@@ -35,7 +35,6 @@ public abstract class Layer<Q> {
         return stages.get(entry.type());
     }
 
-    public ProcessRunner<Q> generateRunner() {
-        return new ProcessRunner<>(this);
-    }
+    protected abstract ProcessRunner<Q> generateRunner();
+
 }

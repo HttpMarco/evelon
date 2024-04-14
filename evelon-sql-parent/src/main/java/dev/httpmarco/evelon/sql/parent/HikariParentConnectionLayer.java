@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.sql.parent;
 
 import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
+import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.repository.RepositoryEntryType;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
@@ -41,5 +42,10 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
     public void prepped(@NotNull Repository<?> repository) {
         //todo
         // runner();
+    }
+
+    @Override
+    public ProcessRunner<String> generateRunner() {
+        return new HikariConnectionRunner(this);
     }
 }
