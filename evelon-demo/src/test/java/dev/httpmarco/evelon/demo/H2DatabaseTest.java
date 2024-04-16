@@ -21,5 +21,11 @@ public final class H2DatabaseTest {
         void initialize() {
             assertNotNull(REPOSITORY = Repository.build(SimpleModel.class).withId("persons").withLayer(H2Layer.class).build());
         }
+
+        @Test
+        @Order(1)
+        void create() {
+            REPOSITORY.query().create(new SimpleModel('a', 8, 2000, true));
+        }
     }
 }

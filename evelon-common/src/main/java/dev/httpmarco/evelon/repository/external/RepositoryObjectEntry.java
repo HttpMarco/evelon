@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.repository.external;
 
-import dev.httpmarco.evelon.annotations.Row;
+import dev.httpmarco.evelon.repository.Row;
 import dev.httpmarco.evelon.repository.RepositoryEntryType;
 import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
 import lombok.Getter;

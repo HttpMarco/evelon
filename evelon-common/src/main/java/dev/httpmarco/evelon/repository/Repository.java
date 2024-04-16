@@ -2,6 +2,8 @@ package dev.httpmarco.evelon.repository;
 
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.repository.external.RepositoryObjectEntry;
+import dev.httpmarco.evelon.repository.query.Query;
+import dev.httpmarco.evelon.repository.query.RepositoryQuery;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -16,10 +18,15 @@ import java.util.Set;
 public final class Repository<T> {
 
     private final RepositoryObjectEntry entry;
-    private final Set<Layer> layers;
+    private final Set<Layer<?>> layers;
 
     @Contract(value = "_ -> new", pure = true)
     public static <R> @NotNull RepositoryBuilder<R> build(Class<R> clazz) {
         return new RepositoryBuilder<>(clazz);
+    }
+
+    @Contract(" -> new")
+    public @NotNull Query<T> query() {
+        return new RepositoryQuery<>(this);
     }
 }

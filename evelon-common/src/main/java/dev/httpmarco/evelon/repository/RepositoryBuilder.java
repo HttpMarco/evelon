@@ -14,7 +14,7 @@ import java.util.Set;
 public final class RepositoryBuilder<T> {
 
     private final Class<T> clazz;
-    private final Set<Layer> layers = new LinkedHashSet<>();
+    private final Set<Layer<?>> layers = new LinkedHashSet<>();
 
     private String id;
 

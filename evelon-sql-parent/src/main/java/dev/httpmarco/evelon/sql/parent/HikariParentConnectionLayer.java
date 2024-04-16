@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.repository.Repository;
+import dev.httpmarco.evelon.repository.query.Query;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriver;
 import dev.httpmarco.evelon.sql.parent.process.HikariPreppedProcess;
@@ -39,5 +40,10 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
     @Override
     public ProcessRunner<String> generateRunner() {
         return new HikariConnectionRunner(this);
+    }
+
+    @Override
+    public <T> Query<T> query(Repository<T> repository) {
+        return new HikariLayerQuery<>(repository, runner());
     }
 }
