@@ -27,5 +27,12 @@ public final class H2DatabaseTest {
         void create() {
             REPOSITORY.query().create(new SimpleModel('a', 8, 2000, true));
         }
+
+
+        @Test
+        @Order(20)
+        void delete() {
+            REPOSITORY.query().delete();
+        }
     }
 }
