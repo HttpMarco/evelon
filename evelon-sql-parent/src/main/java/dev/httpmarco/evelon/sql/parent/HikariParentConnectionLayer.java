@@ -19,7 +19,7 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
     private final HikariConnection connection;
 
     public HikariParentConnectionLayer(A templateCredentials) {
-        super(templateCredentials);
+        super(templateCredentials, new HikariFilterHandler());
         this.connection = new HikariConnection(protocol());
     }
 

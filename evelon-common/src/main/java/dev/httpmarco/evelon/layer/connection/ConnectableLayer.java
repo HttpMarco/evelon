@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.layer.connection;
 
+import dev.httpmarco.evelon.filtering.FilterHandler;
 import dev.httpmarco.evelon.layer.PreppedLayer;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -9,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 @Accessors(fluent = true)
 public abstract class ConnectableLayer<C extends Connection<?>, Q> extends PreppedLayer<Q> {
 
-    public ConnectableLayer(@NotNull ConnectionAuthentication authentication) {
-        super(authentication.id());
+    public ConnectableLayer(@NotNull ConnectionAuthentication authentication, FilterHandler<?, ?> filterHandler) {
+        super(authentication.id(), filterHandler);
 
         ConnectionAuthenticationService.appendCredentials(this, authentication);
     }

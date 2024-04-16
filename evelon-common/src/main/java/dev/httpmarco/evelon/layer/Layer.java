@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.layer;
 
+import dev.httpmarco.evelon.filtering.FilterHandler;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.repository.query.Query;
@@ -17,6 +18,8 @@ public abstract class Layer<Q> {
 
     // executor for every process
     private final ProcessRunner<Q> runner = generateRunner();
+
+    private final FilterHandler<?, ?> filterHandler;
 
     protected abstract ProcessRunner<Q> generateRunner();
 
