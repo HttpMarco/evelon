@@ -5,7 +5,9 @@ import dev.httpmarco.evelon.repository.RepositoryEntryType;
 import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -25,8 +27,9 @@ public final class RepositoryMapEntry extends RepositoryExternalEntry {
         this.valueEntry = new RepositoryEntry(id + "_value", null, null);
     }
 
+    @Contract(pure = true)
     @Override
-    public List<RepositoryEntry> children() {
+    public @Unmodifiable List<RepositoryEntry> children() {
         return List.of();
     }
 }

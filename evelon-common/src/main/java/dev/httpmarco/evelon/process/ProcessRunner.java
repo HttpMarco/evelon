@@ -10,7 +10,7 @@ public abstract class ProcessRunner<Q> {
 
     private final Layer<Q> layer;
 
-    public void apply(@NotNull Process<Q, ?> process, Repository<?> repository) {
+    public void apply(@NotNull Process<Q, ?> process, @NotNull Repository<?> repository) {
         var query = process.run(repository.entry(), layer);
 
         // todo add query method
