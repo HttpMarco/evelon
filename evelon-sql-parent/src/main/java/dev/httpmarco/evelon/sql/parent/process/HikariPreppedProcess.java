@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.layer.Layer;
+import dev.httpmarco.evelon.process.AbstractEntryProcess;
 import dev.httpmarco.evelon.process.Process;
 import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
 import dev.httpmarco.evelon.repository.RepositoryEntry;
@@ -10,18 +11,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public final class HikariPreppedProcess extends Process<String, HikariPreppedProcess> {
+public final class HikariPreppedProcess extends AbstractEntryProcess<String, HikariPreppedProcess> {
 
     private static final String CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS %s (%s%s);";
 
     @Override
-    public String run(RepositoryEntry entry, @NotNull Layer<String> layer) {
-        if (!(entry instanceof RepositoryExternalEntry objectEntry)) {
-            throw new UnsupportedOperationException("Processes can only be run with external entries!");
-        }
-
+    public String run(RepositoryExternalEntry entry) {
         var sqlEntries = new ArrayList<String>();
-        for (var child : objectEntry.children()) {
+        for (var child : entry.children()) {
             if (child instanceof RepositoryExternalEntry) {
                 this.newSubProcess(new HikariPreppedProcess());
                 continue;

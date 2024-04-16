@@ -1,30 +1,29 @@
 package dev.httpmarco.evelon.sql.parent.process;
 
-import dev.httpmarco.evelon.layer.Layer;
-import dev.httpmarco.evelon.process.Process;
-import dev.httpmarco.evelon.repository.RepositoryEntry;
+import dev.httpmarco.evelon.process.AbstractObjectProcess;
 import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public final class HikariCreateProcess extends Process<String, HikariCreateProcess> {
+public final class HikariCreateProcessAbstract extends AbstractObjectProcess<String, HikariCreateProcessAbstract> {
 
     private static final String CREATE_VALUE_SQL = "INSERT INTO %s (%s) VALUES (%s);";
 
-    @Override
-    public String run(@NotNull RepositoryEntry entry, Layer<String> layer) {
-        if (!(entry instanceof RepositoryExternalEntry objectEntry)) {
-            throw new UnsupportedOperationException("Processes can only be run with external entries!");
-        }
+    public HikariCreateProcessAbstract(Object value) {
+        super(value);
+    }
 
+    @Override
+    public String run(@NotNull RepositoryExternalEntry entry, Object o) {
         var sqlEntries = new ArrayList<String>();
-        for (var child : objectEntry.children()) {
+        for (var child : entry.children()) {
             if (child instanceof RepositoryExternalEntry) {
-                this.newSubProcess(new HikariCreateProcess());
+                this.newSubProcess(new HikariCreateProcessAbstract(null));
                 continue;
             }
             sqlEntries.add(child.id());
+            arguments().add("todo");
         }
 
         return CREATE_VALUE_SQL.formatted(entry.id(),

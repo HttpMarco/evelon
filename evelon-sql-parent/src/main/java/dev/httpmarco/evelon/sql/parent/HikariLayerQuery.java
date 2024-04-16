@@ -3,7 +3,7 @@ package dev.httpmarco.evelon.sql.parent;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.repository.query.Query;
-import dev.httpmarco.evelon.sql.parent.process.HikariCreateProcess;
+import dev.httpmarco.evelon.sql.parent.process.HikariCreateProcessAbstract;
 import dev.httpmarco.evelon.sql.parent.process.HikariDeleteProcess;
 import lombok.AllArgsConstructor;
 
@@ -15,7 +15,7 @@ public final class HikariLayerQuery<T> implements Query<T> {
 
     @Override
     public void create(T value) {
-        runner.apply(new HikariCreateProcess(), repository);
+        runner.apply(new HikariCreateProcessAbstract(value), repository);
     }
 
     @Override

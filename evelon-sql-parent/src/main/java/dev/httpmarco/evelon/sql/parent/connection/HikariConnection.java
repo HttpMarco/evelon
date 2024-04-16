@@ -67,8 +67,8 @@ public final class HikariConnection implements Connection<HikariDataSource> {
     }
 
     @Override
-    public void update(String query) {
-        this.transferPreparedStatement(query, PreparedStatement::executeUpdate);
+    public void update(String query, Object... arguments) {
+        this.transferPreparedStatement(query, PreparedStatement::executeUpdate, arguments);
     }
 
     private void transferPreparedStatement(final String query, HikariConnectionFunction<PreparedStatement, ?> function, @NotNull Object @NotNull ... arguments) {

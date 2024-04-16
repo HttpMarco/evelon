@@ -14,7 +14,7 @@ public final class HikariConnectionRunner extends ProcessRunner<String> {
     }
 
     @Override
-    public void update(String query) {
-        this.connection.update(query);
+    public void update(String query, Object... arguments) {
+        this.connection.update(query, arguments);
     }
 }

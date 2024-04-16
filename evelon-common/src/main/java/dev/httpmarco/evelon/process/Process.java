@@ -10,12 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Accessors(fluent = true)
 public abstract class Process<Q, P extends Process<Q, P>> {
 
-    @Accessors(fluent = true)
     private final List<P> childrenProcesses = new ArrayList<>();
-
-    public abstract Q run(RepositoryEntry entry, Layer<Q> layer);
+    private final List<Object> arguments = new ArrayList<>();
 
     public <S extends P> void newSubProcess(S subProcess) {
         this.childrenProcesses.add(subProcess);
