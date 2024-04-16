@@ -1,6 +1,9 @@
 package dev.httpmarco.evelon.sql.parent;
 
 import dev.httpmarco.evelon.repository.RepositoryEntry;
+import lombok.Getter;
+import lombok.experimental.Accessors;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,22 +58,28 @@ public enum SqlType {
 
     public static final List<SqlType> CACHED_TYPES = Arrays.stream(values()).toList();
 
-    private String type;
+    private final String format;
     private List<Class<?>> compatibleClasses;
 
     SqlType(String type) {
-        this.type = type;
+        this.format = type;
     }
 
     SqlType(Class<?>... compatibleClasses) {
+        this();
         this.compatibleClasses = List.of(compatibleClasses);
     }
 
     SqlType() {
-        this.type = this.name();
+        this.format = this.name();
     }
 
     public static SqlType find(RepositoryEntry entry) {
         return CACHED_TYPES.stream().filter(type -> type.compatibleClasses != null && type.compatibleClasses.contains(entry.clazz())).findFirst().orElse(UNKNOWN);
+    }
+
+    @Override
+    public String toString() {
+        return this.format;
     }
 }

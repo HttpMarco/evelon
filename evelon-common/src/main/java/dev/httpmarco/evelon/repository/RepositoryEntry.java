@@ -1,11 +1,8 @@
 package dev.httpmarco.evelon.repository;
 
-import dev.httpmarco.evelon.layer.Layer;
-import dev.httpmarco.evelon.stages.Stage;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
-import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Accessors(fluent = true)
@@ -20,7 +17,4 @@ public class RepositoryEntry {
     // the constants of the entry
     private final RepositoryConstantPool constants = new RepositoryConstantPool();
 
-    public Stage stage(@NotNull Layer<?> layer) {
-        return layer.stageOf(this);
-    }
 }

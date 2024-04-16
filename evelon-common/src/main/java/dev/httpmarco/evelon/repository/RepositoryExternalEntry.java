@@ -15,4 +15,5 @@ public abstract class RepositoryExternalEntry extends RepositoryEntry  {
     public RepositoryExternalEntry(String id, Class<?> clazz, RepositoryEntryType type) {
         super(id, clazz, type);
     }
+
 }
