@@ -16,7 +16,7 @@ h2 = "2.2.224"
 
 # logging
 log4j = "2.23.1"
-slf4j = "2.0.12"
+slf4j = "2.0.13"
 
 # plugins
 nexusPublish = "2.0.0"
