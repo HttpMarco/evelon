@@ -3,6 +3,8 @@ package dev.httpmarco.evelon.repository;
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.layer.PreppedLayer;
 import dev.httpmarco.evelon.layer.LayerService;
+import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
+import dev.httpmarco.evelon.layer.connection.ConnectionAuthenticationService;
 import dev.httpmarco.evelon.repository.external.RepositoryObjectEntry;
 import dev.httpmarco.evelon.repository.exception.RepositoryTypeNotAllowedException;
 import org.jetbrains.annotations.Contract;
@@ -29,8 +31,14 @@ public final class RepositoryBuilder<T> {
         return this;
     }
 
-    public RepositoryBuilder<T> withLayer(Class<? extends Layer> layer) {
-        this.layers.add(LayerService.layerOf(layer));
+    public RepositoryBuilder<T> withLayer(Class<? extends Layer> layerClass) {
+        var layer = LayerService.layerOf(layerClass);
+        this.layers.add(layer);
+
+        if(layer instanceof ConnectableLayer<?,?> connectableLayer) {
+            ConnectionAuthenticationService.appendCredentials(connectableLayer, connectableLayer.templateAuthentication());
+        }
+
         return this;
     }
 
@@ -41,7 +49,7 @@ public final class RepositoryBuilder<T> {
             // check all layers are ready to be used
             for (var layer : this.layers) {
                 // some layers need to be prepped before the object is returned
-                if (layer instanceof PreppedLayer preppedLayer) {
+                if (layer instanceof PreppedLayer<?> preppedLayer) {
                     preppedLayer.prepped(repository);
                 }
             }

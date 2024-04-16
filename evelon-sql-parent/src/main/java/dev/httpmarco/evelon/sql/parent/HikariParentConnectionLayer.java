@@ -16,11 +16,10 @@ import org.jetbrains.annotations.NotNull;
 @Accessors(fluent = true)
 public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentication> extends ConnectableLayer<HikariConnection, String> {
 
-    private final HikariConnection connection;
+    private HikariConnection connection;
 
     public HikariParentConnectionLayer(A templateCredentials) {
         super(templateCredentials, new HikariFilterHandler());
-        this.connection = new HikariConnection(protocol());
     }
 
     public ProtocolDriver<A> protocol() {
@@ -30,16 +29,16 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
     /**
      * Calculate and create the base of the specific repository
      *
-     * @param repository which is preparing for access2e34c
+     * @param repository which is preparing for access
      */
     @Override
     public void prepped(@NotNull Repository<?> repository) {
-         runner().apply(new HikariPreppedProcess(), repository);
+        runner().apply(new HikariPreppedProcess(), repository);
     }
 
     @Override
     public ProcessRunner<String> generateRunner() {
-        return new HikariConnectionRunner(this);
+        return new HikariConnectionRunner(this, this.connection = new HikariConnection(protocol()));
     }
 
     @Override

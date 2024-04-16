@@ -2,12 +2,18 @@ package dev.httpmarco.evelon.sql.parent.connection;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import dev.httpmarco.evelon.Evelon;
 import dev.httpmarco.evelon.layer.connection.Connection;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriver;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriverLoader;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 public final class HikariConnection implements Connection<HikariDataSource> {
@@ -58,5 +64,26 @@ public final class HikariConnection implements Connection<HikariDataSource> {
     @Override
     public HikariDataSource connection() {
         return this.dataSource;
+    }
+
+    @Override
+    public void update(String query) {
+        this.transferPreparedStatement(query, PreparedStatement::executeUpdate);
+    }
+
+    private void transferPreparedStatement(final String query, HikariConnectionFunction<PreparedStatement, ?> function, @NotNull Object @NotNull ... arguments) {
+        if (dataSource == null) {
+            return;
+        }
+        Evelon.LOGGER.debug(query);
+        try (var connection = dataSource.getConnection(); var statement = connection.prepareStatement(query)) {
+            for (int i = 0; i < arguments.length; i++) {
+                statement.setString(i + 1, Objects.toString(arguments[i]));
+            }
+            function.apply(statement);
+        } catch (SQLException exception) {
+            Evelon.LOGGER.error("Executing query {}", query);
+            throw new RuntimeException(exception);
+        }
     }
 }

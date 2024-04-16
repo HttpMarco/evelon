@@ -10,4 +10,6 @@ public interface Connection<C> {
 
     C connection();
 
+    void update(String query);
+
 }

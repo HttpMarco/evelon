@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Objects;
 import java.util.Set;
 
 public final class ConnectionAuthenticationService {
@@ -32,13 +33,16 @@ public final class ConnectionAuthenticationService {
                 continue;
             }
             var credentialsAsJsonObject = credentials.getAsJsonObject();
-            if (credentialsAsJsonObject.get("id").getAsString().equalsIgnoreCase(connectableLayer.id())) {
+
+            if (!credentialsAsJsonObject.get("id").getAsString().equalsIgnoreCase(connectableLayer.id())) {
                 continue;
             }
+
             if (!credentialsAsJsonObject.get("active").getAsBoolean()) {
                 Evelon.LOGGER.warn("Repository use {}, but session is inactive.", connectableLayer.id());
                 return;
             }
+
             connectableLayer.connection().connect(CREDENTIALS_GSON.fromJson(credentials, authentication.getClass()));
             return;
         }
@@ -49,10 +53,7 @@ public final class ConnectionAuthenticationService {
     @SneakyThrows
     private static @NotNull JsonArray readCredentialsContext() {
         var authenticationArray = CREDENTIALS_GSON.fromJson(Files.newBufferedReader(CONFIGURATION_PATH), JsonArray.class);
-        if (authenticationArray == null) {
-            return new JsonArray();
-        }
-        return authenticationArray;
+        return Objects.requireNonNullElseGet(authenticationArray, JsonArray::new);
     }
 
     @SneakyThrows
