@@ -7,7 +7,6 @@ import dev.httpmarco.evelon.repository.RepositoryEntry;
 import dev.httpmarco.evelon.sql.parent.HikariRepositoryConstant;
 import dev.httpmarco.evelon.sql.parent.SqlType;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 
 public final class HikariPreppedProcess extends Process<String> {
@@ -16,21 +15,19 @@ public final class HikariPreppedProcess extends Process<String> {
 
     @Override
     public String run(RepositoryEntry entry, @NotNull Layer<String> layer) {
-        var objectEntry = (RepositoryExternalEntry) entry;
+        if (!(entry instanceof RepositoryExternalEntry objectEntry)) {
+            throw new UnsupportedOperationException("Processes can only be run with external entries!");
+        }
 
-        // todo search subs
         var sqlEntries = new ArrayList<String>();
-
         for (var child : objectEntry.children()) {
-            if (child instanceof RepositoryExternalEntry externalEntry) {
-                // todo add sub project
+            if (child instanceof RepositoryExternalEntry) {
+                this.newSubProcess(child);
                 continue;
             }
             var type = SqlType.find(child);
-
             // on first initialization, we put the sql type into the constants
             child.constants().put(HikariRepositoryConstant.SQL_TYPE, type);
-
             sqlEntries.add(child.id() + " " + type);
         }
         return CREATE_TABLE_SQL.formatted(entry.id(), String.join(", ", sqlEntries), "");
