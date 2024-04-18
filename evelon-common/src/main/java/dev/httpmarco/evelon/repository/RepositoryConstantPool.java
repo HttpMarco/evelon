@@ -1,5 +1,7 @@
 package dev.httpmarco.evelon.repository;
 
+import org.jetbrains.annotations.Unmodifiable;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,7 +18,7 @@ public final class RepositoryConstantPool {
         constants.put(constant, value);
     }
 
-    public List<RepositoryConstant<?>> list() {
+    public @Unmodifiable List<RepositoryConstant<?>> list() {
         return List.copyOf(constants.keySet());
     }
 
