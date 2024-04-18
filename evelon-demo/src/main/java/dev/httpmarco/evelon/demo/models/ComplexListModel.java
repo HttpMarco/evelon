@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.demo.models;
 
 import dev.httpmarco.evelon.demo.models.objects.TestObject1;
 import dev.httpmarco.evelon.demo.models.objects.TestObject2;
+import dev.httpmarco.evelon.repository.PrimaryKey;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public final class ComplexListModel {
 
+    @PrimaryKey
     private final UUID uuid;
     private final List<TestObject1> permissions;
     private final List<TestObject2> groups;
