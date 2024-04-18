@@ -15,6 +15,9 @@ public abstract class ConnectableLayer<C extends Connection<?, ?>, Q> extends Pr
     public ConnectableLayer(@NotNull ConnectionAuthentication authentication, FilterHandler<?, ?> filterHandler) {
         super(authentication.id(), filterHandler);
         this.templateAuthentication = authentication;
+
+        // register for every connection a clean and separate connection shutdown hook
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> connection().close()));
     }
 
     public abstract C connection();
