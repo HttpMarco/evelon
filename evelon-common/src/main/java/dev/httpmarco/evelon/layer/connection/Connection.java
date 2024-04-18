@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.layer.connection;
 
-public interface Connection<C> {
+public interface Connection<C, Q> {
 
     void connect(ConnectionAuthentication credentials);
 
@@ -10,6 +10,6 @@ public interface Connection<C> {
 
     C connection();
 
-    void update(String query, Object... arguments);
+    void update(Q query);
 
 }

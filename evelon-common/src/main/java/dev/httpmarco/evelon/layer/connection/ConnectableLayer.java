@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class ConnectableLayer<C extends Connection<?>, Q> extends PreppedLayer<Q> {
+public abstract class ConnectableLayer<C extends Connection<?, ?>, Q> extends PreppedLayer<Q> {
 
     private final ConnectionAuthentication templateAuthentication;
 
