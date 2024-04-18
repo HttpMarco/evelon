@@ -44,8 +44,8 @@ public final class RepositoryBuilder<T> {
 
     @Contract(" -> new")
     public @NotNull Repository<T> build() {
-        if (RepositoryEntryType.find(id, clazz) instanceof RepositoryObjectEntry objectEntry) {
-            var repository = new Repository<T>(objectEntry, this.layers);
+        if (RepositoryEntryType.find(id, clazz, false) instanceof RepositoryObjectEntry entry) {
+            var repository = new Repository<T>(entry, this.layers);
             // check all layers are ready to be used
             for (var layer : this.layers) {
                 // some layers need to be prepped before the object is returned
