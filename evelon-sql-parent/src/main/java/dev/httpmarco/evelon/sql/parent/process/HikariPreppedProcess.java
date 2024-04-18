@@ -14,6 +14,7 @@ public final class HikariPreppedProcess extends AbstractEntryProcess<HikariExecu
 
     private static final String CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS %s (%s);";
 
+    //todo
     private static final String FOREIGN_FORMAT = "FOREIGN KEY (%s) REFERENCES persons_complex(%s)";
     private static final String PRIMARY_FORMAT = "PRIMARY KEY (%s)";
 
