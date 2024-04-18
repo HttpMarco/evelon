@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.repository.external;
 
+import dev.httpmarco.evelon.Evelon;
 import dev.httpmarco.evelon.repository.RepositoryEntry;
 import dev.httpmarco.evelon.repository.RepositoryEntryType;
 import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
@@ -14,7 +15,6 @@ public final class RepositoryCollectionEntry extends RepositoryExternalEntry {
     public RepositoryCollectionEntry(String id, @NotNull Field field) {
         super(id, field.getType(), RepositoryEntryType.COLLECTION);
 
-        //todo
-        this.componentEntry = RepositoryEntryType.find(field.getName() + "_value", (Class<?>) null);
+        this.componentEntry = RepositoryEntryType.find(field.getName() + "_value", Evelon.generics(field)[0]);
     }
 }
