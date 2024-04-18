@@ -1,5 +1,6 @@
 dependencies {
     testImplementation(libs.gson)
+    implementation(project(":evelon-common"))
     testRuntimeOnly(project(":evelon-common"))
     testImplementation(project(":evelon-common"))
 
