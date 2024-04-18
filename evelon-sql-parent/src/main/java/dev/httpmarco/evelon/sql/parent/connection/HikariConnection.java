@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -74,11 +75,11 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
         reverse(query.sqlQueries().keySet().stream()).forEach(s -> transferPreparedStatement(s, PreparedStatement::execute, query.sqlQueries().get(s)));
     }
 
-    private void transferPreparedStatement(final String query, HikariConnectionFunction<PreparedStatement, ?> function, @NotNull Object @NotNull ... arguments) {
+    private void transferPreparedStatement(final String query, HikariConnectionFunction<PreparedStatement, ?> function, @NotNull Object[] arguments) {
         if (dataSource == null) {
             return;
         }
-        Evelon.LOGGER.debug(query);
+        Evelon.LOGGER.debug("{} Objects: {}", query, Arrays.toString(arguments));
         try (var connection = dataSource.getConnection(); var statement = connection.prepareStatement(query)) {
             for (int i = 0; i < arguments.length; i++) {
                 statement.setString(i + 1, Objects.toString(arguments[i]));
