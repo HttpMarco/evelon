@@ -5,6 +5,7 @@ annotations = "24.1.0"
 
 # configuration
 gson = "2.10.1"
+osgan = "1.0.25-20240305.122920-1"
 
 # logging
 log4j = "2.23.1"
@@ -22,6 +23,11 @@ annotations = { group = "org.jetbrains", name = "annotations", version.ref = "an
 # configuration
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 
+osgan-utils = { group = "dev.httpmarco", name = "osgan-utils", version.ref = "osgan" }
+osgan-reflections = { group = "dev.httpmarco", name = "osgan-reflections", version.ref = "osgan" }
+osgan-files = { group = "dev.httpmarco", name = "osgan-files", version.ref = "osgan" }
+
+
 # logging
 slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
 log4j = { group = "org.apache.logging.log4j", name = "log4j-slf4j2-impl", version.ref = "log4j" }
@@ -33,4 +39,6 @@ h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
 [plugins]
 
 [bundles]
+
+osgan = ["osgan-utils", "osgan-reflections", "osgan-files"]
 utils = ["lombok", "annotations", "slf4j", "log4j"]
