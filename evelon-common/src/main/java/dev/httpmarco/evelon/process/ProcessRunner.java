@@ -10,8 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 public abstract class ProcessRunner<Q> {
 
-    private final Layer<Q> layer;
-
     @SuppressWarnings("unchecked")
     public void apply(@NotNull Process<Q, ?> process, @NotNull Repository<?> repository) {
         Q query = null;
@@ -22,10 +20,10 @@ public abstract class ProcessRunner<Q> {
 
         if (query != null) {
             // todo add query method
-            this.update(query, process.arguments().toArray(new Object[0]));
+            this.update(query);
         }
     }
 
-    public abstract void update(Q query, Object... arguments);
+    public abstract void update(Q query);
 
 }

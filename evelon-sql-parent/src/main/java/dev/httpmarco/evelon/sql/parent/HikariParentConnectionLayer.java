@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentication> extends ConnectableLayer<HikariConnection, String> {
+public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentication> extends ConnectableLayer<HikariConnection, HikariExecutionReference> {
 
     private HikariConnection connection;
 
@@ -37,8 +37,8 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
     }
 
     @Override
-    public ProcessRunner<String> generateRunner() {
-        return new HikariConnectionRunner(this, this.connection = new HikariConnection(protocol()));
+    public ProcessRunner<HikariExecutionReference> generateRunner() {
+        return new HikariConnectionRunner(this.connection = new HikariConnection(protocol()));
     }
 
     @Override

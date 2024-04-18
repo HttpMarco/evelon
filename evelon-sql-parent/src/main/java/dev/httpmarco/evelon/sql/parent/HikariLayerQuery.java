@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 public final class HikariLayerQuery<T> implements Query<T> {
 
     private final Repository<T> repository;
-    private ProcessRunner<String> runner;
+    private ProcessRunner<HikariExecutionReference> runner;
 
     @Override
     public void create(T value) {
