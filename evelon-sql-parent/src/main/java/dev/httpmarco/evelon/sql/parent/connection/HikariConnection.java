@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import dev.httpmarco.evelon.Evelon;
 import dev.httpmarco.evelon.layer.connection.Connection;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
+import dev.httpmarco.evelon.sql.parent.HikariExecutionReference;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriver;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriverLoader;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public final class HikariConnection implements Connection<HikariDataSource> {
+public final class HikariConnection implements Connection<HikariDataSource, HikariExecutionReference> {
 
     private @Nullable HikariDataSource dataSource;
     private final ProtocolDriver<? extends ConnectionAuthentication> protocolDriver;
@@ -67,8 +68,8 @@ public final class HikariConnection implements Connection<HikariDataSource> {
     }
 
     @Override
-    public void update(String query, Object... arguments) {
-        this.transferPreparedStatement(query, PreparedStatement::executeUpdate, arguments);
+    public void update(@NotNull HikariExecutionReference query) {
+        query.sqlQueries().forEach((s, objects) -> transferPreparedStatement(s, PreparedStatement::execute, objects));
     }
 
     private void transferPreparedStatement(final String query, HikariConnectionFunction<PreparedStatement, ?> function, @NotNull Object @NotNull ... arguments) {
