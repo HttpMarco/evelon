@@ -1,8 +1,6 @@
 package dev.httpmarco.evelon.repository.external;
 
-import dev.httpmarco.evelon.repository.Row;
-import dev.httpmarco.evelon.repository.RepositoryEntryType;
-import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
+import dev.httpmarco.evelon.repository.*;
 import lombok.Getter;
 
 @Getter
@@ -26,7 +24,14 @@ public final class RepositoryObjectEntry extends RepositoryExternalEntry {
                     fieldId = row.id();
                 }
             }
-            children().add(RepositoryEntryType.find(fieldId, field));
+
+            var entry = RepositoryEntryType.find(fieldId, field);
+
+            if (field.isAnnotationPresent(PrimaryKey.class)) {
+                entry.constants().add(RepositoryConstant.PRIMARY_KEY);
+            }
+
+            children().add(entry);
         }
     }
 }

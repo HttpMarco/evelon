@@ -12,6 +12,8 @@ public record RepositoryConstant<T>(String id) {
 
     public static final RepositoryConstant<RepositoryEntry> FOREIGN_REFERENCE = constant("FOREIGN_REFERENCE");
 
+    public static final RepositoryConstant<Void> PRIMARY_KEY = constant("PRIMARY_KEY");
+
     @Contract("_ -> new")
     private static <T> @NotNull RepositoryConstant<T> constant(String id) {
         return new RepositoryConstant<>(id);
