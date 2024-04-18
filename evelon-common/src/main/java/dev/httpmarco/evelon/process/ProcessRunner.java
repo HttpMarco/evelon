@@ -20,7 +20,7 @@ public abstract class ProcessRunner<Q> {
             query = (Q) entryProcess.run(repository.entry());
         }
 
-        if (query == null) {
+        if (query != null) {
             // todo add query method
             this.update(query, process.arguments().toArray(new Object[0]));
         }
