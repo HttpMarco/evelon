@@ -10,6 +10,7 @@ public record RepositoryConstant<T>(String id) {
     // repository constants for own field if is present
     public static final RepositoryConstant<Field> PARAM_FIELD = constant("PARAM_FIELD");
 
+    // todo change to list
     public static final RepositoryConstant<RepositoryEntry> FOREIGN_REFERENCE = constant("FOREIGN_REFERENCE");
 
     public static final RepositoryConstant<Void> PRIMARY_KEY = constant("PRIMARY_KEY");
