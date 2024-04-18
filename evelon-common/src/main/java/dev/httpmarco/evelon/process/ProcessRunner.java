@@ -8,10 +8,10 @@ import org.jetbrains.annotations.NotNull;
 public abstract class ProcessRunner<Q> {
 
     @SuppressWarnings("unchecked")
-    public void apply(@NotNull Process<Q, ?> process, @NotNull Repository<?> repository) {
+    public void apply(@NotNull Process process, @NotNull Repository<?> repository) {
         Q query = null;
 
-        if (process instanceof AbstractEntryProcess<?, ?> entryProcess) {
+        if (process instanceof AbstractEntryProcess<?> entryProcess) {
             query = (Q) entryProcess.run(repository.entry());
         }
 

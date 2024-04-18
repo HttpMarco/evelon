@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 @Accessors(fluent = true)
 @AllArgsConstructor
-public abstract class AbstractObjectProcess<Q, P extends Process<Q, P>> extends AbstractEntryProcess<Q, P> {
+public abstract class AbstractObjectProcess<Q> extends AbstractEntryProcess<Q> {
 
     private final Object value;
 

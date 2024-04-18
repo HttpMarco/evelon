@@ -5,7 +5,7 @@ import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
 import dev.httpmarco.evelon.sql.parent.HikariExecutionReference;
 import org.jetbrains.annotations.NotNull;
 
-public final class HikariDeleteProcess extends AbstractEntryProcess<HikariExecutionReference, HikariDeleteProcess> {
+public final class HikariDeleteProcess extends AbstractEntryProcess<HikariExecutionReference> {
 
     private static final String DELETE_SQL = "DELETE FROM %s;";
 

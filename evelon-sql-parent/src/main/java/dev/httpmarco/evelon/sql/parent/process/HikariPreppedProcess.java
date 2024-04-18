@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public final class HikariPreppedProcess extends AbstractEntryProcess<HikariExecutionReference, HikariPreppedProcess> {
+public final class HikariPreppedProcess extends AbstractEntryProcess<HikariExecutionReference> {
 
     private static final String CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS %s (%s);";
 
