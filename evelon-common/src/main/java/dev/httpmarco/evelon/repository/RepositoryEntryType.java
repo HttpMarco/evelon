@@ -1,5 +1,7 @@
 package dev.httpmarco.evelon.repository;
 
+import dev.httpmarco.evelon.Evelon;
+import dev.httpmarco.evelon.Utils;
 import dev.httpmarco.evelon.repository.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.repository.external.RepositoryMapEntry;
 import dev.httpmarco.evelon.repository.external.RepositoryObjectEntry;
@@ -11,7 +13,7 @@ import java.util.*;
 @AllArgsConstructor
 public enum RepositoryEntryType {
 
-    PARAMETER(it -> it.isEnum() || it.isPrimitive() || it.equals(UUID.class), (id, clazz, type, field) -> new RepositoryEntry(id, clazz, type)),
+    PARAMETER(it -> Utils.JAVA_ELEMENTS.contains(it) || it.isEnum() || it.isPrimitive() || it.equals(UUID.class), (id, clazz, type, field) -> new RepositoryEntry(id, clazz, type)),
     MAP(Map.class::isAssignableFrom, (id, clazz, type, field) -> new RepositoryMapEntry(id, field)),
     COLLECTION(Collection.class::isAssignableFrom, (id, clazz, type, field) -> new RepositoryCollectionEntry(id, field)),
     OBJECT(it -> !it.isSynthetic(), (id, clazz, field, type) -> new RepositoryObjectEntry(id, clazz));
