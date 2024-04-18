@@ -1,7 +1,6 @@
 package dev.httpmarco.evelon.repository.external;
 
 import dev.httpmarco.evelon.repository.RepositoryEntry;
-import dev.httpmarco.evelon.repository.RepositoryEntryType;
 import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -19,8 +18,8 @@ public final class RepositoryMapEntry extends RepositoryExternalEntry {
     private final RepositoryEntry keyEntry;
     private final RepositoryEntry valueEntry;
 
-    public RepositoryMapEntry(String id, @NotNull Field field) {
-        super(id, field.getType(), RepositoryEntryType.MAP);
+    public RepositoryMapEntry(String id, @NotNull Field field, RepositoryExternalEntry parent) {
+        super(id, field.getType(), parent);
 
         // todo read
         this.keyEntry = new RepositoryEntry(id + "_key", null, null);

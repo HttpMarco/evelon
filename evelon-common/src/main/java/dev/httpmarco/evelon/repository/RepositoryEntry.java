@@ -1,8 +1,6 @@
 package dev.httpmarco.evelon.repository;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 @Getter
@@ -14,8 +12,8 @@ public class RepositoryEntry {
     private final String id;
     // the original class of the entry
     private final Class<?> clazz;
-    // current type of field
-    private final RepositoryEntryType type;
+    // parent of the parameter
+    private final RepositoryExternalEntry parent;
     // the constants of the entry
     private final RepositoryConstantPool constants = new RepositoryConstantPool();
 

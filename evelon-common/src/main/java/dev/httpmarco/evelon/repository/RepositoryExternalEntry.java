@@ -12,7 +12,7 @@ public abstract class RepositoryExternalEntry extends RepositoryEntry  {
 
     private final List<RepositoryEntry> children = new LinkedList<>();
 
-    public RepositoryExternalEntry(String id, Class<?> clazz, RepositoryEntryType type) {
+    public RepositoryExternalEntry(String id, Class<?> clazz, RepositoryExternalEntry type) {
         super(id, clazz, type);
     }
 

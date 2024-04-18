@@ -36,7 +36,7 @@ public final class RepositoryBuilder<T> {
         var layer = LayerService.layerOf((Class<? extends Layer<?>>) layerClass);
         this.layers.add(layer);
 
-        if(layer instanceof ConnectableLayer<?,?> connectableLayer) {
+        if (layer instanceof ConnectableLayer<?, ?> connectableLayer) {
             ConnectionAuthenticationService.appendCredentials(connectableLayer, connectableLayer.templateAuthentication());
         }
 
@@ -45,7 +45,7 @@ public final class RepositoryBuilder<T> {
 
     @Contract(" -> new")
     public @NotNull Repository<T> build() {
-        if (RepositoryEntryType.find(id, clazz) instanceof RepositoryObjectEntry entry) {
+        if (RepositoryEntryFinder.find(clazz, null, id, null) instanceof RepositoryObjectEntry entry) {
             var repository = new Repository<T>(entry, this.layers);
             // check all layers are ready to be used
             for (var layer : this.layers) {

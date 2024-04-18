@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 public final class RepositoryObjectEntry extends RepositoryExternalEntry {
 
-    public RepositoryObjectEntry(String id, Class<?> clazz) {
-        super(id, clazz, RepositoryEntryType.OBJECT);
+    public RepositoryObjectEntry(String id, Class<?> clazz, RepositoryExternalEntry parent) {
+        super(id, clazz, parent);
 
         // todo read all superclass fields with osgan
         for (var field : clazz.getDeclaredFields()) {
@@ -25,13 +25,22 @@ public final class RepositoryObjectEntry extends RepositoryExternalEntry {
                 }
             }
 
-            var entry = RepositoryEntryType.find(fieldId, field);
+            var entry = RepositoryEntryFinder.find(field, fieldId, this);
 
             if (field.isAnnotationPresent(PrimaryKey.class)) {
                 entry.constants().add(RepositoryConstant.PRIMARY_KEY);
             }
-
             children().add(entry);
+        }
+
+        for (var child : children()) {
+            if (!(child instanceof RepositoryExternalEntry externalEntry)) {
+                continue;
+            }
+
+            for (var primary : primaries()) {
+                child.constants().put(RepositoryConstant.FOREIGN_REFERENCE, primary);
+            }
         }
     }
 }
