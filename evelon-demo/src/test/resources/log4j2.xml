@@ -3,12 +3,17 @@
 <Configuration>
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
-            <PatternLayout pattern="[%d{HH:mm:ss}] [%level]: %msg%n"/>
+            <PatternLayout pattern="[%d{HH:mm:ss} | %level]: %msg%n"/>
         </Console>
     </Appenders>
     <Loggers>
         <Root level="debug">
             <AppenderRef ref="console" level="debug"/>
         </Root>
+
+        <Logger name="com.zaxxer.hikari" level="error" additivity="false">
+            <AppenderRef ref="console"/>
+        </Logger>
     </Loggers>
 </Configuration>
+

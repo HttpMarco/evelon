@@ -5,6 +5,7 @@ import dev.httpmarco.evelon.demo.models.SimpleListModel;
 import dev.httpmarco.evelon.demo.models.SimpleModel;
 import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.sql.h2.H2Layer;
+import org.jetbrains.annotations.Async;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,6 +20,7 @@ public final class H2DatabaseTest {
         private static Repository<SimpleModel> REPOSITORY;
 
         @Test
+        @Async.Schedule
         @Order(0)
         void initialize() {
             assertNotNull(REPOSITORY = Repository.build(SimpleModel.class).withId("persons").withLayer(H2Layer.class).build());
