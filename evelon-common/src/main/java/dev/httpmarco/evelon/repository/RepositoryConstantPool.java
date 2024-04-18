@@ -18,10 +18,6 @@ public final class RepositoryConstantPool {
         constants.put(constant, value);
     }
 
-    public @Unmodifiable List<RepositoryConstant<?>> list() {
-        return List.copyOf(constants.keySet());
-    }
-
     public boolean has(RepositoryConstant<?> constant) {
         return constants.containsKey(constant);
     }

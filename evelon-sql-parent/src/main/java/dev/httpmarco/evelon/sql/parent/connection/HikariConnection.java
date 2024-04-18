@@ -92,7 +92,8 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
     }
 
     // todo remove with osgan
-    private static <T> Stream<T> reverse(Stream<T> input) {
+    @SuppressWarnings("unchecked")
+    private static <T> @NotNull Stream<T> reverse(@NotNull Stream<T> input) {
         Object[] temp = input.toArray();
         return (Stream<T>) IntStream.range(0, temp.length).mapToObj(i -> temp[temp.length - i - 1]);
     }

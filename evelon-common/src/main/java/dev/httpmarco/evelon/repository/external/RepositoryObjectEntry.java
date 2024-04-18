@@ -1,7 +1,6 @@
 package dev.httpmarco.evelon.repository.external;
 
 import dev.httpmarco.evelon.repository.*;
-import dev.httpmarco.evelon.repository.RepositoryConstant;
 import lombok.Getter;
 
 @Getter
@@ -36,7 +35,7 @@ public final class RepositoryObjectEntry extends RepositoryExternalEntry {
         }
 
         for (var child : children()) {
-            if (!(child instanceof RepositoryExternalEntry externalEntry)) {
+            if (!(child instanceof RepositoryExternalEntry)) {
                 continue;
             }
 
