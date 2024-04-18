@@ -1,8 +1,6 @@
 package dev.httpmarco.evelon.sql.parent;
 
 import dev.httpmarco.evelon.repository.RepositoryEntry;
-import lombok.Getter;
-import lombok.experimental.Accessors;
 
 import java.util.Arrays;
 import java.util.List;
