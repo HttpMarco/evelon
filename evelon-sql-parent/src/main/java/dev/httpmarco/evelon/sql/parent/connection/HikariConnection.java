@@ -15,6 +15,8 @@ import org.jetbrains.annotations.Nullable;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Objects;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public final class HikariConnection implements Connection<HikariDataSource, HikariExecutionReference> {
@@ -69,7 +71,7 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
 
     @Override
     public void update(@NotNull HikariExecutionReference query) {
-        query.sqlQueries().forEach((s, objects) -> transferPreparedStatement(s, PreparedStatement::execute, objects));
+        reverse(query.sqlQueries().keySet().stream()).forEach(s -> transferPreparedStatement(s, PreparedStatement::execute, query.sqlQueries().get(s)));
     }
 
     private void transferPreparedStatement(final String query, HikariConnectionFunction<PreparedStatement, ?> function, @NotNull Object @NotNull ... arguments) {
@@ -86,5 +88,11 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
             Evelon.LOGGER.error("Executing query {}", query);
             throw new RuntimeException(exception);
         }
+    }
+
+    // todo remove with osgan
+    private static <T> Stream<T> reverse(Stream<T> input) {
+        Object[] temp = input.toArray();
+        return (Stream<T>) IntStream.range(0, temp.length).mapToObj(i -> temp[temp.length - i - 1]);
     }
 }
