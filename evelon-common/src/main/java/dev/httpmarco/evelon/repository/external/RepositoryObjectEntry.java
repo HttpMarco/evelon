@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.repository.external;
 
 import dev.httpmarco.evelon.repository.*;
+import dev.httpmarco.evelon.repository.RepositoryConstant;
 import lombok.Getter;
 
 @Getter
@@ -26,6 +27,7 @@ public final class RepositoryObjectEntry extends RepositoryExternalEntry {
             }
 
             var entry = RepositoryEntryFinder.find(field, fieldId, this);
+            entry.constants().put(RepositoryConstant.PARAM_FIELD, field);
 
             if (field.isAnnotationPresent(PrimaryKey.class)) {
                 entry.constants().add(RepositoryConstant.PRIMARY_KEY);

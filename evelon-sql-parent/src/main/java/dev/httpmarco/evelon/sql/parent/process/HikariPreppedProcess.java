@@ -46,6 +46,7 @@ public final class HikariPreppedProcess extends AbstractEntryProcess<HikariExecu
             sqlEntries.add(PRIMARY_FORMAT.formatted(String.join(", ", sqlPrimaryKeys)));
         }
 
+        //todo add multiplay foreignkeys
         if (entry.constants().has(RepositoryConstant.FOREIGN_REFERENCE)) {
             var keyReference = entry.constants().get(RepositoryConstant.FOREIGN_REFERENCE);
 
