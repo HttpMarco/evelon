@@ -2,11 +2,13 @@ package dev.httpmarco.evelon.repository;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Getter
 @Accessors(fluent = true)
 @RequiredArgsConstructor
+@ToString
 public class RepositoryEntry {
 
     private final String id;

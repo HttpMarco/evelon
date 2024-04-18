@@ -6,6 +6,6 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public final class HikariRepositoryConstant {
 
-    public static final RepositoryConstant<SqlType> SQL_TYPE = new RepositoryConstant<>();
+    public static final RepositoryConstant<SqlType> SQL_TYPE = new RepositoryConstant<>("SQL_TYPE");
 
 }
