@@ -31,8 +31,9 @@ public final class RepositoryBuilder<T> {
         return this;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public RepositoryBuilder<T> withLayer(Class<? extends Layer> layerClass) {
-        var layer = LayerService.layerOf(layerClass);
+        var layer = LayerService.layerOf((Class<? extends Layer<?>>) layerClass);
         this.layers.add(layer);
 
         if(layer instanceof ConnectableLayer<?,?> connectableLayer) {
