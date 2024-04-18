@@ -19,21 +19,22 @@ public final class RepositoryEntryFinder {
 
     @Contract("_, _, _, _ -> new")
     public static @NotNull RepositoryEntry find(Class<?> clazz, Field field, String id, RepositoryExternalEntry parent) {
+        var externalId = parent != null ? parent.id() + "_" + id : id;
 
         if (Utils.JAVA_ELEMENTS.contains(clazz) || clazz.isEnum() || clazz.isPrimitive() || clazz.equals(UUID.class)) {
             return new RepositoryEntry(id, clazz, parent);
         }
 
         if (Map.class.isAssignableFrom(clazz)) {
-            return new RepositoryMapEntry(id, field, parent);
+            return new RepositoryMapEntry(externalId, field, parent);
         }
 
         if (Collection.class.isAssignableFrom(clazz)) {
-            return new RepositoryCollectionEntry(id, field, parent);
+            return new RepositoryCollectionEntry(externalId, field, parent);
         }
 
         if (!clazz.isSynthetic()) {
-            return new RepositoryObjectEntry(id, clazz, parent);
+            return new RepositoryObjectEntry(externalId, clazz, parent);
         }
 
         throw new UnsupportedEntryTypeException(clazz);
