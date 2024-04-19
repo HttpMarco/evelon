@@ -38,10 +38,7 @@ public final class RepositoryObjectEntry extends RepositoryExternalEntry {
             if (!(child instanceof RepositoryExternalEntry)) {
                 continue;
             }
-
-            for (var primary : primaries()) {
-                child.constants().put(RepositoryConstant.FOREIGN_REFERENCE, primary);
-            }
+            child.constants().put(RepositoryConstant.FOREIGN_REFERENCE, primaries());
         }
     }
 }
