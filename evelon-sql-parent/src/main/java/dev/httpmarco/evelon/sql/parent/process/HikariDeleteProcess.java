@@ -11,8 +11,6 @@ public final class HikariDeleteProcess extends AbstractEntryProcess<HikariExecut
 
     @Override
     public HikariExecutionReference run(@NotNull RepositoryExternalEntry entry) {
-        var reference = new HikariExecutionReference();
-        reference.stack(DELETE_SQL.formatted(entry.id()));
-        return reference;
+        return new HikariExecutionReference().bind(DELETE_SQL.formatted(entry.id()));
     }
 }

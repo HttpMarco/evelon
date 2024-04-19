@@ -14,12 +14,13 @@ public final class HikariExecutionReference {
 
     private final HashMap<String, Object[]> sqlQueries = new LinkedHashMap<>();
 
-    public void stack(String query, Object[] parameters) {
+    public HikariExecutionReference bind(String query, Object[] parameters) {
         this.sqlQueries.put(query, parameters);
+        return this;
     }
 
-    public void stack(String query) {
-        this.sqlQueries.put(query, new Object[0]);
+    public HikariExecutionReference bind(String query) {
+        return this.bind(query, new Object[0]);
     }
 
     public void append(@NotNull HikariExecutionReference reference) {
