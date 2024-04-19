@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.repository.external;
 
 import dev.httpmarco.evelon.repository.RepositoryEntry;
 import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
+import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Contract;
@@ -21,9 +22,8 @@ public final class RepositoryMapEntry extends RepositoryExternalEntry {
     public RepositoryMapEntry(String id, @NotNull Field field, RepositoryExternalEntry parent) {
         super(id, field.getType(), parent);
 
-        // todo read
-        this.keyEntry = new RepositoryEntry(id + "_key", null, null);
-        this.valueEntry = new RepositoryEntry(id + "_value", null, null);
+        this.keyEntry = new RepositoryEntry(id + "_key", Reflections.on(field).generic(0), this);
+        this.valueEntry = new RepositoryEntry(id + "_value", Reflections.on(field).generic(1), this);
     }
 
     @Contract(pure = true)
