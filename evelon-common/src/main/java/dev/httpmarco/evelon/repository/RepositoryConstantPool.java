@@ -7,7 +7,7 @@ public final class RepositoryConstantPool {
 
     private final Map<RepositoryConstant<?>, Object> constants = new ConcurrentHashMap<>();
 
-    public <T> void add(RepositoryConstant<Void> constant) {
+    public void add(RepositoryConstant<Void> constant) {
         constants.put(constant, true);
     }
 
