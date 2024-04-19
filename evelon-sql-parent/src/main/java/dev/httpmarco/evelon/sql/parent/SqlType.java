@@ -72,7 +72,7 @@ public enum SqlType {
         this.format = this.name();
     }
 
-    public static SqlType find(RepositoryEntry entry) {
+    public static SqlType detect(RepositoryEntry entry) {
         return CACHED_TYPES.stream().filter(type -> type.compatibleClasses != null && type.compatibleClasses.contains(entry.clazz())).findFirst().orElse(UNKNOWN);
     }
 
