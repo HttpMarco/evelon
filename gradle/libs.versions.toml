@@ -5,7 +5,7 @@ annotations = "24.1.0"
 
 # configuration
 gson = "2.10.1"
-osgan = "1.0.25-20240305.122920-1"
+osgan = "1.1.11-20240419.145557-1"
 
 # logging
 log4j = "2.23.1"
