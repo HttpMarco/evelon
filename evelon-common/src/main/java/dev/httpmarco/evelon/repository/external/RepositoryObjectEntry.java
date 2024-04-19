@@ -31,7 +31,7 @@ public final class RepositoryObjectEntry extends RepositoryExternalEntry {
             if (field.isAnnotationPresent(PrimaryKey.class)) {
                 entry.constants().add(RepositoryConstant.PRIMARY_KEY);
             }
-            children().add(entry);
+            children(entry);
         }
 
         for (var child : children()) {

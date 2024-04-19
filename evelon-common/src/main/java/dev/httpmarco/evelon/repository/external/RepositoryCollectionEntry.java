@@ -24,10 +24,9 @@ public final class RepositoryCollectionEntry extends RepositoryExternalEntry imp
         this.componentEntry = RepositoryEntryFinder.find(collectionType, field, field.getName(), this);
 
         if (this.componentEntry instanceof RepositoryExternalEntry externalEntry) {
-            this.children().addAll(externalEntry.children());
+            copyChildren(externalEntry);
             return;
         }
-
-        this.children().add(componentEntry);
+        children(componentEntry);
     }
 }
