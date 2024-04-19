@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.repository.external;
 
 import dev.httpmarco.evelon.repository.*;
+import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.Getter;
 
 @Getter
@@ -9,8 +10,7 @@ public final class RepositoryObjectEntry extends RepositoryExternalEntry {
     public RepositoryObjectEntry(String id, Class<?> clazz, RepositoryExternalEntry parent) {
         super(id, clazz, parent);
 
-        // todo read all superclass fields with osgan
-        for (var field : clazz.getDeclaredFields()) {
+        for (var field : Reflections.on(clazz).allFields()) {
             var fieldId = field.getName();
 
             if (field.isAnnotationPresent(Row.class)) {
