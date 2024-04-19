@@ -14,9 +14,7 @@ import java.util.ArrayList;
 public final class HikariPreppedProcess extends AbstractEntryProcess<HikariExecutionReference> {
 
     private static final String CREATE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS %s (%s);";
-
-    //todo
-    private static final String FOREIGN_FORMAT = "FOREIGN KEY (%s) REFERENCES persons_complex(%s)";
+    private static final String FOREIGN_FORMAT = "FOREIGN KEY (%s) REFERENCES %s(%s)";
     private static final String PRIMARY_FORMAT = "PRIMARY KEY (%s)";
 
     @Override
@@ -50,7 +48,7 @@ public final class HikariPreppedProcess extends AbstractEntryProcess<HikariExecu
         if (entry.constants().has(RepositoryConstant.FOREIGN_REFERENCE)) {
             for (var foreignKey : entry.constants().get(RepositoryConstant.FOREIGN_REFERENCE)) {
                 sqlEntries.add(foreignKey.id() + " " + foreignKey.constants().get(HikariRepositoryConstant.SQL_TYPE));
-                sqlEntries.add(FOREIGN_FORMAT.formatted(foreignKey.id(), foreignKey.id()));
+                sqlEntries.add(FOREIGN_FORMAT.formatted(foreignKey.id(), foreignKey.parent().id(), foreignKey.id()));
             }
         }
 
