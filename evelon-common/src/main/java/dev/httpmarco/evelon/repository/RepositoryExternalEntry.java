@@ -20,7 +20,11 @@ public abstract class RepositoryExternalEntry extends RepositoryEntry {
     }
 
     public void children(RepositoryEntry entry) {
-        this.children.add(entry);
+        if (entry instanceof RepositoryExternalEntry) {
+            this.children.add(entry);
+        } else {
+            this.children.add(0, entry);
+        }
     }
 
     @Contract(pure = true)
