@@ -8,6 +8,7 @@ import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
 import dev.httpmarco.evelon.sql.parent.HikariExecutionReference;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriver;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriverLoader;
+import dev.httpmarco.osgan.utils.stream.StreamHelper;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,8 +17,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public final class HikariConnection implements Connection<HikariDataSource, HikariExecutionReference> {
@@ -72,7 +71,7 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
 
     @Override
     public void update(@NotNull HikariExecutionReference query) {
-        reverse(query.sqlQueries().keySet().stream()).forEach(s -> transferPreparedStatement(s, PreparedStatement::execute, query.sqlQueries().get(s)));
+        StreamHelper.reverse(query.sqlQueries().keySet().stream()).forEach(s -> transferPreparedStatement(s, PreparedStatement::execute, query.sqlQueries().get(s)));
     }
 
     private void transferPreparedStatement(final String query, HikariConnectionFunction<PreparedStatement, ?> function, @NotNull Object[] arguments) {
@@ -89,12 +88,5 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
             Evelon.LOGGER.error("Executing query {}", query);
             throw new RuntimeException(exception);
         }
-    }
-
-    // todo remove with osgan
-    @SuppressWarnings("unchecked")
-    private static <T> @NotNull Stream<T> reverse(@NotNull Stream<T> input) {
-        Object[] temp = input.toArray();
-        return (Stream<T>) IntStream.range(0, temp.length).mapToObj(i -> temp[temp.length - i - 1]);
     }
 }
