@@ -11,8 +11,9 @@ public final class RepositoryConstantPool {
         constants.put(constant, true);
     }
 
-    public <T> void put(RepositoryConstant<T> constant, T value) {
+    public <T> T put(RepositoryConstant<T> constant, T value) {
         constants.put(constant, value);
+        return value;
     }
 
     public boolean has(RepositoryConstant<?> constant) {
