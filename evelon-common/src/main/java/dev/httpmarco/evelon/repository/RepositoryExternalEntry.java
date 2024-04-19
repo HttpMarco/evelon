@@ -1,14 +1,16 @@
 package dev.httpmarco.evelon.repository;
 
-import org.jetbrains.annotations.Contract;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public abstract class RepositoryExternalEntry extends RepositoryEntry {
 
+    @Getter
+    @Accessors(fluent = true)
     private final List<RepositoryEntry> children = new LinkedList<>();
 
     public RepositoryExternalEntry(String id, Class<?> clazz, RepositoryExternalEntry type) {
@@ -25,12 +27,6 @@ public abstract class RepositoryExternalEntry extends RepositoryEntry {
         } else {
             this.children.add(0, entry);
         }
-    }
-
-    @Contract(pure = true)
-    @Unmodifiable
-    public List<RepositoryEntry> children() {
-        return List.copyOf(this.children);
     }
 
     public void copyChildren(@NotNull RepositoryExternalEntry entry) {
