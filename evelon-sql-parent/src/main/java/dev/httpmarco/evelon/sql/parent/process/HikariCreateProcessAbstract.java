@@ -5,13 +5,14 @@ import dev.httpmarco.evelon.repository.RepositoryConstant;
 import dev.httpmarco.evelon.repository.RepositoryEntry;
 import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
 import dev.httpmarco.evelon.repository.external.RepositoryCollectionEntry;
+import dev.httpmarco.evelon.repository.external.RepositoryObjectEntry;
 import dev.httpmarco.evelon.sql.parent.HikariExecutionReference;
 import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.UUID;
 
 public final class HikariCreateProcessAbstract extends AbstractObjectProcess<HikariExecutionReference> {
 
@@ -24,35 +25,30 @@ public final class HikariCreateProcessAbstract extends AbstractObjectProcess<Hik
     @Override
     @SneakyThrows
     public @NotNull HikariExecutionReference run(@NotNull RepositoryExternalEntry entry, Object value) {
-        var sqlEntries = new ArrayList<String>();
         var reference = new HikariExecutionReference();
+        var elements = new ArrayList<String>();
 
         for (var child : entry.children()) {
             var childValue = Reflections.on(child.constants().get(RepositoryConstant.PARAM_FIELD)).value(value);
 
-            if(child instanceof RepositoryCollectionEntry) {
-                var collection = (Collection<?>) childValue;
-                for (var object : collection) {
-                    this.run((RepositoryExternalEntry) child, object);
-                    System.err.println(object.toString());
-                }
-                continue;
-            }
-
             if (child instanceof RepositoryExternalEntry externalEntry) {
-                continue;
+                for (var object : externalEntry.readValues(childValue)) {
+                    reference.append(new HikariCreateProcessAbstract(childValue).run(externalEntry, object));
+                }
+            } else {
+                elements.add(child.id());
+                arguments().add(childValue);
             }
-            arguments().add(childValue);
-            sqlEntries.add(child.id());
         }
-
 
         if (entry.constants().has(RepositoryConstant.FOREIGN_REFERENCE)) {
-            entry.constants().get(RepositoryConstant.FOREIGN_REFERENCE).stream().map(RepositoryEntry::id).forEach(sqlEntries::add);
-        }
+            for (var foreignKey : entry.constants().get(RepositoryConstant.FOREIGN_REFERENCE)) {
 
-        return reference.bind(CREATE_VALUE_SQL.formatted(entry.id(),
-                String.join(", ", sqlEntries),
-                String.join(", ", "?".repeat(sqlEntries.size()).split(""))), arguments().toArray());
+                // todo: get foreign key value
+                arguments().add(0, UUID.randomUUID());
+                elements.add(0, foreignKey.id());
+            }
+        }
+        return reference.bind(CREATE_VALUE_SQL.formatted(entry.id(), String.join(", ", elements), String.join(", ", "?".repeat(elements.size()).split(""))), arguments().toArray());
     }
 }

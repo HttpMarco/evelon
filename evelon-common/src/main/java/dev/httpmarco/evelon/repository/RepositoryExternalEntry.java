@@ -2,15 +2,15 @@ package dev.httpmarco.evelon.repository;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+@Getter
+@Accessors(fluent = true)
 public abstract class RepositoryExternalEntry extends RepositoryEntry {
 
-    @Getter
-    @Accessors(fluent = true)
     private final List<RepositoryEntry> children = new LinkedList<>();
 
     public RepositoryExternalEntry(String id, Class<?> clazz, RepositoryExternalEntry type) {
@@ -29,7 +29,7 @@ public abstract class RepositoryExternalEntry extends RepositoryEntry {
         }
     }
 
-    public void copyChildren(@NotNull RepositoryExternalEntry entry) {
-        this.children.addAll(entry.children());
+    public Collection<Object> readValues(Object parent) {
+        return List.of(parent);
     }
 }

@@ -9,22 +9,29 @@ import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 
 @Getter
 @Accessors(fluent = true)
 public final class RepositoryCollectionEntry extends RepositoryExternalEntry {
 
-    private final RepositoryEntry componentEntry;
+    private final RepositoryEntry collectionEntry;
 
     public RepositoryCollectionEntry(String id, @NotNull Field field, RepositoryExternalEntry parent) {
         super(id, field.getType(), parent);
 
-        this.componentEntry = RepositoryEntryFinder.find(Reflections.on(field).generic(0), field, field.getName(), this);
+        this.collectionEntry = RepositoryEntryFinder.find(Reflections.on(field).generic(0), null, field.getName(), this);
 
-        if (this.componentEntry instanceof RepositoryExternalEntry externalEntry) {
-            copyChildren(externalEntry);
-            return;
+        if (!(collectionEntry instanceof RepositoryExternalEntry)) {
+             this.children(collectionEntry);
+        } else {
+            this.children().addAll(((RepositoryExternalEntry) collectionEntry).children());
         }
-        children(componentEntry);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Collection<Object> readValues(Object parent) {
+        return ((Collection<Object>) parent);
     }
 }
