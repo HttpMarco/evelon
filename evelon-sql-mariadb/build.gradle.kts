@@ -1,7 +1,6 @@
 dependencies {
-    api(libs.hikari)
-    
-    implementation(libs.h2)
+    implementation(libs.mariadb)
+
     api(project(":evelon-common"))
     api(project(":evelon-sql-parent"))
 }
