@@ -19,3 +19,20 @@ straightforward synchronization process between them.
 | <div align="center"> <img  heigth="17px" width="17px" src="https://static-00.iconduck.com/assets.00/redis-plain-wordmark-icon-512x511-8n4kzl0q.png"></div>                              | redis      | -                 | -.-.-            | no          |
 | <div align="center"> <img  heigth="17px" width="17px" src="https://upload.wikimedia.org/wikipedia/en/3/3a/ArangoDB_Logo.png"></div>                                                     | arangodb   | -                 | -.-.-            | no          |
 | <div align="center"> <img  heigth="17px" width="17px" src="https://www.scylladb.com/wp-content/uploads/scylla-headset.png"></div>                                                       | scylladb   | -                 | -.-.-            | no          |
+|                                                                                                                                                                                         |            |                   |                  |             |
+|                                                                                                                                                                                         |            |                   |                  |             |
+|                                                                                                                                                                                         |            |                   |                  |             |
+
+### Todo query methods
+- [ ] `find` - Find all entities that match the given query.
+- [ ] `findAll` - Find the first entity that matches the given query.
+- [ ] `udpdate` - Save the given entity.
+- []  `order` - Order the result by the given field.
+- [ ] `min` - Find the minimum value of the given field.
+- [ ] `max` - Find the maximum value of the given field.
+- [ ] `sum` - Find the sum of the given field.
+- [ ] `count` - Count the number of entities that match the given query.
+- [ ] `avg` - Find the average value of the given field.
+- [ ] `exists` - Check if an entity exists that matches the given query.
+- [ ] `createIfNotExists` - Create an entity if it does not exist.
+- [ ] `upsert` - Create an entity if it does not exist, otherwise update it.
