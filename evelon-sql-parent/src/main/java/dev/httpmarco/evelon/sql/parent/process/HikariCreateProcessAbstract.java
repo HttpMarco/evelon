@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.process.AbstractObjectProcess;
 import dev.httpmarco.evelon.repository.RepositoryConstant;
 import dev.httpmarco.evelon.repository.RepositoryEntry;
 import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
+import dev.httpmarco.evelon.repository.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.sql.parent.HikariExecutionReference;
 import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.SneakyThrows;
@@ -26,20 +27,32 @@ public final class HikariCreateProcessAbstract extends AbstractObjectProcess<Hik
         var elements = new ArrayList<String>();
         var arguments = new ArrayList<>();
 
-        for (var child : entry.children()) {
-            var childValue = Reflections.on(child.constants().get(RepositoryConstant.PARAM_FIELD)).value(value);
+        // todo find maybe a better way
+        // Since lists can also have individual attributes as types, we have to check whether these are present,
+        // otherwise serialization can be carried out as normal.
+        if (entry instanceof RepositoryCollectionEntry collectionEntry && !(collectionEntry.collectionEntry() instanceof RepositoryExternalEntry)) {
+            elements.add(collectionEntry.collectionEntry().id());
+            arguments.add(value);
+        } else {
+            for (var child : entry.children()) {
+                var childValue = Reflections.on(child.constants().get(RepositoryConstant.PARAM_FIELD)).value(value);
 
-            if (child instanceof RepositoryExternalEntry externalEntry) {
-                for (var object : externalEntry.readValues(childValue)) {
-                    var subprocess = new HikariCreateProcessAbstract(childValue);
-                    for (RepositoryEntry primary : entry.primaries()) {
-                        subprocess.property(primary.id(), Reflections.on(primary.constants().get(RepositoryConstant.PARAM_FIELD)).value(value));
+                if (child instanceof RepositoryExternalEntry externalEntry) {
+                    for (var object : externalEntry.readValues(childValue)) {
+                        var subprocess = new HikariCreateProcessAbstract(object);
+
+                        // we put all parent primaries in the next process
+                        for (var primary : entry.primaries()) {
+                            subprocess.property(primary.id(), Reflections.on(primary.constants().get(RepositoryConstant.PARAM_FIELD)).value(value));
+                        }
+
+                        // append the sub process
+                        reference.append(subprocess.run(externalEntry, object));
                     }
-                    reference.append(subprocess.run(externalEntry, object));
+                } else {
+                    elements.add(child.id());
+                    arguments.add(childValue);
                 }
-            } else {
-                elements.add(child.id());
-                arguments.add(childValue);
             }
         }
 
