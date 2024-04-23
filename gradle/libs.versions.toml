@@ -1,6 +1,6 @@
 [versions]
 # utils
-lombok = "1.18.30"
+lombok = "1.18.32"
 annotations = "24.1.0"
 osgan = "1.1.11-20240419.145557-1"
 
@@ -9,7 +9,7 @@ gson = "2.10.1"
 
 # logging
 log4j = "2.23.1"
-slf4j = "2.0.12"
+slf4j = "2.0.13"
 
 # database
 hikari = "5.1.0"
