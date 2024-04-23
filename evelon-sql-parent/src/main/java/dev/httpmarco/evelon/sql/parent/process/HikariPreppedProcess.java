@@ -30,12 +30,12 @@ public final class HikariPreppedProcess extends AbstractEntryProcess<HikariExecu
                 continue;
             }
 
-            if (child.constants().has(RepositoryConstant.PRIMARY_KEY)) {
+            if (child.hasConstant(RepositoryConstant.PRIMARY_KEY)) {
                 primaries.add(child.id());
             }
 
             // on first initialization, we put the sql type into the constants
-            var type = child.constants().put(HikariRepositoryConstant.SQL_TYPE, SqlType.detect(child));
+            var type = child.constant(HikariRepositoryConstant.SQL_TYPE, SqlType.detect(child));
             elements.add(TABLE_VALUE_FORMAT.formatted(child.id(), type));
         }
 
@@ -43,10 +43,10 @@ public final class HikariPreppedProcess extends AbstractEntryProcess<HikariExecu
             elements.add(PRIMARY_FORMAT.formatted(String.join(", ", primaries)));
         }
 
-        if (entry.constants().has(RepositoryConstant.FOREIGN_REFERENCE)) {
-            for (var foreignKey : entry.constants().get(RepositoryConstant.FOREIGN_REFERENCE)) {
+        if (entry.hasConstant(RepositoryConstant.FOREIGN_REFERENCE)) {
+            for (var foreignKey : entry.constant(RepositoryConstant.FOREIGN_REFERENCE)) {
                 // for a better format we put all primaries oder foreign keys in front of the sql entries
-                elements.add(0, TABLE_VALUE_FORMAT.formatted(foreignKey.id(), foreignKey.constants().get(HikariRepositoryConstant.SQL_TYPE)));
+                elements.add(0, TABLE_VALUE_FORMAT.formatted(foreignKey.id(), foreignKey.constant(HikariRepositoryConstant.SQL_TYPE)));
                 // last we add the foreign constraint
                 elements.add(FOREIGN_FORMAT.formatted(foreignKey.id(), foreignKey.parent().id(), foreignKey.id()));
             }

@@ -34,14 +34,14 @@ public final class HikariCreateProcessAbstract extends AbstractObjectProcess<Hik
             arguments.add(value);
         } else {
             for (var child : entry.children()) {
-                var childValue = Reflections.on(child.constants().get(RepositoryConstant.PARAM_FIELD)).value(value);
+                var childValue = Reflections.on(child.constant(RepositoryConstant.PARAM_FIELD)).value(value);
                 if (child instanceof RepositoryExternalEntry externalEntry) {
                     for (var object : externalEntry.readValues(childValue)) {
                         var subprocess = new HikariCreateProcessAbstract(object);
 
                         // we put all parent primaries in the next process
                         for (var primary : entry.primaries()) {
-                            subprocess.property(primary.id(), Reflections.on(primary.constants().get(RepositoryConstant.PARAM_FIELD)).value(value));
+                            subprocess.property(primary.id(), Reflections.on(primary.constant(RepositoryConstant.PARAM_FIELD)).value(value));
                         }
                         // append the sub process
                         HikariExecutionReference run = subprocess.run(externalEntry, object);
@@ -54,8 +54,8 @@ public final class HikariCreateProcessAbstract extends AbstractObjectProcess<Hik
             }
         }
 
-        if (entry.constants().has(RepositoryConstant.FOREIGN_REFERENCE)) {
-            for (var foreignKey : entry.constants().get(RepositoryConstant.FOREIGN_REFERENCE)) {
+        if (entry.hasConstant(RepositoryConstant.FOREIGN_REFERENCE)) {
+            for (var foreignKey : entry.constant(RepositoryConstant.FOREIGN_REFERENCE)) {
                 arguments.add(0, property(foreignKey.id()));
                 elements.add(0, foreignKey.id());
             }
