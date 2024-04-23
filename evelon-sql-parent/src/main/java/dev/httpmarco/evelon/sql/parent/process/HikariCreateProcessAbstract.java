@@ -4,14 +4,14 @@ import dev.httpmarco.evelon.process.AbstractObjectProcess;
 import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
-import dev.httpmarco.evelon.sql.parent.HikariExecutionReference;
+import dev.httpmarco.evelon.sql.parent.reference.HikariExecutionProcessReference;
 import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public final class HikariCreateProcessAbstract extends AbstractObjectProcess<HikariExecutionReference> {
+public final class HikariCreateProcessAbstract extends AbstractObjectProcess<HikariExecutionProcessReference> {
 
     private static final String CREATE_VALUE_SQL = "INSERT INTO %s (%s) VALUES (%s);";
 
@@ -21,8 +21,7 @@ public final class HikariCreateProcessAbstract extends AbstractObjectProcess<Hik
 
     @Override
     @SneakyThrows
-    public @NotNull HikariExecutionReference run(@NotNull RepositoryExternalEntry entry, Object value) {
-        var reference = new HikariExecutionReference();
+    public void run(@NotNull RepositoryExternalEntry entry, Object value, HikariExecutionProcessReference reference) {
         var elements = new ArrayList<String>();
         var arguments = new ArrayList<>();
 
@@ -44,8 +43,7 @@ public final class HikariCreateProcessAbstract extends AbstractObjectProcess<Hik
                             subprocess.property(primary.id(), Reflections.on(primary.constant(RepositoryConstant.PARAM_FIELD)).value(value));
                         }
                         // append the sub process
-                        HikariExecutionReference run = subprocess.run(externalEntry, object);
-                        reference.append(run);
+                        subprocess.run(externalEntry, object, reference);
                     }
                 } else {
                     elements.add(child.id());
@@ -60,6 +58,6 @@ public final class HikariCreateProcessAbstract extends AbstractObjectProcess<Hik
                 elements.add(0, foreignKey.id());
             }
         }
-        return reference.bind(CREATE_VALUE_SQL.formatted(entry.id(), String.join(", ", elements), String.join(", ", "?".repeat(elements.size()).split(""))), arguments.toArray());
+        reference.append(CREATE_VALUE_SQL.formatted(entry.id(), String.join(", ", elements), String.join(", ", "?".repeat(elements.size()).split(""))), arguments.toArray());
     }
 }

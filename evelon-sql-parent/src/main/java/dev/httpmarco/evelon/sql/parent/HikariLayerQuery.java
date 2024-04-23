@@ -5,6 +5,7 @@ import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.sql.parent.process.HikariCreateProcessAbstract;
 import dev.httpmarco.evelon.sql.parent.process.HikariDeleteProcess;
+import dev.httpmarco.evelon.sql.parent.reference.HikariExecutionProcessReference;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 public final class HikariLayerQuery<T> implements LayerQuery<T> {
 
     private final Repository<T> repository;
-    private ProcessRunner<HikariExecutionReference> runner;
+    private ProcessRunner<HikariExecutionProcessReference> runner;
 
     @Override
     public void create(T value) {

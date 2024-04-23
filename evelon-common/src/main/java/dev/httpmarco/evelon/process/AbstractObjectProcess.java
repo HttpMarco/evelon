@@ -9,14 +9,14 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 @Accessors(fluent = true)
 @AllArgsConstructor
-public abstract class AbstractObjectProcess<Q> extends AbstractEntryProcess<Q> {
+public abstract class AbstractObjectProcess<R extends ProcessReference<R>> extends AbstractEntryProcess<R> {
 
     private final Object value;
 
-    public abstract Q run(RepositoryExternalEntry entry, Object value);
+    public abstract void run(@NotNull RepositoryExternalEntry entry, Object value, R reference);
 
     @Override
-    public Q run(@NotNull RepositoryExternalEntry entry) {
-        return run(entry, value);
+    public void run(@NotNull RepositoryExternalEntry entry, R reference) {
+        run(entry, value, reference);
     }
 }
