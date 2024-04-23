@@ -4,8 +4,6 @@ import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import lombok.AllArgsConstructor;
 
-import java.util.List;
-
 @AllArgsConstructor
 public final class HikariConnectionRunner extends ProcessRunner<HikariExecutionReference> {
 
@@ -17,8 +15,7 @@ public final class HikariConnectionRunner extends ProcessRunner<HikariExecutionR
     }
 
     @Override
-    protected List<?> query(HikariExecutionReference query) {
-        return List.of();
+    public void query(HikariExecutionReference query) {
+        this.connection.query(query);
     }
-
 }

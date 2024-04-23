@@ -3,8 +3,8 @@ package dev.httpmarco.evelon.sql.parent.connection;
 import java.sql.SQLException;
 
 @FunctionalInterface
-public interface HikariConnectionFunction<I, O> {
+public interface HikariConnectionFunction<I> {
 
-    O apply(I i) throws SQLException;
+    void apply(I i) throws SQLException;
 
 }

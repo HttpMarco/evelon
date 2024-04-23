@@ -30,8 +30,7 @@ public final class HikariLayerQuery<T> implements LayerQuery<T> {
 
     // todo find a better way to handle this
     @Override
-    @SuppressWarnings("unchecked")
     public List<T> find() {
-        return (List<T>) runner.query(new HikariFindProcess(), repository);
+        return List.of();
     }
 }

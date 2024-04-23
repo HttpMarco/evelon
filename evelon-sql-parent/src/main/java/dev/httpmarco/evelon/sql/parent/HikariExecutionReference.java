@@ -1,20 +1,26 @@
 package dev.httpmarco.evelon.sql.parent;
 
-import dev.httpmarco.osgan.utils.data.Pair;
+import dev.httpmarco.evelon.Triple;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.ResultSet;
 import java.util.*;
+import java.util.function.Consumer;
 
 @Getter
 @Accessors(fluent = true)
 public final class HikariExecutionReference {
 
-    private final List<Pair<String, Object[]>> sqlQueries = new ArrayList<>();
+    private final List<Triple<String, Object[], Consumer<ResultSet>>> sqlQueries = new ArrayList<>();
 
     public HikariExecutionReference bind(String query, Object[] parameters) {
-        this.sqlQueries.add(new Pair<>(query, parameters));
+        return this.bind(query, parameters, resultSet -> {});
+    }
+
+    public HikariExecutionReference bind(String query, Object[] parameters, Consumer<ResultSet> consumer) {
+        this.sqlQueries.add(new Triple<>(query, parameters, consumer));
         return this;
     }
 

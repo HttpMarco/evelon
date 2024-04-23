@@ -15,7 +15,7 @@ public abstract class ProcessRunner<Q> {
 
     @SuppressWarnings("unchecked")
     public Q generateQuery(@NotNull Process process, @NotNull Repository<?> repository) {
-        Q query = null;
+        Q query;
         if (process instanceof AbstractEntryProcess<?> entryProcess) {
             query = (Q) entryProcess.run(repository.entry());
         } else {
@@ -24,12 +24,8 @@ public abstract class ProcessRunner<Q> {
         return query;
     }
 
-    public List<?> query(@NotNull Process process, @NotNull Repository<?> repository) {
-        return this.query(generateQuery(process, repository));
-    }
+    protected abstract void query(Q query);
 
     protected abstract void update(Q query);
-
-    protected abstract List<?> query(Q query);
 
 }
