@@ -6,6 +6,8 @@ import dev.httpmarco.evelon.repository.Repository;
 import dev.httpmarco.evelon.repository.query.Query;
 import dev.httpmarco.evelon.sql.parent.process.HikariCreateProcessAbstract;
 import dev.httpmarco.evelon.sql.parent.process.HikariDeleteProcess;
+import dev.httpmarco.evelon.sql.parent.process.HikariFindProcess;
+import dev.httpmarco.evelon.sql.parent.process.HikariPreppedProcess;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -18,17 +20,18 @@ public final class HikariLayerQuery<T> implements LayerQuery<T> {
 
     @Override
     public void create(T value) {
-        runner.apply(new HikariCreateProcessAbstract(value), repository);
+        runner.update(new HikariCreateProcessAbstract(value), repository);
     }
 
     @Override
     public void delete() {
-        runner.apply(new HikariDeleteProcess(), repository);
+        runner.update(new HikariDeleteProcess(), repository);
     }
 
+    // todo find a better way to handle this
     @Override
+    @SuppressWarnings("unchecked")
     public List<T> find() {
-        // todo
-        return List.of();
+        return (List<T>) runner.query(new HikariFindProcess(), repository);
     }
 }

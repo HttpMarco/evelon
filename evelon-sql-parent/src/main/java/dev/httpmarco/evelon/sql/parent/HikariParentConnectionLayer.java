@@ -34,7 +34,7 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
      */
     @Override
     public void prepped(@NotNull Repository<?> repository) {
-        runner().apply(new HikariPreppedProcess(), repository);
+        runner().update(new HikariPreppedProcess(), repository);
     }
 
     @Override
