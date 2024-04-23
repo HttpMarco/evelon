@@ -71,7 +71,7 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
 
     @Override
     public void update(@NotNull HikariExecutionReference query) {
-        StreamHelper.reverse(query.sqlQueries().keySet().stream()).forEach(s -> transferPreparedStatement(s, PreparedStatement::execute, query.sqlQueries().get(s)));
+        StreamHelper.reverse(query.sqlQueries().stream()).forEach(s -> transferPreparedStatement(s.getKey(), PreparedStatement::execute,s.getValue()));
     }
 
     private void transferPreparedStatement(final String query, HikariConnectionFunction<PreparedStatement, ?> function, @NotNull Object[] arguments) {

@@ -36,7 +36,6 @@ public final class HikariCreateProcessAbstract extends AbstractObjectProcess<Hik
         } else {
             for (var child : entry.children()) {
                 var childValue = Reflections.on(child.constants().get(RepositoryConstant.PARAM_FIELD)).value(value);
-
                 if (child instanceof RepositoryExternalEntry externalEntry) {
                     for (var object : externalEntry.readValues(childValue)) {
                         var subprocess = new HikariCreateProcessAbstract(object);
@@ -45,9 +44,9 @@ public final class HikariCreateProcessAbstract extends AbstractObjectProcess<Hik
                         for (var primary : entry.primaries()) {
                             subprocess.property(primary.id(), Reflections.on(primary.constants().get(RepositoryConstant.PARAM_FIELD)).value(value));
                         }
-
                         // append the sub process
-                        reference.append(subprocess.run(externalEntry, object));
+                        HikariExecutionReference run = subprocess.run(externalEntry, object);
+                        reference.append(run);
                     }
                 } else {
                     elements.add(child.id());
