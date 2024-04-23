@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.process.AbstractObjectProcess;
 import dev.httpmarco.evelon.repository.RepositoryConstant;
+import dev.httpmarco.evelon.repository.RepositoryEntry;
 import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
 import dev.httpmarco.evelon.sql.parent.HikariExecutionReference;
 import dev.httpmarco.osgan.reflections.Reflections;
@@ -9,7 +10,6 @@ import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public final class HikariCreateProcessAbstract extends AbstractObjectProcess<HikariExecutionReference> {
 
@@ -31,7 +31,11 @@ public final class HikariCreateProcessAbstract extends AbstractObjectProcess<Hik
 
             if (child instanceof RepositoryExternalEntry externalEntry) {
                 for (var object : externalEntry.readValues(childValue)) {
-                    reference.append(new HikariCreateProcessAbstract(childValue).run(externalEntry, object));
+                    var subprocess = new HikariCreateProcessAbstract(childValue);
+                    for (RepositoryEntry primary : entry.primaries()) {
+                        subprocess.property(primary.id(), Reflections.on(primary.constants().get(RepositoryConstant.PARAM_FIELD)).value(value));
+                    }
+                    reference.append(subprocess.run(externalEntry, object));
                 }
             } else {
                 elements.add(child.id());
@@ -41,9 +45,7 @@ public final class HikariCreateProcessAbstract extends AbstractObjectProcess<Hik
 
         if (entry.constants().has(RepositoryConstant.FOREIGN_REFERENCE)) {
             for (var foreignKey : entry.constants().get(RepositoryConstant.FOREIGN_REFERENCE)) {
-
-                // todo: get foreign key value
-                arguments.add(0, UUID.randomUUID());
+                arguments.add(0, property(foreignKey.id()));
                 elements.add(0, foreignKey.id());
             }
         }
