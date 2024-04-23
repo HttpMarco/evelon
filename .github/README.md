@@ -27,7 +27,7 @@ straightforward synchronization process between them.
 - [ ] `find` - Find all entities that match the given query.
 - [ ] `findAll` - Find the first entity that matches the given query.
 - [ ] `udpdate` - Save the given entity.
-- []  `order` - Order the result by the given field.
+- [ ]  `order` - Order the result by the given field.
 - [ ] `min` - Find the minimum value of the given field.
 - [ ] `max` - Find the maximum value of the given field.
 - [ ] `sum` - Find the sum of the given field.
