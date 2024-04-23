@@ -1,24 +1,16 @@
 package dev.httpmarco.evelon.repository;
 
 import dev.httpmarco.evelon.layer.Layer;
+import dev.httpmarco.evelon.layer.LayerQuery;
 import dev.httpmarco.evelon.repository.external.RepositoryObjectEntry;
 import dev.httpmarco.evelon.repository.query.Query;
 import dev.httpmarco.evelon.repository.query.RepositoryQuery;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
-@Getter
-@Accessors(fluent = true)
-@AllArgsConstructor
-public final class Repository<T> {
-
-    private final RepositoryObjectEntry entry;
-    private final Set<Layer<?>> layers;
+public record Repository<T>(RepositoryObjectEntry entry, Set<Layer<?>> layers) {
 
     @Contract(value = "_ -> new", pure = true)
     public static <R> @NotNull RepositoryBuilder<R> build(Class<R> clazz) {
@@ -28,5 +20,9 @@ public final class Repository<T> {
     @Contract(" -> new")
     public @NotNull Query<T> query() {
         return new RepositoryQuery<>(this);
+    }
+
+    public @NotNull LayerQuery<T> query(Class<? extends Layer<?>> layer) {
+        return layers.stream().filter(it -> it.getClass().equals(layer)).findFirst().orElseThrow().query(this);
     }
 }
