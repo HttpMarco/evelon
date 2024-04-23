@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.sql.parent;
 
+import dev.httpmarco.evelon.layer.LayerQuery;
 import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
 import dev.httpmarco.evelon.process.ProcessRunner;
@@ -42,7 +43,7 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
     }
 
     @Override
-    public <T> Query<T> query(Repository<T> repository) {
+    public <T> LayerQuery<T> query(Repository<T> repository) {
         return new HikariLayerQuery<>(repository, runner());
     }
 }
