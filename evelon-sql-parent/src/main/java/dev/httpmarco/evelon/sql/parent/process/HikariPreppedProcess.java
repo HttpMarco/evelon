@@ -14,7 +14,7 @@ public final class HikariPreppedProcess extends AbstractEntryProcess<HikariExecu
 
     private static final String TABLE_CREATE_QUERY = "CREATE TABLE IF NOT EXISTS %s (%s);";
     private static final String TABLE_VALUE_FORMAT = "%s %s";
-    private static final String FOREIGN_FORMAT = "FOREIGN KEY (%s) REFERENCES %s(%s)";
+    private static final String FOREIGN_FORMAT = "FOREIGN KEY (%s) REFERENCES %s(%s) ON DELETE CASCADE";
     private static final String PRIMARY_FORMAT = "PRIMARY KEY (%s)";
 
     @Override
