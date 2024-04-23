@@ -1,6 +1,5 @@
 package dev.httpmarco.evelon;
 
-import dev.httpmarco.evelon.exception.UnsupportedEntryTypeException;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.external.RepositoryMapEntry;
 import dev.httpmarco.evelon.external.RepositoryObjectEntry;
@@ -37,7 +36,7 @@ public final class RepositoryEntryFinder {
             return new RepositoryObjectEntry(externalId, clazz, parent);
         }
 
-        throw new UnsupportedEntryTypeException(clazz);
+        throw new IllegalArgumentException("Unsupported entry type: " + clazz);
     }
 
     @Contract("_, _, _ -> new")

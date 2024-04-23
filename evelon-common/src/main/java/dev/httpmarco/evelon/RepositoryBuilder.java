@@ -6,7 +6,6 @@ import dev.httpmarco.evelon.layer.LayerService;
 import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthenticationService;
 import dev.httpmarco.evelon.external.RepositoryObjectEntry;
-import dev.httpmarco.evelon.exception.RepositoryTypeNotAllowedException;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,17 +44,17 @@ public final class RepositoryBuilder<T> {
 
     @Contract(" -> new")
     public @NotNull Repository<T> build() {
-        if (RepositoryEntryFinder.find(clazz, null, id, null) instanceof RepositoryObjectEntry entry) {
-            var repository = new Repository<T>(entry, this.layers);
-            // check all layers are ready to be used
-            for (var layer : this.layers) {
-                // some layers need to be prepped before the object is returned
-                if (layer instanceof PreppedLayer<?> preppedLayer) {
-                    preppedLayer.prepped(repository);
-                }
-            }
-            return repository;
+        if (!(RepositoryEntryFinder.find(clazz, null, id, null) instanceof RepositoryObjectEntry entry)) {
+            throw new UnsupportedOperationException("Repository type not allowed!");
         }
-        throw new RepositoryTypeNotAllowedException();
+        var repository = new Repository<T>(entry, this.layers);
+        // check all layers are ready to be used
+        for (var layer : this.layers) {
+            // some layers need to be prepped before the object is returned
+            if (layer instanceof PreppedLayer<?> preppedLayer) {
+                preppedLayer.prepped(repository);
+            }
+        }
+        return repository;
     }
 }
