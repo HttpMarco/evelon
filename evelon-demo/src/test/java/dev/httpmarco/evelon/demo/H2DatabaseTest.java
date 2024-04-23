@@ -39,6 +39,19 @@ public final class H2DatabaseTest {
 
 
         @Test
+        @Order(2)
+        void find() {
+            var values = REPOSITORY.query(H2Layer.class).find();
+
+            assertNotNull(values);
+            assertEquals(1, values.size());
+
+            var model = values.get(0);
+            assertNotNull(model);
+            assertEquals(model.age(), 8);
+        }
+
+        @Test
         @Order(20)
         void delete() {
             REPOSITORY.query().delete();
@@ -63,7 +76,6 @@ public final class H2DatabaseTest {
         void create() {
             REPOSITORY.query().create(new SimpleListModel(UUID.randomUUID(), List.of("a", "b"), List.of("admin", "test")));
         }
-
 
         @Test
         @Order(20)
@@ -91,6 +103,11 @@ public final class H2DatabaseTest {
             REPOSITORY.query().create(new ComplexListModel(UUID.randomUUID(), List.of(new TestObject1("abc", 2000), new TestObject1("abc", 2000)), List.of(new TestObject2("admin", -1))));
         }
 
+        @Test
+        @Order(2)
+        void find() {
+
+        }
 
         @Test
         @Order(20)
