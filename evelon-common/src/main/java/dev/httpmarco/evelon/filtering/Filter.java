@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.filtering;
 
-import dev.httpmarco.evelon.repository.Repository;
+import dev.httpmarco.evelon.Repository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;

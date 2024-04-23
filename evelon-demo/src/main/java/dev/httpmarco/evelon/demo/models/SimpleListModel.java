@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.demo.models;
 
-import dev.httpmarco.evelon.repository.PrimaryKey;
+import dev.httpmarco.evelon.PrimaryKey;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.sql.parent;
 
-import dev.httpmarco.evelon.Triple;
+import dev.httpmarco.evelon.common.Triple;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;

@@ -1,8 +1,8 @@
 package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.process.AbstractEntryProcess;
-import dev.httpmarco.evelon.repository.RepositoryConstant;
-import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
+import dev.httpmarco.evelon.RepositoryConstant;
+import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.sql.parent.HikariExecutionReference;
 import dev.httpmarco.evelon.sql.parent.HikariRepositoryConstant;
 import dev.httpmarco.evelon.sql.parent.SqlType;

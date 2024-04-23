@@ -1,6 +1,6 @@
-package dev.httpmarco.evelon.repository.query;
+package dev.httpmarco.evelon.query;
 
-import dev.httpmarco.evelon.repository.Repository;
+import dev.httpmarco.evelon.Repository;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

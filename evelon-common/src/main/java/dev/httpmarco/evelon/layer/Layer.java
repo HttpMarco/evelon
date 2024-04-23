@@ -2,7 +2,7 @@ package dev.httpmarco.evelon.layer;
 
 import dev.httpmarco.evelon.filtering.FilterHandler;
 import dev.httpmarco.evelon.process.ProcessRunner;
-import dev.httpmarco.evelon.repository.Repository;
+import dev.httpmarco.evelon.Repository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;

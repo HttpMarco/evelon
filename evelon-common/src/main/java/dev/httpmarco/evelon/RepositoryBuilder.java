@@ -1,12 +1,12 @@
-package dev.httpmarco.evelon.repository;
+package dev.httpmarco.evelon;
 
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.layer.PreppedLayer;
 import dev.httpmarco.evelon.layer.LayerService;
 import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthenticationService;
-import dev.httpmarco.evelon.repository.external.RepositoryObjectEntry;
-import dev.httpmarco.evelon.repository.exception.RepositoryTypeNotAllowedException;
+import dev.httpmarco.evelon.external.RepositoryObjectEntry;
+import dev.httpmarco.evelon.exception.RepositoryTypeNotAllowedException;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 

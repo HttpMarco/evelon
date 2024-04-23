@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.repository.exception;
+package dev.httpmarco.evelon.exception;
 
 public final class RepositoryTypeNotAllowedException extends RuntimeException {
 

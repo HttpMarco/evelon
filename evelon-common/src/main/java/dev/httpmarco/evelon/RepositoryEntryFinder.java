@@ -1,9 +1,9 @@
-package dev.httpmarco.evelon.repository;
+package dev.httpmarco.evelon;
 
-import dev.httpmarco.evelon.repository.exception.UnsupportedEntryTypeException;
-import dev.httpmarco.evelon.repository.external.RepositoryCollectionEntry;
-import dev.httpmarco.evelon.repository.external.RepositoryMapEntry;
-import dev.httpmarco.evelon.repository.external.RepositoryObjectEntry;
+import dev.httpmarco.evelon.exception.UnsupportedEntryTypeException;
+import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
+import dev.httpmarco.evelon.external.RepositoryMapEntry;
+import dev.httpmarco.evelon.external.RepositoryObjectEntry;
 import dev.httpmarco.osgan.utils.Utils;
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.Contract;

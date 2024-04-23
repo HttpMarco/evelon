@@ -1,6 +1,6 @@
-package dev.httpmarco.evelon.repository.external;
+package dev.httpmarco.evelon.external;
 
-import dev.httpmarco.evelon.repository.*;
+import dev.httpmarco.evelon.*;
 import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.Getter;
 

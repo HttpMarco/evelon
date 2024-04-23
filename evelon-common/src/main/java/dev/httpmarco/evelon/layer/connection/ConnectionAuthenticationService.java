@@ -1,9 +1,10 @@
 package dev.httpmarco.evelon.layer.connection;
 
 import com.google.gson.*;
-import dev.httpmarco.evelon.Evelon;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,6 +14,7 @@ import java.util.Set;
 
 public final class ConnectionAuthenticationService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionAuthenticationService.class);
     private static final Gson CREDENTIALS_GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path CONFIGURATION_PATH = Path.of("evelon-connection-credentials.json");
 
@@ -39,7 +41,7 @@ public final class ConnectionAuthenticationService {
             }
 
             if (!credentialsAsJsonObject.get("active").getAsBoolean()) {
-                Evelon.LOGGER.warn("Repository use {}, but session is inactive.", connectableLayer.id());
+                LOGGER.warn("Repository use {}, but session is inactive.", connectableLayer.id());
                 return;
             }
 

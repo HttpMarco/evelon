@@ -2,7 +2,6 @@ package dev.httpmarco.evelon.sql.parent.connection;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import dev.httpmarco.evelon.Evelon;
 import dev.httpmarco.evelon.layer.connection.Connection;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
 import dev.httpmarco.evelon.sql.parent.HikariExecutionReference;
@@ -12,6 +11,8 @@ import dev.httpmarco.osgan.utils.stream.StreamHelper;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -20,6 +21,8 @@ import java.util.Objects;
 
 @RequiredArgsConstructor
 public final class HikariConnection implements Connection<HikariDataSource, HikariExecutionReference> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HikariConnection.class);
 
     private @Nullable HikariDataSource dataSource;
     private final ProtocolDriver<? extends ConnectionAuthentication> protocolDriver;
@@ -82,14 +85,13 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
         if (dataSource == null) {
             return;
         }
-        Evelon.LOGGER.debug("{} Objects: {}", query, Arrays.toString(arguments));
+        LOGGER.debug("{} Objects: {}", query, Arrays.toString(arguments));
         try (var connection = dataSource.getConnection(); var statement = connection.prepareStatement(query)) {
             for (int i = 0; i < arguments.length; i++) {
                 statement.setString(i + 1, Objects.toString(arguments[i]));
             }
             function.apply(statement);
         } catch (SQLException exception) {
-            Evelon.LOGGER.error("Executing query {}", query);
             throw new RuntimeException(exception);
         }
     }

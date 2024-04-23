@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.repository;
+package dev.httpmarco.evelon;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

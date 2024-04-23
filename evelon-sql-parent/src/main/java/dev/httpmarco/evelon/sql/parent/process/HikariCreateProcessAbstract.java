@@ -1,10 +1,9 @@
 package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.process.AbstractObjectProcess;
-import dev.httpmarco.evelon.repository.RepositoryConstant;
-import dev.httpmarco.evelon.repository.RepositoryEntry;
-import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
-import dev.httpmarco.evelon.repository.external.RepositoryCollectionEntry;
+import dev.httpmarco.evelon.RepositoryConstant;
+import dev.httpmarco.evelon.RepositoryExternalEntry;
+import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.sql.parent.HikariExecutionReference;
 import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.SneakyThrows;

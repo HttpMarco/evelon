@@ -1,10 +1,10 @@
-package dev.httpmarco.evelon.repository;
+package dev.httpmarco.evelon;
 
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.layer.LayerQuery;
-import dev.httpmarco.evelon.repository.external.RepositoryObjectEntry;
-import dev.httpmarco.evelon.repository.query.Query;
-import dev.httpmarco.evelon.repository.query.RepositoryQuery;
+import dev.httpmarco.evelon.external.RepositoryObjectEntry;
+import dev.httpmarco.evelon.query.Query;
+import dev.httpmarco.evelon.query.RepositoryQuery;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 

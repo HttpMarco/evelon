@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.sql.parent;
 
-import dev.httpmarco.evelon.repository.RepositoryConstant;
+import dev.httpmarco.evelon.RepositoryConstant;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

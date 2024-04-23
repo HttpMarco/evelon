@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.process;
 
-import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
+import dev.httpmarco.evelon.RepositoryExternalEntry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;

@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.repository;
+package dev.httpmarco.evelon;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;

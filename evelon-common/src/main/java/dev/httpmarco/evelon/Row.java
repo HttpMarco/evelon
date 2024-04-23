@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.repository;
+package dev.httpmarco.evelon;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

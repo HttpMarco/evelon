@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.sql.parent;
 
-import dev.httpmarco.evelon.repository.RepositoryEntry;
+import dev.httpmarco.evelon.RepositoryEntry;
 
 import java.util.Arrays;
 import java.util.List;

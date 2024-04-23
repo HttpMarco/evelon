@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.repository.query;
+package dev.httpmarco.evelon.query;
 
 public interface Query<T> {
 

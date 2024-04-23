@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.repository;
+package dev.httpmarco.evelon;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

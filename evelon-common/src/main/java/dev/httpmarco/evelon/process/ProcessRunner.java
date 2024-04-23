@@ -1,10 +1,8 @@
 package dev.httpmarco.evelon.process;
 
-import dev.httpmarco.evelon.repository.Repository;
+import dev.httpmarco.evelon.Repository;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 @AllArgsConstructor
 public abstract class ProcessRunner<Q> {

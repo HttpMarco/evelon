@@ -2,12 +2,9 @@ package dev.httpmarco.evelon.sql.parent;
 
 import dev.httpmarco.evelon.layer.LayerQuery;
 import dev.httpmarco.evelon.process.ProcessRunner;
-import dev.httpmarco.evelon.repository.Repository;
-import dev.httpmarco.evelon.repository.query.Query;
+import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.sql.parent.process.HikariCreateProcessAbstract;
 import dev.httpmarco.evelon.sql.parent.process.HikariDeleteProcess;
-import dev.httpmarco.evelon.sql.parent.process.HikariFindProcess;
-import dev.httpmarco.evelon.sql.parent.process.HikariPreppedProcess;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -28,7 +25,6 @@ public final class HikariLayerQuery<T> implements LayerQuery<T> {
         runner.update(new HikariDeleteProcess(), repository);
     }
 
-    // todo find a better way to handle this
     @Override
     public List<T> find() {
         return List.of();

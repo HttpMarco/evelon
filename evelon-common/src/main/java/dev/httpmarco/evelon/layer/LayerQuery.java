@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.layer;
 
-import dev.httpmarco.evelon.repository.query.Query;
+import dev.httpmarco.evelon.query.Query;
 
 import java.util.List;
 

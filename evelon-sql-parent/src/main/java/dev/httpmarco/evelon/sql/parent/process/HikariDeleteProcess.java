@@ -1,7 +1,7 @@
 package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.process.AbstractEntryProcess;
-import dev.httpmarco.evelon.repository.RepositoryExternalEntry;
+import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.sql.parent.HikariExecutionReference;
 import org.jetbrains.annotations.NotNull;
 
