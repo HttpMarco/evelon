@@ -48,7 +48,7 @@ public final class H2DatabaseTest {
 
             var model = values.get(0);
             assertNotNull(model);
-            assertEquals(model.age(), 8);
+            assertEquals(8, model.age());
         }
 
         @Test
@@ -75,6 +75,20 @@ public final class H2DatabaseTest {
         @Order(1)
         void create() {
             REPOSITORY.query().create(new SimpleListModel(UUID.randomUUID(), List.of("a", "b"), List.of("admin", "test")));
+        }
+
+        @Test
+        @Order(2)
+        void find() {
+            var values = REPOSITORY.query(H2Layer.class).find();
+
+            assertNotNull(values);
+            assertEquals(1, values.size());
+
+            var model = values.get(0);
+            assertNotNull(model);
+            assertEquals(2, model.getGroups().size());
+            assertEquals("test", model.getGroups().get(0));
         }
 
         @Test
@@ -106,7 +120,16 @@ public final class H2DatabaseTest {
         @Test
         @Order(2)
         void find() {
+            var values = REPOSITORY.query(H2Layer.class).find();
 
+            assertNotNull(values);
+            assertEquals(1, values.size());
+
+            var model = values.get(0);
+            assertNotNull(model);
+            assertEquals(1, model.getGroups().size());
+            assertNotNull(model.getGroups().get(0));
+            assertEquals(-1, model.getGroups().get(0).getExpire());
         }
 
         @Test
