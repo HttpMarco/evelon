@@ -4,7 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import dev.httpmarco.evelon.layer.connection.Connection;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
-import dev.httpmarco.evelon.sql.parent.reference.HikariExecutionProcessReference;
+import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriver;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriverLoader;
 import dev.httpmarco.osgan.utils.stream.StreamHelper;
@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public final class HikariConnection implements Connection<HikariDataSource, HikariExecutionProcessReference> {
+public final class HikariConnection implements Connection<HikariDataSource, HikariProcessReference> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HikariConnection.class);
 
@@ -73,12 +73,17 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
     }
 
     @Override
-    public void update(@NotNull HikariExecutionProcessReference query) {
+    public void update(@NotNull HikariProcessReference query) {
         StreamHelper.reverse(query.sqlQueries().stream()).forEach(s -> transferPreparedStatement(s.query(), PreparedStatement::execute, s.values()));
     }
 
-    public void query(@NotNull HikariExecutionProcessReference query) {
-        StreamHelper.reverse(query.sqlQueries().stream()).forEach(s -> transferPreparedStatement(s.query(), it -> s.consumer().accept(it.executeQuery()), s.values()));
+    public void query(@NotNull HikariProcessReference query) {
+        StreamHelper.reverse(query.sqlQueries().stream()).forEach(s -> transferPreparedStatement(s.query(), it -> {
+            var resultSet = it.executeQuery();
+            while (resultSet.next()) {
+                s.consumer().accept(resultSet);
+            }
+        }, s.values()));
     }
 
     private void transferPreparedStatement(final String query, HikariConnectionFunction<PreparedStatement> function, @NotNull Object[] arguments) {
