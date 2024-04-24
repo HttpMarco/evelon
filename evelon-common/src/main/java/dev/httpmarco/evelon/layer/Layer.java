@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.layer;
 
 import dev.httpmarco.evelon.filtering.FilterHandler;
+import dev.httpmarco.evelon.process.ProcessReference;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.Repository;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.experimental.Accessors;
 @Getter
 @AllArgsConstructor
 @Accessors(fluent = true)
-public abstract class Layer<Q> {
+public abstract class Layer<Q extends ProcessReference<Q>> {
 
     // general auth binding id
     private final String id;
