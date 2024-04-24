@@ -83,7 +83,12 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
             while (resultSet.next()) {
                 s.consumer().accept(resultSet);
             }
+            query.sqlQueries().remove(s);
         }, s.values()));
+
+        if(!query.sqlQueries().isEmpty()) {
+            query(query);
+        }
     }
 
     private void transferPreparedStatement(final String query, HikariConnectionFunction<PreparedStatement> function, @NotNull Object[] arguments) {
