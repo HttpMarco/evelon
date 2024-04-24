@@ -24,15 +24,11 @@ straightforward synchronization process between them.
 |                                                                                                                                                                                         |            |                   |                  |             |
 
 ### Todo query methods
-- [ ] `find` - Find all entities that match the given query.
-- [ ] `findAll` - Find the first entity that matches the given query.
 - [ ] `udpdate` - Save the given entity.
-- [ ]  `order` - Order the result by the given field.
+- [ ] `order` - Order the result by the given field.
 - [ ] `min` - Find the minimum value of the given field.
 - [ ] `max` - Find the maximum value of the given field.
 - [ ] `sum` - Find the sum of the given field.
-- [ ] `count` - Count the number of entities that match the given query.
 - [ ] `avg` - Find the average value of the given field.
-- [ ] `exists` - Check if an entity exists that matches the given query.
 - [ ] `createIfNotExists` - Create an entity if it does not exist.
 - [ ] `upsert` - Create an entity if it does not exist, otherwise update it.

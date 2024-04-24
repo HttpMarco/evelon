@@ -2,13 +2,14 @@ package dev.httpmarco.evelon.layer.connection;
 
 import dev.httpmarco.evelon.filtering.FilterHandler;
 import dev.httpmarco.evelon.layer.PreppedLayer;
+import dev.httpmarco.evelon.process.ProcessReference;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class ConnectableLayer<C extends Connection<?, ?>, Q> extends PreppedLayer<Q> {
+public abstract class ConnectableLayer<C extends Connection<?, ?>, P extends ProcessReference<P>> extends PreppedLayer<P> {
 
     private final ConnectionAuthentication templateAuthentication;
 

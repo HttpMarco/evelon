@@ -15,17 +15,17 @@ import java.util.Collection;
 @Accessors(fluent = true)
 public final class RepositoryCollectionEntry extends RepositoryExternalEntry {
 
-    private final RepositoryEntry collectionEntry;
+    private final RepositoryEntry typeEntry;
 
     public RepositoryCollectionEntry(String id, @NotNull Field field, RepositoryExternalEntry parent) {
         super(id, field.getType(), parent);
 
-        this.collectionEntry = RepositoryEntryFinder.find(Reflections.on(field).generic(0), null, field.getName(), this);
+        this.typeEntry = RepositoryEntryFinder.find(Reflections.on(field).generic(0), null, field.getName(), this);
 
-        if (!(collectionEntry instanceof RepositoryExternalEntry)) {
-             this.children(collectionEntry);
+        if (!(typeEntry instanceof RepositoryExternalEntry)) {
+             this.children(typeEntry);
         } else {
-            this.children().addAll(((RepositoryExternalEntry) collectionEntry).children());
+            this.children().addAll(((RepositoryExternalEntry) typeEntry).children());
         }
     }
 

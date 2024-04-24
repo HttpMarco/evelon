@@ -1,16 +1,16 @@
 package dev.httpmarco.evelon.sql.parent.process;
 
-import dev.httpmarco.evelon.process.AbstractEntryProcess;
 import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
-import dev.httpmarco.evelon.sql.parent.reference.HikariExecutionProcessReference;
+import dev.httpmarco.evelon.process.kind.UpdateProcess;
+import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import dev.httpmarco.evelon.sql.parent.HikariRepositoryConstant;
 import dev.httpmarco.evelon.sql.parent.SqlType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public final class HikariPreppedProcess extends AbstractEntryProcess<HikariExecutionProcessReference> {
+public final class HikariPreppedProcess extends UpdateProcess<HikariProcessReference> {
 
     private static final String TABLE_CREATE_QUERY = "CREATE TABLE IF NOT EXISTS %s (%s);";
     private static final String TABLE_VALUE_FORMAT = "%s %s";
@@ -18,7 +18,7 @@ public final class HikariPreppedProcess extends AbstractEntryProcess<HikariExecu
     private static final String PRIMARY_FORMAT = "PRIMARY KEY (%s)";
 
     @Override
-    public void run(@NotNull RepositoryExternalEntry entry, HikariExecutionProcessReference reference) {
+    public void run(@NotNull RepositoryExternalEntry entry, HikariProcessReference reference) {
         var elements = new ArrayList<String>();
         var primaries = new ArrayList<String>();
 

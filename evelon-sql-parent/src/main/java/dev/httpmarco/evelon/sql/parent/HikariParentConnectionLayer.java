@@ -8,14 +8,14 @@ import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriver;
 import dev.httpmarco.evelon.sql.parent.process.HikariPreppedProcess;
-import dev.httpmarco.evelon.sql.parent.reference.HikariExecutionProcessReference;
+import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentication> extends ConnectableLayer<HikariConnection, HikariExecutionProcessReference> {
+public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentication> extends ConnectableLayer<HikariConnection, HikariProcessReference> {
 
     private HikariConnection connection;
 
@@ -34,11 +34,11 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
      */
     @Override
     public void prepped(@NotNull Repository<?> repository) {
-        runner().update(new HikariPreppedProcess(), repository);
+        runner().apply(new HikariPreppedProcess(), repository);
     }
 
     @Override
-    public ProcessRunner<HikariExecutionProcessReference> generateRunner() {
+    public ProcessRunner<HikariProcessReference> generateRunner() {
         return new HikariConnectionRunner(this.connection = new HikariConnection(protocol()));
     }
 

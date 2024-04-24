@@ -1,26 +1,28 @@
 package dev.httpmarco.evelon.process;
 
 import dev.httpmarco.evelon.Repository;
+import dev.httpmarco.evelon.process.kind.QueryProcess;
+import dev.httpmarco.evelon.process.kind.UpdateProcess;
 import lombok.AllArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 
 @AllArgsConstructor
-public abstract class ProcessRunner<Q> {
+public abstract class ProcessRunner<Q extends ProcessReference<Q>> {
 
-    public void update(@NotNull Process process, @NotNull Repository<?> repository) {
-        this.update(generateQuery(process, repository));
-    }
-
-    @SuppressWarnings("unchecked")
-    public Q generateQuery(@NotNull Process process, @NotNull Repository<?> repository) {
-        Q query;
-        if (process instanceof AbstractEntryProcess<?> entryProcess) {
-            query = (Q) entryProcess.run(repository.entry());
-        } else {
-            throw new RuntimeException("Process is not an instance of AbstractEntryProcess");
+    public Object apply(Process process, Repository<?> repository) {
+        var base = generateBase();
+        if (process instanceof UpdateProcess<?> updateProcess) {
+            updateProcess.runMapping(repository.entry(), base);
+            this.update(base);
+            return null;
+        } else if (process instanceof QueryProcess<?> queryProcess) {
+            var object = queryProcess.runMapping(repository.entry(), base);
+            this.query(base);
+            return object;
         }
-        return query;
+        throw new UnsupportedOperationException("Unsupported process type: " + process.getClass().getSimpleName());
     }
+
+    public abstract Q generateBase();
 
     protected abstract void query(Q query);
 
