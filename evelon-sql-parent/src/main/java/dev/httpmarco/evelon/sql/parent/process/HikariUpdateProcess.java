@@ -21,7 +21,7 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
 
         for (var child : entry.children()) {
             if(child instanceof RepositoryExternalEntry externalEntry) {
-                //todo
+                this.run(externalEntry, reference);
                 continue;
             }
             elements.add(child.id() + " = '" + Reflections.on(value).value(child.id()) + "'");
