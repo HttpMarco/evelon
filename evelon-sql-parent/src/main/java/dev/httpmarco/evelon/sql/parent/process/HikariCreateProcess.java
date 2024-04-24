@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 @AllArgsConstructor
-public final class HikariCreateProcessAbstract extends UpdateProcess<HikariProcessReference> {
+public final class HikariCreateProcess extends UpdateProcess<HikariProcessReference> {
 
     private static final String CREATE_VALUE_SQL = "INSERT INTO %s (%s) VALUES (%s);";
     private final Object value;
@@ -34,7 +34,7 @@ public final class HikariCreateProcessAbstract extends UpdateProcess<HikariProce
                 var childValue = Reflections.on(child.constant(RepositoryConstant.PARAM_FIELD)).value(value);
                 if (child instanceof RepositoryExternalEntry externalEntry) {
                     for (var object : externalEntry.readValues(childValue)) {
-                        var subprocess = new HikariCreateProcessAbstract(object);
+                        var subprocess = new HikariCreateProcess(object);
 
                         // we put all parent primaries in the next process
                         for (var primary : entry.primaries()) {
