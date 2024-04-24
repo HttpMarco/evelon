@@ -26,8 +26,8 @@ public final class HikariCreateProcess extends UpdateProcess<HikariProcessRefere
 
         // Since lists can also have individual attributes as types, we have to check whether these are present,
         // otherwise serialization can be carried out as normal.
-        if (entry instanceof RepositoryCollectionEntry collectionEntry && !(collectionEntry.collectionEntry() instanceof RepositoryExternalEntry)) {
-            elements.add(collectionEntry.collectionEntry().id());
+        if (entry instanceof RepositoryCollectionEntry collectionEntry && !(collectionEntry.typeEntry() instanceof RepositoryExternalEntry)) {
+            elements.add(collectionEntry.typeEntry().id());
             arguments.add(value);
         } else {
             for (var child : entry.children()) {
