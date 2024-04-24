@@ -16,6 +16,13 @@ public final class RepositoryQuery<T> implements Query<T> {
     }
 
     @Override
+    public void update(T value) {
+        for (var layer : repository.layers()) {
+            layer.query(repository).update(value);
+        }
+    }
+
+    @Override
     public void delete() {
         for (var layer : repository.layers()) {
             layer.query(repository).delete();

@@ -23,6 +23,7 @@ public final class H2DatabaseTest {
     class SimpleModelTest {
 
         private static Repository<SimpleModel> REPOSITORY;
+        private static final SimpleModel DUMMY = new SimpleModel('a', 8, 2000, true);
 
         @Test
         @Async.Schedule
@@ -34,7 +35,7 @@ public final class H2DatabaseTest {
         @Test
         @Order(1)
         void create() {
-            REPOSITORY.query().create(new SimpleModel('a', 8, 2000, true));
+            REPOSITORY.query().create(DUMMY);
         }
 
         @Test
@@ -72,6 +73,16 @@ public final class H2DatabaseTest {
         }
 
         @Test
+        @Order(6)
+        void update() {
+            REPOSITORY.query().update(new SimpleModel('a', 7, 2000, true));
+            var value = REPOSITORY.query(H2Layer.class).findFirst();
+
+            assertNotNull(value);
+            assertEquals(7, value.age());
+        }
+
+        @Test
         @Order(20)
         void delete() {
             REPOSITORY.query().delete();
@@ -84,6 +95,7 @@ public final class H2DatabaseTest {
     public class SimpleListModelText {
 
         private static Repository<SimpleListModel> REPOSITORY;
+        private static final SimpleListModel DUMMY = new SimpleListModel(UUID.randomUUID(), List.of("a", "b"), List.of("admin", "test"));
 
         @Test
         @Order(0)
@@ -94,7 +106,7 @@ public final class H2DatabaseTest {
         @Test
         @Order(1)
         void create() {
-            REPOSITORY.query().create(new SimpleListModel(UUID.randomUUID(), List.of("a", "b"), List.of("admin", "test")));
+            REPOSITORY.query().create(DUMMY);
         }
 
         @Test
@@ -145,6 +157,7 @@ public final class H2DatabaseTest {
     public class ComplexListModelText {
 
         private static Repository<ComplexListModel> REPOSITORY;
+        private static final ComplexListModel DUMMY = new ComplexListModel(UUID.randomUUID(), List.of(new TestObject1("abc", 2000), new TestObject1("abc", 2000)), List.of(new TestObject2("admin", -1)));
 
         @Test
         @Order(0)
@@ -155,7 +168,7 @@ public final class H2DatabaseTest {
         @Test
         @Order(1)
         void create() {
-            REPOSITORY.query().create(new ComplexListModel(UUID.randomUUID(), List.of(new TestObject1("abc", 2000), new TestObject1("abc", 2000)), List.of(new TestObject2("admin", -1))));
+            REPOSITORY.query().create(DUMMY);
         }
 
         @Test

@@ -23,6 +23,11 @@ public final class HikariLayerQuery<T> implements LayerQuery<T> {
     }
 
     @Override
+    public void update(T value) {
+        runner.apply(new HikariUpdateProcess(value), repository);
+    }
+
+    @Override
     public void delete() {
         runner.apply(new HikariDeleteProcess(), repository);
     }
