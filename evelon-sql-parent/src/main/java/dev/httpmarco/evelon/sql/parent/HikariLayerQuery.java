@@ -29,23 +29,23 @@ public final class HikariLayerQuery<T> implements LayerQuery<T> {
 
     @Override
     public boolean exists() {
-        return ((AtomicBoolean) runner.apply(new HikariCheckProcess(),  repository)).get();
+        return ((AtomicBoolean) runner.apply(new HikariCheckProcess(), repository)).get();
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T findFirst() {
-        //todo
-        return null;
+        return ((List<T>) runner.apply(new HikariFindProcess(0, 1), repository)).get(0);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<T> find() {
-        return (List<T>) runner.apply(new HikariFindProcess(),  repository);
+        return (List<T>) runner.apply(new HikariFindProcess(), repository);
     }
 
     @Override
     public long count() {
-        return ((AtomicLong) runner.apply(new HikariCountProcess(),  repository)).get();
+        return ((AtomicLong) runner.apply(new HikariCountProcess(), repository)).get();
     }
 }

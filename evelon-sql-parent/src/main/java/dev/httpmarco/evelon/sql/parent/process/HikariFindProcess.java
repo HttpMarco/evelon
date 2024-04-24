@@ -8,19 +8,22 @@ import dev.httpmarco.evelon.process.kind.QueryProcess;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 @AllArgsConstructor
+@NoArgsConstructor
 public final class HikariFindProcess extends QueryProcess<HikariProcessReference> {
 
     private static final String SELECT_QUERY = "SELECT %s FROM %s;";
+    private static final String SELECT_LIMIT_QUERY = "SELECT %s FROM %s LIMIT %d;";
 
     //todo
-    private final int skip = -1;
-    private final int limit = -1;
+    private int skip = -1;
+    private int limit = -1;
 
     @Override
     public @NotNull Object run(@NotNull RepositoryExternalEntry entry, HikariProcessReference reference) {
@@ -35,7 +38,13 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
         }
 
         var itemStringList = String.join(", ", searchedItems);
-        reference.append(SELECT_QUERY.formatted(itemStringList, entry.id()), new Object[0], resultSet -> {
+        var query = SELECT_QUERY.formatted(itemStringList, entry.id());
+
+        if (limit != -1) {
+            query = SELECT_LIMIT_QUERY.formatted(itemStringList, entry.id(), limit);
+        }
+
+        reference.append(query, new Object[0], resultSet -> {
             try {
                 if (entry instanceof RepositoryCollectionEntry collectionEntry && !(collectionEntry.typeEntry() instanceof RepositoryExternalEntry)) {
                     items.add(resultSet.getObject(collectionEntry.typeEntry().id()));

@@ -65,7 +65,10 @@ public final class H2DatabaseTest {
         @Test
         @Order(5)
         void findFirst() {
+            var value = REPOSITORY.query(H2Layer.class).findFirst();
 
+            assertNotNull(value);
+            assertEquals(8, value.age());
         }
 
         @Test
@@ -123,7 +126,10 @@ public final class H2DatabaseTest {
         @Test
         @Order(4)
         void findFirst() {
+            var value = REPOSITORY.query(H2Layer.class).findFirst();
 
+            assertNotNull(value);
+            assertEquals(2, value.getGroups().size());
         }
 
         @Test
@@ -182,7 +188,10 @@ public final class H2DatabaseTest {
         @Test
         @Order(4)
         void findFirst() {
+            var value = REPOSITORY.query(H2Layer.class).findFirst();
 
+            assertNotNull(value);
+            assertEquals(1, value.getGroups().size());
         }
 
         @Test
