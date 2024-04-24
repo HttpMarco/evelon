@@ -8,4 +8,6 @@ public interface LayerQuery<T> extends Query<T> {
 
     List<T> find();
 
+    long count();
+
 }

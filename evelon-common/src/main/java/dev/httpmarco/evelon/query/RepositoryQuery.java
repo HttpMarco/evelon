@@ -21,4 +21,19 @@ public final class RepositoryQuery<T> implements Query<T> {
             layer.query(repository).delete();
         }
     }
+
+    @Override
+    public boolean exists() {
+        for (var layer : repository.layers()) {
+            if(layer.query(repository).exists()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public T findFirst() {
+        return null;
+    }
 }

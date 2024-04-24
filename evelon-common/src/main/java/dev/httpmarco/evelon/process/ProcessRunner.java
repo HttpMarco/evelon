@@ -18,7 +18,6 @@ public abstract class ProcessRunner<Q extends ProcessReference<Q>> {
             var object = queryProcess.runMapping(repository.entry(), base);
             this.query(base);
             return object;
-
         }
         throw new UnsupportedOperationException("Unsupported process type: " + process.getClass().getSimpleName());
     }

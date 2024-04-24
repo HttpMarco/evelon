@@ -3,13 +3,13 @@ package dev.httpmarco.evelon.sql.parent;
 import dev.httpmarco.evelon.layer.LayerQuery;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.Repository;
-import dev.httpmarco.evelon.sql.parent.process.HikariCreateProcess;
-import dev.httpmarco.evelon.sql.parent.process.HikariDeleteProcess;
-import dev.httpmarco.evelon.sql.parent.process.HikariFindProcess;
+import dev.httpmarco.evelon.sql.parent.process.*;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 @AllArgsConstructor
 public final class HikariLayerQuery<T> implements LayerQuery<T> {
@@ -28,8 +28,24 @@ public final class HikariLayerQuery<T> implements LayerQuery<T> {
     }
 
     @Override
+    public boolean exists() {
+        return ((AtomicBoolean) runner.apply(new HikariCheckProcess(),  repository)).get();
+    }
+
+    @Override
+    public T findFirst() {
+        //todo
+        return null;
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public List<T> find() {
         return (List<T>) runner.apply(new HikariFindProcess(),  repository);
+    }
+
+    @Override
+    public long count() {
+        return ((AtomicLong) runner.apply(new HikariCountProcess(),  repository)).get();
     }
 }
