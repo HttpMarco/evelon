@@ -44,6 +44,7 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
             query = SELECT_LIMIT_QUERY.formatted(itemStringList, entry.id(), limit);
         }
 
+        //todo remove empty object parameter
         reference.append(query, new Object[0], resultSet -> {
             try {
                 if (entry instanceof RepositoryCollectionEntry collectionEntry && !(collectionEntry.typeEntry() instanceof RepositoryExternalEntry)) {
