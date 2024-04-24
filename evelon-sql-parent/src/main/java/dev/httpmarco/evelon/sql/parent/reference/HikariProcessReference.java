@@ -10,25 +10,25 @@ import java.util.function.Consumer;
 
 @Getter
 @Accessors(fluent = true)
-public final class HikariExecutionProcessReference implements ProcessReference<HikariExecutionProcessReference> {
+public final class HikariProcessReference implements ProcessReference<HikariProcessReference> {
 
     private final List<HikariReferenceData<ResultSet>> sqlQueries = new ArrayList<>();
 
-    public HikariExecutionProcessReference append(String query, Object[] parameters, Consumer<ResultSet> consumer) {
+    public HikariProcessReference append(String query, Object[] parameters, Consumer<ResultSet> consumer) {
         this.sqlQueries.add(new HikariReferenceData<>(query, parameters, consumer));
         return this;
     }
 
-    public HikariExecutionProcessReference append(String query, Object[] parameters) {
+    public HikariProcessReference append(String query, Object[] parameters) {
         return this.append(query, parameters, resultSet -> {});
     }
 
-    public HikariExecutionProcessReference append(String query) {
+    public HikariProcessReference append(String query) {
         return this.append(query, new Object[0]);
     }
 
     @Override
-    public void bind(HikariExecutionProcessReference reference) {
+    public void bind(HikariProcessReference reference) {
         this.sqlQueries.addAll(reference.sqlQueries());
     }
 }
