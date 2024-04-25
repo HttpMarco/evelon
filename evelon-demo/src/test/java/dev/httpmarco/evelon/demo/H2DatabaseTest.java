@@ -83,6 +83,12 @@ public final class H2DatabaseTest {
         }
 
         @Test
+        @Order(7)
+        void matchFilter() {
+            REPOSITORY.query().filter().match("age", 7).findFirst();
+        }
+
+        @Test
         @Order(20)
         void delete() {
             REPOSITORY.query().delete();
