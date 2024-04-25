@@ -2,9 +2,13 @@ package dev.httpmarco.evelon.query;
 
 import dev.httpmarco.evelon.Repository;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 
+@Getter
+@Accessors(fluent = true)
 @AllArgsConstructor
-public final class RepositoryQuery<T> implements Query<T> {
+public class RepositoryQuery<T> implements Query<T> {
 
     private final Repository<T> repository;
 
@@ -42,5 +46,10 @@ public final class RepositoryQuery<T> implements Query<T> {
     @Override
     public T findFirst() {
         return null;
+    }
+
+    @Override
+    public FilterQuery<T> filter() {
+        return new RepositoryFilterQuery<>(this.repository);
     }
 }
