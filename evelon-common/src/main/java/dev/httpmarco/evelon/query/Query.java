@@ -12,4 +12,6 @@ public interface Query<T> {
 
     T findFirst();
 
+    FilterQuery<T> filter();
+
 }
