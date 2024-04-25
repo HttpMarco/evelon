@@ -85,7 +85,9 @@ public final class H2DatabaseTest {
         @Test
         @Order(7)
         void matchFilter() {
-            REPOSITORY.query().filter().match("age", 7).findFirst();
+            var value = REPOSITORY.query().filter().match("age", 8).findFirst();
+
+            assertNull(value);
         }
 
         @Test

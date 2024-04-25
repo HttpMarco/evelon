@@ -3,6 +3,7 @@ package dev.httpmarco.evelon.sql.parent;
 import dev.httpmarco.evelon.layer.LayerQuery;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.Repository;
+import dev.httpmarco.evelon.query.FilterQuery;
 import dev.httpmarco.evelon.sql.parent.process.*;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import lombok.AllArgsConstructor;
@@ -53,4 +54,11 @@ public final class HikariLayerQuery<T> implements LayerQuery<T> {
     public long count() {
         return ((AtomicLong) runner.apply(new HikariCountProcess(), repository)).get();
     }
+
+    @Override
+    public FilterQuery<T> filter() {
+        //todo
+        return null;
+    }
+
 }

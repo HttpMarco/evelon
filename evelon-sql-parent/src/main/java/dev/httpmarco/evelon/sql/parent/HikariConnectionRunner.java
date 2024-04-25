@@ -4,6 +4,8 @@ import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import lombok.AllArgsConstructor;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 @AllArgsConstructor
 public final class HikariConnectionRunner extends ProcessRunner<HikariProcessReference> {
@@ -15,8 +17,9 @@ public final class HikariConnectionRunner extends ProcessRunner<HikariProcessRef
         this.connection.update(query);
     }
 
+    @Contract(" -> new")
     @Override
-    public HikariProcessReference generateBase() {
+    public @NotNull HikariProcessReference generateBase() {
         return new HikariProcessReference();
     }
 
