@@ -1,5 +1,7 @@
 package dev.httpmarco.evelon.query;
 
+import org.jetbrains.annotations.Nullable;
+
 public interface Query<T> {
 
     void create(T value);
@@ -10,7 +12,7 @@ public interface Query<T> {
 
     boolean exists();
 
-    T findFirst();
+    @Nullable T findFirst();
 
     FilterQuery<T> filter();
 
