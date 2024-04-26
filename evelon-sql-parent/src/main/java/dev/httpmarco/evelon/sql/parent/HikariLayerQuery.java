@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 @AllArgsConstructor
-public final class HikariLayerQuery<T> implements LayerQuery<T> {
+public class HikariLayerQuery<T> implements LayerQuery<T> {
 
     private final Repository<T> repository;
     private ProcessRunner<HikariProcessReference> runner;
@@ -57,8 +57,6 @@ public final class HikariLayerQuery<T> implements LayerQuery<T> {
 
     @Override
     public FilterQuery<T> filter() {
-        //todo
-        return null;
+        return new HikariLayerFilterQuery<>(repository, runner);
     }
-
 }
