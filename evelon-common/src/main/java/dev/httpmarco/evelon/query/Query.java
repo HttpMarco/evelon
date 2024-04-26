@@ -12,7 +12,8 @@ public interface Query<T> {
 
     boolean exists();
 
-    @Nullable T findFirst();
+    @Nullable
+    T findFirst();
 
     FilterQuery<T> filter();
 

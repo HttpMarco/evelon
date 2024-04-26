@@ -5,23 +5,22 @@ import dev.httpmarco.evelon.filtering.Filter;
 import dev.httpmarco.evelon.layer.Layer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 public final class RepositoryFilterQuery<T> extends RepositoryQuery<T> implements FilterQuery<T> {
 
-    private final Map<Layer<?>, List<Filter<?, ?>>> filters = new HashMap<>();
+    private final Layer<?> layer;
+    private final List<Filter<?, ?>> filters = new ArrayList<>();
 
-    public RepositoryFilterQuery(Repository<T> repository) {
+    public RepositoryFilterQuery(Repository<T> repository, Layer<?> layer) {
         super(repository);
+        this.layer = layer;
     }
 
     @Override
     public FilterQuery<T> match(String id, Object object) {
-        for (var layer : repository().layers()) {
-            filters.computeIfAbsent(layer, k -> new ArrayList<>()).add(layer.filterHandler().match(id, object));
-        }
+        this.filters.add(this.layer.filterHandler().match(id, object));
         return this;
     }
 }

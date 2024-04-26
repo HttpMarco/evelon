@@ -44,6 +44,6 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
 
     @Override
     public <T> LayerQuery<T> query(Repository<T> repository) {
-        return new HikariLayerQuery<>(repository, runner());
+        return new HikariLayerQuery<>(this, repository, runner());
     }
 }
