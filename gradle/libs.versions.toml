@@ -4,6 +4,9 @@ lombok = "1.18.32"
 annotations = "24.1.0"
 osgan = "1.1.11-20240419.145557-1"
 
+# publishing
+nexus-publish = "2.0.0-rc-2"
+
 # configuration
 gson = "2.10.1"
 
@@ -37,8 +40,8 @@ h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
 mariadb = { group = "org.mariadb.jdbc", name = "mariadb-java-client", version.ref = "mariadb" }
 
 [plugins]
+nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish" }
 
 [bundles]
-
 osgan = ["osgan-utils", "osgan-reflections", "osgan-files"]
 utils = ["lombok", "annotations", "slf4j", "log4j"]
