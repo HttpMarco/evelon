@@ -20,6 +20,13 @@ straightforward synchronization process between them.
 | <div align="center"> <img  heigth="17px" width="17px" src="https://upload.wikimedia.org/wikipedia/en/3/3a/ArangoDB_Logo.png"></div>                                                | arangodb   | -                 | -.-.-            | no          |
 | <div align="center"> <img  heigth="17px" width="17px" src="https://www.scylladb.com/wp-content/uploads/scylla-headset.png"></div>                                                  | scylladb   | -                 | -.-.-            | no          |
 
+### Snapshots:
+```kotlin
+repositories {
+    maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
+}
+```
+
 ### Todo query methods
 - [ ] `udpdate` - Save the given entity.
 - [ ] `order` - Order the result by the given field.
