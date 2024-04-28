@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.external;
 
+import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryEntry;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.osgan.reflections.Reflections;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.List;
 
 @Getter
@@ -22,13 +24,23 @@ public final class RepositoryMapEntry extends RepositoryExternalEntry {
     public RepositoryMapEntry(String id, @NotNull Field field, RepositoryExternalEntry parent) {
         super(id, field.getType(), parent);
 
-        this.keyEntry = new RepositoryEntry(id + "_key", Reflections.on(field).generic(0), this);
-        this.valueEntry = new RepositoryEntry(id + "_value", Reflections.on(field).generic(1), this);
+
+
+        this.keyEntry = new RepositoryEntry(field.getName() + "_key", Reflections.on(field).generic(0), this);
+        this.keyEntry.constantOption(RepositoryConstant.PRIMARY_KEY);
+
+        this.valueEntry = new RepositoryEntry(field.getName()  + "_value", Reflections.on(field).generic(1), this);
     }
 
     @Contract(pure = true)
     @Override
-    public @Unmodifiable List<RepositoryEntry> children() {
-        return List.of();
+    public @Unmodifiable @NotNull List<RepositoryEntry> children() {
+        return List.of(keyEntry, valueEntry);
+    }
+
+    @Override
+    public Collection<Object> readValues(Object parent) {
+        //todo
+        return super.readValues(parent);
     }
 }

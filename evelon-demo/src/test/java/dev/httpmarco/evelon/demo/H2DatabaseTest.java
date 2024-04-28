@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.demo;
 
 import dev.httpmarco.evelon.demo.models.ComplexCollectionModel;
 import dev.httpmarco.evelon.demo.models.SimpleCollectionModel;
+import dev.httpmarco.evelon.demo.models.SimpleMapModel;
 import dev.httpmarco.evelon.demo.models.SimpleModel;
 import dev.httpmarco.evelon.demo.models.objects.TestObject1;
 import dev.httpmarco.evelon.demo.models.objects.TestObject2;
@@ -11,6 +12,7 @@ import org.jetbrains.annotations.Async;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -228,9 +230,12 @@ public final class H2DatabaseTest {
     @DisplayName("H2 - Maps - Simple key/value repository test")
     public class MapSimpleTest {
 
+        private static Repository<SimpleMapModel> REPOSITORY;
+        private static final SimpleMapModel DUMMY = new SimpleMapModel(UUID.randomUUID(), "httpmarco", Map.of("auto-update", false, "autostart", true));
+
         @Test
         public void initialize() {
-
+            assertNotNull(REPOSITORY = Repository.build(SimpleMapModel.class).withId("maps_simple").withLayer(H2Layer.class).build());
         }
     }
 
