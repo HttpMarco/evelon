@@ -36,3 +36,8 @@ repositories {
 - [ ] `avg` - Find the average value of the given field.
 - [ ] `createIfNotExists` - Create an entity if it does not exist.
 - [ ] `upsert` - Create an entity if it does not exist, otherwise update it.
+
+### Another todos
+- [ ] row transformer
+- [ ] implement Arrys
+- [ ] 
