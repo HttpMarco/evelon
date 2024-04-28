@@ -1,7 +1,6 @@
 package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.RepositoryConstant;
-import dev.httpmarco.evelon.RepositoryEntry;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.process.kind.QueryProcess;
@@ -44,8 +43,7 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
             query = SELECT_LIMIT_QUERY.formatted(itemStringList, entry.id(), limit);
         }
 
-        //todo remove empty object parameter
-        reference.append(query, new Object[0], resultSet -> {
+        reference.append(query, resultSet -> {
             try {
                 if (entry instanceof RepositoryCollectionEntry collectionEntry && !(collectionEntry.typeEntry() instanceof RepositoryExternalEntry)) {
                     items.add(resultSet.getObject(collectionEntry.typeEntry().id()));
