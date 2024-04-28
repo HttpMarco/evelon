@@ -19,7 +19,7 @@ public final class H2DatabaseTest {
 
     @Nested
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-    @DisplayName("H2 - Simple Model Repository Test")
+    @DisplayName("H2 - Object - Simple repository Test")
     class SimpleModelTest {
 
         private static Repository<SimpleModel> REPOSITORY;
@@ -100,7 +100,7 @@ public final class H2DatabaseTest {
 
     @Nested
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-    @DisplayName("H2 - Simple List Model Repository Test")
+    @DisplayName("H2 - Collection - Simple repository Test")
     public class SimpleListModelText {
 
         private static Repository<SimpleListModel> REPOSITORY;
@@ -162,7 +162,7 @@ public final class H2DatabaseTest {
 
     @Nested
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-    @DisplayName("H2 - Complex List Model Repository Test")
+    @DisplayName("H2 - Collections - Complex repository Test")
     public class ComplexListModelText {
 
         private static Repository<ComplexListModel> REPOSITORY;
@@ -220,6 +220,50 @@ public final class H2DatabaseTest {
         @Order(20)
         void delete() {
             REPOSITORY.query().delete();
+        }
+    }
+
+    @Nested
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+    @DisplayName("H2 - Maps - Simple key/value repository test")
+    public class MapSimpleTest {
+
+        @Test
+        public void initialize() {
+
+        }
+    }
+
+    @Nested
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+    @DisplayName("H2 - Maps - Simple key object value repository test")
+    public class MapValueTest {
+
+        @Test
+        public void initialize() {
+
+        }
+    }
+
+    @Nested
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+    @DisplayName("H2 - Maps - Object key simple value repository test")
+    public class MapKeyTest {
+
+        @Test
+        public void initialize() {
+
+        }
+    }
+
+    @Nested
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+    @DisplayName("H2 - Maps - Complex repository test")
+    public class MapComplexTest {
+
+        @Test
+        public void initialize() {
+
         }
     }
 }
