@@ -66,28 +66,29 @@ public final class H2DatabaseTest {
         @Test
         @Order(5)
         void findFirst() {
-            var value = REPOSITORY.query(H2Layer.class).findFirst();
+            var value = REPOSITORY.query().findFirst();
 
             assertNotNull(value);
             assertEquals(8, value.age());
         }
 
         @Test
+        @DisplayName("findFirst - match filter")
         @Order(6)
+        void matchFilter() {
+            var value = REPOSITORY.query().filter().match("age", 7).findFirst();
+
+            assertNull(value);
+        }
+
+        @Test
+        @Order(7)
         void update() {
             REPOSITORY.query().update(new SimpleModel('a', 7, 2000, true));
             var value = REPOSITORY.query(H2Layer.class).findFirst();
 
             assertNotNull(value);
             assertEquals(7, value.age());
-        }
-
-        @Test
-        @Order(7)
-        void matchFilter() {
-            var value = REPOSITORY.query().filter().match("age", 8).findFirst();
-
-            assertNull(value);
         }
 
         @Test
