@@ -12,5 +12,4 @@ public abstract class QueryProcess<R extends ProcessReference<R>> extends Proces
     public Object runMapping(RepositoryExternalEntry entry, ProcessReference<?> reference) {
         return this.run(entry, (R) reference);
     }
-
 }

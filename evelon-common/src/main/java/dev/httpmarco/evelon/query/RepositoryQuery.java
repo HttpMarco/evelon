@@ -45,11 +45,17 @@ public class RepositoryQuery<T> implements Query<T> {
 
     @Override
     public T findFirst() {
+        for (var layer : repository.layers()) {
+            var value = layer.query(repository).findFirst();
+            if(value != null) {
+                return value;
+            }
+        }
         return null;
     }
 
     @Override
     public FilterQuery<T> filter() {
-        return new RepositoryFilterQuery<>(this.repository);
+        return new RepositoryFilterQuery<>(this.repository, repository.layers());
     }
 }

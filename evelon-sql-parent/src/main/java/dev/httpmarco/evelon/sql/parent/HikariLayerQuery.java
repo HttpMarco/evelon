@@ -11,6 +11,7 @@ import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -60,7 +61,7 @@ public class HikariLayerQuery<T> implements LayerQuery<T> {
 
     @Override
     public FilterQuery<T> filter() {
-        return new RepositoryFilterQuery<>(this.repository, this.layer);
+        return new RepositoryFilterQuery<>(this.repository, Set.of(this.layer));
     }
 
 }
