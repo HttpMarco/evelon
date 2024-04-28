@@ -81,7 +81,7 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
         StreamHelper.reverse(query.sqlQueries().stream()).forEach(s -> transferPreparedStatement(s.query(), it -> {
             var resultSet = it.executeQuery();
             while (resultSet.next()) {
-                s.consumer().accept(resultSet);
+                s.consumer().apply(resultSet);
             }
             query.sqlQueries().remove(s);
         }, s.values()));

@@ -3,8 +3,7 @@ package dev.httpmarco.evelon.sql.parent.process;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.process.kind.QueryProcess;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
-
-import java.sql.SQLException;
+import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.atomic.AtomicLong;
 
 public final class HikariCountProcess extends QueryProcess<HikariProcessReference> {
@@ -12,15 +11,9 @@ public final class HikariCountProcess extends QueryProcess<HikariProcessReferenc
     private static final String COUNT_QUERY = "SELECT COUNT(*) AS ELEMENTS FROM %s;";
 
     @Override
-    public Object run(RepositoryExternalEntry entry, HikariProcessReference reference) {
+    public @NotNull Object run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
         AtomicLong count = new AtomicLong(-1);
-        reference.append(String.format(COUNT_QUERY, entry.id()), new Object[0], resultSet -> {
-            try {
-                count.set(resultSet.getLong("ELEMENTS"));
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        reference.append(String.format(COUNT_QUERY, entry.id()), resultSet -> count.set(resultSet.getLong("ELEMENTS")));
         return count;
     }
 }

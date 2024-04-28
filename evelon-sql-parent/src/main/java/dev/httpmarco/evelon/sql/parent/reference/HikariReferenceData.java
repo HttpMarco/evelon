@@ -1,7 +1,7 @@
 package dev.httpmarco.evelon.sql.parent.reference;
 
-import java.util.function.Consumer;
+import dev.httpmarco.evelon.sql.parent.connection.HikariConnectionFunction;
 
-public record HikariReferenceData<R>(String query, Object[] values, Consumer<R> consumer) {
+public record HikariReferenceData<R>(String query, Object[] values, HikariConnectionFunction<R> consumer) {
 
 }
