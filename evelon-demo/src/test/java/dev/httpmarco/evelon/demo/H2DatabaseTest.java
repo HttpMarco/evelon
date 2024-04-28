@@ -1,7 +1,7 @@
 package dev.httpmarco.evelon.demo;
 
-import dev.httpmarco.evelon.demo.models.ComplexListModel;
-import dev.httpmarco.evelon.demo.models.SimpleListModel;
+import dev.httpmarco.evelon.demo.models.ComplexCollectionModel;
+import dev.httpmarco.evelon.demo.models.SimpleCollectionModel;
 import dev.httpmarco.evelon.demo.models.SimpleModel;
 import dev.httpmarco.evelon.demo.models.objects.TestObject1;
 import dev.httpmarco.evelon.demo.models.objects.TestObject2;
@@ -101,15 +101,15 @@ public final class H2DatabaseTest {
     @Nested
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     @DisplayName("H2 - Collection - Simple repository Test")
-    public class SimpleListModelText {
+    public class SimpleCollectionModelText {
 
-        private static Repository<SimpleListModel> REPOSITORY;
-        private static final SimpleListModel DUMMY = new SimpleListModel(UUID.randomUUID(), List.of("a", "b"), List.of("admin", "test"));
+        private static Repository<SimpleCollectionModel> REPOSITORY;
+        private static final SimpleCollectionModel DUMMY = new SimpleCollectionModel(UUID.randomUUID(), List.of("a", "b"), List.of("admin", "test"));
 
         @Test
         @Order(0)
         void initialize() {
-            assertNotNull(REPOSITORY = Repository.build(SimpleListModel.class).withId("persons_simple").withLayer(H2Layer.class).build());
+            assertNotNull(REPOSITORY = Repository.build(SimpleCollectionModel.class).withId("persons_simple").withLayer(H2Layer.class).build());
         }
 
         @Test
@@ -163,15 +163,15 @@ public final class H2DatabaseTest {
     @Nested
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     @DisplayName("H2 - Collections - Complex repository Test")
-    public class ComplexListModelText {
+    public class ComplexCollectionModelText {
 
-        private static Repository<ComplexListModel> REPOSITORY;
-        private static final ComplexListModel DUMMY = new ComplexListModel(UUID.randomUUID(), List.of(new TestObject1("abc", 2000), new TestObject1("abc", 2000)), List.of(new TestObject2("admin", -1)));
+        private static Repository<ComplexCollectionModel> REPOSITORY;
+        private static final ComplexCollectionModel DUMMY = new ComplexCollectionModel(UUID.randomUUID(), List.of(new TestObject1("abc", 2000), new TestObject1("abc", 2000)), List.of(new TestObject2("admin", -1)));
 
         @Test
         @Order(0)
         void initialize() {
-            assertNotNull(REPOSITORY = Repository.build(ComplexListModel.class).withId("persons_complex").withLayer(H2Layer.class).build());
+            assertNotNull(REPOSITORY = Repository.build(ComplexCollectionModel.class).withId("persons_complex").withLayer(H2Layer.class).build());
         }
 
         @Test
