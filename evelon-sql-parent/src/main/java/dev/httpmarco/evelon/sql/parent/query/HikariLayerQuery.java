@@ -1,17 +1,15 @@
-package dev.httpmarco.evelon.sql.parent;
+package dev.httpmarco.evelon.sql.parent.query;
 
 import dev.httpmarco.evelon.layer.Layer;
-import dev.httpmarco.evelon.query.LayerQuery;
+import dev.httpmarco.evelon.query.layer.LayerQuery;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.Repository;
-import dev.httpmarco.evelon.query.FilterQuery;
-import dev.httpmarco.evelon.query.RepositoryFilterQuery;
+import dev.httpmarco.evelon.query.layer.LayerFilter;
 import dev.httpmarco.evelon.sql.parent.process.*;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -60,8 +58,7 @@ public class HikariLayerQuery<T> implements LayerQuery<T> {
     }
 
     @Override
-    public FilterQuery<T> filter() {
-        return new RepositoryFilterQuery<>(this.repository, Set.of(this.layer));
+    public LayerFilter<T> filter() {
+        return new HikariLayerFilter<>(layer, this.repository, runner);
     }
-
 }
