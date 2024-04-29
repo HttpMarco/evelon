@@ -3,6 +3,8 @@ package dev.httpmarco.evelon.query;
 import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.filtering.Filter;
 import dev.httpmarco.evelon.layer.Layer;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 
@@ -10,7 +12,7 @@ public final class RepositoryFilterQuery<T> extends RepositoryQuery<T> implement
 
     private final Map<Layer<?>, List<Filter<?, ?>>> filters = new HashMap<>();
 
-    public RepositoryFilterQuery(Repository<T> repository, Set<Layer<?>> layers) {
+    public RepositoryFilterQuery(Repository<T> repository, @NotNull Set<Layer<?>> layers) {
         super(repository);
 
         for (var layer : layers) {
