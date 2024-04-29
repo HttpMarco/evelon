@@ -22,7 +22,7 @@ public final class RepositoryFilterQuery<T> extends RepositoryQuery<T> implement
 
     @Override
     public FilterQuery<T> match(String id, Object object) {
-        for (Layer<?> layer : this.filters.keySet()) {
+        for (var layer : this.filters.keySet()) {
             filters.get(layer).add(layer.filterHandler().match(id, object));
         }
         return this;
