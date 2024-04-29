@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.sql.parent;
 
-import dev.httpmarco.evelon.layer.LayerQuery;
+import dev.httpmarco.evelon.query.LayerQuery;
 import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
 import dev.httpmarco.evelon.process.ProcessRunner;

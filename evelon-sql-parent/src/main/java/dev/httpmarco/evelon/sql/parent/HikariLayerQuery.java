@@ -1,7 +1,7 @@
 package dev.httpmarco.evelon.sql.parent;
 
 import dev.httpmarco.evelon.layer.Layer;
-import dev.httpmarco.evelon.layer.LayerQuery;
+import dev.httpmarco.evelon.query.LayerQuery;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.query.FilterQuery;

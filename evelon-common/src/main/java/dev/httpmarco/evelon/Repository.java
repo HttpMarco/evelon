@@ -1,7 +1,7 @@
 package dev.httpmarco.evelon;
 
 import dev.httpmarco.evelon.layer.Layer;
-import dev.httpmarco.evelon.layer.LayerQuery;
+import dev.httpmarco.evelon.query.LayerQuery;
 import dev.httpmarco.evelon.external.RepositoryObjectEntry;
 import dev.httpmarco.evelon.query.Query;
 import dev.httpmarco.evelon.query.RepositoryQuery;
