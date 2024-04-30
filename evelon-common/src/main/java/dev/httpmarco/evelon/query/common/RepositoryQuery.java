@@ -2,7 +2,6 @@ package dev.httpmarco.evelon.query.common;
 
 import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.query.Query;
-import dev.httpmarco.evelon.query.Filter;
 import dev.httpmarco.evelon.query.QueryFilter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

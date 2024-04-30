@@ -2,7 +2,6 @@ package dev.httpmarco.evelon.query.common;
 
 import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.layer.Layer;
-import dev.httpmarco.evelon.query.Filter;
 import dev.httpmarco.evelon.query.QueryFilter;
 import org.jetbrains.annotations.NotNull;
 
