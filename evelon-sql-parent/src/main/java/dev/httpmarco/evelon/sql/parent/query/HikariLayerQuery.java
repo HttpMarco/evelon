@@ -43,7 +43,7 @@ public class HikariLayerQuery<T> implements LayerQuery<T> {
     @Override
     @SuppressWarnings("unchecked")
     public T findFirst() {
-        return ((List<T>) runner.apply(new HikariFindProcess(0, 1), repository)).get(0);
+        return ((List<T>) runner.apply(new HikariFindProcess(), repository)).get(0);
     }
 
     @Override

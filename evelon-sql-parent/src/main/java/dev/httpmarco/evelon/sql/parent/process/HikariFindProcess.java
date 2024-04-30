@@ -24,6 +24,11 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
     private int skip = -1;
     private int limit = -1;
 
+    public HikariFindProcess(int skip) {
+        this.skip = skip;
+    }
+
+
     @Override
     public @NotNull Object run(@NotNull RepositoryExternalEntry entry, HikariProcessReference reference) {
         var items = new ArrayList<>();
