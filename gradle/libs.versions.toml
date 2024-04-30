@@ -5,7 +5,7 @@ annotations = "24.1.0"
 osgan = "1.1.11-20240419.145557-1"
 
 # publishing
-nexus-publish = "2.0.0-rc-2"
+nexus-publish = "2.0.0"
 
 # configuration
 gson = "2.10.1"
