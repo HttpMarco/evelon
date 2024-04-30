@@ -39,5 +39,4 @@ repositories {
 
 ### Another todos
 - [ ] row transformer
-- [ ] implement Arrys
-- [ ] 
+- [ ] implement Arrays
