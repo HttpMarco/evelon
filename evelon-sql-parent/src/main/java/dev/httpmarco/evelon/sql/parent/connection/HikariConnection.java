@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import dev.httpmarco.evelon.layer.connection.Connection;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
+import dev.httpmarco.evelon.sql.parent.HikariDefaultAuthentication;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriver;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriverLoader;
@@ -51,6 +52,11 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
             loader.initialize();
         }
 
+        if(credentials instanceof HikariDefaultAuthentication authentication) {
+            config.setUsername(authentication.username());
+            config.setPassword(authentication.password());
+        }
+
         config.setJdbcUrl(protocolDriver.jdbcUrlBinding(credentials));
         this.dataSource = new HikariDataSource(config);
     }
@@ -78,6 +84,10 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
     }
 
     public void query(@NotNull HikariProcessReference query) {
+        if(!isConnected()) {
+            LOGGER.error("Cannot execute query, because the connection is not established!");
+            return;
+        }
         StreamHelper.reverse(query.sqlQueries().stream()).forEach(s -> transferPreparedStatement(s.query(), it -> {
             var resultSet = it.executeQuery();
             while (resultSet.next()) {
