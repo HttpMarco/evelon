@@ -1,6 +1,6 @@
 package dev.httpmarco.evelon.sql.parent;
 
-import dev.httpmarco.evelon.layer.LayerQuery;
+import dev.httpmarco.evelon.query.layer.LayerQuery;
 import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
 import dev.httpmarco.evelon.process.ProcessRunner;
@@ -8,6 +8,7 @@ import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriver;
 import dev.httpmarco.evelon.sql.parent.process.HikariPreppedProcess;
+import dev.httpmarco.evelon.sql.parent.query.HikariLayerQuery;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import lombok.Getter;
 import lombok.experimental.Accessors;

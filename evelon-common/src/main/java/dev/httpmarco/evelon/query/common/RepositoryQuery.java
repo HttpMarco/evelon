@@ -1,6 +1,8 @@
-package dev.httpmarco.evelon.query;
+package dev.httpmarco.evelon.query.common;
 
 import dev.httpmarco.evelon.Repository;
+import dev.httpmarco.evelon.query.Query;
+import dev.httpmarco.evelon.query.QueryFilter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -55,7 +57,7 @@ public class RepositoryQuery<T> implements Query<T> {
     }
 
     @Override
-    public FilterQuery<T> filter() {
-        return new RepositoryFilterQuery<>(this.repository, repository.layers());
+    public QueryFilter<T> filter() {
+        return new RepositoryFilter<>(this.repository, repository.layers());
     }
 }
