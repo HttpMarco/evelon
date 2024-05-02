@@ -24,7 +24,12 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
     }
 
     public ProtocolDriver<A> protocol() {
-        return ConnectionAuthentication::id;
+        return credentials -> {
+            if (credentials instanceof HikariDefaultAuthentication auth) {
+                return "jdbc:" + auth.id().toLowerCase() + "://" + auth.hostname() + ":" + auth.port() + "/" + auth.database();
+            }
+            return credentials.id();
+        };
     }
 
     /**
