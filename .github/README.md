@@ -21,11 +21,31 @@ straightforward synchronization process between them.
 | <div align="center"> <img  heigth="17px" width="17px" src="https://www.scylladb.com/wp-content/uploads/scylla-headset.png"></div>                                                  | scylladb   | -                 | -.-.-            | no          |
 
 ### Snapshots:
+
 ```kotlin
 repositories {
     maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 ```
+Current module types: `common`, `h2`, `mariadb`
+```groovy
+compile "dev.httpmarco.evelon:evelon-MODULE:VERSION"
+```
+```kotlin
+implementation("dev.httpmarco.evelon:evelon-MODULE:VERSION")
+```
+
+```xml
+<dependency>
+    <groupId>dev.httpmarco.evelon</groupId>
+    <artifactId>evelon-MODULE</artifactId>
+    <version>VERSION</version>
+</dependency>
+```
+
+
+
+
 
 ### Todo query methods
 - [ ] `udpdate` - Save the given entity.
