@@ -25,7 +25,7 @@ public final class H2DatabaseTest {
     class SimpleModelTest {
 
         private static Repository<SimpleModel> REPOSITORY;
-        private static final SimpleModel DUMMY = new SimpleModel('a', 8, 2000, true);
+        private static final SimpleModel DUMMY = new SimpleModel('a', 8, 2000, false);
 
         @Test
         @Async.Schedule
@@ -86,7 +86,7 @@ public final class H2DatabaseTest {
         @Test
         @Order(7)
         void update() {
-            REPOSITORY.query().update(new SimpleModel('a', 7, 2000, true));
+            REPOSITORY.query().update(new SimpleModel('a', 7, 2000, false));
             var value = REPOSITORY.query(H2Layer.class).findFirst();
 
             assertNotNull(value);
