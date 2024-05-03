@@ -10,6 +10,7 @@ import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriver;
 import dev.httpmarco.evelon.sql.parent.process.HikariPreppedProcess;
 import dev.httpmarco.evelon.sql.parent.query.HikariLayerQuery;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
+import dev.httpmarco.evelon.sql.parent.types.TypeDefaultDetector;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentication> extends ConnectableLayer<HikariConnection, HikariProcessReference> {
 
     private HikariConnection connection;
+    private final TypeDefaultDetector detector = new TypeDefaultDetector();
 
     public HikariParentConnectionLayer(A templateCredentials) {
         super(templateCredentials, new HikariFilterHandler());
