@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.demo.models;
 
+import dev.httpmarco.evelon.demo.models.objects.EnumObject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -13,5 +14,6 @@ public class SimpleModel {
     private int age;
     private long money;
     private boolean dead;
+    private EnumObject enumObject;
 
 }
