@@ -3,19 +3,25 @@ package dev.httpmarco.evelon.sql.parent.process;
 import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.process.kind.UpdateProcess;
+import dev.httpmarco.evelon.sql.parent.HikariParentConnectionLayer;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import dev.httpmarco.evelon.sql.parent.HikariRepositoryConstant;
 import dev.httpmarco.evelon.sql.parent.SqlType;
+import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+@AllArgsConstructor
 public final class HikariPreppedProcess extends UpdateProcess<HikariProcessReference> {
 
     private static final String TABLE_CREATE_QUERY = "CREATE TABLE IF NOT EXISTS %s (%s);";
     private static final String TABLE_VALUE_FORMAT = "%s %s";
     private static final String FOREIGN_FORMAT = "FOREIGN KEY (%s) REFERENCES %s(%s) ON DELETE CASCADE";
     private static final String PRIMARY_FORMAT = "PRIMARY KEY (%s)";
+
+    // we need the layer here because we must detect different types for different sql platforms
+    private final HikariParentConnectionLayer<?> layer;
 
     @Override
     public void run(@NotNull RepositoryExternalEntry entry, HikariProcessReference reference) {
