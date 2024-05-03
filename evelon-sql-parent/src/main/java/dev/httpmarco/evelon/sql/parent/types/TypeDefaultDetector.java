@@ -37,6 +37,6 @@ public final class TypeDefaultDetector implements TypeDetector {
     @Contract(pure = true)
     @Override
     public @NotNull Type detect(RepositoryEntry entry) {
-        return this.detectCollection.stream().filter(it -> it.predicate().test(entry.clazz())).findFirst().orElseThrow();
+        return this.detectCollection.stream().filter(it -> it.predicate().test(entry.clazz())).findFirst().orElseThrow(() -> new UnsupportedOperationException("For type: " + entry.clazz().getSimpleName()));
     }
 }
