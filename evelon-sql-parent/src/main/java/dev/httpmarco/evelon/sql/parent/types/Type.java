@@ -16,12 +16,12 @@ public class Type {
     private String type;
     private Predicate<Class<?>> predicate;
 
+    public static @NotNull Type of(String type, Class<?>... compatibleClass) {
+        return new Type(type, aClass -> Arrays.asList(compatibleClass).contains(aClass));
+    }
+
     @Override
     public String toString() {
         return type;
-    }
-
-    public static @NotNull Type of(String type, Class<?>... compatibleClass) {
-        return new Type(type, aClass -> Arrays.asList(compatibleClass).contains(aClass));
     }
 }
