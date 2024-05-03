@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.demo.models.ComplexCollectionModel;
 import dev.httpmarco.evelon.demo.models.SimpleCollectionModel;
 import dev.httpmarco.evelon.demo.models.SimpleMapModel;
 import dev.httpmarco.evelon.demo.models.SimpleModel;
+import dev.httpmarco.evelon.demo.models.objects.EnumObject;
 import dev.httpmarco.evelon.demo.models.objects.TestObject1;
 import dev.httpmarco.evelon.demo.models.objects.TestObject2;
 import dev.httpmarco.evelon.Repository;
@@ -25,7 +26,7 @@ public final class H2DatabaseTest {
     class SimpleModelTest {
 
         private static Repository<SimpleModel> REPOSITORY;
-        private static final SimpleModel DUMMY = new SimpleModel('a', 8, 2000, false);
+        private static final SimpleModel DUMMY = new SimpleModel('a', 8, 2000, false, EnumObject.RED);
 
         @Test
         @Async.Schedule
@@ -86,7 +87,7 @@ public final class H2DatabaseTest {
         @Test
         @Order(7)
         void update() {
-            REPOSITORY.query().update(new SimpleModel('a', 7, 2000, false));
+            REPOSITORY.query().update(new SimpleModel('a', 7, 2000, false, EnumObject.COOKIE));
             var value = REPOSITORY.query(H2Layer.class).findFirst();
 
             assertNotNull(value);
