@@ -6,7 +6,6 @@ import dev.httpmarco.evelon.process.kind.UpdateProcess;
 import dev.httpmarco.evelon.sql.parent.HikariParentConnectionLayer;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import dev.httpmarco.evelon.sql.parent.HikariRepositoryConstant;
-import dev.httpmarco.evelon.sql.parent.SqlType;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,7 +39,7 @@ public final class HikariPreppedProcess extends UpdateProcess<HikariProcessRefer
             }
 
             // on first initialization, we put the sql type into the constants
-            var type = child.constant(HikariRepositoryConstant.SQL_TYPE, SqlType.detect(child));
+            var type = child.constant(HikariRepositoryConstant.SQL_TYPE, layer.detector().detect(child));
             elements.add(TABLE_VALUE_FORMAT.formatted(child.id(), type));
         }
 
