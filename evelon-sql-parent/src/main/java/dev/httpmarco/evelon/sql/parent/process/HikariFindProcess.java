@@ -17,17 +17,9 @@ import java.util.ArrayList;
 @NoArgsConstructor
 public final class HikariFindProcess extends QueryProcess<HikariProcessReference> {
 
-    private static final String SELECT_QUERY = "SELECT %s FROM %s;";
-    private static final String SELECT_LIMIT_QUERY = "SELECT %s FROM %s LIMIT %d;";
+    private static final String SELECT_QUERY = "SELECT %s FROM %s";
 
-    //todo
-    private int skip = -1;
     private int limit = -1;
-
-    public HikariFindProcess(int skip) {
-        this.skip = skip;
-    }
-
 
     @Override
     public @NotNull Object run(@NotNull RepositoryExternalEntry entry, HikariProcessReference reference) {
@@ -45,7 +37,7 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
         var query = SELECT_QUERY.formatted(itemStringList, entry.id());
 
         if (limit != -1) {
-            query = SELECT_LIMIT_QUERY.formatted(itemStringList, entry.id(), limit);
+            query = query + " LIMIT " + limit;
         }
 
         reference.append(query, resultSet -> {
@@ -76,7 +68,7 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
                         value = ((String) value).charAt(0);
                     }
 
-                    if(child.hasConstant(RepositoryConstant.VALUE_RENDERING)) {
+                    if (child.hasConstant(RepositoryConstant.VALUE_RENDERING)) {
                         value = child.constant(RepositoryConstant.VALUE_RENDERING).apply(value);
                     }
 
