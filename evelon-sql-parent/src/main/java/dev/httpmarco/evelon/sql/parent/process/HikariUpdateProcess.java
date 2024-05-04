@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.sql.parent.process;
 
+import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.process.kind.UpdateProcess;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
@@ -24,7 +25,14 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
                 this.run(externalEntry, reference);
                 continue;
             }
-            elements.add(child.id() + " = '" + Reflections.on(value).value(child.id()) + "'");
+
+            var value = Reflections.on(this.value).value(child.id());
+
+            if (child.hasConstant(RepositoryConstant.VALUE_REWRITING)) {
+                value = child.constant(RepositoryConstant.VALUE_REWRITING).apply(value);
+            }
+
+            elements.add(child.id() + " = '" + value + "'");
         }
 
         if(elements.isEmpty()) {

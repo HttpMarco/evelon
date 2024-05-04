@@ -45,7 +45,12 @@ public final class HikariCreateProcess extends UpdateProcess<HikariProcessRefere
                     }
                 } else {
                     elements.add(child.id());
-                    arguments.add(childValue);
+
+                    if (child.hasConstant(RepositoryConstant.VALUE_REWRITING)) {
+                        arguments.add(child.constant(RepositoryConstant.VALUE_REWRITING).apply(childValue));
+                    } else {
+                        arguments.add(childValue);
+                    }
                 }
             }
         }

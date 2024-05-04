@@ -18,6 +18,8 @@ public record RepositoryConstant<T>(String id) {
 
     public static final RepositoryConstant<Function<Object, Object>> VALUE_RENDERING = constant("VALUE_RENDERING");
 
+    public static final RepositoryConstant<Function<Object, Object>> VALUE_REFACTOR = constant("VALUE_WRITING");
+
     @Contract("_ -> new")
     private static <T> @NotNull RepositoryConstant<T> constant(String id) {
         return new RepositoryConstant<>(id);
