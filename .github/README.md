@@ -48,7 +48,6 @@ implementation("dev.httpmarco.evelon:evelon-MODULE:VERSION")
 
 
 ### Todo query methods
-- [ ] `udpdate` - Save the given entity.
 - [ ] `order` - Order the result by the given field.
 - [ ] `min` - Find the minimum value of the given field.
 - [ ] `max` - Find the maximum value of the given field.
