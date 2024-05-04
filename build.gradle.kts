@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.nexus.publish)
 }
 
-
 allprojects {
     apply(plugin = "java-library")
     apply(plugin = "maven-publish")
