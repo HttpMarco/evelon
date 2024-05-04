@@ -28,8 +28,8 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
 
             var value = Reflections.on(this.value).value(child.id());
 
-            if (child.hasConstant(RepositoryConstant.VALUE_REWRITING)) {
-                value = child.constant(RepositoryConstant.VALUE_REWRITING).apply(value);
+            if (child.hasConstant(RepositoryConstant.VALUE_REFACTOR)) {
+                value = child.constant(RepositoryConstant.VALUE_REFACTOR).apply(value);
             }
 
             elements.add(child.id() + " = '" + value + "'");
