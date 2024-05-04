@@ -2,11 +2,12 @@ package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.process.kind.QueryProcess;
+import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.atomic.AtomicLong;
 
-public final class HikariCountProcess extends QueryProcess<HikariProcessReference> {
+public final class HikariCountProcess extends QueryProcess<HikariProcessReference, HikariFilter<Object>> {
 
     private static final String COUNT_QUERY = "SELECT COUNT(*) AS ELEMENTS FROM %s;";
 

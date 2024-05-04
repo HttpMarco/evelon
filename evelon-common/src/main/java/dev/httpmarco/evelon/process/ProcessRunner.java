@@ -1,20 +1,23 @@
 package dev.httpmarco.evelon.process;
 
-import dev.httpmarco.evelon.Repository;
+import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.process.kind.QueryProcess;
 import dev.httpmarco.evelon.process.kind.UpdateProcess;
+import dev.httpmarco.evelon.query.QueryMethodInfo;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public abstract class ProcessRunner<Q extends ProcessReference<Q>> {
 
-    public Object apply(Process process, Repository<?> repository) {
+    public Object apply(Layer<?> layer, Process<?> process, QueryMethodInfo queryMethodInfo) {
+        var repository = queryMethodInfo.associatedRepository();
         var base = generateBase();
+
         if (process instanceof UpdateProcess<?> updateProcess) {
             updateProcess.runMapping(repository.entry(), base);
             this.update(base);
             return null;
-        } else if (process instanceof QueryProcess<?> queryProcess) {
+        } else if (process instanceof QueryProcess<?, ?> queryProcess) {
             var object = queryProcess.runMapping(repository.entry(), base);
             this.query(base);
             return object;

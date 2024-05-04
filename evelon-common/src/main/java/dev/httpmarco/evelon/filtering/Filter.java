@@ -1,10 +1,8 @@
 package dev.httpmarco.evelon.filtering;
 
-import dev.httpmarco.evelon.Repository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import org.jetbrains.annotations.Nullable;
 
 @AllArgsConstructor
 @Accessors(fluent = true)
@@ -14,7 +12,7 @@ public abstract class Filter<T, R> {
     private String id;
     private R value;
 
-    public abstract T filter(Repository<?> repository, @Nullable R requiredType);
+    public abstract T filter();
 
     public boolean requirementCheck(Class<?> clazz) {
         return true;

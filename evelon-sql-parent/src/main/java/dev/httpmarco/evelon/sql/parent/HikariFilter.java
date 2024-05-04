@@ -10,7 +10,7 @@ public abstract class HikariFilter<R> extends Filter<String, R> {
         super(id, value);
     }
 
-    static final class SequenceMatchFilter extends HikariFilter<Object> {
+    public static final class SequenceMatchFilter extends HikariFilter<Object> {
 
         private final String filterSequence;
 
@@ -20,12 +20,8 @@ public abstract class HikariFilter<R> extends Filter<String, R> {
         }
 
         @Override
-        public @NotNull String filter(Repository<?> repository, Object requiredType) {
-            if (requiredType instanceof String) {
-                return id() + " " + filterSequence + " '" + value() + "'";
-            } else {
-                return id() + " " + filterSequence + " " + value();
-            }
+        public @NotNull String filter() {
+            return id() + " " + filterSequence + " ?";
         }
     }
 
@@ -36,8 +32,8 @@ public abstract class HikariFilter<R> extends Filter<String, R> {
         }
 
         @Override
-        public String filter(Repository<?> repository, Object requiredType) {
-            return id() + " LIKE '%" + value() + "%'";
+        public String filter() {
+            return id() + " LIKE '%?%'";
         }
     }
 }

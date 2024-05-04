@@ -2,7 +2,7 @@ package dev.httpmarco.evelon.query;
 
 import org.jetbrains.annotations.Nullable;
 
-public interface QueryMethod<T> {
+public interface QueryMethod<T> extends QueryMethodInfo {
 
     void create(T value);
 

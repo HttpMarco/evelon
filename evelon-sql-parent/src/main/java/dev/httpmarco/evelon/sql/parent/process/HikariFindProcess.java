@@ -3,7 +3,9 @@ package dev.httpmarco.evelon.sql.parent.process;
 import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
+import dev.httpmarco.evelon.filtering.Filter;
 import dev.httpmarco.evelon.process.kind.QueryProcess;
+import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.AllArgsConstructor;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public final class HikariFindProcess extends QueryProcess<HikariProcessReference> {
+public final class HikariFindProcess extends QueryProcess<HikariProcessReference, HikariFilter<Object>> {
 
     private static final String SELECT_QUERY = "SELECT %s FROM %s";
 
@@ -40,7 +42,14 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
             query = query + " LIMIT " + limit;
         }
 
-        reference.append(query, resultSet -> {
+        var transformedFilters = filters().stream().map(Filter::filter).toList();
+        if (!transformedFilters.isEmpty()) {
+            query = query + " WHERE " + String.join(", ", transformedFilters);
+        }
+
+        query = query + ";";
+
+        reference.append(query, filters().stream().map(Filter::value).toArray(), resultSet -> {
             try {
                 if (entry instanceof RepositoryCollectionEntry collectionEntry && !(collectionEntry.typeEntry() instanceof RepositoryExternalEntry)) {
                     items.add(resultSet.getObject(collectionEntry.typeEntry().id()));
@@ -80,6 +89,7 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
                 throw new RuntimeException(e);
             }
         });
+
 
         return items;
     }
