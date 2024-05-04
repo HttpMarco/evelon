@@ -75,6 +75,11 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
                     if (value instanceof String && child.clazz().equals(char.class)) {
                         value = ((String) value).charAt(0);
                     }
+
+                    if(child.hasConstant(RepositoryConstant.VALUE_RENDERING)) {
+                        value = child.constant(RepositoryConstant.VALUE_RENDERING).apply(value);
+                    }
+
                     // modify the original field with a new value
                     Reflections.on(object).modify(child.id(), value);
                 }
