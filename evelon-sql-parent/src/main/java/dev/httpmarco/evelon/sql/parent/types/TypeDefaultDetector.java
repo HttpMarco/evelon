@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.sql.parent.types;
 
+import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryEntry;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -41,7 +42,14 @@ public final class TypeDefaultDetector implements TypeDetector {
 
     @Contract(pure = true)
     @Override
-    public @NotNull Type detect(RepositoryEntry entry) {
-        return this.detectCollection.stream().filter(it -> it.predicate().test(entry.clazz())).findFirst().map(type -> type instanceof TypeModel typeModel ? typeModel.model(entry.clazz()) : type).orElseThrow(() -> new UnsupportedOperationException("For type: " + entry.clazz().getSimpleName()));
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public @NotNull Type detect(@NotNull RepositoryEntry entry) {
+        var type = this.detectCollection.stream().filter(it -> it.predicate().test(entry.clazz())).findFirst().map(t -> t instanceof TypeModel typeModel ? typeModel.model(entry.clazz()) : t).orElseThrow(() -> new UnsupportedOperationException("For type: " + entry.clazz().getSimpleName()));
+
+        // we must check if enum type is present - add value rendering
+        if(entry.clazz().isEnum()) {
+            entry.constant(RepositoryConstant.VALUE_RENDERING, o -> Enum.valueOf(((Class<? extends Enum>)entry.clazz()), o.toString()));
+        }
+        return type;
     }
 }
