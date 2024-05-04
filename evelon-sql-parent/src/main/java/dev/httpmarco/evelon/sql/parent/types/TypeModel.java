@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.sql.parent.types;
 
+import dev.httpmarco.evelon.RepositoryEntry;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,13 +11,13 @@ public final class TypeModel extends Type {
 
     private final Function<Class<?>, String> result;
 
-    public TypeModel(Function<Class<?>, String> result, Predicate<Class<?>> predicate) {
+    public TypeModel(Function<Class<?>, String> result, Predicate<RepositoryEntry> predicate) {
         super(null, predicate);
         this.result = result;
     }
 
     @Contract("_, _ -> new")
-    public static @NotNull Type of(Function<Class<?>, String> result, Predicate<Class<?>> predicate) {
+    public static @NotNull Type of(Function<Class<?>, String> result, Predicate<RepositoryEntry> predicate) {
         return new TypeModel(result, predicate);
     }
 

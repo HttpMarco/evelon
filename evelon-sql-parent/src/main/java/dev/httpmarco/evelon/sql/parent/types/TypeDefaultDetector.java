@@ -27,7 +27,7 @@ public final class TypeDefaultDetector implements TypeDetector {
         this.overwrite(Type.of("TEXT", String.class));
 
         // enums has a collection of all elements as string behind the name, we must duplicate every enum type
-        this.overwrite(TypeModel.of(it -> "ENUM('" + String.join("', '", Arrays.stream(((Class<? extends Enum<?>>) it).getEnumConstants()).map(Enum::name).toList()) + "')", Class::isEnum));
+        this.overwrite(TypeModel.of(it -> "ENUM('" + String.join("', '", Arrays.stream(((Class<? extends Enum<?>>) it).getEnumConstants()).map(Enum::name).toList()) + "')", entry -> entry.clazz().isEnum()));
     }
 
     @Override
@@ -44,7 +44,7 @@ public final class TypeDefaultDetector implements TypeDetector {
     @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
     public @NotNull Type detect(@NotNull RepositoryEntry entry) {
-        var type = this.detectCollection.stream().filter(it -> it.predicate().test(entry.clazz())).findFirst().map(t -> t instanceof TypeModel typeModel ? typeModel.model(entry.clazz()) : t).orElseThrow(() -> new UnsupportedOperationException("For type: " + entry.clazz().getSimpleName()));
+        var type = this.detectCollection.stream().filter(it -> it.predicate().test(entry)).findFirst().map(t -> t instanceof TypeModel typeModel ? typeModel.model(entry.clazz()) : t).orElseThrow(() -> new UnsupportedOperationException("For type: " + entry.clazz().getSimpleName()));
 
         // we must check if enum type is present - add value rendering
         if(entry.clazz().isEnum()) {
