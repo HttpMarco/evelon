@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.process.ProcessReference;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnectionFunction;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.ResultSet;
 import java.util.*;
@@ -32,7 +33,7 @@ public final class HikariProcessReference implements ProcessReference<HikariProc
     }
 
     @Override
-    public void bind(HikariProcessReference reference) {
+    public void bind(@NotNull HikariProcessReference reference) {
         this.sqlQueries.addAll(reference.sqlQueries());
     }
 }

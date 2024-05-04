@@ -10,7 +10,7 @@ public final class HikariDeleteProcess extends UpdateProcess<HikariProcessRefere
     private static final String DELETE_SQL = "DELETE FROM %s;";
 
     @Override
-    public void run(@NotNull RepositoryExternalEntry entry, HikariProcessReference reference) {
+    public void run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
         reference.append(DELETE_SQL.formatted(entry.id()));
     }
 }
