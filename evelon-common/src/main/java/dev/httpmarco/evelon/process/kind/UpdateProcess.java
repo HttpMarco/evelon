@@ -8,7 +8,7 @@ public abstract class UpdateProcess<R extends ProcessReference<R>> extends Proce
 
      public abstract void run(RepositoryExternalEntry entry, R reference);
 
-     @SuppressWarnings("uncheckd")
+     @SuppressWarnings("unchecked")
      public void runMapping(RepositoryExternalEntry entry, ProcessReference<?> reference) {
             run(entry, (R) reference);
      }
