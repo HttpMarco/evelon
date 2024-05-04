@@ -239,37 +239,4 @@ public final class H2DatabaseTest {
             assertNotNull(REPOSITORY = Repository.build(SimpleMapModel.class).withId("maps_simple").withLayer(H2Layer.class).build());
         }
     }
-
-    @Nested
-    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-    @DisplayName("H2 - Maps - Simple key object value repository test")
-    public class MapValueTest {
-
-        @Test
-        public void initialize() {
-
-        }
-    }
-
-    @Nested
-    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-    @DisplayName("H2 - Maps - Object key simple value repository test")
-    public class MapKeyTest {
-
-        @Test
-        public void initialize() {
-
-        }
-    }
-
-    @Nested
-    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-    @DisplayName("H2 - Maps - Complex repository test")
-    public class MapComplexTest {
-
-        @Test
-        public void initialize() {
-
-        }
-    }
 }
