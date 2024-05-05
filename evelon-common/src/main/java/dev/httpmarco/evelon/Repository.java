@@ -1,10 +1,8 @@
 package dev.httpmarco.evelon;
 
 import dev.httpmarco.evelon.layer.Layer;
-import dev.httpmarco.evelon.query.layer.LayerQuery;
 import dev.httpmarco.evelon.external.RepositoryObjectEntry;
-import dev.httpmarco.evelon.query.Query;
-import dev.httpmarco.evelon.query.common.RepositoryQuery;
+import dev.httpmarco.evelon.query2.Query;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,10 +17,10 @@ public record Repository<T>(RepositoryObjectEntry entry, Set<Layer<?>> layers) {
 
     @Contract(" -> new")
     public @NotNull Query<T> query() {
-        return new RepositoryQuery<>(this);
+        return new Query<>(layers);
     }
 
-    public @NotNull LayerQuery<T> query(Class<? extends Layer<?>> layer) {
-        return layers.stream().filter(it -> it.getClass().equals(layer)).findFirst().orElseThrow().query(this);
+    public @NotNull dev.httpmarco.evelon.query2.Query<T> query(Class<? extends Layer<?>> layer) {
+        return new Query<>(Set.of(layers.stream().filter(it -> it.getClass().equals(layer)).findFirst().orElseThrow()));
     }
 }

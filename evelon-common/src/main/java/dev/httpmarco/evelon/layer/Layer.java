@@ -5,6 +5,7 @@ import dev.httpmarco.evelon.process.ProcessReference;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.query.layer.LayerQuery;
+import dev.httpmarco.evelon.query2.QueryMethod;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -24,6 +25,6 @@ public abstract class Layer<Q extends ProcessReference<Q>> {
 
     protected abstract ProcessRunner<Q> generateRunner();
 
-    public abstract <T> LayerQuery<T> query(Repository<T> repository);
+    public abstract <T> QueryMethod<T> queryMethod();
 
 }
