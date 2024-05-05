@@ -2,6 +2,8 @@ package dev.httpmarco.evelon.query;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public interface QueryMethod<T> extends QueryMethodInfo {
 
     void create(T value);
@@ -14,5 +16,9 @@ public interface QueryMethod<T> extends QueryMethodInfo {
 
     @Nullable
     T findFirst();
+
+    List<T> find();
+
+    long count();
 
 }

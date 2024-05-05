@@ -6,10 +6,6 @@ import java.util.List;
 
 public interface LayerQuery<T> extends QueryMethod<T> {
 
-    List<T> find();
-
-    long count();
-
     LayerFilter<T> filter();
 
 }

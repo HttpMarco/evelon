@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
@@ -56,7 +57,6 @@ public class RepositoryQuery<T> implements Query<T> {
 
     @Override
     public QueryFilter<T> filter() {
-        // todo
         return new RepositoryFilter<>(this.associatedRepository, associatedRepository.layers());
     }
 
@@ -64,5 +64,18 @@ public class RepositoryQuery<T> implements Query<T> {
         for (var layer : associatedRepository.layers()) {
             layerCallback.accept(layer);
         }
+    }
+
+
+    @Override
+    public List<T> find() {
+        // todo check primaries
+        return List.of();
+    }
+
+    @Override
+    public long count() {
+        //todo check primaries
+        return 0;
     }
 }
