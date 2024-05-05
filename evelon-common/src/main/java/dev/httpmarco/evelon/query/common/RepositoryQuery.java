@@ -3,13 +3,12 @@ package dev.httpmarco.evelon.query.common;
 import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.query.Query;
-import dev.httpmarco.evelon.query.QueryFilter;
+import dev.httpmarco.evelon.query.QueryFiltering;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
 @Getter
@@ -56,8 +55,8 @@ public class RepositoryQuery<T> implements Query<T> {
     }
 
     @Override
-    public QueryFilter<T> filter() {
-        return new RepositoryFilter<>(this.associatedRepository, associatedRepository.layers());
+    public QueryFiltering<T> filter() {
+        return new RepositoryFiltering<>(this.associatedRepository, associatedRepository.layers());
     }
 
     private void executeLayers(Consumer<Layer<?>> layerCallback) {

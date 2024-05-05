@@ -4,7 +4,7 @@ import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.query.layer.LayerQuery;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.Repository;
-import dev.httpmarco.evelon.query.layer.LayerFilter;
+import dev.httpmarco.evelon.query.layer.LayerQueryFilter;
 import dev.httpmarco.evelon.sql.parent.process.*;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import lombok.AllArgsConstructor;
@@ -66,7 +66,7 @@ public class HikariLayerQuery<T> implements LayerQuery<T> {
     }
 
     @Override
-    public LayerFilter<T> filter() {
-        return new HikariLayerFilter<>(layer, this.associatedRepository, runner);
+    public LayerQueryFilter<T> filter() {
+        return new HikariLayerQueryFilter<>(layer, this.associatedRepository, runner);
     }
 }

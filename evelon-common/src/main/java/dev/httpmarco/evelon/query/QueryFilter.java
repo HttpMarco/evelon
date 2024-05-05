@@ -1,7 +1,7 @@
 package dev.httpmarco.evelon.query;
 
-public interface QueryFilter<T> extends Query<T>, Filter<T, QueryFilter<T>> {
+public interface QueryFilter<T, Q extends QueryMethod<T>> extends QueryMethod<T> {
 
-    QueryFilter<T> filter();
+    Q match(String id, Object object);
 
 }
