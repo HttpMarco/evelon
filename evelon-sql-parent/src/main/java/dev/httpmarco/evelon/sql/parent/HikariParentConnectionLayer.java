@@ -1,19 +1,23 @@
 package dev.httpmarco.evelon.sql.parent;
 
-import dev.httpmarco.evelon.query.layer.LayerQuery;
 import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.Repository;
+import dev.httpmarco.evelon.query.Query;
+import dev.httpmarco.evelon.query.QueryMethod;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriver;
+import dev.httpmarco.evelon.sql.parent.process.HikariFindProcess;
 import dev.httpmarco.evelon.sql.parent.process.HikariPreppedProcess;
-import dev.httpmarco.evelon.sql.parent.query.HikariLayerQuery;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import dev.httpmarco.evelon.sql.parent.types.TypeDefaultDetector;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Accessors(fluent = true)
@@ -42,7 +46,7 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
      */
     @Override
     public void prepped(@NotNull Repository<?> repository) {
-        runner().apply(this, new HikariPreppedProcess(this), () -> repository);
+        runner().apply(this, new HikariPreppedProcess(this), new Query<>(repository, Set.of()));
     }
 
     @Override
@@ -51,7 +55,8 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
     }
 
     @Override
-    public <T> LayerQuery<T> query(Repository<T> repository) {
-        return new HikariLayerQuery<>(this, repository, runner());
+    public <T> QueryMethod<T> queryMethod() {
+        // todo
+        return null;
     }
 }

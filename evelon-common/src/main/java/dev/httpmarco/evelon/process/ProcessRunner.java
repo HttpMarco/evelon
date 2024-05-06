@@ -3,15 +3,18 @@ package dev.httpmarco.evelon.process;
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.process.kind.QueryProcess;
 import dev.httpmarco.evelon.process.kind.UpdateProcess;
-import dev.httpmarco.evelon.query.QueryMethodInfo;
+import dev.httpmarco.evelon.query.Query;
 import lombok.AllArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 @AllArgsConstructor
 public abstract class ProcessRunner<Q extends ProcessReference<Q>> {
 
-    public Object apply(Layer<?> layer, Process<?> process, QueryMethodInfo queryMethodInfo) {
-        var repository = queryMethodInfo.associatedRepository();
+    public Object apply(Layer<?> layer, Process<?> process, @NotNull Query<?> query) {
+        var repository = query.associatedRepository();
         var base = generateBase();
+
+        // todo add filters
 
         if (process instanceof UpdateProcess<?> updateProcess) {
             updateProcess.runMapping(repository.entry(), base);

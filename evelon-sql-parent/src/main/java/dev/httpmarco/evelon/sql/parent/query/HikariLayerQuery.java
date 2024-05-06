@@ -1,10 +1,8 @@
 package dev.httpmarco.evelon.sql.parent.query;
 
 import dev.httpmarco.evelon.layer.Layer;
-import dev.httpmarco.evelon.query.layer.LayerQuery;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.Repository;
-import dev.httpmarco.evelon.query.layer.LayerQueryFilter;
 import dev.httpmarco.evelon.sql.parent.process.*;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import lombok.AllArgsConstructor;
@@ -17,13 +15,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Accessors(fluent = true)
 @AllArgsConstructor
-public class HikariLayerQuery<T> implements LayerQuery<T> {
+public class HikariLayerQuery<T>  {
 
-    private final Layer<?> layer;
-    @Getter
-    private final Repository<T> associatedRepository;
-    private ProcessRunner<HikariProcessReference> runner;
-
+    /*
     @Override
     public void create(T value) {
         runner.apply(layer, new HikariCreateProcess(value), this);
@@ -69,4 +63,6 @@ public class HikariLayerQuery<T> implements LayerQuery<T> {
     public LayerQueryFilter<T> filter() {
         return new HikariLayerQueryFilter<>(layer, this.associatedRepository, runner);
     }
+
+     */
 }
