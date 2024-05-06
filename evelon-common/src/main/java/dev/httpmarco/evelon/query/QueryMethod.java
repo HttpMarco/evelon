@@ -1,5 +1,7 @@
 package dev.httpmarco.evelon.query;
 
+import java.util.List;
+
 public interface QueryMethod<V> {
 
     void create(V value);
@@ -11,5 +13,9 @@ public interface QueryMethod<V> {
     boolean exists();
 
     V findFirst();
+
+    long count();
+
+    List<V> find();
 
 }
