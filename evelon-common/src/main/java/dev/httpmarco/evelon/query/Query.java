@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -25,28 +26,28 @@ public class Query<V> implements QueryMethod<V> {
     @Override
     public void create(V value) {
         for (var layer : this.usedLayers) {
-            layer.queryMethod().create(value);
+            layer.queryMethod(associatedRepository).create(value);
         }
     }
 
     @Override
     public void update(V value) {
         for (var layer : this.usedLayers) {
-            layer.queryMethod().update(value);
+            layer.queryMethod(associatedRepository).update(value);
         }
     }
 
     @Override
     public void delete() {
         for (var layer : usedLayers) {
-            layer.queryMethod().delete();
+            layer.queryMethod(associatedRepository).delete();
         }
     }
 
     @Override
     public boolean exists() {
         for (var layer : usedLayers) {
-            if (layer.queryMethod().exists()) {
+            if (layer.queryMethod(associatedRepository).exists()) {
                 return true;
             }
         }
@@ -56,11 +57,23 @@ public class Query<V> implements QueryMethod<V> {
     @Override
     public V findFirst() {
         for (var layer : usedLayers) {
-            var value = layer.queryMethod().findFirst();
+            var value = layer.queryMethod(associatedRepository).findFirst();
             if (value != null) {
                 return (V) value;
             }
         }
         return null;
+    }
+
+    @Override
+    public long count() {
+        // todo
+        return 0;
+    }
+
+    @Override
+    public List<V> find() {
+        // todo
+        return List.of();
     }
 }

@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.layer;
 
+import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.filtering.FilterHandler;
 import dev.httpmarco.evelon.process.ProcessReference;
 import dev.httpmarco.evelon.process.ProcessRunner;
@@ -23,6 +24,6 @@ public abstract class Layer<Q extends ProcessReference<Q>> {
 
     protected abstract ProcessRunner<Q> generateRunner();
 
-    public abstract <T> QueryMethod<T> queryMethod();
+    public abstract <T> QueryMethod<T> queryMethod(Repository<?> repository);
 
 }

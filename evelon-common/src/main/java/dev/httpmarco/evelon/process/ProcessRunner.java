@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.process;
 
+import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.process.kind.QueryProcess;
 import dev.httpmarco.evelon.process.kind.UpdateProcess;
@@ -10,8 +11,7 @@ import org.jetbrains.annotations.NotNull;
 @AllArgsConstructor
 public abstract class ProcessRunner<Q extends ProcessReference<Q>> {
 
-    public Object apply(Layer<?> layer, Process<?> process, @NotNull Query<?> query) {
-        var repository = query.associatedRepository();
+    public Object apply(Layer<?> layer, Process<?> process, @NotNull Repository<?> repository) {
         var base = generateBase();
 
         // todo add filters

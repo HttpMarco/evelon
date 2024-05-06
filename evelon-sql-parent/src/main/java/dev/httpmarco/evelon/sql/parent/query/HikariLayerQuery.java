@@ -3,6 +3,7 @@ package dev.httpmarco.evelon.sql.parent.query;
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.Repository;
+import dev.httpmarco.evelon.query.QueryMethod;
 import dev.httpmarco.evelon.sql.parent.process.*;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import lombok.AllArgsConstructor;
@@ -15,33 +16,37 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Accessors(fluent = true)
 @AllArgsConstructor
-public class HikariLayerQuery<T>  {
+public class HikariLayerQuery<V> implements QueryMethod<V> {
 
-    /*
+    private final Layer<?> layer;
+    @Getter
+    private final Repository<?> associatedRepository;
+    private ProcessRunner<HikariProcessReference> runner;
+
     @Override
-    public void create(T value) {
-        runner.apply(layer, new HikariCreateProcess(value), this);
+    public void create(V value) {
+        runner.apply(layer, new HikariCreateProcess(value), associatedRepository);
     }
 
     @Override
-    public void update(T value) {
-        runner.apply(layer, new HikariUpdateProcess(value), this);
+    public void update(V value) {
+        runner.apply(layer, new HikariUpdateProcess(value), associatedRepository);
     }
 
     @Override
     public void delete() {
-        runner.apply(layer, new HikariDeleteProcess(), this);
+        runner.apply(layer, new HikariDeleteProcess(), associatedRepository);
     }
 
     @Override
     public boolean exists() {
-        return ((AtomicBoolean) runner.apply(layer, new HikariCheckProcess(), this)).get();
+        return ((AtomicBoolean) runner.apply(layer, new HikariCheckProcess(), associatedRepository)).get();
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public T findFirst() {
-        var values = ((List<T>) runner.apply(layer, new HikariFindProcess(), this));
+    public V findFirst() {
+        var values = ((List<V>) runner.apply(layer, new HikariFindProcess(), associatedRepository));
         if(!values.isEmpty()) {
             return values.get(0);
         }
@@ -50,19 +55,12 @@ public class HikariLayerQuery<T>  {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<T> find() {
-        return (List<T>) runner.apply(layer, new HikariFindProcess(), this);
+    public List<V> find() {
+        return (List<V>) runner.apply(layer, new HikariFindProcess(), associatedRepository);
     }
 
     @Override
     public long count() {
-        return ((AtomicLong) runner.apply(layer, new HikariCountProcess(), this)).get();
+        return ((AtomicLong) runner.apply(layer, new HikariCountProcess(), associatedRepository)).get();
     }
-
-    @Override
-    public LayerQueryFilter<T> filter() {
-        return new HikariLayerQueryFilter<>(layer, this.associatedRepository, runner);
-    }
-
-     */
 }
