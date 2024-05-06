@@ -9,11 +9,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Set;
 
 @Getter
-@Accessors
+@Accessors(fluent = true)
 @AllArgsConstructor
 public class Query<V> implements QueryMethod<V> {
 
-    //private final Repository<?> asociatedRepository;
+    //private final Repository<?> associatedRepository;
     private final Layer<?>[] usedLayers;
 
     public Query(@NotNull Set<Layer<?>> usedLayers) {
@@ -26,5 +26,29 @@ public class Query<V> implements QueryMethod<V> {
         for (var layer : this.usedLayers) {
             layer.queryMethod().create(value);
         }
+    }
+
+    @Override
+    public void update(V value) {
+        for (var layer : this.usedLayers) {
+            layer.queryMethod().update(value);
+        }
+    }
+
+    @Override
+    public void delete() {
+        for (var layer : usedLayers) {
+            layer.queryMethod().delete();
+        }
+    }
+
+    @Override
+    public boolean exists() {
+        for (var layer : usedLayers) {
+            if (layer.queryMethod().exists()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -17,26 +17,6 @@ public class RepositoryQuery<T> {
     private final Repository<T> associatedRepository;
 
     @Override
-    public void update(T value) {
-        this.executeLayers(layer -> layer.query(associatedRepository).update(value));
-    }
-
-    @Override
-    public void delete() {
-        this.executeLayers(layer -> layer.query(associatedRepository).delete());
-    }
-
-    @Override
-    public boolean exists() {
-        for (var layer : associatedRepository.layers()) {
-            if (layer.query(associatedRepository).exists()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
     public T findFirst() {
         for (var layer : associatedRepository.layers()) {
             var value = layer.query(associatedRepository).findFirst();
