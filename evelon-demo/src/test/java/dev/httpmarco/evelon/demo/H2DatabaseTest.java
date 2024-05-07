@@ -26,6 +26,8 @@ public final class H2DatabaseTest {
 
         private static Repository<SimpleModel> REPOSITORY;
         private static final SimpleModel DUMMY = new SimpleModel('a', 8, 2000, UUID.randomUUID(),false, "test street", EnumObject.RED);
+        private static final SimpleModel DUMMY2 = new SimpleModel('z', 99, 100, UUID.randomUUID(),true, "a street", EnumObject.COOKIE);
+
 
         @Test
         @Order(0)
@@ -37,12 +39,13 @@ public final class H2DatabaseTest {
         @Order(1)
         void create() {
             REPOSITORY.query().create(DUMMY);
+            REPOSITORY.query().create(DUMMY2);
         }
 
         @Test
         @Order(2)
         void count() {
-            assertEquals(1, REPOSITORY.query(H2Layer.class).count());
+            assertEquals(2, REPOSITORY.query(H2Layer.class).count());
         }
 
         @Test
@@ -57,7 +60,7 @@ public final class H2DatabaseTest {
             var values = REPOSITORY.query(H2Layer.class).find();
 
             assertNotNull(values);
-            assertEquals(1, values.size());
+            assertEquals(2, values.size());
 
             var model = values.get(0);
             assertNotNull(model);
@@ -85,8 +88,8 @@ public final class H2DatabaseTest {
         @DisplayName("findFirst - none match filter")
         @Order(7)
         void noneMatchFilter() {
-            var value = REPOSITORY.query().noneMatch("age", 8).findFirst();
-            assertNull(value);
+            var value = REPOSITORY.query().noneMatch("age", 10).findFirst();
+            assertNotNull(value);
         }
 
         @Test
@@ -109,6 +112,20 @@ public final class H2DatabaseTest {
 
         @Test
         @Order(10)
+        @DisplayName("ordering - ascending")
+        void orderAscending() {
+
+        }
+
+        @Test
+        @Order(11)
+        @DisplayName("ordering - descending")
+        void orderDescending() {
+
+        }
+
+        @Test
+        @Order(12)
         void delete() {
             REPOSITORY.query().delete();
         }
