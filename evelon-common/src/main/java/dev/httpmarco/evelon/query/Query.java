@@ -28,12 +28,24 @@ public class Query<V> {
 
     public Query<V> match(String id, Object value) {
         for (var layer : usedLayers) {
-            var list = filters.get(layer);
-            list.add(layer.filterHandler().match(id, value));
-            this.filters.put(layer, list);
+            filter(layer.filterHandler().match(id, value), layer);
         }
         return this;
     }
+
+    public Query<V> noneMatch(String id, Object value) {
+        for (var layer : usedLayers) {
+            filter(layer.filterHandler().noneMatch(id, value), layer);
+        }
+        return this;
+    }
+
+    private void filter(Filter<?, ?> filter, Layer<?> layer) {
+        var list = filters.get(layer);
+        list.add(filter);
+        this.filters.put(layer, list);
+    }
+
 
     public void create(V value) {
         for (var layer : this.usedLayers) {
