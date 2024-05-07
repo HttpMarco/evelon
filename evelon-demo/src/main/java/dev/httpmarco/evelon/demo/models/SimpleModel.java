@@ -14,6 +14,7 @@ public class SimpleModel {
     private int age;
     private long money;
     private boolean dead;
+    private String address;
     private EnumObject enumObject;
 
 }

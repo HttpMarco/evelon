@@ -33,6 +33,13 @@ public class Query<V> {
         return this;
     }
 
+    public Query<V> like(String id, String value) {
+        for (var layer : usedLayers) {
+            filter(layer.filterHandler().like(id, value), layer);
+        }
+        return this;
+    }
+
     public Query<V> noneMatch(String id, Object value) {
         for (var layer : usedLayers) {
             filter(layer.filterHandler().noneMatch(id, value), layer);

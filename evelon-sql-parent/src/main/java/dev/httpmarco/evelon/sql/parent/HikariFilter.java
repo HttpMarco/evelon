@@ -32,7 +32,7 @@ public abstract class HikariFilter<R> extends Filter<String, R> {
 
         @Override
         public String filter() {
-            return id() + " LIKE '%?%'";
+            return id() + " LIKE ?";
         }
     }
 }

@@ -26,10 +26,9 @@ public final class H2DatabaseTest {
     class SimpleModelTest {
 
         private static Repository<SimpleModel> REPOSITORY;
-        private static final SimpleModel DUMMY = new SimpleModel('a', 8, 2000, false, EnumObject.RED);
+        private static final SimpleModel DUMMY = new SimpleModel('a', 8, 2000, false, "test street", EnumObject.RED);
 
         @Test
-        @Async.Schedule
         @Order(0)
         void initialize() {
             assertNotNull(REPOSITORY = Repository.build(SimpleModel.class).withId("persons").withLayer(H2Layer.class).build());
@@ -92,9 +91,17 @@ public final class H2DatabaseTest {
         }
 
         @Test
+        @DisplayName("findFirst - like filter")
         @Order(8)
+        void likeFilter() {
+            var value = REPOSITORY.query().like("address", "test").findFirst();
+            assertNull(value);
+        }
+
+        @Test
+        @Order(9)
         void update() {
-            REPOSITORY.query().update(new SimpleModel('a', 7, 2000, false, EnumObject.COOKIE));
+            REPOSITORY.query().update(new SimpleModel('a', 7, 2000, false, "test", EnumObject.COOKIE));
             var value = REPOSITORY.query(H2Layer.class).findFirst();
 
             assertNotNull(value);
@@ -102,7 +109,7 @@ public final class H2DatabaseTest {
         }
 
         @Test
-        @Order(20)
+        @Order(10)
         void delete() {
             REPOSITORY.query().delete();
         }
