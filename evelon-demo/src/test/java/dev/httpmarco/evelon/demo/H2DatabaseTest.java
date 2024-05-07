@@ -9,7 +9,6 @@ import dev.httpmarco.evelon.demo.models.objects.TestObject1;
 import dev.httpmarco.evelon.demo.models.objects.TestObject2;
 import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.sql.h2.H2Layer;
-import org.jetbrains.annotations.Async;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -26,7 +25,7 @@ public final class H2DatabaseTest {
     class SimpleModelTest {
 
         private static Repository<SimpleModel> REPOSITORY;
-        private static final SimpleModel DUMMY = new SimpleModel('a', 8, 2000, false, "test street", EnumObject.RED);
+        private static final SimpleModel DUMMY = new SimpleModel('a', 8, 2000, UUID.randomUUID(),false, "test street", EnumObject.RED);
 
         @Test
         @Order(0)
@@ -101,7 +100,7 @@ public final class H2DatabaseTest {
         @Test
         @Order(9)
         void update() {
-            REPOSITORY.query().update(new SimpleModel('a', 7, 2000, false, "test", EnumObject.COOKIE));
+            REPOSITORY.query().update(new SimpleModel('a', 7, 2000, UUID.randomUUID(),false, "test", EnumObject.COOKIE));
             var value = REPOSITORY.query(H2Layer.class).findFirst();
 
             assertNotNull(value);
