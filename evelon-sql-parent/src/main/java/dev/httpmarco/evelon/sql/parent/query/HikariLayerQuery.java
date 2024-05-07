@@ -14,6 +14,7 @@ import lombok.experimental.Accessors;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Accessors(fluent = true)
 @AllArgsConstructor
@@ -58,6 +59,18 @@ public class HikariLayerQuery<V> implements QueryMethod<V> {
     @SuppressWarnings("unchecked")
     public List<V> find(Query<?> query) {
         return (List<V>) runner.apply(layer, query, new HikariFindProcess());
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public long sum(Query<?> query, String id) {
+        return ((AtomicReference<Long>) runner.apply(layer, query, new HikariMathProcess("SUM(" + id + ")"))).get();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public double average(Query<?> query, String id) {
+        return ((AtomicReference<Double>) runner.apply(layer, query, new HikariMathProcess("AVG(" + id + ")"))).get();
     }
 
     @Override

@@ -102,6 +102,24 @@ public class Query<V> {
         return null;
     }
 
+    public long sum(String id) {
+        long sum = 0;
+        for (var layer : usedLayers) {
+            sum += (long) layer.queryMethod(associatedRepository).sum(this, id);
+        }
+        return sum;
+    }
+
+    public double average(String id) {
+        double average = 0;
+        for (var layer : usedLayers) {
+            average += (long) layer.queryMethod(associatedRepository).average(this, id);
+        }
+        return average;
+    }
+
+
+
     public long count() {
         int count = 0;
         for (var layer : usedLayers) {

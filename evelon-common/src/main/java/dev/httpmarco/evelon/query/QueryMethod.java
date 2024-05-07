@@ -18,4 +18,8 @@ public interface QueryMethod<V> {
 
     List<V> find(Query<?> query);
 
+    long sum(Query<?> query, String id);
+
+    double average(Query<?> query, String id);
+
 }
