@@ -13,13 +13,13 @@ public final class MariaDbLayer extends HikariParentConnectionLayer<HikariDefaul
 
         Class.forName("org.mariadb.jdbc.Driver");
 
-        detector().overwrite(Type.of("VARCHAR(128)", it -> it.clazz().equals(String.class) && it.hasConstant(RepositoryConstant.PRIMARY_KEY)));
+        detector().overwrite(Type.of("VARCHAR(128)", it -> it.clazz().equals(String.class) && it.constants().has(RepositoryConstant.PRIMARY_KEY)));
 
         detector().overwrite(Type.of("BOOL", it -> {
             if (!(it.clazz().equals(boolean.class) || it.clazz().equals(Boolean.class))) {
                 return false;
             }
-            it.constant(RepositoryConstant.VALUE_REFACTOR, o -> ((boolean) o) ? 1 : 0);
+            it.constants().put(RepositoryConstant.VALUE_REFACTOR, o -> ((boolean) o) ? 1 : 0);
             return true;
         }));
     }

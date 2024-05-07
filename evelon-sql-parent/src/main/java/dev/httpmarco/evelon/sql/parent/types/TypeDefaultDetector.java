@@ -48,7 +48,7 @@ public final class TypeDefaultDetector implements TypeDetector {
 
         // we must check if enum type is present - add value rendering
         if(entry.clazz().isEnum()) {
-            entry.constant(RepositoryConstant.VALUE_RENDERING, o -> Enum.valueOf(((Class<? extends Enum>)entry.clazz()), o.toString()));
+            entry.constants().put(RepositoryConstant.VALUE_RENDERING, o -> Enum.valueOf(((Class<? extends Enum>)entry.clazz()), o.toString()));
         }
         return type;
     }

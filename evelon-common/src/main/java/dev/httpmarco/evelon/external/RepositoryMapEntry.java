@@ -27,7 +27,7 @@ public final class RepositoryMapEntry extends RepositoryExternalEntry {
 
 
         this.keyEntry = new RepositoryEntry(field.getName() + "_key", Reflections.on(field).generic(0), this);
-        this.keyEntry.constantOption(RepositoryConstant.PRIMARY_KEY);
+        this.keyEntry.constants().option(RepositoryConstant.PRIMARY_KEY);
 
         this.valueEntry = new RepositoryEntry(field.getName()  + "_value", Reflections.on(field).generic(1), this);
     }

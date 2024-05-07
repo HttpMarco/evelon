@@ -26,10 +26,10 @@ public final class RepositoryObjectEntry extends RepositoryExternalEntry {
             }
 
             var entry = RepositoryEntryFinder.find(field, fieldId, this);
-            entry.constant(RepositoryConstant.PARAM_FIELD, field);
+            entry.constants().put(RepositoryConstant.PARAM_FIELD, field);
 
             if (field.isAnnotationPresent(PrimaryKey.class)) {
-                entry.constantOption(RepositoryConstant.PRIMARY_KEY);
+                entry.constants().option(RepositoryConstant.PRIMARY_KEY);
             }
             children(entry);
         }
@@ -38,7 +38,7 @@ public final class RepositoryObjectEntry extends RepositoryExternalEntry {
             if (!(child instanceof RepositoryExternalEntry)) {
                 continue;
             }
-            child.constant(RepositoryConstant.FOREIGN_REFERENCE, primaries());
+            child.constants().put(RepositoryConstant.FOREIGN_REFERENCE, primaries());
         }
     }
 }

@@ -32,14 +32,14 @@ public final class HikariCreateProcess extends UpdateProcess<HikariProcessRefere
             arguments.add(value);
         } else {
             for (var child : entry.children()) {
-                var childValue = Reflections.on(child.constant(RepositoryConstant.PARAM_FIELD)).value(value);
+                var childValue = Reflections.on(child.constants().constant(RepositoryConstant.PARAM_FIELD)).value(value);
                 if (child instanceof RepositoryExternalEntry externalEntry) {
                     for (var object : externalEntry.readValues(childValue)) {
                         var subprocess = new HikariCreateProcess(object);
 
                         // we put all parent primaries in the next process
                         for (var primary : entry.primaries()) {
-                            subprocess.property(primary.id(), Reflections.on(primary.constant(RepositoryConstant.PARAM_FIELD)).value(value));
+                            subprocess.property(primary.id(), Reflections.on(primary.constants().constant(RepositoryConstant.PARAM_FIELD)).value(value));
                         }
                         // append the sub process
                         subprocess.run(externalEntry, reference);
@@ -47,8 +47,8 @@ public final class HikariCreateProcess extends UpdateProcess<HikariProcessRefere
                 } else {
                     elements.add(child.id());
 
-                    if (child.hasConstant(RepositoryConstant.VALUE_REFACTOR)) {
-                        arguments.add(child.constant(RepositoryConstant.VALUE_REFACTOR).apply(childValue));
+                    if (child.constants().has(RepositoryConstant.VALUE_REFACTOR)) {
+                        arguments.add(child.constants().constant(RepositoryConstant.VALUE_REFACTOR).apply(childValue));
                     } else {
                         arguments.add(childValue);
                     }
@@ -56,8 +56,8 @@ public final class HikariCreateProcess extends UpdateProcess<HikariProcessRefere
             }
         }
 
-        if (entry.hasConstant(RepositoryConstant.FOREIGN_REFERENCE)) {
-            for (var foreignKey : entry.constant(RepositoryConstant.FOREIGN_REFERENCE)) {
+        if (entry.constants().has(RepositoryConstant.FOREIGN_REFERENCE)) {
+            for (var foreignKey : entry.constants().constant(RepositoryConstant.FOREIGN_REFERENCE)) {
                 arguments.add(0, property(foreignKey.id()));
                 elements.add(0, foreignKey.id());
             }

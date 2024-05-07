@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.sql.parent.process;
 
+import dev.httpmarco.evelon.Ordering;
 import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
@@ -22,6 +23,11 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
     private static final String SELECT_QUERY = "SELECT %s FROM %s";
 
     private int limit = -1;
+    private Ordering ordering = null;
+
+    public HikariFindProcess(int limit) {
+        this.limit = limit;
+    }
 
     @Override
     public @NotNull Object run(@NotNull RepositoryExternalEntry entry, HikariProcessReference reference) {
@@ -41,6 +47,10 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
         var transformedFilters = filters().stream().map(Filter::filter).toList();
         if (!transformedFilters.isEmpty()) {
             query = query + " WHERE " + String.join(", ", transformedFilters);
+        }
+
+        if(ordering != null) {
+
         }
 
         if (limit != -1) {
@@ -67,7 +77,7 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
                 for (var child : entry.children()) {
                     // children need a separate statement
                     if (child instanceof RepositoryExternalEntry externalEntry) {
-                        Reflections.on(object).modify(child.constant(RepositoryConstant.PARAM_FIELD), new HikariFindProcess().run(externalEntry, reference));
+                        Reflections.on(object).modify(child.constants().constant(RepositoryConstant.PARAM_FIELD), new HikariFindProcess().run(externalEntry, reference));
                         continue;
                     }
 
@@ -77,8 +87,8 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
                         value = ((String) value).charAt(0);
                     }
 
-                    if (child.hasConstant(RepositoryConstant.VALUE_RENDERING)) {
-                        value = child.constant(RepositoryConstant.VALUE_RENDERING).apply(value);
+                    if (child.constants().has(RepositoryConstant.VALUE_RENDERING)) {
+                        value = child.constants().constant(RepositoryConstant.VALUE_RENDERING).apply(value);
                     }
 
                     // modify the original field with a new value

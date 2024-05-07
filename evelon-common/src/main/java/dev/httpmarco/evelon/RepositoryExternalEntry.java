@@ -18,7 +18,7 @@ public abstract class RepositoryExternalEntry extends RepositoryEntry {
     }
 
     public List<RepositoryEntry> primaries() {
-        return this.children.stream().filter(it -> it.hasConstant(RepositoryConstant.PRIMARY_KEY)).toList();
+        return this.children.stream().filter(it -> it.constants().has(RepositoryConstant.PRIMARY_KEY)).toList();
     }
 
     public void children(RepositoryEntry entry) {

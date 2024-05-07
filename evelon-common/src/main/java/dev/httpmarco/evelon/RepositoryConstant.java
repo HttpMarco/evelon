@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon;
 
+import dev.httpmarco.evelon.constant.Constant;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -7,7 +8,11 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.function.Function;
 
-public record RepositoryConstant<T>(String id) {
+public final class RepositoryConstant<T> extends Constant<T> {
+
+    public RepositoryConstant(String id) {
+        super(id);
+    }
 
     // repository constants for own field if is present
     public static final RepositoryConstant<Field> PARAM_FIELD = constant("PARAM_FIELD");

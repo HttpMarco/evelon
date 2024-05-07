@@ -22,21 +22,21 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
         var elements = new ArrayList<String>();
 
         for (var child : entry.children()) {
-            if(child instanceof RepositoryExternalEntry externalEntry) {
+            if (child instanceof RepositoryExternalEntry externalEntry) {
                 this.run(externalEntry, reference);
                 continue;
             }
 
             var value = Reflections.on(this.value).value(child.id());
 
-            if (child.hasConstant(RepositoryConstant.VALUE_REFACTOR)) {
-                value = child.constant(RepositoryConstant.VALUE_REFACTOR).apply(value);
+            if (child.constants().has(RepositoryConstant.VALUE_REFACTOR)) {
+                value = child.constants().constant(RepositoryConstant.VALUE_REFACTOR).apply(value);
             }
 
             elements.add(child.id() + " = '" + value + "'");
         }
 
-        if(elements.isEmpty()) {
+        if (elements.isEmpty()) {
             return;
         }
         reference.append(UPDATE_VALUE.formatted(entry.id(), String.join(", ", elements)));
