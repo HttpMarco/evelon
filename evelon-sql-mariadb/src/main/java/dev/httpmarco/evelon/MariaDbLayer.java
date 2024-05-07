@@ -3,11 +3,15 @@ package dev.httpmarco.evelon;
 import dev.httpmarco.evelon.sql.parent.HikariDefaultAuthentication;
 import dev.httpmarco.evelon.sql.parent.HikariParentConnectionLayer;
 import dev.httpmarco.evelon.sql.parent.types.Type;
+import lombok.SneakyThrows;
 
 public final class MariaDbLayer extends HikariParentConnectionLayer<HikariDefaultAuthentication> {
 
+    @SneakyThrows
     public MariaDbLayer() {
         super(new HikariDefaultAuthentication("MARIADB", false));
+
+        Class.forName("org.mariadb.jdbc.Driver");
 
         detector().overwrite(Type.of("VARCHAR(128)", it -> it.clazz().equals(String.class) && it.hasConstant(RepositoryConstant.PRIMARY_KEY)));
 
