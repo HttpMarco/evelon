@@ -47,7 +47,7 @@ public class HikariLayerQuery<V> implements QueryMethod<V> {
     @Override
     @SuppressWarnings("unchecked")
     public V findFirst(Query<?> query) {
-        var values = ((List<V>) runner.apply(layer, query, new HikariFindProcess(1)));
+        var values = ((List<V>) runner.apply(layer, query, new HikariFindProcess()));
         if (!values.isEmpty()) {
             return values.get(0);
         }

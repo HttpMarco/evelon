@@ -92,6 +92,7 @@ public class Query<V> {
 
     @SuppressWarnings("unchecked")
     public V findFirst() {
+        constants().put(QueryConstant.LIMIT, 1);
         for (var layer : usedLayers) {
             var value = layer.queryMethod(associatedRepository).findFirst(this);
             if (value != null) {
