@@ -14,6 +14,7 @@ public abstract class ProcessRunner<Q extends ProcessReference<Q>> {
         var base = generateBase();
         var repository = query.associatedRepository();
 
+        process.constants().cloneConstants(query.constants());
         if (query.filters().get(layer) != null) {
             process.appendFilters(query.filters().get(layer));
         }
