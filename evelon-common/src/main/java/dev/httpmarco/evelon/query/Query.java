@@ -32,7 +32,6 @@ public class Query<V> {
             list.add(layer.filterHandler().match(id, value));
             this.filters.put(layer, list);
         }
-        System.err.println("filter match add: " + id);
         return this;
     }
 
