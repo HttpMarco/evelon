@@ -1,5 +1,7 @@
 package dev.httpmarco.evelon.query;
 
+import dev.httpmarco.evelon.Ordering;
+
 import java.util.List;
 
 public interface QueryMethod<V> {
@@ -21,5 +23,11 @@ public interface QueryMethod<V> {
     long sum(Query<?> query, String id);
 
     double average(Query<?> query, String id);
+
+    V min(String id);
+
+    V max(String id);
+
+    List<V> order(Query<?> query, String id, Ordering ordering);
 
 }

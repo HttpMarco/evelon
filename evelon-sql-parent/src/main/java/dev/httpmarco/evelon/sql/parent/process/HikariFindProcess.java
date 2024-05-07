@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.sql.parent.process;
 
+import dev.httpmarco.evelon.Ordering;
 import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
@@ -36,6 +37,20 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
         var transformedFilters = filters().stream().map(Filter::filter).toList();
         if (!transformedFilters.isEmpty()) {
             query = query + " WHERE " + String.join(", ", transformedFilters);
+        }
+
+        if (constants().has(QueryConstant.ORDERING)) {
+            query = query + " ORDER BY " + constants().constant(QueryConstant.ORDERING);
+
+            if (constants().has(QueryConstant.ORDERING_TYPE)) {
+                if (constants().constant(QueryConstant.ORDERING_TYPE) == Ordering.ASCENDING) {
+                    query = query + " ASC";
+                } else {
+                    query = query + " DESC";
+                }
+            } else {
+                query = query + " ASC";
+            }
         }
 
         if (constants().has(QueryConstant.LIMIT)) {

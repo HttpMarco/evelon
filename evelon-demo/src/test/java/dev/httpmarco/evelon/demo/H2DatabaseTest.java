@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.demo;
 
+import dev.httpmarco.evelon.Ordering;
 import dev.httpmarco.evelon.demo.models.ComplexCollectionModel;
 import dev.httpmarco.evelon.demo.models.SimpleCollectionModel;
 import dev.httpmarco.evelon.demo.models.SimpleMapModel;
@@ -25,8 +26,8 @@ public final class H2DatabaseTest {
     class SimpleModelTest {
 
         private static Repository<SimpleModel> REPOSITORY;
-        private static final SimpleModel DUMMY = new SimpleModel('a', 8, 2000, UUID.randomUUID(),false, "test street", EnumObject.RED);
-        private static final SimpleModel DUMMY2 = new SimpleModel('z', 99, 100, UUID.randomUUID(),true, "a street", EnumObject.COOKIE);
+        private static final SimpleModel DUMMY = new SimpleModel('a', 8, 2000, UUID.randomUUID(), false, "test street", EnumObject.RED);
+        private static final SimpleModel DUMMY2 = new SimpleModel('z', 99, 100, UUID.randomUUID(), true, "a street", EnumObject.COOKIE);
 
 
         @Test
@@ -103,7 +104,7 @@ public final class H2DatabaseTest {
         @Test
         @Order(9)
         void update() {
-            REPOSITORY.query().update(new SimpleModel('a', 7, 2000, UUID.randomUUID(),false, "test", EnumObject.COOKIE));
+            REPOSITORY.query().update(new SimpleModel('a', 7, 2000, UUID.randomUUID(), false, "test", EnumObject.COOKIE));
             var value = REPOSITORY.query(H2Layer.class).findFirst();
 
             assertNotNull(value);
@@ -114,14 +115,17 @@ public final class H2DatabaseTest {
         @Order(10)
         @DisplayName("ordering - ascending")
         void orderAscending() {
-
+            var values = REPOSITORY.query().order("money", Ordering.ASCENDING);
+            assertFalse(values.isEmpty());
         }
 
         @Test
         @Order(11)
         @DisplayName("ordering - descending")
         void orderDescending() {
+            var values = REPOSITORY.query().order("money", Ordering.DESCENDING);
 
+            assertFalse(values.isEmpty());
         }
 
 
@@ -139,6 +143,20 @@ public final class H2DatabaseTest {
 
         @Test
         @Order(14)
+        void min() {
+            //todo
+            assertTrue(false);
+        }
+
+        @Test
+        @Order(15)
+        void max() {
+            //todo
+            assertTrue(false);
+        }
+
+        @Test
+        @Order(18)
         void delete() {
             REPOSITORY.query().delete();
         }

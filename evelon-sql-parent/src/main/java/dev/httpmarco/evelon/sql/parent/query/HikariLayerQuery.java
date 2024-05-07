@@ -1,9 +1,11 @@
 package dev.httpmarco.evelon.sql.parent.query;
 
+import dev.httpmarco.evelon.Ordering;
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.query.Query;
+import dev.httpmarco.evelon.query.QueryConstant;
 import dev.httpmarco.evelon.query.QueryMethod;
 import dev.httpmarco.evelon.sql.parent.process.*;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
@@ -71,6 +73,27 @@ public class HikariLayerQuery<V> implements QueryMethod<V> {
     @SuppressWarnings("unchecked")
     public double average(Query<?> query, String id) {
         return ((AtomicReference<Double>) runner.apply(layer, query, new HikariMathProcess("AVG(" + id + ")"))).get();
+    }
+
+    @Override
+    public V min(String id) {
+        // todo
+        return null;
+    }
+
+    @Override
+    public V max(String id) {
+        //todo
+        return null;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<V> order(Query<?> query, String id, Ordering ordering) {
+        HikariFindProcess process = new HikariFindProcess();
+        process.constants().put(QueryConstant.ORDERING, id);
+        process.constants().put(QueryConstant.ORDERING_TYPE, ordering);
+        return (List<V>) runner.apply(layer, query, process);
     }
 
     @Override

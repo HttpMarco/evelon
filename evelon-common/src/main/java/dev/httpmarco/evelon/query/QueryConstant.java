@@ -13,7 +13,9 @@ public final class QueryConstant<T> extends Constant<T> {
 
     public static final QueryConstant<Integer> LIMIT = constant("LIMIT");
 
-    public static final QueryConstant<Ordering> ORDERING = constant("ORDERING");
+    public static final QueryConstant<String> ORDERING = constant("ORDERING");
+
+    public static final QueryConstant<Ordering> ORDERING_TYPE = constant("ORDERING_TYPE");
 
     @Contract("_ -> new")
     private static <T> @NotNull QueryConstant<T> constant(String id) {

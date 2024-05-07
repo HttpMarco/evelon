@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.query;
 
+import dev.httpmarco.evelon.Ordering;
 import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.constant.ConstantPool;
 import dev.httpmarco.evelon.filtering.Filter;
@@ -118,6 +119,13 @@ public class Query<V> {
         return average;
     }
 
+    public List<V> order(String id, Ordering ordering) {
+        var elements = new ArrayList<V>();
+        for (var layer : usedLayers) {
+            elements.addAll((Collection<? extends V>) layer.queryMethod(associatedRepository).order(this, id, ordering));
+        }
+        return elements;
+    }
 
 
     public long count() {
