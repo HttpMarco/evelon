@@ -3,6 +3,7 @@ package dev.httpmarco.evelon.sql.parent.query;
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.Repository;
+import dev.httpmarco.evelon.query.Query;
 import dev.httpmarco.evelon.query.QueryMethod;
 import dev.httpmarco.evelon.sql.parent.process.*;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
@@ -24,30 +25,30 @@ public class HikariLayerQuery<V> implements QueryMethod<V> {
     private ProcessRunner<HikariProcessReference> runner;
 
     @Override
-    public void create(V value) {
-        runner.apply(layer, new HikariCreateProcess(value), associatedRepository);
+    public void create(Query<?> query, V value) {
+        runner.apply(layer, query, new HikariCreateProcess(value));
     }
 
     @Override
-    public void update(V value) {
-        runner.apply(layer, new HikariUpdateProcess(value), associatedRepository);
+    public void update(Query<?> query, V value) {
+        runner.apply(layer, query, new HikariUpdateProcess(value));
     }
 
     @Override
-    public void delete() {
-        runner.apply(layer, new HikariDeleteProcess(), associatedRepository);
+    public void delete(Query<?> query) {
+        runner.apply(layer, query, new HikariDeleteProcess());
     }
 
     @Override
-    public boolean exists() {
-        return ((AtomicBoolean) runner.apply(layer, new HikariCheckProcess(), associatedRepository)).get();
+    public boolean exists(Query<?> query) {
+        return ((AtomicBoolean) runner.apply(layer, query, new HikariCheckProcess())).get();
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public V findFirst() {
-        var values = ((List<V>) runner.apply(layer, new HikariFindProcess(), associatedRepository));
-        if(!values.isEmpty()) {
+    public V findFirst(Query<?> query) {
+        var values = ((List<V>) runner.apply(layer, query, new HikariFindProcess()));
+        if (!values.isEmpty()) {
             return values.get(0);
         }
         return null;
@@ -55,12 +56,12 @@ public class HikariLayerQuery<V> implements QueryMethod<V> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<V> find() {
-        return (List<V>) runner.apply(layer, new HikariFindProcess(), associatedRepository);
+    public List<V> find(Query<?> query) {
+        return (List<V>) runner.apply(layer, query, new HikariFindProcess());
     }
 
     @Override
-    public long count() {
-        return ((AtomicLong) runner.apply(layer, new HikariCountProcess(), associatedRepository)).get();
+    public long count(Query<?> query) {
+        return ((AtomicLong) runner.apply(layer, query, new HikariCountProcess())).get();
     }
 }

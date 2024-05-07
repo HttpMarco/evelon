@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Accessors(fluent = true)
 public abstract class Process<F extends Filter<?, ?>> {
@@ -25,5 +22,11 @@ public abstract class Process<F extends Filter<?, ?>> {
 
     public Object property(@NotNull Object key) {
         return properties.get(key.toString());
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public void appendFilters(List<Filter<?, ?>> filters) {
+        this.filters.addAll((Collection<? extends F>) filters);
     }
 }

@@ -1,66 +1,73 @@
 package dev.httpmarco.evelon.query;
 
 import dev.httpmarco.evelon.Repository;
+import dev.httpmarco.evelon.filtering.Filter;
 import dev.httpmarco.evelon.layer.Layer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Accessors(fluent = true)
-@AllArgsConstructor
-public class Query<V> implements QueryMethod<V> {
+public class Query<V> {
 
     private final Repository<V> associatedRepository;
+    private final Map<Layer<?>, List<Filter<?, ?>>> filters = new HashMap<>();
     private final Layer<?>[] usedLayers;
 
     public Query(Repository<V> repository, @NotNull Set<Layer<?>> usedLayers) {
         this.associatedRepository = repository;
         this.usedLayers = usedLayers.toArray(Layer[]::new);
+
+        for (var layer : this.usedLayers) {
+            this.filters.put(layer, new LinkedList<>());
+        }
     }
 
-    @Override
+    public Query<V> match(String id, Object value) {
+        for (var layer : usedLayers) {
+            var list = filters.get(layer);
+            list.add(layer.filterHandler().match(id, value));
+            this.filters.put(layer, list);
+        }
+        System.err.println("filter match add: " + id);
+        return this;
+    }
+
     public void create(V value) {
         for (var layer : this.usedLayers) {
-            layer.queryMethod(associatedRepository).create(value);
+            layer.queryMethod(associatedRepository).create(this, value);
         }
     }
 
-    @Override
     public void update(V value) {
         for (var layer : this.usedLayers) {
-            layer.queryMethod(associatedRepository).update(value);
+            layer.queryMethod(associatedRepository).update(this, value);
         }
     }
 
-    @Override
     public void delete() {
         for (var layer : usedLayers) {
-            layer.queryMethod(associatedRepository).delete();
+            layer.queryMethod(associatedRepository).delete(this);
         }
     }
 
-    @Override
     public boolean exists() {
         for (var layer : usedLayers) {
-            if (layer.queryMethod(associatedRepository).exists()) {
+            if (layer.queryMethod(associatedRepository).exists(this)) {
                 return true;
             }
         }
         return false;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public V findFirst() {
         for (var layer : usedLayers) {
-            var value = layer.queryMethod(associatedRepository).findFirst();
+            var value = layer.queryMethod(associatedRepository).findFirst(this);
             if (value != null) {
                 return (V) value;
             }
@@ -68,21 +75,19 @@ public class Query<V> implements QueryMethod<V> {
         return null;
     }
 
-    @Override
     public long count() {
         int count = 0;
         for (var layer : usedLayers) {
-            count += (int) layer.queryMethod(associatedRepository).count();
+            count += (int) layer.queryMethod(associatedRepository).count(this);
         }
         return count;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
     public List<V> find() {
         var elements = new ArrayList<V>();
         for (var layer : usedLayers) {
-            elements.addAll((Collection<? extends V>) layer.queryMethod(associatedRepository).find());
+            elements.addAll((Collection<? extends V>) layer.queryMethod(associatedRepository).find(this));
         }
         return elements;
     }

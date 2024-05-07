@@ -4,18 +4,18 @@ import java.util.List;
 
 public interface QueryMethod<V> {
 
-    void create(V value);
+    void create(Query<?> query, V value);
 
-    void update(V value);
+    void update(Query<?> query, V value);
 
-    void delete();
+    void delete(Query<?> query);
 
-    boolean exists();
+    boolean exists(Query<?> query);
 
-    V findFirst();
+    V findFirst(Query<?> query);
 
-    long count();
+    long count(Query<?> query);
 
-    List<V> find();
+    List<V> find(Query<?> query);
 
 }

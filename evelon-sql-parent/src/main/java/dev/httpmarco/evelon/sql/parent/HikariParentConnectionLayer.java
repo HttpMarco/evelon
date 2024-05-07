@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.Repository;
+import dev.httpmarco.evelon.query.Query;
 import dev.httpmarco.evelon.query.QueryMethod;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriver;
@@ -15,7 +16,6 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -45,7 +45,7 @@ public abstract class HikariParentConnectionLayer<A extends ConnectionAuthentica
      */
     @Override
     public void prepped(@NotNull Repository<?> repository) {
-        runner().apply(this, new HikariPreppedProcess(this), repository);
+        runner().apply(this,  new Query<>(repository, Set.of()), new HikariPreppedProcess(this));
     }
 
     @Override
