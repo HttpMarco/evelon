@@ -30,8 +30,23 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
 
     @Override
     public void connect(ConnectionAuthentication credentials) {
-        var config = new HikariConfig();
+        var config = defaultConfig();
 
+        if (protocolDriver instanceof ProtocolDriverLoader<?> loader) {
+            loader.initialize();
+        }
+
+        if (credentials instanceof HikariDefaultAuthentication authentication) {
+            config.setUsername(authentication.username());
+            config.setPassword(authentication.password());
+        }
+
+        config.setJdbcUrl(protocolDriver.jdbcUrlBinding(credentials));
+        this.dataSource = new HikariDataSource(config);
+    }
+
+    private HikariConfig defaultConfig() {
+        var config = new HikariConfig();
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
@@ -42,23 +57,11 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
         config.addDataSourceProperty("cacheServerConfiguration", "true");
         config.addDataSourceProperty("elideSetAutoCommits", "true");
         config.addDataSourceProperty("maintainTimeStats", "false");
-
         config.setMinimumIdle(2);
         config.setMaximumPoolSize(100);
         config.setConnectionTimeout(10_000);
         config.setValidationTimeout(10_000);
-
-        if (protocolDriver instanceof ProtocolDriverLoader<?> loader) {
-            loader.initialize();
-        }
-
-        if(credentials instanceof HikariDefaultAuthentication authentication) {
-            config.setUsername(authentication.username());
-            config.setPassword(authentication.password());
-        }
-
-        config.setJdbcUrl(protocolDriver.jdbcUrlBinding(credentials));
-        this.dataSource = new HikariDataSource(config);
+        return config;
     }
 
     @Override
@@ -84,7 +87,7 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
     }
 
     public void query(@NotNull HikariProcessReference query) {
-        if(!isConnected()) {
+        if (!isConnected()) {
             LOGGER.error("Cannot execute query, because the connection is not established!");
             return;
         }
@@ -96,7 +99,7 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
             query.sqlQueries().remove(s);
         }, s.values()));
 
-        if(!query.sqlQueries().isEmpty()) {
+        if (!query.sqlQueries().isEmpty()) {
             query(query);
         }
     }
