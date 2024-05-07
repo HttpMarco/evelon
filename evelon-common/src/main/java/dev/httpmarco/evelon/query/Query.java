@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.query;
 
 import dev.httpmarco.evelon.Repository;
+import dev.httpmarco.evelon.constant.ConstantPool;
 import dev.httpmarco.evelon.filtering.Filter;
 import dev.httpmarco.evelon.layer.Layer;
 import lombok.Getter;
@@ -9,13 +10,21 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-@Getter
 @Accessors(fluent = true)
 public class Query<V> {
 
+    @Getter
     private final Repository<V> associatedRepository;
+    @Getter
     private final Map<Layer<?>, List<Filter<?, ?>>> filters = new HashMap<>();
+    @Getter
+    private final ConstantPool constants = new ConstantPool();
     private final Layer<?>[] usedLayers;
+
+    public Query<V> limit(int limit) {
+        this.constants.put(QueryConstant.LIMIT, 1);
+        return this;
+    }
 
     public Query(Repository<V> repository, @NotNull Set<Layer<?>> usedLayers) {
         this.associatedRepository = repository;
