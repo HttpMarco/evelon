@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -55,6 +57,7 @@ public class Query<V> implements QueryMethod<V> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public V findFirst() {
         for (var layer : usedLayers) {
             var value = layer.queryMethod(associatedRepository).findFirst();
@@ -67,13 +70,20 @@ public class Query<V> implements QueryMethod<V> {
 
     @Override
     public long count() {
-        // todo
-        return 0;
+        int count = 0;
+        for (var layer : usedLayers) {
+            count += (int) layer.queryMethod(associatedRepository).count();
+        }
+        return count;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<V> find() {
-        // todo
-        return List.of();
+        var elements = new ArrayList<V>();
+        for (var layer : usedLayers) {
+            elements.addAll((Collection<? extends V>) layer.queryMethod(associatedRepository).find());
+        }
+        return elements;
     }
 }
