@@ -3,7 +3,6 @@ package dev.httpmarco.evelon.query;
 import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.filtering.Filter;
 import dev.httpmarco.evelon.layer.Layer;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;

@@ -1,7 +1,6 @@
 package dev.httpmarco.evelon.sql.parent;
 
 import dev.httpmarco.evelon.filtering.Filter;
-import dev.httpmarco.evelon.Repository;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class HikariFilter<R> extends Filter<String, R> {

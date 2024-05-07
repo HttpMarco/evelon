@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.process.kind.UpdateProcess;
+import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 @AllArgsConstructor
-public final class HikariCreateProcess extends UpdateProcess<HikariProcessReference> {
+public final class HikariCreateProcess extends UpdateProcess<HikariProcessReference, HikariFilter<Object>> {
 
     private static final String CREATE_VALUE_SQL = "INSERT INTO %s (%s) VALUES (%s);";
     private final Object value;

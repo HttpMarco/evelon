@@ -18,7 +18,7 @@ public abstract class ProcessRunner<Q extends ProcessReference<Q>> {
             process.appendFilters(query.filters().get(layer));
         }
 
-        if (process instanceof UpdateProcess<?> updateProcess) {
+        if (process instanceof UpdateProcess<?, ?> updateProcess) {
             updateProcess.runMapping(repository.entry(), base);
             this.update(base);
             return null;
