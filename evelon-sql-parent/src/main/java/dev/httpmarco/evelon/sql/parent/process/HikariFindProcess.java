@@ -1,33 +1,22 @@
 package dev.httpmarco.evelon.sql.parent.process;
 
-import dev.httpmarco.evelon.Ordering;
 import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.filtering.Filter;
 import dev.httpmarco.evelon.process.kind.QueryProcess;
+import dev.httpmarco.evelon.query.QueryConstant;
 import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import dev.httpmarco.osgan.reflections.Reflections;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-@AllArgsConstructor
-@NoArgsConstructor
 public final class HikariFindProcess extends QueryProcess<HikariProcessReference, HikariFilter<Object>> {
 
     private static final String SELECT_QUERY = "SELECT %s FROM %s";
-
-    private int limit = -1;
-    private Ordering ordering = null;
-
-    public HikariFindProcess(int limit) {
-        this.limit = limit;
-    }
 
     @Override
     public @NotNull Object run(@NotNull RepositoryExternalEntry entry, HikariProcessReference reference) {
@@ -49,12 +38,8 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
             query = query + " WHERE " + String.join(", ", transformedFilters);
         }
 
-        if(ordering != null) {
-
-        }
-
-        if (limit != -1) {
-            query = query + " LIMIT " + limit;
+        if (constants().has(QueryConstant.LIMIT)) {
+            query = query + " LIMIT " + constants().constant(QueryConstant.LIMIT);
         }
 
         query = query + ";";
@@ -99,8 +84,6 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
                 throw new RuntimeException(e);
             }
         });
-
-
         return items;
     }
 }
