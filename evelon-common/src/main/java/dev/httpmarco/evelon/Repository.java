@@ -20,7 +20,7 @@ public record Repository<T>(RepositoryObjectEntry entry, Set<Layer<?>> layers) {
         return new Query<>(this, layers);
     }
 
-    public @NotNull dev.httpmarco.evelon.query.Query<T> query(Class<? extends Layer<?>> layer) {
+    public @NotNull Query<T> query(Class<? extends Layer<?>> layer) {
         return new Query<>(this, Set.of(layers.stream().filter(it -> it.getClass().equals(layer)).findFirst().orElseThrow()));
     }
 }

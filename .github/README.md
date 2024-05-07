@@ -43,16 +43,10 @@ implementation("dev.httpmarco.evelon:evelon-MODULE:VERSION")
 </dependency>
 ```
 
-
-
-
-
 ### Todo query methods
 - [ ] `order` - Order the result by the given field.
 - [ ] `min` - Find the minimum value of the given field.
 - [ ] `max` - Find the maximum value of the given field.
-- [ ] `sum` - Find the sum of the given field.
-- [ ] `avg` - Find the average value of the given field.
 - [ ] `createIfNotExists` - Create an entity if it does not exist.
 - [ ] `upsert` - Create an entity if it does not exist, otherwise update it.
 

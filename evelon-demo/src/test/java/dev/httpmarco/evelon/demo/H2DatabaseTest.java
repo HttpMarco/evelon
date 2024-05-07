@@ -124,8 +124,21 @@ public final class H2DatabaseTest {
 
         }
 
+
         @Test
         @Order(12)
+        void sum() {
+            assertEquals(14, REPOSITORY.query(H2Layer.class).sum("age"));
+        }
+
+        @Test
+        @Order(13)
+        void average() {
+            assertEquals(7.0, REPOSITORY.query(H2Layer.class).average("age"));
+        }
+
+        @Test
+        @Order(14)
         void delete() {
             REPOSITORY.query().delete();
         }
