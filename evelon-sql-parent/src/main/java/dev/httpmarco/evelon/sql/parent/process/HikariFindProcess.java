@@ -38,13 +38,13 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
         var itemStringList = String.join(", ", searchedItems);
         var query = SELECT_QUERY.formatted(itemStringList, entry.id());
 
-        if (limit != -1) {
-            query = query + " LIMIT " + limit;
-        }
-
         var transformedFilters = filters().stream().map(Filter::filter).toList();
         if (!transformedFilters.isEmpty()) {
             query = query + " WHERE " + String.join(", ", transformedFilters);
+        }
+
+        if (limit != -1) {
+            query = query + " LIMIT " + limit;
         }
 
         query = query + ";";
