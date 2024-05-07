@@ -37,7 +37,6 @@ public class EvelonTest {
         );
     }
 
-
     @Order(0)
     @ParameterizedTest
     @MethodSource("repositoryProvider")
@@ -73,6 +72,34 @@ public class EvelonTest {
     void average(@NotNull Repository<?> repository) {
         assertNotSame(-1, repository.query(H2Layer.class).average("age"));
         assertNotSame(0, repository.query(H2Layer.class).average("age"));
+    }
+
+    @Order(5)
+    @ParameterizedTest
+    @MethodSource("repositoryProvider")
+    void find(@NotNull Repository<?> repository) {
+        assertSame(1, repository.query().find().size());
+    }
+
+    @Order(6)
+    @ParameterizedTest
+    @MethodSource("repositoryProvider")
+    void findFirst(@NotNull Repository<?> repository) {
+        assertNotNull(repository.query().findFirst());
+    }
+
+    @Order(7)
+    @ParameterizedTest
+    @MethodSource("repositoryProvider")
+    <T> void update(@NotNull Repository<T> repository, T dummy) {
+        assertDoesNotThrow(() -> repository.query().update(dummy));
+    }
+
+    @Order(8)
+    @ParameterizedTest
+    @MethodSource("repositoryProvider")
+    <T> void update(@NotNull Repository<T> repository) {
+        assertDoesNotThrow(() -> repository.query().match("age", 7).findFirst());
     }
 
     @Order(18)
