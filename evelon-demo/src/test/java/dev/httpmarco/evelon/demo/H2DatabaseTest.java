@@ -84,7 +84,15 @@ public final class H2DatabaseTest {
         }
 
         @Test
+        @DisplayName("findFirst - none match filter")
         @Order(7)
+        void noneMatchFilter() {
+            var value = REPOSITORY.query().noneMatch("age", 8).findFirst();
+            assertNull(value);
+        }
+
+        @Test
+        @Order(8)
         void update() {
             REPOSITORY.query().update(new SimpleModel('a', 7, 2000, false, EnumObject.COOKIE));
             var value = REPOSITORY.query(H2Layer.class).findFirst();
