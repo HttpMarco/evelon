@@ -36,7 +36,7 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
 
         var transformedFilters = filters().stream().map(Filter::filter).toList();
         if (!transformedFilters.isEmpty()) {
-            query = query + " WHERE " + String.join(", ", transformedFilters);
+            query = query + " WHERE " + String.join(" AND ", transformedFilters);
         }
 
         if (constants().has(QueryConstant.ORDERING)) {
@@ -92,7 +92,8 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
                     }
 
                     // modify the original field with a new value
-                    Reflections.on(object).modify(child.id(), value);
+                    var childFiled = child.constants().has(RepositoryConstant.PARAM_FIELD) ? child.constants().constant(RepositoryConstant.PARAM_FIELD) : Reflections.on(child.clazz()).field(child.id());
+                    Reflections.on(object).modify(childFiled, value);
                 }
                 items.add(object);
             } catch (SQLException e) {
