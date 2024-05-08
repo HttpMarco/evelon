@@ -115,6 +115,7 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
             }
             function.apply(statement);
         } catch (SQLException exception) {
+            LOGGER.error("{} Objects: {}", query, Arrays.toString(arguments));
             throw new RuntimeException(exception);
         }
     }
