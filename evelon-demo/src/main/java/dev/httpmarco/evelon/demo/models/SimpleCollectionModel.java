@@ -14,6 +14,6 @@ public final class SimpleCollectionModel {
     @PrimaryKey
     private final UUID uuid;
     private final List<String> permissions;
-    private final List<String> groups;
+    private final List<Boolean> settings;
 
 }
