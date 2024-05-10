@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
+import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.process.kind.UpdateProcess;
 import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.HikariFilterUtil;
@@ -21,6 +22,13 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
     @Override
     public void run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
         var elements = new ArrayList<String>();
+
+        if(entry instanceof RepositoryCollectionEntry collectionEntry) {
+            // delete
+            //todo delete existing sql entries and create new
+            return;
+        }
+
 
         for (var child : entry.children()) {
             if (child instanceof RepositoryExternalEntry externalEntry) {
