@@ -8,6 +8,7 @@ import dev.httpmarco.evelon.filtering.Filter;
 import dev.httpmarco.evelon.process.kind.QueryProcess;
 import dev.httpmarco.evelon.query.QueryConstant;
 import dev.httpmarco.evelon.sql.parent.HikariFilter;
+import dev.httpmarco.evelon.sql.parent.HikariFilterUtil;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import dev.httpmarco.osgan.reflections.Reflections;
 import org.jetbrains.annotations.NotNull;
@@ -32,12 +33,7 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
         }
 
         var itemStringList = String.join(", ", searchedItems);
-        var query = SELECT_QUERY.formatted(itemStringList, entry.id());
-
-        var transformedFilters = filters().stream().map(Filter::filter).toList();
-        if (!transformedFilters.isEmpty()) {
-            query = query + " WHERE " + String.join(" AND ", transformedFilters);
-        }
+        var query = HikariFilterUtil.appendFiltering(SELECT_QUERY.formatted(itemStringList, entry.id()), filters());
 
         if (constants().has(QueryConstant.ORDERING)) {
             query = query + " ORDER BY " + constants().constant(QueryConstant.ORDERING);
