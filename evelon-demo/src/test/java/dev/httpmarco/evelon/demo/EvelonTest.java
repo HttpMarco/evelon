@@ -1,7 +1,10 @@
 package dev.httpmarco.evelon.demo;
 
 import dev.httpmarco.evelon.Repository;
+import dev.httpmarco.evelon.RepositoryBuilder;
+import dev.httpmarco.evelon.demo.models.SimpleCollectionModel;
 import dev.httpmarco.evelon.demo.models.SimpleModel;
+import dev.httpmarco.evelon.demo.models.objects.AbstractTestObject;
 import dev.httpmarco.evelon.demo.models.objects.EnumObject;
 import dev.httpmarco.evelon.sql.h2.H2Layer;
 import org.jetbrains.annotations.Contract;
@@ -11,6 +14,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -31,8 +35,19 @@ public class EvelonTest {
                                 10,
                                 UUID.randomUUID(),
                                 false,
-                                "test streatt",
+                                "test street",
                                 EnumObject.COOKIE)
+                ),
+                // test abstract classes
+                Arguments.of(Repository.build(AbstractTestObject.class).withLayer(H2Layer.class).build(),
+                        new AbstractTestObject("test", 1L, UUID.randomUUID())
+                ),
+                // simple collection test with String parameter
+                Arguments.of(Repository.build(SimpleModel.class).withLayer(H2Layer.class).build(),
+                        new SimpleCollectionModel(UUID.randomUUID(),
+                                List.of("roadblock.*", "follow"),
+                                List.of(true, true)
+                        )
                 )
         );
     }

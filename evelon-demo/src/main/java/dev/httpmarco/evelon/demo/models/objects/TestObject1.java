@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public final class TestObject1 {
+public class TestObject1 {
 
     private final String permission;
     private final long expire;
