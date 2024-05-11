@@ -1,10 +1,9 @@
 package dev.httpmarco.evelon.demo;
 
 import dev.httpmarco.evelon.Repository;
-import dev.httpmarco.evelon.RepositoryBuilder;
+import dev.httpmarco.evelon.demo.models.AbstractModel;
 import dev.httpmarco.evelon.demo.models.SimpleCollectionModel;
 import dev.httpmarco.evelon.demo.models.SimpleModel;
-import dev.httpmarco.evelon.demo.models.objects.AbstractTestObject;
 import dev.httpmarco.evelon.demo.models.objects.EnumObject;
 import dev.httpmarco.evelon.sql.h2.H2Layer;
 import org.jetbrains.annotations.Contract;
@@ -39,8 +38,8 @@ public class EvelonTest {
                                 EnumObject.COOKIE)
                 ),
                 // test abstract classes
-                Arguments.of(Repository.build(AbstractTestObject.class).withLayer(H2Layer.class).build(),
-                        new AbstractTestObject("test", 1L, UUID.randomUUID())
+                Arguments.of(Repository.build(AbstractModel.class).withLayer(H2Layer.class).build(),
+                        new AbstractModel("test", 1L, UUID.randomUUID())
                 ),
                 // simple collection test with String parameter
                 Arguments.of(Repository.build(SimpleCollectionModel.class).withLayer(H2Layer.class).build(),
