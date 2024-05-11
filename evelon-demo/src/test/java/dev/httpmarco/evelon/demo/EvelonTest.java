@@ -43,7 +43,7 @@ public class EvelonTest {
                         new AbstractTestObject("test", 1L, UUID.randomUUID())
                 ),
                 // simple collection test with String parameter
-                Arguments.of(Repository.build(SimpleModel.class).withLayer(H2Layer.class).build(),
+                Arguments.of(Repository.build(SimpleCollectionModel.class).withLayer(H2Layer.class).build(),
                         new SimpleCollectionModel(UUID.randomUUID(),
                                 List.of("roadblock.*", "follow"),
                                 List.of(true, true)

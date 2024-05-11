@@ -6,7 +6,7 @@ allprojects {
     apply(plugin = "java-library")
     apply(plugin = "maven-publish")
 
-    version = "1.0.13-SNAPSHOT"
+    version = "1.0.15-SNAPSHOT"
     group = "dev.httpmarco.evelon"
 
     repositories {

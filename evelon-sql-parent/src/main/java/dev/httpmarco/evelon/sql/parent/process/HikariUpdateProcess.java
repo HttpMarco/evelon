@@ -22,6 +22,7 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
     @Override
     public void run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
         var elements = new ArrayList<String>();
+        var arguments = new ArrayList<>();
 
         if(entry instanceof RepositoryCollectionEntry collectionEntry) {
             // delete
@@ -41,19 +42,20 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
                 continue;
             }
 
-            var value = Reflections.on(this.value).value(child.id());
+            var value =  Reflections.on(child.constants().constant(RepositoryConstant.PARAM_FIELD)).value(this.value);
 
             if (child.constants().has(RepositoryConstant.VALUE_REFACTOR)) {
                 value = child.constants().constant(RepositoryConstant.VALUE_REFACTOR).apply(value);
             }
 
-            elements.add(child.id() + " = '" + value + "'");
+            elements.add(child.id() + " = ?");
+            arguments.add(value);
         }
 
         if (elements.isEmpty()) {
             return;
         }
 
-        reference.append(HikariFilterUtil.appendFiltering(UPDATE_VALUE.formatted(entry.id(), String.join(", ", elements)), filters()) + ";");
+        reference.append(HikariFilterUtil.appendFiltering(UPDATE_VALUE.formatted(entry.id(), String.join(", ", elements)), filters()) + ";", arguments.toArray());
     }
 }
