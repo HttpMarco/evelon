@@ -3,6 +3,7 @@ package dev.httpmarco.evelon.sql.parent.process;
 import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
+import dev.httpmarco.evelon.filtering.Filter;
 import dev.httpmarco.evelon.process.kind.UpdateProcess;
 import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.HikariFilterUtil;
@@ -56,6 +57,7 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
             return;
         }
 
+        arguments.addAll(filters().stream().map(Filter::value).toList());
         reference.append(HikariFilterUtil.appendFiltering(UPDATE_VALUE.formatted(entry.id(), String.join(", ", elements)), filters()) + ";", arguments.toArray());
     }
 }

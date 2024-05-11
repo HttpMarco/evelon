@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.RepositoryExternalEntry;
+import dev.httpmarco.evelon.filtering.Filter;
 import dev.httpmarco.evelon.process.kind.QueryProcess;
 import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.HikariFilterUtil;
@@ -15,7 +16,7 @@ public final class HikariCountProcess extends QueryProcess<HikariProcessReferenc
     @Override
     public @NotNull Object run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
         AtomicLong count = new AtomicLong(-1);
-        reference.append(HikariFilterUtil.appendFiltering(COUNT_QUERY.formatted(entry.id()) + ";", filters()), resultSet -> count.set(resultSet.getLong("ELEMENTS")));
+        reference.append(HikariFilterUtil.appendFiltering(COUNT_QUERY.formatted(entry.id()) + ";", filters()), filters().stream().map(Filter::value).toArray(), it -> count.set(it.getLong("ELEMENTS")));
         return count;
     }
 }

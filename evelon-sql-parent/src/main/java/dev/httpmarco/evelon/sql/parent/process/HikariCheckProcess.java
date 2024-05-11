@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.RepositoryExternalEntry;
+import dev.httpmarco.evelon.filtering.Filter;
 import dev.httpmarco.evelon.process.kind.QueryProcess;
 import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.HikariFilterUtil;
@@ -16,7 +17,7 @@ public final class HikariCheckProcess extends QueryProcess<HikariProcessReferenc
     @Override
     public @NotNull Object run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
         var result = new AtomicBoolean();
-        reference.append( HikariFilterUtil.appendFiltering(CHECK_QUERY.formatted(entry.id()) + ";", filters()), it -> result.set(true));
+        reference.append( HikariFilterUtil.appendFiltering(CHECK_QUERY.formatted(entry.id()) + ";", filters()), filters().stream().map(Filter::value).toArray(), it -> result.set(true));
         return result;
     }
 }
