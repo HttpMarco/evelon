@@ -13,6 +13,7 @@ public final class SimpleCollectionModel {
 
     @PrimaryKey
     private final UUID uuid;
+    private final int age;
     private final List<String> permissions;
     private final List<Boolean> settings;
 

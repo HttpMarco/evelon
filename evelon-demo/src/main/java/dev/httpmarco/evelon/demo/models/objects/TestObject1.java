@@ -8,6 +8,6 @@ import lombok.Getter;
 public class TestObject1 {
 
     private final String permission;
-    private final long expire;
+    private final int age;
 
 }

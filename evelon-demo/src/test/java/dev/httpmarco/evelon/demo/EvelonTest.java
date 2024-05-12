@@ -39,11 +39,11 @@ public class EvelonTest {
                 ),
                 // test abstract classes
                 Arguments.of(Repository.build(AbstractModel.class).withLayer(H2Layer.class).build(),
-                        new AbstractModel("test", 1L, UUID.randomUUID())
+                        new AbstractModel("test", 1, UUID.randomUUID())
                 ),
                 // simple collection test with String parameter
                 Arguments.of(Repository.build(SimpleCollectionModel.class).withLayer(H2Layer.class).build(),
-                        new SimpleCollectionModel(UUID.randomUUID(),
+                        new SimpleCollectionModel(UUID.randomUUID(), 1,
                                 List.of("roadblock.*", "follow"),
                                 List.of(true, true)
                         )
@@ -111,8 +111,9 @@ public class EvelonTest {
 
     @Order(8)
     @ParameterizedTest
+    @DisplayName("findFirst - match filter")
     @MethodSource("repositoryProvider")
-    <T> void update(@NotNull Repository<T> repository) {
+    <T> void findFirstMatch(@NotNull Repository<T> repository) {
         assertDoesNotThrow(() -> repository.query().match("age", 7).findFirst());
     }
 
