@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.RepositoryConstant;
+import dev.httpmarco.evelon.RepositoryEntry;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.filtering.Filter;
@@ -27,14 +28,34 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
 
         if(entry instanceof RepositoryCollectionEntry collectionEntry) {
             // delete
-            //todo delete existing sql entries and create new
+            var deleteProcess = new HikariDeleteProcess();
+
+            for (RepositoryEntry primary : entry.parent().primaries()) {
+                deleteProcess.filters().add(new HikariFilter.SequenceMatchFilter(primary.id(), property(primary.id()), "="));
+            }
+            deleteProcess.run(collectionEntry, reference);
+
+            for (Object object : collectionEntry.readValues(value)) {
+                var createProcess = new HikariCreateProcess(object);
+
+                for (var primary : entry.parent().primaries()) {
+                    createProcess.property(primary.id(), property(primary.id()));
+                }
+                createProcess.run(collectionEntry, reference);
+            }
             return;
         }
 
 
         for (var child : entry.children()) {
+            var value =  Reflections.on(child.constants().constant(RepositoryConstant.PARAM_FIELD)).value(this.value);
+
             if (child instanceof RepositoryExternalEntry externalEntry) {
-                this.run(externalEntry, reference);
+                var subprocess = new HikariUpdateProcess(value);
+                for (var primary : entry.primaries()) {
+                    subprocess.property(primary.id(), Reflections.on(primary.constants().constant(RepositoryConstant.PARAM_FIELD)).value(this.value));
+                }
+                subprocess.run(externalEntry, reference);
                 continue;
             }
 
@@ -42,8 +63,6 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
                 // primaries cannot be updated
                 continue;
             }
-
-            var value =  Reflections.on(child.constants().constant(RepositoryConstant.PARAM_FIELD)).value(this.value);
 
             if (child.constants().has(RepositoryConstant.VALUE_REFACTOR)) {
                 value = child.constants().constant(RepositoryConstant.VALUE_REFACTOR).apply(value);
