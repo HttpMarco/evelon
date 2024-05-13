@@ -24,6 +24,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EvelonTest {
 
+    private static final UUID GENERAL_UUID = UUID.randomUUID();
+
     @Contract(pure = true)
     static @NotNull Stream<Arguments> repositoryProvider() {
         return Stream.of(
@@ -43,7 +45,7 @@ public class EvelonTest {
                 ),
                 // simple collection test with String parameter
                 Arguments.of(Repository.build(SimpleCollectionModel.class).withLayer(H2Layer.class).build(),
-                        new SimpleCollectionModel(UUID.randomUUID(), 1,
+                        new SimpleCollectionModel(GENERAL_UUID, 1,
                                 List.of("roadblock.*", "follow"),
                                 List.of(true, true)
                         )
