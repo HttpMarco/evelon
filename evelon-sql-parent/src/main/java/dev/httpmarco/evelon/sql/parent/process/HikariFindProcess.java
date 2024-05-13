@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.Ordering;
 import dev.httpmarco.evelon.RepositoryConstant;
+import dev.httpmarco.evelon.RepositoryEntry;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.filtering.Filter;
@@ -73,7 +74,6 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
                 for (var child : entry.children()) {
                     // children need a separate statement
                     if (child instanceof RepositoryExternalEntry externalEntry) {
-                        Reflections.on(object).modify(child.constants().constant(RepositoryConstant.PARAM_FIELD), new HikariFindProcess().run(externalEntry, reference));
                         continue;
                     }
 
@@ -87,10 +87,27 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
                         value = child.constants().constant(RepositoryConstant.VALUE_RENDERING).apply(value);
                     }
 
+                    if (child.constants().has(RepositoryConstant.PRIMARY_KEY)) {
+                        property(child.id(), value);
+                    }
+
                     // modify the original field with a new value
                     var childFiled = child.constants().has(RepositoryConstant.PARAM_FIELD) ? child.constants().constant(RepositoryConstant.PARAM_FIELD) : Reflections.on(child.clazz()).field(child.id());
                     Reflections.on(object).modify(childFiled, value);
                 }
+
+
+                for (var child : entry.children()) {
+                    if (child instanceof RepositoryExternalEntry externalEntry) {
+                        var findProcess = new HikariFindProcess();
+
+                        for (var primary : entry.primaries()) {
+                            findProcess.filters().add(new HikariFilter.SequenceMatchFilter(primary.id(), property(primary.id()), "="));
+                        }
+                        Reflections.on(object).modify(child.constants().constant(RepositoryConstant.PARAM_FIELD), findProcess.run(externalEntry, reference));
+                    }
+                }
+
                 items.add(object);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
