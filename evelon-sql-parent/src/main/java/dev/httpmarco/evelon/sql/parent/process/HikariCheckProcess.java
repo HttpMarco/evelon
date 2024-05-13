@@ -12,12 +12,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class HikariCheckProcess extends QueryProcess<HikariProcessReference, HikariFilter<Object>> {
 
-    private static final String CHECK_QUERY = "SELECT * FROM %s LIMIT 1";
+    private static final String CHECK_QUERY = "SELECT * FROM %s";
 
     @Override
     public @NotNull Object run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
         var result = new AtomicBoolean();
-        reference.append( HikariFilterUtil.appendFiltering(CHECK_QUERY.formatted(entry.id()), filters()) + ";", filters().stream().map(Filter::value).toArray(), it -> result.set(true));
+        reference.append( HikariFilterUtil.appendFiltering(CHECK_QUERY.formatted(entry.id()), filters()) + " LIMIT 1;", filters().stream().map(Filter::value).toArray(), it -> result.set(true));
         return result;
     }
 }
