@@ -26,14 +26,13 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
         var elements = new ArrayList<String>();
         var arguments = new ArrayList<>();
 
-        if(entry instanceof RepositoryCollectionEntry collectionEntry) {
+        if (entry instanceof RepositoryCollectionEntry collectionEntry) {
             // delete
             var deleteProcess = new HikariDeleteProcess();
 
             for (RepositoryEntry primary : entry.parent().primaries()) {
                 deleteProcess.filters().add(new HikariFilter.SequenceMatchFilter(primary.id(), property(primary.id()), "="));
             }
-            deleteProcess.run(collectionEntry, reference);
 
             for (Object object : collectionEntry.readValues(value)) {
                 var createProcess = new HikariCreateProcess(object);
@@ -43,12 +42,13 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
                 }
                 createProcess.run(collectionEntry, reference);
             }
+            deleteProcess.run(collectionEntry, reference);
             return;
         }
 
 
         for (var child : entry.children()) {
-            var value =  Reflections.on(child.constants().constant(RepositoryConstant.PARAM_FIELD)).value(this.value);
+            var value = Reflections.on(child.constants().constant(RepositoryConstant.PARAM_FIELD)).value(this.value);
 
             if (child instanceof RepositoryExternalEntry externalEntry) {
                 var subprocess = new HikariUpdateProcess(value);
@@ -59,7 +59,7 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
                 continue;
             }
 
-            if(child.constants().has(RepositoryConstant.PRIMARY_KEY)) {
+            if (child.constants().has(RepositoryConstant.PRIMARY_KEY)) {
                 // primaries cannot be updated
                 continue;
             }
