@@ -52,3 +52,8 @@ implementation("dev.httpmarco.evelon:evelon-MODULE:VERSION")
 ### Another todos
 - [ ] row transformer
 - [ ] implement Arrays
+- [ ] sql word blacklist
+- [ ] maps
+
+Blacklisted words:
+- user
