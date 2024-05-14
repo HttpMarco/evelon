@@ -15,6 +15,7 @@ public final class SimpleMapModel {
 
     @PrimaryKey
     private final UUID uniqueId;
+    private final int age;
     private final String username;
     private final Map<String, Boolean> properties;
 
