@@ -43,6 +43,13 @@ implementation("dev.httpmarco.evelon:evelon-MODULE:VERSION")
 </dependency>
 ```
 
+
+### Change path of credentials configuartion
+To change the path, there are two options. The first option would be to set the path in an environment variable, using the keyword `evelon.credentials.path`. Another option would be to set it programmatically with:
+```java
+ConnectionAuthenticationPath.set("home/my-credentials");
+```
+
 ### Todo query methods
 - [ ] `min` - Find the minimum value of the given field.
 - [ ] `max` - Find the maximum value of the given field.

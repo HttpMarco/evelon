@@ -16,7 +16,7 @@ public final class ConnectionAuthenticationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionAuthenticationService.class);
     private static final Gson CREDENTIALS_GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Path CONFIGURATION_PATH = Path.of("evelon-connection-credentials.json");
+
 
     static {
         createConfigurationFile();
@@ -25,7 +25,7 @@ public final class ConnectionAuthenticationService {
     @SneakyThrows
     private static void createConfigurationFile() {
         // Create if the not exists
-        Files.newByteChannel(CONFIGURATION_PATH, Set.of(StandardOpenOption.CREATE, StandardOpenOption.WRITE)).close();
+        Files.newByteChannel(ConnectionAuthenticationPath.CONFIGURATION_PATH, Set.of(StandardOpenOption.CREATE, StandardOpenOption.WRITE)).close();
     }
 
     public static void appendCredentials(ConnectableLayer<?, ?> connectableLayer, ConnectionAuthentication authentication) {
@@ -54,12 +54,12 @@ public final class ConnectionAuthenticationService {
 
     @SneakyThrows
     private static @NotNull JsonArray readCredentialsContext() {
-        var authenticationArray = CREDENTIALS_GSON.fromJson(Files.newBufferedReader(CONFIGURATION_PATH), JsonArray.class);
+        var authenticationArray = CREDENTIALS_GSON.fromJson(Files.newBufferedReader(ConnectionAuthenticationPath.CONFIGURATION_PATH), JsonArray.class);
         return Objects.requireNonNullElseGet(authenticationArray, JsonArray::new);
     }
 
     @SneakyThrows
     private static void updateCredentialsContext(JsonArray elements) {
-        Files.writeString(CONFIGURATION_PATH, CREDENTIALS_GSON.toJson(elements));
+        Files.writeString(ConnectionAuthenticationPath.CONFIGURATION_PATH, CREDENTIALS_GSON.toJson(elements));
     }
 }

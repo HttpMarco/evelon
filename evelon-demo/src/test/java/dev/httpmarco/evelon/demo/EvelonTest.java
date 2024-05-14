@@ -5,6 +5,7 @@ import dev.httpmarco.evelon.demo.models.*;
 import dev.httpmarco.evelon.demo.models.objects.EnumObject;
 import dev.httpmarco.evelon.demo.models.objects.TestObject1;
 import dev.httpmarco.evelon.demo.models.objects.TestObject2;
+import dev.httpmarco.evelon.layer.connection.ConnectionAuthenticationPath;
 import dev.httpmarco.evelon.sql.h2.H2Layer;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
