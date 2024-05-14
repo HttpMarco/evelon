@@ -106,7 +106,7 @@ public class Query<V> {
     public long sum(String id) {
         long sum = 0;
         for (var layer : usedLayers) {
-            sum += (long) layer.queryMethod(associatedRepository).sum(this, id);
+            sum += layer.queryMethod(associatedRepository).sum(this, id);
         }
         return sum;
     }
@@ -119,6 +119,7 @@ public class Query<V> {
         return average;
     }
 
+    @SuppressWarnings("unchecked")
     public List<V> order(String id, Ordering ordering) {
         var elements = new ArrayList<V>();
         for (var layer : usedLayers) {

@@ -4,7 +4,6 @@ import dev.httpmarco.evelon.constant.ConstantPool;
 import dev.httpmarco.evelon.filtering.Filter;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
