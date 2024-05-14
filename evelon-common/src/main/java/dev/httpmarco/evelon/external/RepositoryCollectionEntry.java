@@ -23,7 +23,7 @@ public final class RepositoryCollectionEntry extends RepositoryExternalEntry {
         this.typeEntry = RepositoryEntryFinder.find(Reflections.on(field).generic(0), null, field.getName(), this);
 
         if (!(typeEntry instanceof RepositoryExternalEntry)) {
-             this.children(typeEntry);
+            this.children(typeEntry);
         } else {
             this.children().addAll(((RepositoryExternalEntry) typeEntry).children());
         }
