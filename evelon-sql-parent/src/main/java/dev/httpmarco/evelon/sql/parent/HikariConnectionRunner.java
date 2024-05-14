@@ -13,8 +13,8 @@ public final class HikariConnectionRunner extends ProcessRunner<HikariProcessRef
     private final HikariConnection connection;
 
     @Override
-    public void update(HikariProcessReference query) {
-        this.connection.update(query);
+    public void update(HikariProcessReference reference) {
+        this.connection.update(reference);
     }
 
     @Contract(" -> new")
