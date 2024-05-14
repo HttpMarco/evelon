@@ -22,6 +22,14 @@ public final class ConstantPool {
         return constants.containsKey(constant);
     }
 
+    public <T> T  constantOrCreate(Constant<T> constant, T defaultValue) {
+        if(has(constant)) {
+            return constant(constant);
+        }
+        this.constants.put(constant, defaultValue);
+        return defaultValue;
+    }
+
     @SuppressWarnings("unchecked")
     public <T> T constant(Constant<T> constant) {
         return (T) constants.get(constant);

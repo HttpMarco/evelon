@@ -88,7 +88,7 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
                     }
 
                     if (child.constants().has(RepositoryConstant.PRIMARY_KEY)) {
-                        property(child.id(), value);
+                        constants().constantOrCreate(QueryConstant.PRIMARY_SHORTCUT, new QueryConstant.PrimaryShortCut()).add(child, value);
                     }
 
                     // modify the original field with a new value
@@ -102,7 +102,7 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
                         var findProcess = new HikariFindProcess();
 
                         for (var primary : entry.primaries()) {
-                            findProcess.filters().add(new HikariFilter.SequenceMatchFilter(primary.id(), property(primary.id()), "="));
+                            findProcess.filters().add(new HikariFilter.SequenceMatchFilter(primary.id(), constants().constant(QueryConstant.PRIMARY_SHORTCUT).value(primary), "="));
                         }
                         Reflections.on(object).modify(child.constants().constant(RepositoryConstant.PARAM_FIELD), findProcess.run(externalEntry, reference));
                     }

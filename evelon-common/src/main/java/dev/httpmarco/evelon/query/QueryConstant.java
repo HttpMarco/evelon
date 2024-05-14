@@ -38,13 +38,15 @@ public final class QueryConstant<T> extends Constant<T> {
         public static PrimaryShortCut append(@NotNull List<RepositoryEntry> primaries, Object parent) {
             var shortCut = new PrimaryShortCut();
 
-            System.err.println("primary short cut" + primaries.size());
             for (var primary : primaries) {
                 var primaryValue = Reflections.on(primary.constants().constant(RepositoryConstant.PARAM_FIELD)).value(parent);
                 shortCut.primaries.put(primary.id(), primaryValue);
             }
-
             return shortCut;
+        }
+
+        public void add(RepositoryEntry entry, Object value) {
+            this.primaries.put(entry.id(), value);
         }
 
         public Object value(String id) {

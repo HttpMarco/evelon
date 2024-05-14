@@ -13,23 +13,7 @@ import java.util.*;
 public abstract class Process<F extends Filter<?, ?>> {
 
     private final List<F> filters = new ArrayList<>();
-
     private final ConstantPool constants = new ConstantPool();
-
-    // for example for put the foreign value in the next sub process
-    @Deprecated
-    private final Map<Object, Object> properties = new LinkedHashMap<>();
-
-
-    @Deprecated
-    public void property(@NotNull Object key, Object value) {
-        properties.put(key.toString(), value);
-    }
-
-    @Deprecated
-    public Object property(@NotNull Object key) {
-        return properties.get(key.toString());
-    }
 
     @SuppressWarnings("unchecked")
     public void appendFilters(List<Filter<?, ?>> filters) {
