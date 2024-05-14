@@ -54,6 +54,7 @@ implementation("dev.httpmarco.evelon:evelon-MODULE:VERSION")
 - [ ] implement Arrays
 - [ ] sql word blacklist
 - [ ] maps
+- [ ] implement duplicated id check (Warning)
 
 Blacklisted words:
 - user

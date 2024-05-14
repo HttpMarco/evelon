@@ -54,6 +54,7 @@ public class EvelonTest {
                 ),
                 Arguments.of(Repository.build(SimpleMapModel.class).withLayer(H2Layer.class).build(),
                         new SimpleMapModel(GENERAL_UUID,
+                                87,
                                 "test_user",
                                 Map.of("silence", true, "test", false)
                         )
