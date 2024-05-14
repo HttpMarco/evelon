@@ -23,7 +23,12 @@ public class Query<V> {
     private final Layer<?>[] usedLayers;
 
     public Query<V> limit(int limit) {
-        this.constants.put(QueryConstant.LIMIT, 1);
+        this.constants.put(QueryConstant.LIMIT, limit);
+        return this;
+    }
+
+    public Query<V> offSet(int offset) {
+        this.constants.put(QueryConstant.OFFSET, offset);
         return this;
     }
 
@@ -93,7 +98,7 @@ public class Query<V> {
 
     @SuppressWarnings("unchecked")
     public V findFirst() {
-        constants().put(QueryConstant.LIMIT, 1);
+        limit(1);
         for (var layer : usedLayers) {
             var value = layer.queryMethod(associatedRepository).findFirst(this);
             if (value != null) {

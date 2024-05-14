@@ -57,6 +57,11 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
             query = query + " LIMIT " + constants().constant(QueryConstant.LIMIT);
         }
 
+
+        if (constants().has(QueryConstant.OFFSET)) {
+            query = query + " OFFSET " + constants().constant(QueryConstant.OFFSET);
+        }
+
         query = query + ";";
 
         reference.append(query, filters().stream().map(Filter::value).toArray(), resultSet -> {

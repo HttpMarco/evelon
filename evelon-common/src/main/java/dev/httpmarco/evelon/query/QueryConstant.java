@@ -20,6 +20,8 @@ public final class QueryConstant<T> extends Constant<T> {
 
     public static final QueryConstant<Integer> LIMIT = constant("LIMIT");
 
+    public static final QueryConstant<Integer> OFFSET = constant("OFFSET");
+
     public static final QueryConstant<String> ORDERING = constant("ORDERING");
 
     public static final QueryConstant<Ordering> ORDERING_TYPE = constant("ORDERING_TYPE");
