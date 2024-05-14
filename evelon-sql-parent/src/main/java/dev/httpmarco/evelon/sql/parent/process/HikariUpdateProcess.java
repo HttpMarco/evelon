@@ -6,6 +6,7 @@ import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.filtering.Filter;
 import dev.httpmarco.evelon.process.kind.UpdateProcess;
+import dev.httpmarco.evelon.query.QueryConstant;
 import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.HikariFilterUtil;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
@@ -30,16 +31,13 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
             // delete
             var deleteProcess = new HikariDeleteProcess();
 
-            for (RepositoryEntry primary : entry.parent().primaries()) {
-                deleteProcess.filters().add(new HikariFilter.SequenceMatchFilter(primary.id(), property(primary.id()), "="));
+            for (var primary : entry.parent().primaries()) {
+                deleteProcess.filters().add(new HikariFilter.SequenceMatchFilter(primary.id(), constants().constant(QueryConstant.PRIMARY_SHORTCUT).value(primary), "="));
             }
 
-            for (Object object : collectionEntry.readValues(value)) {
+            for (var object : collectionEntry.readValues(value)) {
                 var createProcess = new HikariCreateProcess(object);
-
-                for (var primary : entry.parent().primaries()) {
-                    createProcess.property(primary.id(), property(primary.id()));
-                }
+                createProcess.constants().cloneConstants(constants(), QueryConstant.PRIMARY_SHORTCUT);
                 createProcess.run(collectionEntry, reference);
             }
             deleteProcess.run(collectionEntry, reference);
@@ -52,9 +50,7 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
 
             if (child instanceof RepositoryExternalEntry externalEntry) {
                 var subprocess = new HikariUpdateProcess(value);
-                for (var primary : entry.primaries()) {
-                    subprocess.property(primary.id(), Reflections.on(primary.constants().constant(RepositoryConstant.PARAM_FIELD)).value(this.value));
-                }
+                subprocess.constants().put(QueryConstant.PRIMARY_SHORTCUT, QueryConstant.PrimaryShortCut.append(entry.primaries(), this.value));
                 subprocess.run(externalEntry, reference);
                 continue;
             }

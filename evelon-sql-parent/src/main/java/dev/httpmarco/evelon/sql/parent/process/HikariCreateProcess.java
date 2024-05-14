@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.process.kind.UpdateProcess;
+import dev.httpmarco.evelon.query.QueryConstant;
 import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import dev.httpmarco.osgan.reflections.Reflections;
@@ -38,9 +39,8 @@ public final class HikariCreateProcess extends UpdateProcess<HikariProcessRefere
                         var subprocess = new HikariCreateProcess(object);
 
                         // we put all parent primaries in the next process
-                        for (var primary : entry.primaries()) {
-                            subprocess.property(primary.id(), Reflections.on(primary.constants().constant(RepositoryConstant.PARAM_FIELD)).value(value));
-                        }
+                        subprocess.constants().put(QueryConstant.PRIMARY_SHORTCUT, QueryConstant.PrimaryShortCut.append(entry.primaries(), value));
+
                         // append the sub process
                         subprocess.run(externalEntry, reference);
                     }
@@ -58,7 +58,7 @@ public final class HikariCreateProcess extends UpdateProcess<HikariProcessRefere
 
         if (entry.constants().has(RepositoryConstant.FOREIGN_REFERENCE)) {
             for (var foreignKey : entry.constants().constant(RepositoryConstant.FOREIGN_REFERENCE)) {
-                arguments.add(0, property(foreignKey.id()));
+                arguments.add(0, constants().constant(QueryConstant.PRIMARY_SHORTCUT).value(foreignKey));
                 elements.add(0, foreignKey.id());
             }
         }

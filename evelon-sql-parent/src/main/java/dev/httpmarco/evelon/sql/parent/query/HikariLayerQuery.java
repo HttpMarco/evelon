@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Accessors(fluent = true)
 @AllArgsConstructor
-public class HikariLayerQuery<V> implements QueryMethod<V> {
+public final class HikariLayerQuery<V> implements QueryMethod<V> {
 
     private final Layer<?> layer;
     @Getter

@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class ConstantPool {
 
-    private final Map<Constant<?>, Object> constants = new ConcurrentHashMap<>();
+    public final Map<Constant<?>, Object> constants = new ConcurrentHashMap<>();
 
     public void option(Constant<Void> constant) {
         constants.put(constant, true);
@@ -29,5 +29,9 @@ public final class ConstantPool {
 
     public void cloneConstants(@NotNull ConstantPool pool) {
         this.constants.putAll(pool.constants);
+    }
+
+    public void cloneConstants(@NotNull ConstantPool pool, Constant<?> constant) {
+        this.constants.put(constant, pool.constant(constant));
     }
 }
