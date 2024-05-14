@@ -17,6 +17,7 @@ public final class ComplexCollectionModel {
 
     @PrimaryKey
     private final UUID uuid;
+    private final int age;
     private final List<TestObject1> permissions;
     private final List<TestObject2> groups;
 

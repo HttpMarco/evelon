@@ -1,11 +1,10 @@
 package dev.httpmarco.evelon.demo;
 
 import dev.httpmarco.evelon.Repository;
-import dev.httpmarco.evelon.demo.models.AbstractModel;
-import dev.httpmarco.evelon.demo.models.SimpleCollectionModel;
-import dev.httpmarco.evelon.demo.models.SimpleMapModel;
-import dev.httpmarco.evelon.demo.models.SimpleModel;
+import dev.httpmarco.evelon.demo.models.*;
 import dev.httpmarco.evelon.demo.models.objects.EnumObject;
+import dev.httpmarco.evelon.demo.models.objects.TestObject1;
+import dev.httpmarco.evelon.demo.models.objects.TestObject2;
 import dev.httpmarco.evelon.sql.h2.H2Layer;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -52,6 +51,11 @@ public class EvelonTest {
                                 List.of(true, true)
                         )
                 ),
+                Arguments.of(Repository.build(ComplexCollectionModel.class).withLayer(H2Layer.class).build(),
+                        new ComplexCollectionModel(GENERAL_UUID,
+                                8,
+                                List.of(new TestObject1("test", 8)),
+                                List.of(new TestObject2("test2", 89)))),
                 Arguments.of(Repository.build(SimpleMapModel.class).withLayer(H2Layer.class).build(),
                         new SimpleMapModel(GENERAL_UUID,
                                 87,
