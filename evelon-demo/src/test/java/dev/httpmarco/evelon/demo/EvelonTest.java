@@ -110,7 +110,9 @@ public class EvelonTest {
     @ParameterizedTest
     @MethodSource("repositoryProvider")
     void findFirst(@NotNull Repository<?> repository) {
-        assertNotNull(repository.query().findFirst());
+        var first = repository.query().findFirst();
+        assertNotNull(first);
+        System.out.println(first);
     }
 
     @Order(7)

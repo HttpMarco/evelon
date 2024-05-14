@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.Ordering;
 import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
+import dev.httpmarco.evelon.external.RepositoryMapEntry;
 import dev.httpmarco.evelon.filtering.Filter;
 import dev.httpmarco.evelon.process.kind.QueryProcess;
 import dev.httpmarco.evelon.query.QueryConstant;
@@ -11,10 +12,13 @@ import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.HikariFilterUtil;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import dev.httpmarco.osgan.reflections.Reflections;
+import dev.httpmarco.osgan.utils.data.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public final class HikariFindProcess extends QueryProcess<HikariProcessReference, HikariFilter<Object>> {
 
@@ -62,6 +66,12 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
                     return;
                 }
 
+                if (entry instanceof RepositoryMapEntry mapEntry && !(mapEntry.keyEntry() instanceof RepositoryExternalEntry) && !(mapEntry.valueEntry() instanceof RepositoryExternalEntry)) {
+                    System.err.println(resultSet.getObject(mapEntry.keyEntry().id()));
+                    items.add(new Pair<>(resultSet.getObject(mapEntry.keyEntry().id()), resultSet.getObject(mapEntry.valueEntry().id())));
+                    return;
+                }
+
                 var reflections = Reflections.on(entry.clazz());
 
                 // we must use the value type of collection entry to create the object
@@ -72,7 +82,7 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
                 var object = reflections.allocate();
                 for (var child : entry.children()) {
                     // children need a separate statement
-                    if (child instanceof RepositoryExternalEntry externalEntry) {
+                    if (child instanceof RepositoryExternalEntry) {
                         continue;
                     }
 
@@ -103,7 +113,22 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
                         for (var primary : entry.primaries()) {
                             findProcess.filters().add(new HikariFilter.SequenceMatchFilter(primary.id(), constants().constant(QueryConstant.PRIMARY_SHORTCUT).value(primary), "="));
                         }
-                        Reflections.on(object).modify(child.constants().constant(RepositoryConstant.PARAM_FIELD), findProcess.run(externalEntry, reference));
+
+                        var run = findProcess.run(externalEntry, reference);
+
+                        // we must transfer maps key and value to a specific map
+                        if (externalEntry instanceof RepositoryMapEntry) {
+                            var map = new HashMap<>();
+
+                            //todo fix properties not loaded here
+                            for (var pair : ((List<Pair<?, ?>>) run)) {
+                                map.put(pair.getKey(), pair.getValue());
+                            }
+
+                            Reflections.on(object).modify(child.constants().constant(RepositoryConstant.PARAM_FIELD), map);
+                        } else {
+                            Reflections.on(object).modify(child.constants().constant(RepositoryConstant.PARAM_FIELD), run);
+                        }
                     }
                 }
 
