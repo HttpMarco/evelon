@@ -63,6 +63,9 @@ public class EvelonTest {
                                 "test_user",
                                 Map.of("silence", true, "test", false)
                         )
+                ),
+                Arguments.of(Repository.build(NullModel.class).withLayer(H2Layer.class).build(),
+                        new NullModel("test", 8)
                 )
         );
     }
