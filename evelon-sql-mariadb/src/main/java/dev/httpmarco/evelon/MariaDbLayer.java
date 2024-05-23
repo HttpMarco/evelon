@@ -15,6 +15,7 @@ public final class MariaDbLayer extends HikariParentConnectionLayer<HikariDefaul
 
         detector().overwrite(Type.of("VARCHAR(128)", it -> it.clazz().equals(String.class) && it.constants().has(RepositoryConstant.PRIMARY_KEY)));
 
+        // todo: remove we can set this on #HikariConnection
         detector().overwrite(Type.of("BOOL", it -> {
             if (!(it.clazz().equals(boolean.class) || it.clazz().equals(Boolean.class))) {
                 return false;
