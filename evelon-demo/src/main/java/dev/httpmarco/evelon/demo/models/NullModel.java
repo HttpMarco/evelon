@@ -11,11 +11,11 @@ public final class NullModel {
 
     private final String name;
     private final int age;
-    private final UUID id;
+    private final UUID editId;
 
     public NullModel(String name, int age) {
         this.name = name;
         this.age = age;
-        this.id = null;
+        this.editId = null;
     }
 }
