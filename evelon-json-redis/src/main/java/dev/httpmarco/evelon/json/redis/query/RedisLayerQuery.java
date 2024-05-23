@@ -1,15 +1,25 @@
 package dev.httpmarco.evelon.json.redis.query;
 
 import dev.httpmarco.evelon.Ordering;
+import dev.httpmarco.evelon.json.redis.RedisProcessReference;
+import dev.httpmarco.evelon.json.redis.process.RedisCreateProcess;
+import dev.httpmarco.evelon.layer.Layer;
+import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.query.Query;
 import dev.httpmarco.evelon.query.QueryMethod;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 
+@AllArgsConstructor
 public class RedisLayerQuery<V> implements QueryMethod<V> {
+
+    private final Layer<?> layer;
+    private ProcessRunner<RedisProcessReference> runner;
+
     @Override
     public void create(Query<?> query, V value) {
-
+        runner.apply(layer, query, new RedisCreateProcess());
     }
 
     @Override

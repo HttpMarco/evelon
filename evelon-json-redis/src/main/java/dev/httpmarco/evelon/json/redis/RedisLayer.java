@@ -31,6 +31,6 @@ public final class RedisLayer extends ConnectableLayer<RedisConnection, RedisPro
 
     @Override
     public <T> QueryMethod<T> queryMethod(Repository<?> repository) {
-        return new RedisLayerQuery<>();
+        return new RedisLayerQuery<>(this, runner());
     }
 }
