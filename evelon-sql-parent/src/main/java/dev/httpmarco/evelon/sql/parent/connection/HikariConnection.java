@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -104,14 +105,24 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
         }
     }
 
-    private void transferPreparedStatement(final String query, HikariConnectionFunction<PreparedStatement> function, @NotNull Object[] arguments) {
+    private void transferPreparedStatement(final String query, HikariConnectionFunction<PreparedStatement> function, Object[] arguments) {
         if (dataSource == null) {
+            LOGGER.warn("The datasource of evelon layer is not present! Please check your configuration.");
             return;
         }
         LOGGER.debug("{} Objects: {}", query, Arrays.toString(arguments));
         try (var connection = dataSource.getConnection(); var statement = connection.prepareStatement(query)) {
             for (int i = 0; i < arguments.length; i++) {
-                statement.setString(i + 1, Objects.toString(arguments[i]));
+
+                var parameterIndex = i + 1;
+                var parameter = arguments[i];
+
+                if(parameter == null) {
+                    //todo find the right type here
+                    statement.setNull(parameterIndex, Types.OTHER);
+                } else {
+                    statement.setString(parameterIndex, Objects.toString(parameter));
+                }
             }
             function.apply(statement);
         } catch (SQLException exception) {
