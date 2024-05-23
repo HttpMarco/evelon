@@ -3,6 +3,7 @@ package dev.httpmarco.evelon.sql.parent.process;
 import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
+import dev.httpmarco.evelon.external.RepositoryMapEntry;
 import dev.httpmarco.evelon.filtering.Filter;
 import dev.httpmarco.evelon.process.kind.UpdateProcess;
 import dev.httpmarco.evelon.query.QueryConstant;
@@ -40,6 +41,16 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
                 createProcess.run(collectionEntry, reference);
             }
             deleteProcess.run(collectionEntry, reference);
+            return;
+        }
+
+        if (entry instanceof RepositoryMapEntry mapEntry) {
+            // delete first
+            var deleteProcess = new HikariDeleteProcess();
+
+
+
+
             return;
         }
 
