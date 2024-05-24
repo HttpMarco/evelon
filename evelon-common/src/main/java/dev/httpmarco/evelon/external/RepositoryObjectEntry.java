@@ -4,6 +4,8 @@ import dev.httpmarco.evelon.*;
 import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.Getter;
 
+import java.lang.reflect.Modifier;
+
 @Getter
 public final class RepositoryObjectEntry extends RepositoryExternalEntry {
 
@@ -11,6 +13,12 @@ public final class RepositoryObjectEntry extends RepositoryExternalEntry {
         super(id, clazz, parent);
 
         for (var field : Reflections.on(clazz).allFields()) {
+
+            // evelon does not allow static fields, only object parameters
+            if(Modifier.isStatic(field.getModifiers())) {
+                continue;
+            }
+
             var fieldId = field.getName();
 
             if (field.isAnnotationPresent(Row.class)) {
