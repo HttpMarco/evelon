@@ -26,6 +26,8 @@ public final class QueryConstant<T> extends Constant<T> {
 
     public static final QueryConstant<Ordering> ORDERING_TYPE = constant("ORDERING_TYPE");
 
+    public static final QueryConstant<Void> RANDOMIZE = constant("RANDOMIZE");
+
     public static final QueryConstant<PrimaryShortCut> PRIMARY_SHORTCUT = constant("SHORT_CUT");
 
     @Contract("_ -> new")

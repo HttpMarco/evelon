@@ -29,4 +29,13 @@ public interface FilterHandler<T, R> {
      */
     Filter<T, R> like(String id, String value);
 
+    /**
+     * Creates a filter to include values that match the specified value and ignore upper or lower case.
+     *
+     * @param id    The identifier for the filter.
+     * @param value The value to match.
+     * @return A filter object.
+     */
+    Filter<T, R> matchIgnoreCase(String id, String value);
+
 }

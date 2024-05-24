@@ -66,6 +66,9 @@ public class EvelonTest {
                 ),
                 Arguments.of(Repository.build(NullModel.class).withLayer(H2Layer.class).build(),
                         new NullModel("test", 8)
+                ),
+                Arguments.of(Repository.build(StaticModel.class).withLayer(H2Layer.class).build(),
+                        new StaticModel('a', 8)
                 )
         );
     }

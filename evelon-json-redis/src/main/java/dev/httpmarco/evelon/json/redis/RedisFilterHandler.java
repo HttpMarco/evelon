@@ -19,4 +19,9 @@ public final class RedisFilterHandler implements FilterHandler<Object, Object> {
     public Filter<Object, Object> like(String id, String value) {
         return null;
     }
+
+    @Override
+    public Filter<Object, Object> matchIgnoreCase(String id, String value) {
+        return null;
+    }
 }

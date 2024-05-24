@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 @Accessors(fluent = true)
-public class Query<V> {
+public final class Query<V> {
 
     @Getter
     private final Repository<V> associatedRepository;
@@ -32,6 +32,11 @@ public class Query<V> {
         return this;
     }
 
+    public Query<V> randomize() {
+        this.constants.option(QueryConstant.RANDOMIZE);
+        return this;
+    }
+
     public Query(Repository<V> repository, @NotNull Set<Layer<?>> usedLayers) {
         this.associatedRepository = repository;
         this.usedLayers = usedLayers.toArray(Layer[]::new);
@@ -44,6 +49,13 @@ public class Query<V> {
     public Query<V> match(String id, Object value) {
         for (var layer : usedLayers) {
             filter(layer.filterHandler().match(id, value), layer);
+        }
+        return this;
+    }
+
+    public Query<V> matchIgnoreCase(String id, String value) {
+        for (var layer : usedLayers) {
+            filter(layer.filterHandler().matchIgnoreCase(id, value), layer);
         }
         return this;
     }
