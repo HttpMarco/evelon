@@ -12,7 +12,7 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 @ToString
-public class SimpleModel {
+public final class SimpleModel {
 
     private char name;
     private int age;
