@@ -24,4 +24,9 @@ public final class HikariFilterHandler implements FilterHandler<String, Object> 
     public @NotNull Filter<String, Object> like(String id, String value) {
         return new HikariFilter.Like(id, value);
     }
+
+    @Override
+    public Filter<String, Object> matchIgnoreCase(String id, String value) {
+        return this.match(id, value);
+    }
 }
