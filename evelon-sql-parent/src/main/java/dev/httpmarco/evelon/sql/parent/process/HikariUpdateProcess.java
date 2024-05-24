@@ -27,7 +27,7 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
         var elements = new ArrayList<String>();
         var arguments = new ArrayList<>();
 
-        if (entry instanceof RepositoryCollectionEntry collectionEntry) {
+        if (entry instanceof RepositoryCollectionEntry || entry instanceof RepositoryMapEntry) {
             // delete
             var deleteProcess = new HikariDeleteProcess();
 
@@ -35,22 +35,12 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
                 deleteProcess.filters().add(new HikariFilter.SequenceMatchFilter(primary.id(), constants().constant(QueryConstant.PRIMARY_SHORTCUT).value(primary), "="));
             }
 
-            for (var object : collectionEntry.readValues(value)) {
+            for (var object : entry.readValues(value)) {
                 var createProcess = new HikariCreateProcess(object);
                 createProcess.constants().cloneConstants(constants(), QueryConstant.PRIMARY_SHORTCUT);
-                createProcess.run(collectionEntry, reference);
+                createProcess.run(entry, reference);
             }
-            deleteProcess.run(collectionEntry, reference);
-            return;
-        }
-
-        if (entry instanceof RepositoryMapEntry mapEntry) {
-            // delete first
-            var deleteProcess = new HikariDeleteProcess();
-
-
-
-
+            deleteProcess.run(entry, reference);
             return;
         }
 
