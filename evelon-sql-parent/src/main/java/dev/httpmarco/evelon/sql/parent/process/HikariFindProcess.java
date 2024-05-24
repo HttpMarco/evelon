@@ -62,6 +62,10 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
             query = query + " OFFSET " + constants().constant(QueryConstant.OFFSET);
         }
 
+        if (constants().has(QueryConstant.RANDOMIZE) && !(constants().has(QueryConstant.LIMIT) && (constants().constant(QueryConstant.LIMIT) <= 1))) {
+            query = query + " ORDER BY RAND();";
+        }
+
         query = query + ";";
 
         reference.append(query, filters().stream().map(Filter::value).toArray(), resultSet -> {

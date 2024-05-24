@@ -1,5 +1,6 @@
 package dev.httpmarco.evelon.demo.models;
 
+import dev.httpmarco.evelon.PrimaryKey;
 import dev.httpmarco.evelon.demo.models.objects.EnumObject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @ToString
 public final class SimpleModel {
 
+    @PrimaryKey
     private char name;
     private int age;
     private long money;

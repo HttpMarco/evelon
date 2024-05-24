@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 @Accessors(fluent = true)
-public class Query<V> {
+public final class Query<V> {
 
     @Getter
     private final Repository<V> associatedRepository;
@@ -29,6 +29,11 @@ public class Query<V> {
 
     public Query<V> offSet(int offset) {
         this.constants.put(QueryConstant.OFFSET, offset);
+        return this;
+    }
+
+    public Query<V> randomize() {
+        this.constants.option(QueryConstant.RANDOMIZE);
         return this;
     }
 
