@@ -19,6 +19,7 @@ hikari = "5.1.0"
 h2 = "2.2.224"
 mariadb = "3.4.0"
 redis = "6.3.2.RELEASE"
+mongodb = "2.4.13"
 
 [libraries]
 # utils
@@ -40,7 +41,7 @@ hikari = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari" }
 h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
 mariadb = { group = "org.mariadb.jdbc", name = "mariadb-java-client", version.ref = "mariadb" }
 redis = { group = "io.lettuce", name = "lettuce-core", version.ref = "redis" }
-
+mongodb = { group = "dev.morphia.morphia", name = "morphia-core", version.ref = "mongodb" }
 
 [plugins]
 nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish" }
