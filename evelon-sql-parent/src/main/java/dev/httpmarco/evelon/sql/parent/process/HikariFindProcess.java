@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.Ordering;
 import dev.httpmarco.evelon.RepositoryConstant;
+import dev.httpmarco.evelon.RepositoryEntry;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.external.RepositoryMapEntry;
@@ -71,14 +72,7 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
         reference.append(query, filters().stream().map(Filter::value).toArray(), resultSet -> {
             try {
                 if (entry instanceof RepositoryCollectionEntry collectionEntry && !(collectionEntry.typeEntry() instanceof RepositoryExternalEntry)) {
-                    var value = resultSet.getObject(collectionEntry.typeEntry().id());
-
-                    // todo fix: duplicated code
-                    if (collectionEntry.typeEntry().constants().has(RepositoryConstant.VALUE_RENDERING)) {
-                        value = collectionEntry.typeEntry().constants().constant(RepositoryConstant.VALUE_RENDERING).apply(value);
-                    }
-
-                    items.add(value);
+                    items.add(renderSingleValue(collectionEntry.typeEntry(), resultSet.getObject(collectionEntry.typeEntry().id())));
                     return;
                 }
 
@@ -107,9 +101,7 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
                         value = ((String) value).charAt(0);
                     }
 
-                    if (child.constants().has(RepositoryConstant.VALUE_RENDERING)) {
-                        value = child.constants().constant(RepositoryConstant.VALUE_RENDERING).apply(value);
-                    }
+                    value = this.renderSingleValue(child, value);
 
                     if (child.constants().has(RepositoryConstant.PRIMARY_KEY)) {
                         constants().constantOrCreate(QueryConstant.PRIMARY_SHORTCUT, new QueryConstant.PrimaryShortCut()).add(child, value);
@@ -154,4 +146,12 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
         });
         return items;
     }
+
+    private Object renderSingleValue(@NotNull RepositoryEntry entry, Object untouchedValue) {
+        if (entry.constants().has(RepositoryConstant.VALUE_RENDERING)) {
+            return entry.constants().constant(RepositoryConstant.VALUE_RENDERING).apply(untouchedValue);
+        }
+        return untouchedValue;
+    }
+
 }
