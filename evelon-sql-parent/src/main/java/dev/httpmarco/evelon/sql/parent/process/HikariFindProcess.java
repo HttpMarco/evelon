@@ -71,12 +71,18 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
         reference.append(query, filters().stream().map(Filter::value).toArray(), resultSet -> {
             try {
                 if (entry instanceof RepositoryCollectionEntry collectionEntry && !(collectionEntry.typeEntry() instanceof RepositoryExternalEntry)) {
-                    items.add(resultSet.getObject(collectionEntry.typeEntry().id()));
+                    var value = resultSet.getObject(collectionEntry.typeEntry().id());
+
+                    // todo fix: duplicated code
+                    if (collectionEntry.typeEntry().constants().has(RepositoryConstant.VALUE_RENDERING)) {
+                        value = collectionEntry.typeEntry().constants().constant(RepositoryConstant.VALUE_RENDERING).apply(value);
+                    }
+
+                    items.add(value);
                     return;
                 }
 
                 if (entry instanceof RepositoryMapEntry mapEntry && !(mapEntry.keyEntry() instanceof RepositoryExternalEntry) && !(mapEntry.valueEntry() instanceof RepositoryExternalEntry)) {
-                    System.err.println(resultSet.getObject(mapEntry.keyEntry().id()));
                     items.add(new Pair<>(resultSet.getObject(mapEntry.keyEntry().id()), resultSet.getObject(mapEntry.valueEntry().id())));
                     return;
                 }

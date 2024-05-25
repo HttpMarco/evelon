@@ -8,6 +8,7 @@ import dev.httpmarco.evelon.layer.Layer;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -109,7 +110,7 @@ public final class Query<V> {
     }
 
     @SuppressWarnings("unchecked")
-    public V findFirst() {
+    public @Nullable V findFirst() {
         limit(1);
         for (var layer : usedLayers) {
             var value = layer.queryMethod(associatedRepository).findFirst(this);

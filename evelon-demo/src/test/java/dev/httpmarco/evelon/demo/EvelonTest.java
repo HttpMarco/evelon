@@ -49,7 +49,7 @@ public class EvelonTest {
                 Arguments.of(Repository.build(SimpleCollectionModel.class).withLayer(H2Layer.class).build(),
                         new SimpleCollectionModel(GENERAL_UUID, 1,
                                 List.of("roadblock.*", "follow"),
-                                List.of(true, true)
+                                List.of(EnumObject.COOKIE, EnumObject.RED)
                         )
                 ),
                 Arguments.of(Repository.build(ComplexCollectionModel.class).withLayer(H2Layer.class).build(),
@@ -123,7 +123,6 @@ public class EvelonTest {
     void findFirst(@NotNull Repository<?> repository) {
         var first = repository.query().findFirst();
         assertNotNull(first);
-        System.out.println(first);
     }
 
     @Order(7)
