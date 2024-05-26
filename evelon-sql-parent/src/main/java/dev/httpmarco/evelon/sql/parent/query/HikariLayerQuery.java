@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
@@ -66,7 +67,7 @@ public final class HikariLayerQuery<V> implements QueryMethod<V> {
     @Override
     @SuppressWarnings("unchecked")
     public long sum(Query<?> query, String id) {
-        return ((AtomicReference<Long>) runner.apply(layer, query, new HikariMathProcess("SUM(" + id + ")"))).get();
+        return ((AtomicReference<BigDecimal>) runner.apply(layer, query, new HikariMathProcess("SUM(" + id + ")"))).get().toBigInteger().longValue();
     }
 
     @Override
