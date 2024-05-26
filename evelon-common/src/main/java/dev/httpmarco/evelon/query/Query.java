@@ -114,6 +114,23 @@ public final class Query<V> {
         return false;
     }
 
+    public @Nullable V findMinimum(String id) {
+        return findWithBounce(id, Ordering.ASCENDING);
+    }
+
+    public @Nullable V findMaximum(String id) {
+        return findWithBounce(id, Ordering.DESCENDING);
+    }
+
+    private @Nullable V findWithBounce(String id, Ordering ordering) {
+        this.limit(1);
+        var list = this.order(id, ordering);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
+
     @SuppressWarnings("unchecked")
     public @Nullable V findFirst() {
         limit(1);
