@@ -51,8 +51,6 @@ ConnectionAuthenticationPath.set("home/my-credentials");
 ```
 
 ### Todo query methods
-- [ ] `min` - Find the minimum value of the given field.
-- [ ] `max` - Find the maximum value of the given field.
 - [ ] `createIfNotExists` - Create an entity if it does not exist.
 - [ ] `upsert` - Create an entity if it does not exist, otherwise update it.
 
