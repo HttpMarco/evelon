@@ -1,6 +1,5 @@
 package dev.httpmarco.evelon.external;
 
-import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryEntry;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.osgan.reflections.Reflections;
@@ -24,10 +23,7 @@ public final class RepositoryMapEntry extends RepositoryExternalEntry {
     public RepositoryMapEntry(String id, @NotNull Field field, RepositoryExternalEntry parent) {
         super(id, field.getType(), parent);
 
-
         this.keyEntry = new RepositoryEntry(field.getName() + "_key", Reflections.on(field).generic(0), this);
-        this.keyEntry.constants().option(RepositoryConstant.PRIMARY_KEY);
-
         this.valueEntry = new RepositoryEntry(field.getName() + "_value", Reflections.on(field).generic(1), this);
     }
 
