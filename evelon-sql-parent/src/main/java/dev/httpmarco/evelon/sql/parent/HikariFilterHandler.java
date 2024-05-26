@@ -29,4 +29,19 @@ public final class HikariFilterHandler implements FilterHandler<String, Object> 
     public Filter<String, Object> matchIgnoreCase(String id, String value) {
         return this.match(id, value);
     }
+
+    @Override
+    public Filter<String, Object> between(String id, Number min, Number max) {
+        return null;
+    }
+
+    @Override
+    public Filter<String, Object> min(String id, Number min) {
+        return new HikariFilter.SequenceMatchFilter(id, min, ">=");
+    }
+
+    @Override
+    public Filter<String, Object> max(String id, Number max) {
+        return new HikariFilter.SequenceMatchFilter(id, max, "<=");
+    }
 }

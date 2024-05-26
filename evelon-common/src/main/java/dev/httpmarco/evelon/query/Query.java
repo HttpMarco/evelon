@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.Ordering;
 import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.constant.ConstantPool;
 import dev.httpmarco.evelon.filtering.Filter;
+import dev.httpmarco.evelon.filtering.FilterHandler;
 import dev.httpmarco.evelon.layer.Layer;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -11,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Function;
 
 @Accessors(fluent = true)
 public final class Query<V> {
@@ -48,39 +50,42 @@ public final class Query<V> {
     }
 
     public Query<V> match(String id, Object value) {
-        for (var layer : usedLayers) {
-            filter(layer.filterHandler().match(id, value), layer);
-        }
+        appendFilters(it -> it.match(id, value));
         return this;
     }
 
     public Query<V> matchIgnoreCase(String id, String value) {
-        for (var layer : usedLayers) {
-            filter(layer.filterHandler().matchIgnoreCase(id, value), layer);
-        }
+        appendFilters(it -> it.matchIgnoreCase(id, value));
         return this;
     }
 
     public Query<V> like(String id, String value) {
-        for (var layer : usedLayers) {
-            filter(layer.filterHandler().like(id, value), layer);
-        }
+        appendFilters(it -> it.like(id, value));
         return this;
     }
 
     public Query<V> noneMatch(String id, Object value) {
-        for (var layer : usedLayers) {
-            filter(layer.filterHandler().noneMatch(id, value), layer);
-        }
+        appendFilters(it -> it.noneMatch(id, value));
         return this;
     }
 
-    private void filter(Filter<?, ?> filter, Layer<?> layer) {
-        var list = filters.get(layer);
-        list.add(filter);
-        this.filters.put(layer, list);
+    public Query<V> max(String id, Number value) {
+        appendFilters(it -> it.max(id, value));
+        return this;
     }
 
+    public Query<V> min(String id, Number value) {
+        appendFilters(it -> it.min(id, value));
+        return this;
+    }
+
+    private void appendFilters(Function<FilterHandler<?, ?>, Filter<?, ?>> filterFunction) {
+        for (var layer : usedLayers) {
+            var list = filters.get(layer);
+            list.add(filterFunction.apply(layer.filterHandler()));
+            this.filters.put(layer, list);
+        }
+    }
 
     public void create(V value) {
         for (var layer : this.usedLayers) {

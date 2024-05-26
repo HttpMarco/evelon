@@ -38,4 +38,10 @@ public interface FilterHandler<T, R> {
      */
     Filter<T, R> matchIgnoreCase(String id, String value);
 
+    Filter<T, R> between(String id, Number min, Number max);
+
+    Filter<T, R> min(String id, Number min);
+
+    Filter<T, R> max(String id, Number max);
+
 }
