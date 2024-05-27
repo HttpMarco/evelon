@@ -45,7 +45,9 @@ public final class ConnectionAuthenticationService {
                 return;
             }
 
-            connectableLayer.connection().connect(CREDENTIALS_GSON.fromJson(credentials, authentication.getClass()));
+            if(!connectableLayer.connection().isConnected()) {
+                connectableLayer.connection().connect(CREDENTIALS_GSON.fromJson(credentials, authentication.getClass()));
+            }
             return;
         }
         elements.add(CREDENTIALS_GSON.toJsonTree(authentication));
