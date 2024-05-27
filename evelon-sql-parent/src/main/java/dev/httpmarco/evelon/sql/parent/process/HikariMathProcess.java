@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @AllArgsConstructor
 public final class HikariMathProcess extends QueryProcess<HikariProcessReference, HikariFilter<Object>> {
 
-    private static final String MATH_QUERY = "SELECT %s AS data FROM %s;";
+    private static final String MATH_QUERY = "SELECT %s AS data FROM %s";
     private String type;
 
     @Override
