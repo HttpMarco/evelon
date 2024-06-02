@@ -27,6 +27,14 @@ repositories {
     maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 ```
+
+```xml
+<repository>
+    <id>maven-central-snapshot</id>
+    <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+</repository>
+```
+
 Current module types: `common`, `h2`, `mariadb`
 ```groovy
 compile "dev.httpmarco.evelon:evelon-MODULE:VERSION"
