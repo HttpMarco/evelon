@@ -67,12 +67,13 @@ public final class HikariLayerQuery<V> implements QueryMethod<V> {
     @Override
     @SuppressWarnings("unchecked")
     public long sum(Query<?> query, String id) {
-        return ((AtomicReference<Long>) runner.apply(layer, query, new HikariMathProcess<>("SUM(" + id + ")", 0L))).get();
+        return ((AtomicReference<BigDecimal>) runner.apply(layer, query, new HikariMathProcess<>("SUM(" + id + ")", BigDecimal.ZERO))).get().longValue();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public double average(Query<?> query, String id) {
+        //TODO has to be tested: maybe also use BigDecimal or BigDouble -> see sum()
         return ((AtomicReference<Double>) runner.apply(layer, query, new HikariMathProcess<>("AVG(" + id + ")", 0D))).get();
     }
 
