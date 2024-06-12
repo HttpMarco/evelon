@@ -19,7 +19,7 @@ hikari = "5.1.0"
 h2 = "2.2.224"
 mariadb = "3.4.0"
 redis = "6.3.2.RELEASE"
-mongodb = "2.4.13"
+mongodb = "2.4.14"
 
 [libraries]
 # utils
