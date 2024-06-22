@@ -69,6 +69,12 @@ public class EvelonTest {
                 ),
                 Arguments.of(Repository.build(StaticModel.class).withLayer(H2Layer.class).build(),
                         new StaticModel('a', 8)
+                ),
+                Arguments.of(Repository.build(RecordModel.class).withLayer(H2Layer.class).build(),
+                        new RecordModel(GENERAL_UUID, 8, 1)
+                ),
+                Arguments.of(Repository.build(RecordCollectionModel.class).withLayer(H2Layer.class).build(),
+                        new RecordCollectionModel(GENERAL_UUID, 8, List.of(new RecordModel(UUID.randomUUID(), 1, 1)))
                 )
         );
     }
@@ -122,7 +128,9 @@ public class EvelonTest {
     @MethodSource("repositoryProvider")
     void findFirst(@NotNull Repository<?> repository) {
         var first = repository.query().findFirst();
+
         assertNotNull(first);
+        System.out.println(first);
     }
 
     @Order(7)

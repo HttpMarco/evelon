@@ -26,6 +26,7 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
     private static final String SELECT_QUERY = "SELECT %s FROM %s";
 
     @Override
+    @SuppressWarnings("unchecked")
     public @NotNull Object run(@NotNull RepositoryExternalEntry entry, HikariProcessReference reference) {
         var items = new ArrayList<>();
         var searchedItems = new ArrayList<String>();
@@ -109,7 +110,12 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
 
                     // modify the original field with a new value
                     var childFiled = child.constants().has(RepositoryConstant.PARAM_FIELD) ? child.constants().constant(RepositoryConstant.PARAM_FIELD) : Reflections.on(child.clazz()).field(child.id());
-                    Reflections.on(object).modify(childFiled, value);
+
+                    if (child.constants().has(RepositoryConstant.TRANSFORMER)) {
+                        child.constants().constant(RepositoryConstant.TRANSFORMER).manipulateField(value, childFiled, object);
+                    } else {
+                        Reflections.on(object).modify(childFiled, value);
+                    }
                 }
 
 
@@ -153,5 +159,4 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
         }
         return untouchedValue;
     }
-
 }

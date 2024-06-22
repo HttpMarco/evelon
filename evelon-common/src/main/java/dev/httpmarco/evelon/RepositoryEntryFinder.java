@@ -3,6 +3,7 @@ package dev.httpmarco.evelon;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.external.RepositoryMapEntry;
 import dev.httpmarco.evelon.external.RepositoryObjectEntry;
+import dev.httpmarco.evelon.transformers.RecordTransformer;
 import dev.httpmarco.osgan.utils.Utils;
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.Contract;
@@ -33,7 +34,13 @@ public final class RepositoryEntryFinder {
         }
 
         if (!clazz.isSynthetic()) {
-            return new RepositoryObjectEntry(externalId, clazz, parent);
+            var entry = new RepositoryObjectEntry(externalId, clazz, parent);
+
+            if (clazz.isRecord()) {
+                // we must set a reflection transformer for records
+                entry.children().forEach(it -> it.constants().put(RepositoryConstant.TRANSFORMER, RecordTransformer.RECORD_TRANSFORMER));
+            }
+            return entry;
         }
 
         throw new IllegalArgumentException("Unsupported entry type: " + clazz);

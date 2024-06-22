@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon;
 
 import dev.httpmarco.evelon.constant.Constant;
+import dev.httpmarco.evelon.transformers.Transformer;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,6 +21,8 @@ public final class RepositoryConstant<T> extends Constant<T> {
     public static final RepositoryConstant<List<RepositoryEntry>> FOREIGN_REFERENCE = constant("FOREIGN_REFERENCE");
 
     public static final RepositoryConstant<Void> PRIMARY_KEY = constant("PRIMARY_KEY");
+
+    public static final RepositoryConstant<Transformer> TRANSFORMER = constant("TRANSFORMER");
 
     public static final RepositoryConstant<Function<Object, Object>> VALUE_RENDERING = constant("VALUE_RENDERING");
 
