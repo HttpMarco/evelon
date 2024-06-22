@@ -5,7 +5,6 @@ import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public final class RecordTransformer implements Transformer {
 
@@ -32,11 +31,11 @@ public final class RecordTransformer implements Transformer {
     // todo: wierd shit method, but works for the first time.
     public static void setFieldValue(Object instance, Field field, Object value) {
         try {
-            Field theInternalUnsafeField = Unsafe.class.getDeclaredField("theInternalUnsafe");
+            var theInternalUnsafeField = Unsafe.class.getDeclaredField("theInternalUnsafe");
             theInternalUnsafeField.setAccessible(true);
-            Object theInternalUnsafe = theInternalUnsafeField.get(null);
+            var theInternalUnsafe = theInternalUnsafeField.get(null);
 
-            Method offset = Class.forName("jdk.internal.misc.Unsafe").getMethod("objectFieldOffset", Field.class);
+            var offset = Class.forName("jdk.internal.misc.Unsafe").getMethod("objectFieldOffset", Field.class);
             unsafe.putBoolean(offset, 12, true);
 
             unsafe.putObject(instance, (long) offset.invoke(theInternalUnsafe, field), value);
@@ -45,5 +44,4 @@ public final class RecordTransformer implements Transformer {
             e.printStackTrace();
         }
     }
-
 }
