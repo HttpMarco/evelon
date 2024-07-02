@@ -17,7 +17,7 @@ public final class HikariCheckProcess extends QueryProcess<HikariProcessReferenc
     @Override
     public @NotNull Object run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
         var result = new AtomicBoolean();
-        reference.append( HikariFilterUtil.appendFiltering(CHECK_QUERY.formatted(entry.id()), filters()) + " LIMIT 1;", filters().stream().map(Filter::value).toArray(), it -> result.set(true));
+        reference.append(HikariFilterUtil.appendFiltering(CHECK_QUERY.formatted(entry.id()), filters()) + " LIMIT 1;", filterArguments(), it -> result.set(true));
         return result;
     }
 }

@@ -14,6 +14,6 @@ public final class HikariDeleteProcess extends UpdateProcess<HikariProcessRefere
 
     @Override
     public void run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
-        reference.append(HikariFilterUtil.appendFiltering(DELETE_SQL.formatted(entry.id()), filters()) + ";", filters().stream().map(Filter::value).toArray());
+        reference.append(HikariFilterUtil.appendFiltering(DELETE_SQL.formatted(entry.id()), filters()) + ";", filterArguments());
     }
 }

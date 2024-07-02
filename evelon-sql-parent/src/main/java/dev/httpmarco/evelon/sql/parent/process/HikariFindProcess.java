@@ -70,7 +70,7 @@ public final class HikariFindProcess extends QueryProcess<HikariProcessReference
 
         query = query + ";";
 
-        reference.append(query, filters().stream().map(Filter::value).toArray(), resultSet -> {
+        reference.append(query, filterArguments(), resultSet -> {
             try {
                 if (entry instanceof RepositoryCollectionEntry collectionEntry && !(collectionEntry.typeEntry() instanceof RepositoryExternalEntry)) {
                     items.add(renderSingleValue(collectionEntry.typeEntry(), resultSet.getObject(collectionEntry.typeEntry().id())));

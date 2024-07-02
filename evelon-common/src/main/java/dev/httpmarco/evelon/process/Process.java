@@ -18,4 +18,8 @@ public abstract class Process<F extends Filter<?, ?>> {
     public void appendFilters(List<Filter<?, ?>> filters) {
         this.filters.addAll((Collection<? extends F>) filters);
     }
+
+    public Object[] filterArguments() {
+        return filters.stream().map(Filter::value).toArray();
+    }
 }

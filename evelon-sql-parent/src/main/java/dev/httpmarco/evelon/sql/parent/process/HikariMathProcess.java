@@ -22,7 +22,7 @@ public final class HikariMathProcess<T> extends QueryProcess<HikariProcessRefere
     public Object run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
         var data = new AtomicReference<>();
 
-        reference.append(HikariFilterUtil.appendFiltering(MATH_QUERY.formatted(type, entry.id()), filters()) + ";", filters().stream().map(Filter::value).toArray(), resultSet -> {
+        reference.append(HikariFilterUtil.appendFiltering(MATH_QUERY.formatted(type, entry.id()), filters()) + ";", filterArguments(), resultSet -> {
             data.set(resultSet.getObject("data") != null ? resultSet.getObject("data") : defaultValue);
         });
 
