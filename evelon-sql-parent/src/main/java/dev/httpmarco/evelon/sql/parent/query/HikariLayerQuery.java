@@ -100,6 +100,6 @@ public final class HikariLayerQuery<V> implements QueryMethod<V> {
 
     @Override
     public long count(Query<?> query) {
-        return ((AtomicLong) runner.apply(layer, query, new HikariCountProcess())).get();
+        return runner.apply(layer, query, new HikariCountProcess());
     }
 }

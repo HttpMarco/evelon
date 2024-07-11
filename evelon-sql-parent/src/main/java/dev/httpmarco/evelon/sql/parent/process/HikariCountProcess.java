@@ -7,16 +7,15 @@ import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.HikariFilterUtil;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.concurrent.atomic.AtomicLong;
 
-public final class HikariCountProcess extends QueryProcess<Object, HikariProcessReference, HikariFilter<Object>> {
+public final class HikariCountProcess extends QueryProcess<Long, HikariProcessReference, HikariFilter<Object>> {
 
     private static final String COUNT_QUERY = "SELECT COUNT(*) AS ELEMENTS FROM %s";
 
     @Override
-    public @NotNull AtomicLong run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
-        AtomicLong count = new AtomicLong(-1);
-        reference.append(HikariFilterUtil.appendFiltering(COUNT_QUERY.formatted(entry.id()), filters()) + ";", filterArguments(), it -> count.set(it.getLong("ELEMENTS")));
-        return count;
+    public @NotNull Long run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
+        return reference.directly(HikariFilterUtil.appendFiltering(COUNT_QUERY.formatted(entry.id()), filters()) + ";", filterArguments(), it -> it.getLong("ELEMENTS"));
     }
 }
