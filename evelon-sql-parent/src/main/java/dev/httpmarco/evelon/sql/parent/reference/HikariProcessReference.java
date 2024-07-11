@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.sql.parent.reference;
 
 import dev.httpmarco.evelon.process.ProcessReference;
+import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnectionFunction;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -11,9 +12,13 @@ import java.util.*;
 
 @Getter
 @Accessors(fluent = true)
-public final class HikariProcessReference implements ProcessReference<HikariProcessReference> {
+public final class HikariProcessReference extends ProcessReference<HikariConnection> {
 
     private final List<HikariReferenceData<ResultSet>> sqlQueries = new ArrayList<>();
+
+    public HikariProcessReference(HikariConnection connection) {
+        super(connection);
+    }
 
     public HikariProcessReference append(String query, Object[] parameters, HikariConnectionFunction<ResultSet> consumer) {
         this.sqlQueries.add(new HikariReferenceData<>(query, parameters, consumer));
@@ -32,8 +37,4 @@ public final class HikariProcessReference implements ProcessReference<HikariProc
         return this.append(query, new Object[0]);
     }
 
-    @Override
-    public void bind(@NotNull HikariProcessReference reference) {
-        this.sqlQueries.addAll(reference.sqlQueries());
-    }
 }

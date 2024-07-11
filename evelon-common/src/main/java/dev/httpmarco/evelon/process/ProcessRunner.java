@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.process;
 
 import dev.httpmarco.evelon.layer.Layer;
+import dev.httpmarco.evelon.layer.connection.Connection;
 import dev.httpmarco.evelon.process.kind.QueryProcess;
 import dev.httpmarco.evelon.process.kind.UpdateProcess;
 import dev.httpmarco.evelon.query.Query;
@@ -8,7 +9,7 @@ import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 @AllArgsConstructor
-public abstract class ProcessRunner<Q extends ProcessReference<Q>> {
+public abstract class ProcessRunner<Q extends ProcessReference<? extends Connection<?, ?>>> {
 
     public Object apply(Layer<?> layer, @NotNull Query<?> query, @NotNull Process<?> process) {
         var base = generateBase();

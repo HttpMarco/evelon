@@ -1,7 +1,15 @@
 package dev.httpmarco.evelon.process;
 
-public interface ProcessReference<R extends ProcessReference<R>> {
+import dev.httpmarco.evelon.layer.connection.Connection;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 
-    void bind(R reference);
+@Getter
+@Accessors(fluent = true)
+@AllArgsConstructor
+public abstract class ProcessReference<C extends Connection<?, ?>> {
+
+    private C connection;
 
 }

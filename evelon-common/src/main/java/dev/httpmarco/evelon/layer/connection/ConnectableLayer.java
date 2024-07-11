@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Accessors(fluent = true)
-public abstract class ConnectableLayer<C extends Connection<?, ?>, P extends ProcessReference<P>> extends PreppedLayer<P> {
+public abstract class ConnectableLayer<C extends Connection<?, ?>, P extends ProcessReference<? extends Connection<?, ?>>> extends PreppedLayer<P> {
 
     private final ConnectionAuthentication templateAuthentication;
 

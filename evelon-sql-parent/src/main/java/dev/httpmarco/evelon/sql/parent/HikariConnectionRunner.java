@@ -20,7 +20,7 @@ public final class HikariConnectionRunner extends ProcessRunner<HikariProcessRef
     @Contract(" -> new")
     @Override
     public @NotNull HikariProcessReference generateBase() {
-        return new HikariProcessReference();
+        return new HikariProcessReference(this.connection);
     }
 
     @Override
