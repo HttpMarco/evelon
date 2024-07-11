@@ -18,4 +18,7 @@ public class RepositoryEntry {
     // the constants of the entry
     private final ConstantPool constants = new ConstantPool();
 
+    public boolean isExternal() {
+        return this instanceof RepositoryExternalEntry;
+    }
 }
