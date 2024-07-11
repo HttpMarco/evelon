@@ -12,11 +12,10 @@ import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Accessors(fluent = true)
@@ -50,10 +49,10 @@ public final class HikariLayerQuery<V> implements QueryMethod<V> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public V findFirst(Query<?> query) {
-        var values = ((List<V>) runner.apply(layer, query, new HikariFindProcess()));
+    public @Nullable V findFirst(Query<?> query) {
+        var values = runner.apply(layer, query, new HikariSearchProcess());
         if (!values.isEmpty()) {
-            return values.get(0);
+            return (V) values.get(0);
         }
         return null;
     }
@@ -61,7 +60,7 @@ public final class HikariLayerQuery<V> implements QueryMethod<V> {
     @Override
     @SuppressWarnings("unchecked")
     public List<V> find(Query<?> query) {
-        return (List<V>) runner.apply(layer, query, new HikariFindProcess());
+        return (List<V>) runner.apply(layer, query, new HikariSearchProcess());
     }
 
     @Override
@@ -92,7 +91,7 @@ public final class HikariLayerQuery<V> implements QueryMethod<V> {
     @Override
     @SuppressWarnings("unchecked")
     public List<V> order(Query<?> query, String id, Ordering ordering) {
-        HikariFindProcess process = new HikariFindProcess();
+        var process = new HikariSearchProcess();
         process.constants().put(QueryConstant.ORDERING, id);
         process.constants().put(QueryConstant.ORDERING_TYPE, ordering);
         return (List<V>) runner.apply(layer, query, process);
