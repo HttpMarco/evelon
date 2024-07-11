@@ -16,10 +16,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.Function;
 
 @RequiredArgsConstructor
 public final class HikariConnection implements Connection<HikariDataSource, HikariProcessReference> {
@@ -87,6 +89,7 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
         StreamHelper.reverse(query.sqlQueries().stream()).forEach(s -> transferPreparedStatement(s.query(), PreparedStatement::execute, s.values()));
     }
 
+    @Deprecated
     public void query(@NotNull HikariProcessReference query) {
         if (!isConnected()) {
             LOGGER.error("Cannot execute query, because the connection is not established!");
@@ -105,6 +108,30 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
         }
     }
 
+    public <R> R query(String query, Object[] arguments, Function<ResultSet, R> builder) {
+        try (var connection = dataSource.getConnection(); var statement = connection.prepareStatement(query)) {
+
+            for (int i = 0; i < arguments.length; i++) {
+
+                var parameterIndex = i + 1;
+                var parameter = arguments[i];
+
+                if (parameter == null) {
+                    //todo find the right type here
+                    statement.setNull(parameterIndex, Types.OTHER);
+                } else {
+                    statement.setString(parameterIndex, Objects.toString(parameter));
+                }
+            }
+
+            return builder.apply(statement.executeQuery());
+        } catch (SQLException exception) {
+            LOGGER.error("{} Objects: {}", query, Arrays.toString(arguments));
+            throw new RuntimeException(exception);
+        }
+    }
+
+    @Deprecated
     private void transferPreparedStatement(final String query, HikariConnectionFunction<PreparedStatement> function, Object[] arguments) {
         if (dataSource == null) {
             LOGGER.warn("The datasource of evelon layer is not present! Please check your configuration.");
@@ -117,7 +144,7 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
                 var parameterIndex = i + 1;
                 var parameter = arguments[i];
 
-                if(parameter == null) {
+                if (parameter == null) {
                     //todo find the right type here
                     statement.setNull(parameterIndex, Types.OTHER);
                 } else {
