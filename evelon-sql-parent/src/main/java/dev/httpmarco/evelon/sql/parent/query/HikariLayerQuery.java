@@ -45,7 +45,7 @@ public final class HikariLayerQuery<V> implements QueryMethod<V> {
 
     @Override
     public boolean exists(Query<?> query) {
-        return (boolean) runner.apply(layer, query, new HikariCheckProcess());
+        return runner.apply(layer, query, new HikariCheckProcess());
     }
 
     @Override

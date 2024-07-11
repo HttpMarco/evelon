@@ -9,14 +9,13 @@ import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-public final class HikariCheckProcess extends QueryProcess<HikariProcessReference, HikariFilter<Object>> {
+public final class HikariCheckProcess extends QueryProcess<Boolean, HikariProcessReference, HikariFilter<Object>> {
 
     private static final String CHECK_QUERY = "SELECT * FROM %s";
 
     @Override
-    public @NotNull Object run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
+    public @NotNull Boolean run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
         return reference.directly(HikariFilterUtil.appendFiltering(CHECK_QUERY.formatted(entry.id()), filters()) + " LIMIT 1;", filterArguments(), it -> {
             try {
                 return it.next();
