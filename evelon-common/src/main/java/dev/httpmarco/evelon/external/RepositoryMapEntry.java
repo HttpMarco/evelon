@@ -2,8 +2,8 @@ package dev.httpmarco.evelon.external;
 
 import dev.httpmarco.evelon.RepositoryEntry;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
-import dev.httpmarco.osgan.reflections.Reflections;
-import dev.httpmarco.osgan.utils.data.Pair;
+import dev.httpmarco.evelon.common.GenericReader;
+import dev.httpmarco.evelon.common.Pair;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Contract;
@@ -23,8 +23,9 @@ public final class RepositoryMapEntry extends RepositoryExternalEntry {
     public RepositoryMapEntry(String id, @NotNull Field field, RepositoryExternalEntry parent) {
         super(id, field.getType(), parent);
 
-        this.keyEntry = new RepositoryEntry(field.getName() + "_key", Reflections.on(field).generic(0), this);
-        this.valueEntry = new RepositoryEntry(field.getName() + "_value", Reflections.on(field).generic(1), this);
+        var genericData = GenericReader.types(field);
+        this.keyEntry = new RepositoryEntry(field.getName() + "_key", genericData[0], this);
+        this.valueEntry = new RepositoryEntry(field.getName() + "_value", genericData[1], this);
     }
 
     @Contract(pure = true)

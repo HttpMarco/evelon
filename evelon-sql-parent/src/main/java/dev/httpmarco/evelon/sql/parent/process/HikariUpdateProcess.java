@@ -2,6 +2,7 @@ package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
+import dev.httpmarco.evelon.common.Reflections;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.external.RepositoryMapEntry;
 import dev.httpmarco.evelon.filtering.Filter;
@@ -10,7 +11,6 @@ import dev.httpmarco.evelon.query.QueryConstant;
 import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.HikariFilterUtil;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
-import dev.httpmarco.osgan.reflections.Reflections;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,7 +46,7 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
 
 
         for (var child : entry.children()) {
-            var value = Reflections.on(child.constants().constant(RepositoryConstant.PARAM_FIELD)).value(this.value);
+            var value = Reflections.value(child.constants().constant(RepositoryConstant.PARAM_FIELD), this.value);
 
             if (child instanceof RepositoryExternalEntry externalEntry) {
                 var subprocess = new HikariUpdateProcess(value);

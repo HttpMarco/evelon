@@ -2,13 +2,13 @@ package dev.httpmarco.evelon.sql.parent.connection;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import dev.httpmarco.evelon.common.Streams;
 import dev.httpmarco.evelon.layer.connection.Connection;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
 import dev.httpmarco.evelon.sql.parent.HikariDefaultAuthentication;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriver;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriverLoader;
-import dev.httpmarco.osgan.utils.stream.StreamHelper;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -84,15 +84,16 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
 
     @Override
     public void update(@NotNull HikariProcessReference query) {
-        StreamHelper.reverse(query.sqlQueries().stream()).forEach(s -> transferPreparedStatement(s.query(), PreparedStatement::execute, s.values()));
+        Streams.reverse(query.sqlQueries().stream()).forEach(s -> transferPreparedStatement(s.query(), PreparedStatement::execute, s.values()));
     }
 
+    @Deprecated
     public void query(@NotNull HikariProcessReference query) {
         if (!isConnected()) {
             LOGGER.error("Cannot execute query, because the connection is not established!");
             return;
         }
-        StreamHelper.reverse(query.sqlQueries().stream()).forEach(s -> transferPreparedStatement(s.query(), it -> {
+        Streams.reverse(query.sqlQueries().stream()).forEach(s -> transferPreparedStatement(s.query(), it -> {
             var resultSet = it.executeQuery();
             while (resultSet.next()) {
                 s.consumer().apply(resultSet);
@@ -105,6 +106,30 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
         }
     }
 
+    public <R> R query(String query, Object[] arguments, HikariStatementBuilder<R> builder) {
+        try (var connection = dataSource.getConnection(); var statement = connection.prepareStatement(query)) {
+            for (int i = 0; i < arguments.length; i++) {
+
+                var parameterIndex = i + 1;
+                var parameter = arguments[i];
+
+                if (parameter == null) {
+                    //todo find the right type here
+                    statement.setNull(parameterIndex, Types.OTHER);
+                } else {
+                    statement.setString(parameterIndex, Objects.toString(parameter));
+                }
+            }
+
+            var result = builder.apply(statement.executeQuery());
+            return result;
+        } catch (SQLException exception) {
+            LOGGER.error("{} Objects: {}", query, Arrays.toString(arguments));
+            throw new RuntimeException(exception);
+        }
+    }
+
+    @Deprecated
     private void transferPreparedStatement(final String query, HikariConnectionFunction<PreparedStatement> function, Object[] arguments) {
         if (dataSource == null) {
             LOGGER.warn("The datasource of evelon layer is not present! Please check your configuration.");
@@ -117,7 +142,7 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
                 var parameterIndex = i + 1;
                 var parameter = arguments[i];
 
-                if(parameter == null) {
+                if (parameter == null) {
                     //todo find the right type here
                     statement.setNull(parameterIndex, Types.OTHER);
                 } else {

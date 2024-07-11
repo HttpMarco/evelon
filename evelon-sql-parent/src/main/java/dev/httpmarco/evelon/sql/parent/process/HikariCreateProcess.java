@@ -2,14 +2,14 @@ package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
+import dev.httpmarco.evelon.common.Pair;
+import dev.httpmarco.evelon.common.Reflections;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.external.RepositoryMapEntry;
 import dev.httpmarco.evelon.process.kind.UpdateProcess;
 import dev.httpmarco.evelon.query.QueryConstant;
 import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
-import dev.httpmarco.osgan.reflections.Reflections;
-import dev.httpmarco.osgan.utils.data.Pair;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
@@ -39,11 +39,11 @@ public final class HikariCreateProcess extends UpdateProcess<HikariProcessRefere
             elements.add(mapEntry.valueEntry().id());
 
             var data = (Pair<?, ?>) value;
-            arguments.add(data.getKey());
-            arguments.add(data.getValue());
+            arguments.add(data.first());
+            arguments.add(data.second());
         } else {
             for (var child : entry.children()) {
-                var childValue = Reflections.on(child.constants().constant(RepositoryConstant.PARAM_FIELD)).value(value);
+                var childValue = Reflections.value(child.constants().constant(RepositoryConstant.PARAM_FIELD), value);
                 if (child instanceof RepositoryExternalEntry externalEntry) {
                     for (var object : externalEntry.readValues(childValue)) {
                         var subprocess = new HikariCreateProcess(object);

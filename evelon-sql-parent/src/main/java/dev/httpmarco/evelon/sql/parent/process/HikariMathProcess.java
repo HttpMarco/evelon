@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.atomic.AtomicReference;
 
 @AllArgsConstructor
-public final class HikariMathProcess<T> extends QueryProcess<HikariProcessReference, HikariFilter<Object>> {
+public final class HikariMathProcess<T> extends QueryProcess<Object, HikariProcessReference, HikariFilter<Object>> {
 
     private static final String MATH_QUERY = "SELECT %s AS data FROM %s";
     private String type;
