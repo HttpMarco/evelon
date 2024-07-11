@@ -15,6 +15,6 @@ public final class H2ProtocolDriver implements ProtocolDriverLoader<H2Connection
 
     @Override
     public @NotNull String jdbcUrl(@NotNull H2ConnectionAuthentication credentials) {
-        return "jdbc:h2:" + Path.of(credentials.path()).toAbsolutePath() + ";AUTO_SERVER=TRUE";
+        return "jdbc:h2:" + Path.of(credentials.path()).toAbsolutePath() + ";AUTO_SERVER=TRUE;AUTO_RECONNECT=TRUE";
     }
 }
