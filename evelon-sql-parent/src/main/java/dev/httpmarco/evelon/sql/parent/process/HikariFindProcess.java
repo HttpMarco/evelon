@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Deprecated
 public final class HikariFindProcess extends QueryProcess<Object, HikariProcessReference, HikariFilter<Object>> {
 
     private static final String SELECT_QUERY = "SELECT %s FROM %s";
