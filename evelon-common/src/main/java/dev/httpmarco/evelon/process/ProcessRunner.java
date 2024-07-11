@@ -11,25 +11,26 @@ import org.jetbrains.annotations.NotNull;
 @AllArgsConstructor
 public abstract class ProcessRunner<Q extends ProcessReference<? extends Connection<?, ?>>> {
 
-    public Object apply(Layer<?> layer, @NotNull Query<?> query, @NotNull Process<?> process) {
+    public void apply(Layer<?> layer, @NotNull Query<?> query, @NotNull UpdateProcess<?, ?> process) {
         var base = generateBase();
-        var repository = query.associatedRepository();
+        this.prepareConstants(process, query, layer);
+        process.runMapping(query.associatedRepository().entry(), base);
+        this.update(base);
+    }
 
+    public <T> T apply(Layer<?> layer, @NotNull Query<?> query, @NotNull QueryProcess<T, ?, ?> process) {
+        var base = generateBase();
+        this.prepareConstants(process, query, layer);
+        var object = process.runMapping(query.associatedRepository().entry(), base);
+        this.query(base);
+        return object;
+    }
+
+    private void prepareConstants(@NotNull Process<?> process, @NotNull Query<?> query, Layer<?> layer) {
         process.constants().cloneConstants(query.constants());
         if (query.filters().get(layer) != null) {
             process.appendFilters(query.filters().get(layer));
         }
-
-        if (process instanceof UpdateProcess<?, ?> updateProcess) {
-            updateProcess.runMapping(repository.entry(), base);
-            this.update(base);
-            return null;
-        } else if (process instanceof QueryProcess<?, ?> queryProcess) {
-            var object = queryProcess.runMapping(repository.entry(), base);
-            this.query(base);
-            return object;
-        }
-        throw new UnsupportedOperationException("Unsupported process type: " + process.getClass().getSimpleName());
     }
 
     public abstract Q generateBase();
