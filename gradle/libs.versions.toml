@@ -2,7 +2,6 @@
 # utils
 lombok = "1.18.34"
 annotations = "24.1.0"
-osgan = "1.2.9-SNAPSHOT"
 
 # publishing
 nexus-publish = "2.0.0"
@@ -18,16 +17,11 @@ slf4j = "2.0.13"
 hikari = "5.1.0"
 h2 = "2.2.224"
 mariadb = "3.4.0"
-redis = "6.3.2.RELEASE"
-mongodb = "2.4.14"
 
 [libraries]
 # utils
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
 annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
-osgan-utils = { group = "dev.httpmarco", name = "osgan-utils", version.ref = "osgan" }
-osgan-reflections = { group = "dev.httpmarco", name = "osgan-reflections", version.ref = "osgan" }
-osgan-files = { group = "dev.httpmarco", name = "osgan-files", version.ref = "osgan" }
 
 # configuration
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
@@ -40,12 +34,9 @@ log4j = { group = "org.apache.logging.log4j", name = "log4j-slf4j2-impl", versio
 hikari = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari" }
 h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
 mariadb = { group = "org.mariadb.jdbc", name = "mariadb-java-client", version.ref = "mariadb" }
-redis = { group = "io.lettuce", name = "lettuce-core", version.ref = "redis" }
-mongodb = { group = "dev.morphia.morphia", name = "morphia-core", version.ref = "mongodb" }
 
 [plugins]
 nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish" }
 
 [bundles]
-osgan = ["osgan-utils", "osgan-reflections", "osgan-files"]
 utils = ["lombok", "annotations", "slf4j", "log4j"]
