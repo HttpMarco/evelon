@@ -110,7 +110,6 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
 
     public <R> R query(String query, Object[] arguments, HikariStatementBuilder<R> builder) {
         try (var connection = dataSource.getConnection(); var statement = connection.prepareStatement(query)) {
-
             for (int i = 0; i < arguments.length; i++) {
 
                 var parameterIndex = i + 1;
@@ -124,7 +123,8 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
                 }
             }
 
-            return builder.apply(statement.executeQuery());
+            var result = builder.apply(statement.executeQuery());
+            return result;
         } catch (SQLException exception) {
             LOGGER.error("{} Objects: {}", query, Arrays.toString(arguments));
             throw new RuntimeException(exception);
