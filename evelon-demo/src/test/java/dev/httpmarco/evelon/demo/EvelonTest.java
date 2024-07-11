@@ -75,6 +75,9 @@ public class EvelonTest {
                 ),
                 Arguments.of(Repository.build(RecordCollectionModel.class).withLayer(H2Layer.class).build(),
                         new RecordCollectionModel(GENERAL_UUID, 8, List.of(new RecordModel(UUID.randomUUID(), 1, 1)))
+                ),
+                Arguments.of(Repository.build(MergedModel.class).withLayer(H2Layer.class).build(),
+                        new MergedModel('c', 7, 2L, new TestObject1("test", 8))
                 )
         );
     }
