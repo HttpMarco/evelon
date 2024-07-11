@@ -1,10 +1,9 @@
 package dev.httpmarco.evelon.external;
 
 import dev.httpmarco.evelon.*;
-import dev.httpmarco.osgan.reflections.Reflections;
+import dev.httpmarco.evelon.common.ClassFieldReader;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -15,11 +14,11 @@ public final class RepositoryObjectEntry extends RepositoryExternalEntry {
         super(id, clazz, parent);
 
         if (!clazz.isAnnotationPresent(Entity.class) || !clazz.getDeclaredAnnotation(Entity.class).ignoreSuperClass()) {
-            for (var field : Reflections.on(clazz).allFields()) {
+            for (var field : ClassFieldReader.allFields(clazz)) {
                 applyField(field);
             }
         } else {
-            for (var field : Reflections.on(clazz).fields()) {
+            for (var field : ClassFieldReader.fields(clazz)) {
                 applyField(field);
             }
         }

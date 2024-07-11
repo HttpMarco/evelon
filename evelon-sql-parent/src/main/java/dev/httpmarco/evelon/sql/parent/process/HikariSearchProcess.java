@@ -4,6 +4,9 @@ import dev.httpmarco.evelon.Ordering;
 import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryEntry;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
+import dev.httpmarco.evelon.common.Allocator;
+import dev.httpmarco.evelon.common.Pair;
+import dev.httpmarco.evelon.common.Reflections;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.external.RepositoryMapEntry;
 import dev.httpmarco.evelon.process.kind.QueryProcess;
@@ -11,10 +14,7 @@ import dev.httpmarco.evelon.query.QueryConstant;
 import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.HikariFilterUtil;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
-import dev.httpmarco.osgan.reflections.Reflections;
-import dev.httpmarco.osgan.utils.data.Pair;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,14 +72,14 @@ public final class HikariSearchProcess extends QueryProcess<List<Object>, Hikari
                     return result;
                 }
 
-                var reflections = Reflections.on(entry.clazz());
+                var entryType = entry.clazz();
 
                 // we must use the value type of collection entry to create the object
                 if (entry instanceof RepositoryCollectionEntry collectionEntry) {
-                    reflections = Reflections.on(collectionEntry.typeEntry().clazz());
+                    entryType = collectionEntry.typeEntry().clazz();
                 }
 
-                Object object = reflections.allocate();
+                Object object = Allocator.allocate(entryType);
 
                 // only simple fields, because external needs the primary key value
                 entry.children().stream().filter(it -> !it.isExternal()).forEach(child -> {
@@ -98,12 +98,12 @@ public final class HikariSearchProcess extends QueryProcess<List<Object>, Hikari
                         }
 
                         // modify the original field with a new value
-                        var childFiled = child.constants().has(RepositoryConstant.PARAM_FIELD) ? child.constants().constant(RepositoryConstant.PARAM_FIELD) : Reflections.on(child.clazz()).field(child.id());
+                        var childFiled = child.constants().has(RepositoryConstant.PARAM_FIELD) ? child.constants().constant(RepositoryConstant.PARAM_FIELD) : Reflections.field(child.clazz(), child.id());
 
                         if (child.constants().has(RepositoryConstant.TRANSFORMER)) {
                             child.constants().constant(RepositoryConstant.TRANSFORMER).manipulateField(value, childFiled, object);
                         } else {
-                            Reflections.on(object).modify(childFiled, value);
+                            Reflections.modify(object, childFiled, value);
                         }
                     } catch (Exception exception) {
                         throw new RuntimeException(exception);
@@ -124,12 +124,12 @@ public final class HikariSearchProcess extends QueryProcess<List<Object>, Hikari
                         var map = new HashMap<>();
 
                         //todo fix properties not loaded here -> maybe already work -> testing
-                        searchElements.stream().map(it -> (Pair<?, ?>) it).forEach(pair -> map.put(pair.getKey(), pair.getValue()));
-                        Reflections.on(object).modify(child.constants().constant(RepositoryConstant.PARAM_FIELD), map);
+                        searchElements.stream().map(it -> (Pair<?, ?>) it).forEach(pair -> map.put(pair.first(), pair.second()));
+                        Reflections.modify(object, child.constants().constant(RepositoryConstant.PARAM_FIELD), map);
                     } else if (child instanceof RepositoryCollectionEntry) {
-                        Reflections.on(object).modify(child.constants().constant(RepositoryConstant.PARAM_FIELD), searchElements);
+                        Reflections.modify(object, child.constants().constant(RepositoryConstant.PARAM_FIELD), searchElements);
                     } else {
-                        Reflections.on(object).modify(child.constants().constant(RepositoryConstant.PARAM_FIELD), searchElements.get(0));
+                        Reflections.modify(object, child.constants().constant(RepositoryConstant.PARAM_FIELD), searchElements.get(0));
                     }
                 });
                 result.add(object);

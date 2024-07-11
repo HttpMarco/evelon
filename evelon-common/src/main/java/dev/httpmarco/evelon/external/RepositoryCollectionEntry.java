@@ -3,7 +3,7 @@ package dev.httpmarco.evelon.external;
 import dev.httpmarco.evelon.RepositoryEntry;
 import dev.httpmarco.evelon.RepositoryEntryFinder;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
-import dev.httpmarco.osgan.reflections.Reflections;
+import dev.httpmarco.evelon.common.GenericReader;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +18,7 @@ public final class RepositoryCollectionEntry extends RepositoryExternalEntry {
     private final RepositoryEntry typeEntry;
 
     public RepositoryCollectionEntry(String id, @NotNull Field field, RepositoryExternalEntry parent) {
-        this(id, field, parent, Reflections.on(field).generic(0));
+        this(id, field, parent, GenericReader.type(field, 0));
     }
 
     public RepositoryCollectionEntry(String id, @NotNull Field field, RepositoryExternalEntry parent, Class<?> typeEntryClass) {

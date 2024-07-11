@@ -16,6 +16,11 @@ public final class HikariCountProcess extends QueryProcess<Long, HikariProcessRe
 
     @Override
     public @NotNull Long run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
-        return reference.directly(HikariFilterUtil.appendFiltering(COUNT_QUERY.formatted(entry.id()), filters()) + ";", filterArguments(), it -> it.getLong("ELEMENTS"));
+        return reference.directly(HikariFilterUtil.appendFiltering(COUNT_QUERY.formatted(entry.id()), filters()) + ";", filterArguments(), it -> {
+            if(it.next()) {
+                return it.getLong("ELEMENTS");
+            }
+            return -1L;
+        });
     }
 }

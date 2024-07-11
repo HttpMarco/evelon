@@ -3,6 +3,7 @@ package dev.httpmarco.evelon.external;
 import dev.httpmarco.evelon.RepositoryEntry;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.common.GenericReader;
+import dev.httpmarco.evelon.common.Pair;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Contract;

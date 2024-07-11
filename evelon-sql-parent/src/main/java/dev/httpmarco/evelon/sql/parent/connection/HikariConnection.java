@@ -2,13 +2,13 @@ package dev.httpmarco.evelon.sql.parent.connection;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import dev.httpmarco.evelon.common.Streams;
 import dev.httpmarco.evelon.layer.connection.Connection;
 import dev.httpmarco.evelon.layer.connection.ConnectionAuthentication;
 import dev.httpmarco.evelon.sql.parent.HikariDefaultAuthentication;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriver;
 import dev.httpmarco.evelon.sql.parent.driver.ProtocolDriverLoader;
-import dev.httpmarco.osgan.utils.stream.StreamHelper;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,12 +16,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.function.Function;
 
 @RequiredArgsConstructor
 public final class HikariConnection implements Connection<HikariDataSource, HikariProcessReference> {
@@ -86,7 +84,7 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
 
     @Override
     public void update(@NotNull HikariProcessReference query) {
-        StreamHelper.reverse(query.sqlQueries().stream()).forEach(s -> transferPreparedStatement(s.query(), PreparedStatement::execute, s.values()));
+        Streams.reverse(query.sqlQueries().stream()).forEach(s -> transferPreparedStatement(s.query(), PreparedStatement::execute, s.values()));
     }
 
     @Deprecated
@@ -95,7 +93,7 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
             LOGGER.error("Cannot execute query, because the connection is not established!");
             return;
         }
-        StreamHelper.reverse(query.sqlQueries().stream()).forEach(s -> transferPreparedStatement(s.query(), it -> {
+        Streams.reverse(query.sqlQueries().stream()).forEach(s -> transferPreparedStatement(s.query(), it -> {
             var resultSet = it.executeQuery();
             while (resultSet.next()) {
                 s.consumer().apply(resultSet);

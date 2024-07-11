@@ -1,10 +1,10 @@
 package dev.httpmarco.evelon;
 
+import dev.httpmarco.evelon.common.JavaUtils;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
 import dev.httpmarco.evelon.external.RepositoryMapEntry;
 import dev.httpmarco.evelon.external.RepositoryObjectEntry;
 import dev.httpmarco.evelon.transformers.RecordTransformer;
-import dev.httpmarco.osgan.utils.Utils;
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +21,7 @@ public final class RepositoryEntryFinder {
     public static @NotNull RepositoryEntry find(Class<?> clazz, Field field, String id, RepositoryExternalEntry parent) {
         var externalId = parent != null ? parent.id() + "_" + id : id;
 
-        if (Utils.JAVA_ELEMENTS.contains(clazz) || clazz.isEnum() || clazz.isPrimitive() || clazz.equals(UUID.class)) {
+        if (JavaUtils.JAVA_ELEMENTS.contains(clazz) || clazz.isEnum() || clazz.isPrimitive() || clazz.equals(UUID.class)) {
             return new RepositoryEntry(id, clazz, parent);
         }
 

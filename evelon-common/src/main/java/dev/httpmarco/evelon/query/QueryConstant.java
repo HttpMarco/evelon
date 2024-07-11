@@ -3,8 +3,8 @@ package dev.httpmarco.evelon.query;
 import dev.httpmarco.evelon.Ordering;
 import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryEntry;
+import dev.httpmarco.evelon.common.Reflections;
 import dev.httpmarco.evelon.constant.Constant;
-import dev.httpmarco.osgan.reflections.Reflections;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -43,7 +43,7 @@ public final class QueryConstant<T> extends Constant<T> {
             var shortCut = new PrimaryShortCut();
 
             for (var primary : primaries) {
-                var primaryValue = Reflections.on(primary.constants().constant(RepositoryConstant.PARAM_FIELD)).value(parent);
+                var primaryValue = Reflections.value(primary.constants().constant(RepositoryConstant.PARAM_FIELD), parent);
                 shortCut.primaries.put(primary.id(), primaryValue);
             }
             return shortCut;
