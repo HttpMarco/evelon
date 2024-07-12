@@ -126,7 +126,11 @@ public class EvelonTest {
     @ParameterizedTest
     @MethodSource("repositoryProvider")
     void find(@NotNull Repository<?> repository) {
-        assertSame(1, repository.query().find().size());
+        var objects = repository.query().find();
+        for (var object : objects) {
+            System.out.println(object);
+        }
+        assertSame(1, objects.size());
     }
 
     @Order(6)
@@ -135,8 +139,8 @@ public class EvelonTest {
     void findFirst(@NotNull Repository<?> repository) {
         var first = repository.query().findFirst();
 
-        assertNotNull(first);
         System.out.println(first);
+        assertNotNull(first);
     }
 
     @Order(7)

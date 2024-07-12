@@ -2,6 +2,9 @@ package dev.httpmarco.evelon.query;
 
 import dev.httpmarco.evelon.Ordering;
 import dev.httpmarco.evelon.Repository;
+import dev.httpmarco.evelon.RepositoryConstant;
+import dev.httpmarco.evelon.RepositoryEntry;
+import dev.httpmarco.evelon.common.Reflections;
 import dev.httpmarco.evelon.constant.ConstantPool;
 import dev.httpmarco.evelon.filtering.Filter;
 import dev.httpmarco.evelon.filtering.FilterHandler;
@@ -94,6 +97,12 @@ public final class Query<V> {
     }
 
     public void update(V value) {
+        for (var primary : associatedRepository.entry().primaries()) {
+            if (primary.constants().has(RepositoryConstant.PARAM_FIELD)) {
+                appendFilters(it -> it.match(primary.id(), Reflections.value(primary.constants().constant(RepositoryConstant.PARAM_FIELD), value)));
+            }
+        }
+
         for (var layer : this.usedLayers) {
             layer.queryMethod(associatedRepository).update(this, value);
         }
