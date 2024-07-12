@@ -64,12 +64,12 @@ public final class HikariSearchProcess extends QueryProcess<List<Object>, Hikari
             while (data.next()) {
                 if (entry instanceof RepositoryCollectionEntry collectionEntry && !(collectionEntry.typeEntry() instanceof RepositoryExternalEntry)) {
                     result.add(renderSingleValue(collectionEntry.typeEntry(), data.getObject(collectionEntry.typeEntry().id())));
-                    return result;
+                    continue;
                 }
 
                 if (entry instanceof RepositoryMapEntry mapEntry && !(mapEntry.keyEntry() instanceof RepositoryExternalEntry) && !(mapEntry.valueEntry() instanceof RepositoryExternalEntry)) {
                     result.add(new Pair<>(data.getObject(mapEntry.keyEntry().id()), data.getObject(mapEntry.valueEntry().id())));
-                    return result;
+                    continue;
                 }
 
                 var entryType = entry.clazz();

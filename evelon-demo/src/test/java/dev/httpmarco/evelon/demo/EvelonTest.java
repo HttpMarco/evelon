@@ -138,7 +138,6 @@ public class EvelonTest {
     @MethodSource("repositoryProvider")
     void findFirst(@NotNull Repository<?> repository) {
         var first = repository.query().findFirst();
-
         System.out.println(first);
         assertNotNull(first);
     }
