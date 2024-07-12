@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.demo.models;
+package dev.httpmarco.evelon.demo.models.collection;
 
 import dev.httpmarco.evelon.PrimaryKey;
 import dev.httpmarco.evelon.demo.models.objects.EnumObject;

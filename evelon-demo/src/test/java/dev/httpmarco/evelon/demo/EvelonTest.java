@@ -2,6 +2,10 @@ package dev.httpmarco.evelon.demo;
 
 import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.demo.models.*;
+import dev.httpmarco.evelon.demo.models.collection.CollectionComplexModel;
+import dev.httpmarco.evelon.demo.models.collection.CollectionRecordModel;
+import dev.httpmarco.evelon.demo.models.collection.CollectionSimpleModel;
+import dev.httpmarco.evelon.demo.models.maps.MapSimpleModel;
 import dev.httpmarco.evelon.demo.models.objects.EnumObject;
 import dev.httpmarco.evelon.demo.models.objects.TestObject1;
 import dev.httpmarco.evelon.demo.models.objects.TestObject2;
@@ -72,8 +76,8 @@ public class EvelonTest {
                 Arguments.of(Repository.build(RecordModel.class).withLayer(H2Layer.class).build(),
                         new RecordModel(GENERAL_UUID, 8, 1)
                 ),
-                Arguments.of(Repository.build(RecordCollectionModel.class).withLayer(H2Layer.class).build(),
-                        new RecordCollectionModel(GENERAL_UUID, 8, List.of(new RecordModel(UUID.randomUUID(), 1, 1)))
+                Arguments.of(Repository.build(CollectionRecordModel.class).withLayer(H2Layer.class).build(),
+                        new CollectionRecordModel(GENERAL_UUID, 8, List.of(new RecordModel(UUID.randomUUID(), 1, 1)))
                 ),
                 Arguments.of(Repository.build(MergedModel.class).withLayer(H2Layer.class).build(),
                         new MergedModel('c', 7, 2L, new TestObject1("test", 8))

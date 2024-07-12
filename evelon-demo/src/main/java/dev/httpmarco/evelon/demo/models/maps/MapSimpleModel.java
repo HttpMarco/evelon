@@ -1,4 +1,4 @@
-package dev.httpmarco.evelon.demo.models;
+package dev.httpmarco.evelon.demo.models.maps;
 
 import dev.httpmarco.evelon.PrimaryKey;
 import lombok.AllArgsConstructor;
