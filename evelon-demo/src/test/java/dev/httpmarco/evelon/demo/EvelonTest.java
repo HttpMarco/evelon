@@ -5,7 +5,6 @@ import dev.httpmarco.evelon.demo.models.*;
 import dev.httpmarco.evelon.demo.models.objects.EnumObject;
 import dev.httpmarco.evelon.demo.models.objects.TestObject1;
 import dev.httpmarco.evelon.demo.models.objects.TestObject2;
-import dev.httpmarco.evelon.layer.connection.ConnectionAuthenticationPath;
 import dev.httpmarco.evelon.sql.h2.H2Layer;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -46,19 +45,19 @@ public class EvelonTest {
                         new AbstractModel("test", 1, UUID.randomUUID())
                 ),
                 // simple collection test with String parameter
-                Arguments.of(Repository.build(SimpleCollectionModel.class).withLayer(H2Layer.class).build(),
-                        new SimpleCollectionModel(GENERAL_UUID, 1,
+                Arguments.of(Repository.build(CollectionSimpleModel.class).withLayer(H2Layer.class).build(),
+                        new CollectionSimpleModel(GENERAL_UUID, 1,
                                 List.of("roadblock.*", "follow"),
                                 List.of(EnumObject.COOKIE, EnumObject.RED)
                         )
                 ),
-                Arguments.of(Repository.build(ComplexCollectionModel.class).withLayer(H2Layer.class).build(),
-                        new ComplexCollectionModel(GENERAL_UUID,
+                Arguments.of(Repository.build(CollectionComplexModel.class).withLayer(H2Layer.class).build(),
+                        new CollectionComplexModel(GENERAL_UUID,
                                 8,
                                 List.of(new TestObject1("test", 8)),
                                 List.of(new TestObject2("test2", 89)))),
-                Arguments.of(Repository.build(SimpleMapModel.class).withLayer(H2Layer.class).build(),
-                        new SimpleMapModel(GENERAL_UUID,
+                Arguments.of(Repository.build(MapSimpleModel.class).withLayer(H2Layer.class).build(),
+                        new MapSimpleModel(GENERAL_UUID,
                                 87,
                                 "test_user",
                                 Map.of("silence", true, "test", false)

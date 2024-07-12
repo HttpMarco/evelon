@@ -13,7 +13,7 @@ import java.util.UUID;
 @Accessors(fluent = true)
 @AllArgsConstructor
 @ToString
-public final class SimpleMapModel {
+public final class MapSimpleModel {
 
     @PrimaryKey
     private final UUID uniqueId;
