@@ -16,7 +16,7 @@ slf4j = "2.0.13"
 # database
 hikari = "5.1.0"
 h2 = "2.2.224"
-mariadb = "3.4.0"
+mariadb = "3.4.1"
 
 [libraries]
 # utils
