@@ -6,8 +6,7 @@ straightforward synchronization process between them.
 Planned databases:
 scylladb, arangodb, ragonfly, redis, aeon, yml, json, couchdb, r2dbc, mongodb, cassandra, postgresql, local-cache
 
-Dependency:
-![Dependencies](https://github.com/HttpMarco/evelon/wiki)
+Dependency: https://github.com/HttpMarco/evelon/wiki
 
 
 ### Change path of credentials configuartion
