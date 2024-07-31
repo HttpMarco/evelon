@@ -17,6 +17,7 @@ slf4j = "2.0.13"
 hikari = "5.1.0"
 h2 = "2.3.230"
 mariadb = "3.4.1"
+mysql = "9.0.0"
 
 [libraries]
 # utils
@@ -34,6 +35,7 @@ log4j = { group = "org.apache.logging.log4j", name = "log4j-slf4j2-impl", versio
 hikari = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari" }
 h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
 mariadb = { group = "org.mariadb.jdbc", name = "mariadb-java-client", version.ref = "mariadb" }
+mysql = { group = "com.mysql", name = "mysql-connector-j", version.ref = "mysql" }
 
 [plugins]
 nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish" }
