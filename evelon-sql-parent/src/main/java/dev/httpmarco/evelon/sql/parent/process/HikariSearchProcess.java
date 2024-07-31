@@ -15,6 +15,7 @@ import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.HikariFilterUtil;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,6 +86,11 @@ public final class HikariSearchProcess extends QueryProcess<List<Object>, Hikari
                 entry.children().stream().filter(it -> !it.isExternal()).forEach(child -> {
                     try {
                         var value = data.getObject(child.id());
+
+                        if (value == null) {
+                            // not set null values
+                            return;
+                        }
 
                         // jdbc cannot cast to char ... we handle this manuel
                         if (value instanceof String && child.clazz().equals(char.class)) {
