@@ -24,9 +24,8 @@ public record Repository<T>(RepositoryObjectEntry entry, Set<Layer<?>> layers) {
         return new Query<>(this, Set.of(layers.stream().filter(it -> it.getClass().equals(layer)).findFirst().orElseThrow()));
     }
 
-
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return entry.clazz().getSimpleName();
     }
 }
