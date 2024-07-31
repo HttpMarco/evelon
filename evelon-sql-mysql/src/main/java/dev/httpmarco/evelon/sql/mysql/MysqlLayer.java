@@ -19,7 +19,7 @@ public final class MysqlLayer extends HikariParentConnectionLayer<HikariDefaultA
         detector().overwrite(Type.of("CHAR(36)", it -> {
 
             if (it.clazz().equals(UUID.class)) {
-                // it.constants().put(RepositoryConstant.VALUE_REFACTOR, o -> ((boolean) o) ? 1 : 0);
+                 it.constants().put(RepositoryConstant.VALUE_RENDERING, o -> UUID.fromString((String) o));
                 return true;
             }
             return false;
