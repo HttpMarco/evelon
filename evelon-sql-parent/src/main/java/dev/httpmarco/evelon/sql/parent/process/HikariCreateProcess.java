@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.RepositoryConstant;
+import dev.httpmarco.evelon.RepositoryEntry;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.common.Pair;
 import dev.httpmarco.evelon.common.Reflections;
@@ -35,12 +36,16 @@ public final class HikariCreateProcess extends UpdateProcess<HikariProcessRefere
             arguments.add(value);
             // maps are specific parameters there have not 1 value, rather more.
         } else if (entry instanceof RepositoryMapEntry mapEntry && !(mapEntry.keyEntry() instanceof RepositoryExternalEntry && mapEntry.valueEntry() instanceof RepositoryExternalEntry)) {
-            elements.add(mapEntry.keyEntry().id());
-            elements.add(mapEntry.valueEntry().id());
+            var keyEntry = mapEntry.keyEntry();
+            var valueEntry = mapEntry.valueEntry();
+
+            elements.add(keyEntry.id());
+            elements.add(valueEntry.id());
 
             var data = (Pair<?, ?>) value;
-            arguments.add(data.first());
-            arguments.add(data.second());
+
+            arguments.add(keyEntry.constants().has(RepositoryConstant.VALUE_REFACTOR) ? keyEntry.constants().constant(RepositoryConstant.VALUE_REFACTOR).apply(data.first()) : data.first());
+            arguments.add(valueEntry.constants().has(RepositoryConstant.VALUE_REFACTOR) ? valueEntry.constants().constant(RepositoryConstant.VALUE_REFACTOR).apply(data.second()) : data.second());
         } else {
             for (var child : entry.children()) {
                 var childValue = Reflections.value(child.constants().constant(RepositoryConstant.PARAM_FIELD), value);
