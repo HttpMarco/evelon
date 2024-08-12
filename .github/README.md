@@ -18,13 +18,3 @@ ConnectionAuthenticationPath.set("home/my-credentials");
 ### Todo query methods
 - [ ] `createIfNotExists` - Create an entity if it does not exist.
 - [ ] `upsert` - Create an entity if it does not exist, otherwise update it.
-
-### Another todos
-- [ ] row transformer
-- [ ] implement Arrays
-- [ ] sql word blacklist
-- [ ] maps
-- [ ] implement duplicated id check (Warning)
-
-Blacklisted words:
-- user
