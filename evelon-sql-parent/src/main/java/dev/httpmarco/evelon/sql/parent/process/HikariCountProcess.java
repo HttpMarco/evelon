@@ -1,14 +1,11 @@
 package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.RepositoryExternalEntry;
-import dev.httpmarco.evelon.filtering.Filter;
 import dev.httpmarco.evelon.process.kind.QueryProcess;
 import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.HikariFilterUtil;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.concurrent.atomic.AtomicLong;
 
 public final class HikariCountProcess extends QueryProcess<Long, HikariProcessReference, HikariFilter<Object>> {
 
