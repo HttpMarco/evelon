@@ -8,13 +8,5 @@ scylladb, arangodb, ragonfly, redis, aeon, yml, json, couchdb, r2dbc, mongodb, c
 
 Dependency: https://github.com/HttpMarco/evelon/wiki
 
-
-### Change path of credentials configuartion
-To change the path, there are two options. The first option would be to set the path in an environment variable, using the keyword `evelon.credentials.path`. Another option would be to set it programmatically with:
-```java
-ConnectionAuthenticationPath.set("home/my-credentials");
-```
-
-### Todo query methods
-- [ ] `createIfNotExists` - Create an entity if it does not exist.
-- [ ] `upsert` - Create an entity if it does not exist, otherwise update it.
+Before merge:
+PosdtgreSQl, TImescaleDB, Reids and mongoDb need tests
