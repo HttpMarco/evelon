@@ -31,11 +31,6 @@ public final class HikariProcessReference extends ProcessReference<HikariConnect
     }
 
     @Deprecated
-    public HikariProcessReference append(String query, HikariConnectionFunction<ResultSet> consumer) {
-        return this.append(query, new Object[0], consumer);
-    }
-
-    @Deprecated
     public HikariProcessReference append(String query, Object[] parameters) {
         return this.append(query, parameters, resultSet -> {
         });
