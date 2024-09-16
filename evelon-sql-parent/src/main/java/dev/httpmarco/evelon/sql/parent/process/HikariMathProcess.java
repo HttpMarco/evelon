@@ -8,8 +8,6 @@ import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 @AllArgsConstructor
 public final class HikariMathProcess<T> extends QueryProcess<Object, HikariProcessReference, HikariFilter<Object>> {
 
@@ -18,13 +16,7 @@ public final class HikariMathProcess<T> extends QueryProcess<Object, HikariProce
     private T defaultValue;
 
     @Override
-    public Object run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
-        var data = new AtomicReference<>();
-
-        reference.append(HikariFilterUtil.appendFiltering(MATH_QUERY.formatted(type, entry.id()), filters()) + ";", filterArguments(), resultSet -> {
-            data.set(resultSet.getObject("data") != null ? resultSet.getObject("data") : defaultValue);
-        });
-
-        return data;
+    public @NotNull Object run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
+        return reference.directly(HikariFilterUtil.appendFiltering(MATH_QUERY.formatted(type, entry.id()), filters()) + ";", filterArguments(), result -> result.getObject("data") != null ? result.getObject("data") : defaultValue);
     }
 }
