@@ -12,3 +12,4 @@ include("evelon-sql-postgresql")
 
 include("evelon-document-parent")
 include("evelon-document-redis")
+include("evelon-document-mongodb")
