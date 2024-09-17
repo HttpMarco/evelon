@@ -14,8 +14,8 @@ public class RedisAuthentication extends ConnectionAuthentication {
     private final String password;
     private final boolean useSsl;
 
-    public RedisAuthentication(String id, boolean active, String hostname, int port, String password, boolean useSsl) {
-        super(id, active);
+    public RedisAuthentication(String hostname, int port, String password, boolean useSsl) {
+        super("REDIS", false);
         this.hostname = hostname;
         this.port = port;
         this.password = password;
