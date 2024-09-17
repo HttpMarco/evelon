@@ -10,12 +10,12 @@ nexus-publish = "2.0.0"
 gson = "2.11.0"
 
 # logging
-log4j = "2.23.1"
-slf4j = "2.0.13"
+log4j = "2.24.0"
+slf4j = "2.0.16"
 
 # database
 hikari = "5.1.0"
-h2 = "2.3.230"
+h2 = "2.3.232"
 mariadb = "3.4.1"
 mysql = "9.0.0"
 postgresql = "42.7.3"
