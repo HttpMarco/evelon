@@ -10,6 +10,8 @@ import dev.httpmarco.evelon.process.kind.UpdateProcess;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 public final class RedisCreateProcess extends UpdateProcess<RedisProcessReference, RedisFilter<?>> {
 
@@ -25,6 +27,8 @@ public final class RedisCreateProcess extends UpdateProcess<RedisProcessReferenc
             }
             reference.data().add(child.id(), JsonUtils.GSON.toJsonTree(childValue));
         }
+
+        reference.connection().connection().sync().set(entry.id() + "-" + UUID.randomUUID(), reference.data().toString());
         System.out.println(reference.data());
     }
 }
