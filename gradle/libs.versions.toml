@@ -19,6 +19,7 @@ h2 = "2.3.230"
 mariadb = "3.4.1"
 mysql = "9.0.0"
 postgresql = "42.7.3"
+redis = "6.3.2.RELEASE"
 
 [libraries]
 # utils
@@ -38,6 +39,7 @@ h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
 mariadb = { group = "org.mariadb.jdbc", name = "mariadb-java-client", version.ref = "mariadb" }
 mysql = { group = "com.mysql", name = "mysql-connector-j", version.ref = "mysql" }
 postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
+redis = { group = "io.lettuce",  name = "lettuce-core", version.ref = "redis" }
 
 [plugins]
 nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish" }
