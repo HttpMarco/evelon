@@ -1,15 +1,26 @@
 package dev.httpmarco.evelon.document.redis.query;
 
 import dev.httpmarco.evelon.Ordering;
+import dev.httpmarco.evelon.document.redis.RedisProcessReference;
+import dev.httpmarco.evelon.document.redis.process.RedisCountProcess;
+import dev.httpmarco.evelon.document.redis.process.RedisCreateProcess;
+import dev.httpmarco.evelon.layer.Layer;
+import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.query.Query;
 import dev.httpmarco.evelon.query.QueryMethod;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 
+@AllArgsConstructor
 public class RedisDocumentQuery<V> implements QueryMethod<V> {
+
+    private final Layer<?> layer;
+    private ProcessRunner<RedisProcessReference> runner;
+
     @Override
     public void create(Query<?> query, V value) {
-
+        runner.apply(layer, query, new RedisCreateProcess(value));
     }
 
     @Override
@@ -34,7 +45,7 @@ public class RedisDocumentQuery<V> implements QueryMethod<V> {
 
     @Override
     public long count(Query<?> query) {
-        return 0;
+        return runner.apply(layer, query, new RedisCountProcess());
     }
 
     @Override
