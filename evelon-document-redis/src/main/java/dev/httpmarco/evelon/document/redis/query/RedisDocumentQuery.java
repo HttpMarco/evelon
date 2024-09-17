@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.Ordering;
 import dev.httpmarco.evelon.document.redis.RedisProcessReference;
 import dev.httpmarco.evelon.document.redis.process.RedisCountProcess;
 import dev.httpmarco.evelon.document.redis.process.RedisCreateProcess;
+import dev.httpmarco.evelon.document.redis.process.RedisDeleteProcess;
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.query.Query;
@@ -30,7 +31,7 @@ public class RedisDocumentQuery<V> implements QueryMethod<V> {
 
     @Override
     public void delete(Query<?> query) {
-
+        runner.apply(layer, query, new RedisDeleteProcess());
     }
 
     @Override
