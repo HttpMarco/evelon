@@ -33,7 +33,7 @@ public final class RedisConnection implements Connection<StatefulRedisConnection
 
     @Override
     public boolean isConnected() {
-        return false;
+        return connection!= null && connection.isOpen();
     }
 
     @Override
