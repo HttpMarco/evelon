@@ -3,7 +3,7 @@ package dev.httpmarco.evelon.document.redis;
 import dev.httpmarco.evelon.filtering.Filter;
 import dev.httpmarco.evelon.filtering.FilterHandler;
 
-public class RedisFilterHandler implements FilterHandler<Object, Object> {
+public final class RedisFilterHandler implements FilterHandler<Object, Object> {
     @Override
     public Filter<Object, Object> match(String id, Object value) {
         return null;

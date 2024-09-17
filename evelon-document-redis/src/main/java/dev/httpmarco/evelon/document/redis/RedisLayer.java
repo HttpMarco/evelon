@@ -2,11 +2,18 @@ package dev.httpmarco.evelon.document.redis;
 
 import dev.httpmarco.evelon.Repository;
 import dev.httpmarco.evelon.document.redis.connection.RedisConnection;
+import dev.httpmarco.evelon.document.redis.query.RedisDocumentQuery;
 import dev.httpmarco.evelon.layer.connection.ConnectableLayer;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.query.QueryMethod;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 
-public class RedisLayer extends ConnectableLayer<RedisConnection, RedisProcessReference> {
+@Getter
+@Accessors(fluent = true)
+public final class RedisLayer extends ConnectableLayer<RedisConnection, RedisProcessReference> {
+
+    private RedisConnection connection;
 
     public RedisLayer() {
         super(new RedisAuthentication("localhost", 6379, "", false), new RedisFilterHandler());
@@ -18,17 +25,12 @@ public class RedisLayer extends ConnectableLayer<RedisConnection, RedisProcessRe
     }
 
     @Override
-    public RedisConnection connection() {
-        return null;
-    }
-
-    @Override
     protected ProcessRunner<RedisProcessReference> generateRunner() {
-        return null;
+        return new RedisRunner(this.connection = new RedisConnection());
     }
 
     @Override
     public <T> QueryMethod<T> queryMethod(Repository<?> repository) {
-        return null;
+        return new RedisDocumentQuery<>();
     }
 }
