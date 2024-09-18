@@ -48,6 +48,7 @@ public final class HikariLayerQuery<V> implements QueryMethod<V> {
     @Override
     @SuppressWarnings("unchecked")
     public @Nullable V findFirst(Query<?> query) {
+        query.limit(1);
         var values = runner.apply(layer, query, new HikariSearchProcess());
         if (!values.isEmpty()) {
             return (V) values.get(0);

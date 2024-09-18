@@ -5,12 +5,12 @@ import dev.httpmarco.evelon.document.redis.RedisProcessReference;
 import dev.httpmarco.evelon.document.redis.process.RedisCountProcess;
 import dev.httpmarco.evelon.document.redis.process.RedisCreateProcess;
 import dev.httpmarco.evelon.document.redis.process.RedisDeleteProcess;
+import dev.httpmarco.evelon.document.redis.process.RedisSearchProcess;
 import dev.httpmarco.evelon.layer.Layer;
 import dev.httpmarco.evelon.process.ProcessRunner;
 import dev.httpmarco.evelon.query.Query;
 import dev.httpmarco.evelon.query.QueryMethod;
 import lombok.AllArgsConstructor;
-
 import java.util.List;
 
 @AllArgsConstructor
@@ -36,11 +36,16 @@ public class RedisDocumentQuery<V> implements QueryMethod<V> {
 
     @Override
     public boolean exists(Query<?> query) {
-        return false;
+        return findFirst(query) != null;
     }
 
     @Override
     public V findFirst(Query<?> query) {
+        query.limit(1);
+        var values = runner.apply(layer, query, new RedisSearchProcess());
+        if (!values.isEmpty()) {
+            return (V) values.get(0);
+        }
         return null;
     }
 
@@ -50,8 +55,9 @@ public class RedisDocumentQuery<V> implements QueryMethod<V> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<V> find(Query<?> query) {
-        return List.of();
+        return (List<V>) runner.apply(layer, query, new RedisSearchProcess());
     }
 
     @Override
