@@ -28,7 +28,7 @@ public final class RedisCreateProcess extends UpdateProcess<RedisProcessReferenc
                 return;
             }
 
-            executor.hset(entry.id() + primaryPattern, child.id(), childValue.toString());
+            executor.hset(entry.id() + primaryPattern, child.id(), childValue == null ? null : childValue.toString());
         }
     }
 }

@@ -61,6 +61,11 @@ public final class RedisSearchProcess extends QueryProcess<List<Object>, RedisPr
 
     @SuppressWarnings("unchecked")
     private Object detectStringValue(Class<?> type, String value) {
+
+        if(value == null) {
+            return null;
+        }
+
         if (type.equals(Integer.class) || type.equals(int.class)) {
             return Integer.parseInt(value);
         } else if (type.equals(Boolean.class) || type.equals(boolean.class)) {
@@ -70,6 +75,9 @@ public final class RedisSearchProcess extends QueryProcess<List<Object>, RedisPr
         } else if (type.equals(char.class)) {
             return value.charAt(0);
         } else if (type.equals(UUID.class)) {
+            if(value.isEmpty()) {
+                return null;
+            }
             return UUID.fromString(value);
         } else if (type.isEnum()) {
             return Enum.valueOf((Class<? extends Enum>) type, value);

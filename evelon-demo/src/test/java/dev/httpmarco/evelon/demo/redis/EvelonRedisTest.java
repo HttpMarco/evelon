@@ -45,6 +45,44 @@ public class EvelonRedisTest {
                                 false,
                                 "test street",
                                 EnumObject.COOKIE)
+                ),
+                // test abstract classes
+                Arguments.of(Repository.build(AbstractModel.class).withLayer(RedisLayer.class).build(),
+                        new AbstractModel("test", 1, UUID.randomUUID())
+                ),
+                // simple collection test with String parameter
+                Arguments.of(Repository.build(CollectionSimpleModel.class).withLayer(RedisLayer.class).build(),
+                        new CollectionSimpleModel(GENERAL_UUID, 1,
+                                List.of("roadblock.*", "follow"),
+                                List.of(EnumObject.COOKIE, EnumObject.RED)
+                        )
+                ),
+                Arguments.of(Repository.build(CollectionComplexModel.class).withLayer(RedisLayer.class).build(),
+                        new CollectionComplexModel(GENERAL_UUID,
+                                8,
+                                List.of(new TestObject1("test", 8)),
+                                List.of(new TestObject2("test2", 89)))),
+                Arguments.of(Repository.build(MapSimpleModel.class).withLayer(RedisLayer.class).build(),
+                        new MapSimpleModel(GENERAL_UUID,
+                                87,
+                                "test_user",
+                                Map.of("silence", true, "test", false)
+                        )
+                ),
+                Arguments.of(Repository.build(NullModel.class).withLayer(RedisLayer.class).build(),
+                        new NullModel("test", 8)
+                ),
+                Arguments.of(Repository.build(StaticModel.class).withLayer(RedisLayer.class).build(),
+                        new StaticModel('a', 8)
+                ),
+                Arguments.of(Repository.build(RecordModel.class).withLayer(RedisLayer.class).build(),
+                        new RecordModel(GENERAL_UUID, 8, 1)
+                ),
+                Arguments.of(Repository.build(CollectionRecordModel.class).withLayer(RedisLayer.class).build(),
+                        new CollectionRecordModel(GENERAL_UUID, 8, List.of(new RecordModel(UUID.randomUUID(), 1, 1)))
+                ),
+                Arguments.of(Repository.build(MergedModel.class).withLayer(RedisLayer.class).build(),
+                        new MergedModel('c', 7, 2L, new TestObject1("test", 8))
                 )
         );
     }
