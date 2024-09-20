@@ -38,7 +38,7 @@ public final class RedisSearchProcess extends QueryProcess<List<Object>, RedisPr
 
 
         for (var key : values) {
-            Map<String, String> map = reference.connection().connection().sync().hgetall(key);
+            var map = reference.connection().connection().sync().hgetall(key);
             var object = Allocator.allocate(entry.clazz());
 
 
@@ -50,7 +50,13 @@ public final class RedisSearchProcess extends QueryProcess<List<Object>, RedisPr
                 // modify the original field with a new value
                 var childFiled = child.constants().has(RepositoryConstant.PARAM_FIELD) ? child.constants().constant(RepositoryConstant.PARAM_FIELD) : Reflections.field(child.clazz(), child.id());
 
-                Reflections.modify(object, childFiled, detectStringValue(child.clazz(), map.get(child.id())));
+                var value = detectStringValue(child.clazz(), map.get(child.id()));
+
+                if (child.constants().has(RepositoryConstant.TRANSFORMER)) {
+                    child.constants().constant(RepositoryConstant.TRANSFORMER).manipulateField(value, childFiled, object);
+                } else {
+                    Reflections.modify(object, childFiled, value);
+                }
             }
 
             result.add(object);
