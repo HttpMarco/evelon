@@ -17,6 +17,14 @@ public final class HikariMathProcess<T> extends QueryProcess<Object, HikariProce
 
     @Override
     public @NotNull Object run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
-        return reference.directly(HikariFilterUtil.appendFiltering(MATH_QUERY.formatted(type, entry.id()), filters()) + ";", filterArguments(), result -> result.getObject("data") != null ? result.getObject("data") : defaultValue);
+        return reference.directly(HikariFilterUtil.appendFiltering(MATH_QUERY.formatted(type, entry.id()), filters()) + ";", filterArguments(), (success, data) -> {
+            if (!success) {
+                return null;
+            }
+
+            var result = data.getResultSet();
+
+            return result.getObject("data") != null ? result.getObject("data") : defaultValue;
+        });
     }
 }

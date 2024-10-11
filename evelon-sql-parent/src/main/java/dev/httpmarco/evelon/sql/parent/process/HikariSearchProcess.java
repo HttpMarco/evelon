@@ -58,7 +58,12 @@ public final class HikariSearchProcess extends QueryProcess<List<Object>, Hikari
 
         query = query + ";";
 
-        return reference.directly(query, filterArguments(), data -> {
+        return reference.directly(query, filterArguments(), (success, statement) -> {
+            if (!success) {
+                return List.of();
+            }
+
+            var data = statement.getResultSet();
             var result = new ArrayList<>();
 
 

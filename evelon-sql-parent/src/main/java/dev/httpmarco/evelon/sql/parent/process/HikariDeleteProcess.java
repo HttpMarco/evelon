@@ -15,7 +15,7 @@ public final class HikariDeleteProcess extends UpdateProcess<HikariProcessRefere
 
     @Override
     public void run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
-        boolean success = reference.directly(HikariFilterUtil.appendFiltering(DELETE_SQL.formatted(entry.id()), filters()) + ";", filterArguments(), ResultSet::next);
+        boolean success = reference.directly(HikariFilterUtil.appendFiltering(DELETE_SQL.formatted(entry.id()), filters()) + ";", filterArguments(), (querySuccess, data) -> querySuccess && data.getUpdateCount() > 0);
 
         // todo return maybe back
     }
