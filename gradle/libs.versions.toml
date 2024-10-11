@@ -1,7 +1,7 @@
 [versions]
 # utils
 lombok = "1.18.34"
-annotations = "24.1.0"
+annotations = "26.0.0"
 
 # publishing
 nexus-publish = "2.0.0"
@@ -10,11 +10,11 @@ nexus-publish = "2.0.0"
 gson = "2.11.0"
 
 # logging
-log4j = "2.24.0"
+log4j = "2.24.1"
 slf4j = "2.0.16"
 
 # database
-hikari = "5.1.0"
+hikari = "6.0.0"
 h2 = "2.3.232"
 mariadb = "3.4.1"
 mysql = "9.0.0"
