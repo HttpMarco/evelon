@@ -13,6 +13,6 @@ public final class HikariCheckProcess extends QueryProcess<Boolean, HikariProces
 
     @Override
     public @NotNull Boolean run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
-        return reference.directly(HikariFilterUtil.appendFiltering(CHECK_QUERY.formatted(entry.id()), filters()) + " LIMIT 1;", filterArguments(), it -> it.next());
+        return reference.directly(HikariFilterUtil.appendFiltering(CHECK_QUERY.formatted(entry.id()), filters()) + " LIMIT 1;", filterArguments(), (success, data) -> success && data.getResultSet().next());
     }
 }
