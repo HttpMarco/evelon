@@ -16,7 +16,7 @@ slf4j = "2.0.16"
 # database
 hikari = "6.0.0"
 h2 = "2.3.232"
-mariadb = "3.4.1"
+mariadb = "3.5.0"
 mysql = "9.1.0"
 
 [libraries]
