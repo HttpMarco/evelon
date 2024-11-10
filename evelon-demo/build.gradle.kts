@@ -8,6 +8,9 @@ dependencies {
     testImplementation(project(":evelon-sql-h2"))
     testImplementation(project(":evelon-sql-mariadb"))
     testImplementation(project(":evelon-sql-mysql"))
+    testImplementation(project(":evelon-sql-postgresql"))
+
+    testImplementation(project(":evelon-document-redis"))
 
     testImplementation(platform("org.junit:junit-bom:5.11.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")

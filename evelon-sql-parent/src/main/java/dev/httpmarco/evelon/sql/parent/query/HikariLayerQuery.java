@@ -13,10 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Nullable;
-
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Accessors(fluent = true)
 @AllArgsConstructor
@@ -50,6 +48,7 @@ public final class HikariLayerQuery<V> implements QueryMethod<V> {
     @Override
     @SuppressWarnings("unchecked")
     public @Nullable V findFirst(Query<?> query) {
+        query.limit(1);
         var values = runner.apply(layer, query, new HikariSearchProcess());
         if (!values.isEmpty()) {
             return (V) values.get(0);
@@ -64,16 +63,14 @@ public final class HikariLayerQuery<V> implements QueryMethod<V> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public long sum(Query<?> query, String id) {
-        return ((AtomicReference<BigDecimal>) runner.apply(layer, query, new HikariMathProcess<>("SUM(" + id + ")", BigDecimal.ZERO))).get().longValue();
+        return ((BigDecimal) runner.apply(layer, query, new HikariMathProcess<>("SUM(" + id + ")", BigDecimal.ZERO))).longValue();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public double average(Query<?> query, String id) {
         //TODO has to be tested: maybe also use BigDecimal or BigDouble -> see sum()
-        return ((AtomicReference<Double>) runner.apply(layer, query, new HikariMathProcess<>("AVG(" + id + ")", 0D))).get();
+        return ((Double) runner.apply(layer, query, new HikariMathProcess<>("AVG(" + id + ")", 0D)));
     }
 
     @Override
