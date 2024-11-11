@@ -18,7 +18,7 @@ hikari = "6.1.0"
 h2 = "2.3.232"
 mariadb = "3.5.0"
 mysql = "9.1.0"
-postgresql = "42.7.3"
+postgresql = "42.7.4"
 redis = "6.3.2.RELEASE"
 
 [libraries]
