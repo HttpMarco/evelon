@@ -1,6 +1,6 @@
 [versions]
 # utils
-lombok = "1.18.34"
+lombok = "1.18.36"
 annotations = "26.0.1"
 
 # publishing
