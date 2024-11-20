@@ -14,7 +14,7 @@ log4j = "2.24.1"
 slf4j = "2.0.16"
 
 # database
-hikari = "6.1.0"
+hikari = "6.2.1"
 h2 = "2.3.232"
 mariadb = "3.5.0"
 mysql = "9.1.0"
