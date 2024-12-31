@@ -19,7 +19,7 @@ h2 = "2.3.232"
 mariadb = "3.5.1"
 mysql = "9.1.0"
 postgresql = "42.7.4"
-redis = "6.5.1.RELEASE"
+redis = "6.5.2.RELEASE"
 
 [libraries]
 # utils
