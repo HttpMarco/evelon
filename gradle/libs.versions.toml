@@ -17,7 +17,7 @@ slf4j = "2.0.16"
 hikari = "6.2.1"
 h2 = "2.3.232"
 mariadb = "3.5.1"
-mysql = "9.1.0"
+mysql = "9.2.0"
 postgresql = "42.7.4"
 redis = "6.5.2.RELEASE"
 
