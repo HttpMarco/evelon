@@ -1,7 +1,7 @@
 [versions]
 # utils
 lombok = "1.18.36"
-annotations = "26.0.1"
+annotations = "26.0.2"
 
 # publishing
 nexus-publish = "2.0.0"
