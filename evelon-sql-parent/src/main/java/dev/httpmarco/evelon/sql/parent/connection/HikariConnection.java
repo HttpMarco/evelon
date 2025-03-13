@@ -106,7 +106,7 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
         }
     }
 
-    public <R> R query(String query, Object[] arguments, HikariStatementBuilder<R> builder) {
+    public <R> R query(HikariConnectionType type, String query, Object[] arguments, HikariStatementBuilder<R> builder) {
         try (var connection = dataSource.getConnection(); var statement = connection.prepareStatement(query)) {
             for (int i = 0; i < arguments.length; i++) {
 
@@ -121,11 +121,20 @@ public final class HikariConnection implements Connection<HikariDataSource, Hika
                 }
             }
 
-            return builder.apply(statement.execute(), statement);
+            if (type == HikariConnectionType.UPDATE) {
+                statement.executeUpdate();
+                return builder.apply(statement);
+            }
+
+            if (type == HikariConnectionType.QUERY) {
+                statement.executeQuery();
+                return builder.apply(statement);
+            }
         } catch (SQLException exception) {
             LOGGER.error("{} Objects: {}", query, Arrays.toString(arguments));
             throw new RuntimeException(exception);
         }
+        return null;
     }
 
     @Deprecated

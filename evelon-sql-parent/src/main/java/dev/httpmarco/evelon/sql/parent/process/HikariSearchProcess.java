@@ -13,6 +13,7 @@ import dev.httpmarco.evelon.process.kind.QueryProcess;
 import dev.httpmarco.evelon.query.QueryConstant;
 import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.HikariFilterUtil;
+import dev.httpmarco.evelon.sql.parent.connection.HikariConnectionType;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,11 +59,7 @@ public final class HikariSearchProcess extends QueryProcess<List<Object>, Hikari
 
         query = query + ";";
 
-        return reference.directly(query, filterArguments(), (success, statement) -> {
-            if (!success) {
-                return List.of();
-            }
-
+        return reference.directly(HikariConnectionType.QUERY, query, filterArguments(), (statement) -> {
             var data = statement.getResultSet();
             var result = new ArrayList<>();
 

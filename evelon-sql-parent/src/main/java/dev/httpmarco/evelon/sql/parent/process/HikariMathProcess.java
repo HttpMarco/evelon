@@ -4,6 +4,7 @@ import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.process.kind.QueryProcess;
 import dev.httpmarco.evelon.sql.parent.HikariFilter;
 import dev.httpmarco.evelon.sql.parent.HikariFilterUtil;
+import dev.httpmarco.evelon.sql.parent.connection.HikariConnectionType;
 import dev.httpmarco.evelon.sql.parent.reference.HikariProcessReference;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -17,8 +18,8 @@ public final class HikariMathProcess<T> extends QueryProcess<Object, HikariProce
 
     @Override
     public @NotNull Object run(@NotNull RepositoryExternalEntry entry, @NotNull HikariProcessReference reference) {
-        return reference.directly(HikariFilterUtil.appendFiltering(MATH_QUERY.formatted(type, entry.id()), filters()) + ";", filterArguments(), (success, data) -> {
-            if (!success || !data.getResultSet().next()) {
+        return reference.directly(HikariConnectionType.QUERY, HikariFilterUtil.appendFiltering(MATH_QUERY.formatted(type, entry.id()), filters()) + ";", filterArguments(), (data) -> {
+            if (!data.getResultSet().next()) {
                 return null;
             }
 

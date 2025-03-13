@@ -3,6 +3,7 @@ package dev.httpmarco.evelon.sql.parent.reference;
 import dev.httpmarco.evelon.process.ProcessReference;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnection;
 import dev.httpmarco.evelon.sql.parent.connection.HikariConnectionFunction;
+import dev.httpmarco.evelon.sql.parent.connection.HikariConnectionType;
 import dev.httpmarco.evelon.sql.parent.connection.HikariStatementBuilder;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -20,8 +21,8 @@ public final class HikariProcessReference extends ProcessReference<HikariConnect
         super(connection);
     }
 
-    public <R> R directly(String query, Object[] arguments, HikariStatementBuilder<R> consumer) {
-        return this.connection().query(query, arguments, consumer);
+    public <R> R directly(HikariConnectionType type, String query, Object[] arguments, HikariStatementBuilder<R> consumer) {
+        return this.connection().query(type, query, arguments, consumer);
     }
 
     @Deprecated
