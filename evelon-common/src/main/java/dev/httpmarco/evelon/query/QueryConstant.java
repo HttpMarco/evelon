@@ -5,6 +5,8 @@ import dev.httpmarco.evelon.RepositoryConstant;
 import dev.httpmarco.evelon.RepositoryEntry;
 import dev.httpmarco.evelon.common.Reflections;
 import dev.httpmarco.evelon.constant.Constant;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,8 +37,10 @@ public final class QueryConstant<T> extends Constant<T> {
         return new QueryConstant<>(id);
     }
 
+    @Getter
     public static final class PrimaryShortCut {
 
+        @Accessors(fluent = true)
         private final Map<String, Object> primaries = new LinkedHashMap<>();
 
         public static PrimaryShortCut append(@NotNull List<RepositoryEntry> primaries, Object parent) {

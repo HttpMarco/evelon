@@ -1,6 +1,7 @@
 package dev.httpmarco.evelon.sql.parent.process;
 
 import dev.httpmarco.evelon.RepositoryConstant;
+import dev.httpmarco.evelon.RepositoryEntry;
 import dev.httpmarco.evelon.RepositoryExternalEntry;
 import dev.httpmarco.evelon.common.Reflections;
 import dev.httpmarco.evelon.external.RepositoryCollectionEntry;
@@ -70,6 +71,13 @@ public final class HikariUpdateProcess extends UpdateProcess<HikariProcessRefere
 
         if (elements.isEmpty()) {
             return;
+        }
+
+        if(constants().has(QueryConstant.PRIMARY_SHORTCUT)) {
+            QueryConstant.PrimaryShortCut primaryShortCut = constants().constant(QueryConstant.PRIMARY_SHORTCUT);
+
+            primaryShortCut.primaries().forEach((s, object) -> filters().add(new HikariFilter.SequenceMatchFilter(s, object, "=")));
+
         }
 
         arguments.addAll(filters().stream().map(Filter::value).toList());
