@@ -7,7 +7,7 @@ annotations = "26.0.2"
 nexus-publish = "2.0.0"
 
 # configuration
-gson = "2.12.1"
+gson = "2.13.1"
 
 # logging
 log4j = "2.24.3"
