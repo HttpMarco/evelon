@@ -10,7 +10,7 @@ nexus-publish = "2.0.0"
 gson = "2.12.1"
 
 # logging
-log4j = "2.25.0"
+log4j = "2.25.1"
 slf4j = "2.0.17"
 
 # database
