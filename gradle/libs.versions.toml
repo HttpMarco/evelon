@@ -15,7 +15,7 @@ slf4j = "2.0.17"
 
 # database
 hikari = "6.3.0"
-h2 = "2.3.232"
+h2 = "2.4.240"
 mariadb = "3.5.6"
 mysql = "9.4.0"
 postgresql = "42.7.7"
